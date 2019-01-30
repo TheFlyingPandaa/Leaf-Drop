@@ -13,9 +13,7 @@ Window::Window()
 
 Window::~Window()
 {
-	while (!m_windowThread.joinable());
-	m_windowThread.join();
-	DestroyWindow(m_hwnd);
+
 }
 
 Window * Window::GetInstance()
@@ -37,7 +35,7 @@ BOOL Window::Create(HINSTANCE hInstance, INT ShowWnd, UINT width, UINT height, B
 	m_windowThread = std::thread(&Window::_create, this, hInstance, ShowWnd);
 
 	while (m_creationError == FALSE && m_isOpen == FALSE);
-
+	
 	return m_isOpen;
 }
 
@@ -73,9 +71,11 @@ BOOL Window::IsFullscreen() const
 }
 
 void Window::Close()
-{
+{	
 	m_isOpen = FALSE;
-	PostQuitMessage(0);
+	if(m_windowThread.joinable());
+		m_windowThread.join();
+	DestroyWindow(m_hwnd);
 }
 
 LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -88,8 +88,8 @@ LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		if (wParam == VK_ESCAPE) {
 			if (MessageBox(0, L"Are you sure you want to exit?",
 				L"Really?", MB_YESNO | MB_ICONQUESTION) == IDYES)
-			{
-				PostQuitMessage(0);
+			{				
+				wnd->m_isOpen = FALSE;
 			}
 		}
 
@@ -104,7 +104,7 @@ LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_DESTROY:
-		PostQuitMessage(0);
+		wnd->m_isOpen = FALSE;
 		return 0;
 	}
 
@@ -202,5 +202,6 @@ void Window::_create(HINSTANCE hInstance, INT ShowWnd)
 	m_isOpen = TRUE;
 	
 	_run();
+
 }
 

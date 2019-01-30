@@ -17,16 +17,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	_alocConsole();
 #endif
 
-	Core core;
-	if (SUCCEEDED(core.Init(hInstance)))
+	Core * core = new Core();
+	if (SUCCEEDED(core->Init(hInstance)))
 	{
 		Window * wnd = Window::GetInstance();
-	
-		while (core.Running())
+		while (core->Running())
 		{
-		
+			
 		}
 	}
+
+	delete core;
 
 	return 0;
 

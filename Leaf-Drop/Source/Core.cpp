@@ -11,7 +11,6 @@ Core::Core()
 Core::~Core()
 {
 	m_coreRenderer->Release();
-	m_window->Close();
 }
 
 HRESULT Core::Init(HINSTANCE hInstance)
@@ -34,5 +33,9 @@ HRESULT Core::Init(HINSTANCE hInstance)
 
 BOOL Core::Running() const
 {
+	if (m_window->IsOpen() == FALSE) {
+		m_window->Close();
+	}
+
 	return m_window->IsOpen();
 }
