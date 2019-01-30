@@ -591,6 +591,15 @@
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Utillity\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -618,6 +627,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

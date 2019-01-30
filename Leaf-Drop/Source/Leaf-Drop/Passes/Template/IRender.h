@@ -1,5 +1,6 @@
 #pragma once
 #include <EASTL/vector.h>
+#include <vector>
 class CoreRender;
 class Window;
 class Drawable;
@@ -17,6 +18,7 @@ public:
 	virtual void Update() = 0; 
 	virtual void Draw() = 0;
 	virtual void Release() = 0;
+	void Clear();
 
 	HRESULT OpenCommandList(ID3D12PipelineState * pipelineSate = nullptr);
 	HRESULT ExecuteCommandList();
@@ -31,7 +33,7 @@ protected:
 	ID3D12CommandAllocator * p_commandAllocator[FRAME_BUFFER_COUNT]{nullptr};
 	
 	HRESULT p_CreateCommandList();
-	eastl::vector<Drawable*> p_drawQueue;
+	std::vector<Drawable*> p_drawQueue;
 	
 };
 

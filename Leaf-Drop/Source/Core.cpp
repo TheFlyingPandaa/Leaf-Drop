@@ -31,6 +31,11 @@ HRESULT Core::Init(HINSTANCE hInstance)
 	return S_OK;
 }
 
+HRESULT Core::Flush()
+{
+	return m_coreRenderer->Flush();
+}
+
 BOOL Core::Running() const
 {
 	if (m_window->IsOpen() == FALSE) {

@@ -13,7 +13,7 @@ Window::Window()
 
 Window::~Window()
 {
-
+	
 }
 
 Window * Window::GetInstance()
@@ -77,8 +77,8 @@ void Window::Close()
 	{
 		isclosed = true;
 		m_isOpen = FALSE;
-		if(m_windowThread.joinable())
-			m_windowThread.join();
+		while (!m_windowThread.joinable());
+		m_windowThread.join();
 		DestroyWindow(m_hwnd);
 	}
 }
@@ -102,7 +102,7 @@ LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		return 0;
 
-		case WM_KEYUP:
+	case WM_KEYUP:
 
 		wnd->m_keyPress[wParam] = false;
 

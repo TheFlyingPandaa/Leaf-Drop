@@ -6,6 +6,8 @@
 
 #include "Extern/Extern.h"
 
+#include "../Leaf-Drop/Passes/GeometryPass.h"
+
 class Window;
 
 class CoreRender
@@ -24,6 +26,8 @@ public:
 	ID3D12Device * GetDevice() const;
 	ID3D12CommandQueue * GetCommandQueue() const;
 	const UINT & GetFrameIndex() const;
+
+	HRESULT Flush();
 
 private:
 
@@ -45,6 +49,11 @@ private:
 
 	Window * m_windowPtr = nullptr;
 
+	GeometryPass * m_geometryPass = nullptr;
+
+	HRESULT _Flush();
+	HRESULT _UpdatePipeline();
+	HRESULT _waitForPreviousFrame();
 
 private:
 	HRESULT _CheckD3D12Support(IDXGIAdapter1 *& adapter, IDXGIFactory4 *& dxgiFactory) const;
@@ -54,6 +63,7 @@ private:
 	HRESULT _CreateCommandAllocators();
 	HRESULT _CreateCommandList();
 	HRESULT _CreateFenceAndFenceEvent();
+
 
 private: //  DEBUG
 	ID3D12Debug * m_debugLayer = nullptr;

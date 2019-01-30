@@ -113,6 +113,7 @@
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\Compiler\poppack1.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\Compiler\pstdint.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\config.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\DefaultIOStream.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\DefaultIOSystem.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\DefaultLogger.hpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector2.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector3.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\version.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Drawable.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EAAssert\eaassert.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eacompiler.h" />
@@ -291,6 +293,7 @@
     <ClInclude Include="Source\Leaf-Drop\CoreRender.h" />
     <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
+    <ClInclude Include="Source\Leaf-Drop\Utillity\Timer.h" />
     <ClInclude Include="Source\Window\Window.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
@@ -300,6 +303,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Drawable.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\GeometryPass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\Template\IRender.cpp" />

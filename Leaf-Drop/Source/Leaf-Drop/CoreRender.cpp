@@ -30,11 +30,13 @@ namespace DEBUG
 }
 CoreRender::CoreRender()
 {
+
 }
 
 
 CoreRender::~CoreRender()
 {
+	delete m_geometryPass;
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -105,6 +107,12 @@ HRESULT CoreRender::Init()
 	{
 		return DEBUG::CreateError(hr);
 	}
+
+	//m_geometryPass = new GeometryPass();
+	//if (FAILED(hr = m_geometryPass->Init()))
+	//{
+	//	return DEBUG::CreateError(hr);
+	//}
 	return hr;
 }
 
@@ -154,6 +162,124 @@ const UINT & CoreRender::GetFrameIndex() const
 	return this->m_frameIndex;
 }
 
+HRESULT CoreRender::Flush()
+{
+	HRESULT hr = 0;
+
+	if (FAILED(hr = this->_Flush()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
+	if (FAILED(hr = m_swapChain->Present(0, 0)))
+	{
+		return DEBUG::CreateError(hr);
+	}
+	return hr;
+}
+
+HRESULT CoreRender::_Flush()
+{
+	HRESULT hr = 0;
+
+	if (FAILED(hr = _UpdatePipeline()))
+	{
+		return hr;
+	}
+
+	ID3D12CommandList* ppCommandLists[] = { m_commandList };
+	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	if (FAILED(hr = m_commandQueue->Signal(m_fence[m_frameIndex], m_fenceValue[m_frameIndex])))
+	{
+		return hr;
+	}
+	return hr;
+}
+
+HRESULT CoreRender::_UpdatePipeline()
+{
+	HRESULT hr = 0;
+
+	if (FAILED(hr = _waitForPreviousFrame()))
+	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_commandAllocator[m_frameIndex]->Reset()))
+	{
+		return hr;
+	}
+	if (FAILED(hr = m_commandList->Reset(m_commandAllocator[m_frameIndex], nullptr)))
+	{
+		return hr;
+	}
+
+	{
+		D3D12_RESOURCE_TRANSITION_BARRIER transition;
+		transition.pResource = m_renderTargets[m_frameIndex];
+		transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+		transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+		transition.Subresource = 0;
+
+		D3D12_RESOURCE_BARRIER barrier;
+		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+		barrier.Transition = transition;
+
+		m_commandList->ResourceBarrier(1, &barrier);
+	}
+
+
+	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = 
+		{ m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart().ptr + 
+		m_frameIndex * 
+		m_rtvDescriptorSize };
+
+	m_commandList->OMSetRenderTargets(1, &rtvHandle, NULL, nullptr);
+	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
+	m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	
+
+	{
+		D3D12_RESOURCE_TRANSITION_BARRIER transition;
+		transition.pResource = m_renderTargets[m_frameIndex];
+		transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+		transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+		transition.Subresource = 0;
+
+		D3D12_RESOURCE_BARRIER barrier;
+		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+		barrier.Transition = transition;
+
+		m_commandList->ResourceBarrier(1, &barrier);
+	}
+
+	m_commandList->Close();
+	return hr;
+
+}
+
+HRESULT CoreRender::_waitForPreviousFrame()
+{
+	HRESULT hr = 0;
+
+	m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
+
+	if (m_fence[m_frameIndex]->GetCompletedValue() < m_fenceValue[m_frameIndex])
+	{
+		if (FAILED(hr = m_fence[m_frameIndex]->SetEventOnCompletion(m_fenceValue[m_frameIndex], m_fenceEvent)))
+		{
+			return hr;
+		}
+		WaitForSingleObject(m_fenceEvent, INFINITE);
+	}
+
+	m_fenceValue[m_frameIndex]++;
+
+	return hr;
+}
+
 HRESULT CoreRender::_CheckD3D12Support(IDXGIAdapter1 *& adapter, IDXGIFactory4 *& dxgiFactory) const
 {
 	HRESULT hr = 0;
@@ -162,10 +288,8 @@ HRESULT CoreRender::_CheckD3D12Support(IDXGIAdapter1 *& adapter, IDXGIFactory4 *
 
 	if (SUCCEEDED(hr = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory))))
 	{
-		hr = E_FAIL;
-
 		UINT adapterIndex = 0;
-		while (dxgiFactory->EnumAdapters1(adapterIndex, &adapter) != DXGI_ERROR_NOT_FOUND)
+		while (hr = dxgiFactory->EnumAdapters1(adapterIndex, &adapter) != DXGI_ERROR_NOT_FOUND)
 		{
 			DXGI_ADAPTER_DESC1 desc;
 			adapter->GetDesc1(&desc);
@@ -181,7 +305,7 @@ HRESULT CoreRender::_CheckD3D12Support(IDXGIAdapter1 *& adapter, IDXGIFactory4 *
 				_uuidof(ID3D12Device),
 				nullptr)))
 			{
-				return S_OK;
+				return hr;
 			}
 			SAFE_RELEASE(adapter);
 		}

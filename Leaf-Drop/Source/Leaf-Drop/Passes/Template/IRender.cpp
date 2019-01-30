@@ -1,7 +1,10 @@
 #include "CorePCH.h"
 #include "IRender.h"
 
-
+void IRender::Clear()
+{
+	p_drawQueue.clear();
+}
 
 HRESULT IRender::OpenCommandList(ID3D12PipelineState * pipelineSate)
 {
@@ -57,6 +60,7 @@ HRESULT IRender::p_CreateCommandList()
 		{
 			return hr;
 		}
+		p_commandList[i]->Close();
 	}
 	return hr;
 }
