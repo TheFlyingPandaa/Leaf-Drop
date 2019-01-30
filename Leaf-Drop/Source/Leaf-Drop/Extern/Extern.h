@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 
 const UINT FRAME_BUFFER_COUNT = 3U;
+const FLOAT CLEAR_COLOR[] = { 0,0,0,0 };
 
 namespace DEBUG
 {

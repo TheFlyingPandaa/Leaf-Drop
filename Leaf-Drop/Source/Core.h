@@ -18,6 +18,8 @@ public:
 
 	HRESULT Flush();
 
+	void Release();
+
 	BOOL Running() const;
 };
 

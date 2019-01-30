@@ -1,6 +1,8 @@
 #pragma once
 #include <EASTL/vector.h>
 #include <vector>
+
+
 class CoreRender;
 class Window;
 class Drawable;
@@ -25,15 +27,16 @@ public:
 protected:
 	IRender();
 
+	std::vector<Drawable*> p_drawQueue;
 	CoreRender * p_coreRender = nullptr;
 	Window * p_window = nullptr;
 
-protected:
 	ID3D12GraphicsCommandList * p_commandList[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12CommandAllocator * p_commandAllocator[FRAME_BUFFER_COUNT]{nullptr};
+protected:
 	
-	HRESULT p_CreateCommandList();
-	std::vector<Drawable*> p_drawQueue;
+	HRESULT p_CreateCommandList(const std::wstring & name);
+	void p_ReleaseCommandList();
 	
 };
 

@@ -108,19 +108,34 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
-	//m_geometryPass = new GeometryPass();
-	//if (FAILED(hr = m_geometryPass->Init()))
-	//{
-	//	return DEBUG::CreateError(hr);
-	//}
+	m_geometryPass = new GeometryPass();
+	if (FAILED(hr = m_geometryPass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}
 	return hr;
 }
 
 void CoreRender::Release()
 {
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		if (m_fence[i]->GetCompletedValue() < m_fenceValue[i])
+		{
+			if (FAILED(m_fence[i]->SetEventOnCompletion(m_fenceValue[i], m_fenceEvent)))
+			{
+
+			}
+			WaitForSingleObject(m_fenceEvent, INFINITE);
+		}
+
+		m_fenceValue[i]++;
+	}
+
+	m_geometryPass->Release();
+
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
-	SAFE_RELEASE(m_commandList);
 	SAFE_RELEASE(m_rtvDescriptorHeap);
 	
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
@@ -128,6 +143,7 @@ void CoreRender::Release()
 		SAFE_RELEASE(m_commandAllocator[i]);
 		SAFE_RELEASE(m_renderTargets[i]);
 		SAFE_RELEASE(m_fence[i]);
+		SAFE_RELEASE(m_commandList[i]);
 	}
 #ifdef _DEBUG
 	if (m_device)
@@ -157,9 +173,50 @@ ID3D12CommandQueue * CoreRender::GetCommandQueue() const
 	return this->m_commandQueue;
 }
 
+ID3D12GraphicsCommandList *const* CoreRender::GetCommandList() const
+{
+	return this->m_commandList;
+}
+
+IDXGISwapChain3 * CoreRender::GetSwapChain() const
+{
+	return this->m_swapChain;
+}
+
 const UINT & CoreRender::GetFrameIndex() const
 {
 	return this->m_frameIndex;
+}
+
+GeometryPass * CoreRender::GetGeometryPass() const
+{
+	return m_geometryPass;
+}
+
+HRESULT CoreRender::OpenCommandList()
+{
+	HRESULT hr = 0;
+	if (FAILED(hr = m_commandAllocator[m_frameIndex]->Reset()))
+	{
+		return hr;
+	}
+	if (FAILED(hr = m_commandList[m_frameIndex]->Reset(m_commandAllocator[m_frameIndex], nullptr)))
+	{
+		return hr;
+	}
+	return hr;
+}
+
+HRESULT CoreRender::ExecuteCommandList()
+{
+	HRESULT hr = 0;
+	ID3D12CommandList* ppCommandLists[] = { m_commandList[m_frameIndex] };
+	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	if (FAILED(hr = m_commandQueue->Signal(m_fence[m_frameIndex], m_fenceValue[m_frameIndex])))
+	{
+		return hr;
+	}
+	return hr;
 }
 
 HRESULT CoreRender::Flush()
@@ -175,6 +232,7 @@ HRESULT CoreRender::Flush()
 	{
 		return DEBUG::CreateError(hr);
 	}
+
 	return hr;
 }
 
@@ -187,7 +245,7 @@ HRESULT CoreRender::_Flush()
 		return hr;
 	}
 
-	ID3D12CommandList* ppCommandLists[] = { m_commandList };
+	ID3D12CommandList* ppCommandLists[] = { m_commandList[m_frameIndex] };
 	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	if (FAILED(hr = m_commandQueue->Signal(m_fence[m_frameIndex], m_fenceValue[m_frameIndex])))
 	{
@@ -209,7 +267,7 @@ HRESULT CoreRender::_UpdatePipeline()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_commandList->Reset(m_commandAllocator[m_frameIndex], nullptr)))
+	if (FAILED(hr = m_commandList[m_frameIndex]->Reset(m_commandAllocator[m_frameIndex], nullptr)))
 	{
 		return hr;
 	}
@@ -226,7 +284,7 @@ HRESULT CoreRender::_UpdatePipeline()
 		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 		barrier.Transition = transition;
 
-		m_commandList->ResourceBarrier(1, &barrier);
+		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
 
 
@@ -235,9 +293,12 @@ HRESULT CoreRender::_UpdatePipeline()
 		m_frameIndex * 
 		m_rtvDescriptorSize };
 
-	m_commandList->OMSetRenderTargets(1, &rtvHandle, NULL, nullptr);
+	m_commandList[m_frameIndex]->OMSetRenderTargets(1, &rtvHandle, NULL, nullptr);
 	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
-	m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	m_commandList[m_frameIndex]->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+
+	m_geometryPass->Update();
+	m_geometryPass->Draw();
 	
 
 	{
@@ -252,10 +313,10 @@ HRESULT CoreRender::_UpdatePipeline()
 		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 		barrier.Transition = transition;
 
-		m_commandList->ResourceBarrier(1, &barrier);
+		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
 
-	m_commandList->Close();
+	m_commandList[m_frameIndex]->Close();
 	return hr;
 
 }
@@ -425,11 +486,15 @@ HRESULT CoreRender::_CreateCommandAllocators()
 HRESULT CoreRender::_CreateCommandList()
 {
 	HRESULT hr = 0;
-
-	if (SUCCEEDED(hr = m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator[0], nullptr, IID_PPV_ARGS(&m_commandList))))
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
-		SET_NAME(m_commandList, L"Default CommandList");
-		m_commandList->Close();
+		if (SUCCEEDED(hr = m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator[0], nullptr, IID_PPV_ARGS(&m_commandList[i]))))
+		{
+			SET_NAME(m_commandList[i], L"Default CommandList");
+			m_commandList[i]->Close();
+		}
+		else
+			return hr;
 	}
 	return hr;
 }
@@ -452,4 +517,9 @@ HRESULT CoreRender::_CreateFenceAndFenceEvent()
 		return E_FAIL;
 
 	return hr;
+}
+
+void CoreRender::_Clear()
+{
+	m_geometryPass->Clear();
 }

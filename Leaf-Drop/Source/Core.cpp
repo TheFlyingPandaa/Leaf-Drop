@@ -10,7 +10,6 @@ Core::Core()
 
 Core::~Core()
 {
-	m_coreRenderer->Release();
 }
 
 HRESULT Core::Init(HINSTANCE hInstance)
@@ -43,4 +42,10 @@ BOOL Core::Running() const
 	}
 
 	return m_window->IsOpen();
+}
+
+void Core::Release()
+{
+	m_coreRenderer->Release();
+
 }

@@ -14,6 +14,8 @@
 #include "Source/Window/Window.h"
 #include "Source/Leaf-Drop/CoreRender.h"
 
+#include "Source/Leaf-Drop/Wrappers/d3dx12.h"
+
 #ifdef _DEBUG
 #include <iostream>
 
@@ -23,6 +25,7 @@
 #endif
 
 #define SAFE_RELEASE(p) {if ((p)) {(p)->Release(); (p) = nullptr;}}
+#define SAFE_DELETE(p) {if ((p)) {delete (p); (p) = nullptr;}}
 
 #define SET_NAME(p, str) {if ((p)){ (p)->SetName((str));}}
 

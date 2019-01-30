@@ -21,3 +21,8 @@ StaticMesh * Drawable::GetMesh() const
 {
 	return m_mesh;
 }
+
+void Drawable::Draw()
+{
+	m_coreRenderer->GetGeometryPass()->Submit(this);
+}

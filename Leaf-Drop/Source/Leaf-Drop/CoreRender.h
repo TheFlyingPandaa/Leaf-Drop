@@ -25,7 +25,15 @@ public:
 
 	ID3D12Device * GetDevice() const;
 	ID3D12CommandQueue * GetCommandQueue() const;
+	ID3D12GraphicsCommandList *const* GetCommandList() const;
+	IDXGISwapChain3 * GetSwapChain() const;
+
 	const UINT & GetFrameIndex() const;
+
+	GeometryPass * GetGeometryPass() const;
+
+	HRESULT OpenCommandList();
+	HRESULT ExecuteCommandList();
 
 	HRESULT Flush();
 
@@ -34,9 +42,9 @@ private:
 	ID3D12Device *				m_device = nullptr;
 	IDXGISwapChain3 *			m_swapChain = nullptr;
 	ID3D12CommandQueue *		m_commandQueue = nullptr;
-	ID3D12GraphicsCommandList * m_commandList = nullptr;
 	ID3D12DescriptorHeap *		m_rtvDescriptorHeap = nullptr;
 
+	ID3D12GraphicsCommandList * m_commandList[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12CommandAllocator *	m_commandAllocator[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12Resource *			m_renderTargets[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12Fence *				m_fence[FRAME_BUFFER_COUNT]{ nullptr };
@@ -63,6 +71,8 @@ private:
 	HRESULT _CreateCommandAllocators();
 	HRESULT _CreateCommandList();
 	HRESULT _CreateFenceAndFenceEvent();
+
+	void _Clear();
 
 
 private: //  DEBUG

@@ -597,7 +597,16 @@
     <ClInclude Include="Source\Leaf-Drop\Utillity\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderTarget.h">
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\d3dx12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -629,7 +638,10 @@
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderTarget.cpp">
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -658,5 +670,9 @@
     <None Include="ExternalLibs\AssImp\include\assimp\vector3.inl">
       <Filter>Header Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryVertex.hlsl" />
+    <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
   </ItemGroup>
 </Project>

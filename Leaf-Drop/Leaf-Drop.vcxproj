@@ -144,7 +144,9 @@
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector2.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector3.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\version.h" />
-    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\d3dx12.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderTarget.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Drawable.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EAAssert\eaassert.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eacompiler.h" />
@@ -294,6 +296,7 @@
     <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
     <ClInclude Include="Source\Leaf-Drop\Utillity\Timer.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderCreator.h" />
     <ClInclude Include="Source\Window\Window.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
@@ -303,7 +306,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderTarget.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Drawable.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\GeometryPass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\Template\IRender.cpp" />
@@ -322,6 +326,20 @@
     <None Include="ExternalLibs\AssImp\include\assimp\vector2.inl" />
     <None Include="ExternalLibs\AssImp\include\assimp\vector3.inl" />
     <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryVertex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

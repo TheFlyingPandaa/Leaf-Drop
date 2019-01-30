@@ -41,7 +41,16 @@ IRender::IRender()
 	p_window = Window::GetInstance();
 }
 
-HRESULT IRender::p_CreateCommandList()
+void IRender::p_ReleaseCommandList()
+{
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		SAFE_RELEASE(p_commandList[i]);
+		SAFE_RELEASE(p_commandAllocator[i]);
+	}
+}
+
+HRESULT IRender::p_CreateCommandList(const std::wstring & name)
 {
 	HRESULT hr = 0;
 	D3D12_COMMAND_LIST_TYPE type{};
@@ -55,11 +64,14 @@ HRESULT IRender::p_CreateCommandList()
 		{
 			return hr;
 		}
+			SET_NAME(p_commandAllocator[i], std::wstring(name + std::wstring(L" CommandAllocator") + std::to_wstring(i)).c_str());
 
 		if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, p_commandAllocator[i], nullptr, IID_PPV_ARGS(&p_commandList[i]))))
 		{
 			return hr;
 		}
+		SET_NAME(p_commandList[i], std::wstring(name + std::wstring(L" CommandList") + std::to_wstring(i)).c_str());
+
 		p_commandList[i]->Close();
 	}
 	return hr;

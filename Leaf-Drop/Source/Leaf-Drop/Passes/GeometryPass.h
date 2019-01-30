@@ -1,5 +1,6 @@
 #pragma once
 #include "Template/IRender.h"
+#include "../Wrappers/RenderTarget.h"
 class GeometryPass : public IRender
 {
 private:
@@ -23,8 +24,17 @@ private:
 	D3D12_SHADER_BYTECODE m_vertexShader{}; 
 	D3D12_SHADER_BYTECODE m_pixelShader{};
 
+	RenderTarget * m_renderTarget = nullptr;
+
+	D3D12_VIEWPORT m_viewport{};
+	D3D12_RECT m_scissorRect{};
+
 private:
-	HRESULT _init();
+	HRESULT _Init();
+	HRESULT _InitRootSignature();
+	HRESULT _InitShader();
+	HRESULT _InitPipelineState();
+	void _CreateViewPort();
 
 };
 
