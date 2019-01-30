@@ -139,6 +139,21 @@ void CoreRender::Release()
 	SAFE_RELEASE(m_device);
 }
 
+ID3D12Device * CoreRender::GetDevice() const
+{
+	return this->m_device;
+}
+
+ID3D12CommandQueue * CoreRender::GetCommandQueue() const
+{
+	return this->m_commandQueue;
+}
+
+const UINT & CoreRender::GetFrameIndex() const
+{
+	return this->m_frameIndex;
+}
+
 HRESULT CoreRender::_CheckD3D12Support(IDXGIAdapter1 *& adapter, IDXGIFactory4 *& dxgiFactory) const
 {
 	HRESULT hr = 0;

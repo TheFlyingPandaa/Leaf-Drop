@@ -45,11 +45,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Debug;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Release;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -57,10 +57,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>CorePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -68,8 +68,11 @@
     </Link>
     <Lib>
       <OutputFile>$(ProjectDir)Lib\$(TargetName)_dbg$(TargetExt)</OutputFile>
-      <AdditionalDependencies>EASTL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>EASTL.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\Debug\assimp-vc140-mt.dll" "$(SolutionDir)x64\Debug"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -79,10 +82,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>CorePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -92,11 +95,55 @@
     </Link>
     <Lib>
       <OutputFile>$(ProjectDir)Lib\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalDependencies>EASTL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>EASTL.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\Release\assimp-vc140-mt.dll" "$(SolutionDir)x64\Release"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CorePCH.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\ai_assert.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\anim.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\camera.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\cexport.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\cfileio.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\cimport.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\color4.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\DefaultIOStream.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Defines.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\defs.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Exporter.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Importer.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\importerdesc.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\IOStream.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\light.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\Logger.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\LogStream.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\material.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\matrix3x3.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\matrix4x4.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\mesh.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\metadata.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\postprocess.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\quaternion.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\scene.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\SceneCombiner.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\texture.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\types.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector2.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector3.h" />
+    <ClInclude Include="ExternalLibs\AssImp\include\assimp\version.h" />
+    <ClInclude Include="Source\Leaf-Drop\Objects\Drawable.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EAAssert\eaassert.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eacompiler.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eacompilertraits.h" />
@@ -239,23 +286,37 @@
     <ClInclude Include="ExternalLibs\EASTL\include\eathread\eathread.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\eathread\eathread_atomic.h" />
     <ClInclude Include="ExternalLibs\EASTL\include\eathread\eathread_thread.h" />
+    <ClInclude Include="Source\Leaf-Drop\Passes\GeometryPass.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\Template\IRender.h" />
     <ClInclude Include="Source\Leaf-Drop\CoreRender.h" />
     <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
     <ClInclude Include="Source\Window\Window.h" />
+    <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
+    <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Objects\Drawable.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Passes\GeometryPass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\Template\IRender.cpp" />
     <ClCompile Include="Source\Leaf-Drop\CoreRender.cpp" />
     <ClCompile Include="Source\Core.cpp" />
     <ClCompile Include="Source\Window\Window.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Objects\Transform.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ExternalLibs\AssImp\include\assimp\color4.inl" />
+    <None Include="ExternalLibs\AssImp\include\assimp\material.inl" />
+    <None Include="ExternalLibs\AssImp\include\assimp\matrix3x3.inl" />
+    <None Include="ExternalLibs\AssImp\include\assimp\matrix4x4.inl" />
+    <None Include="ExternalLibs\AssImp\include\assimp\quaternion.inl" />
+    <None Include="ExternalLibs\AssImp\include\assimp\vector2.inl" />
+    <None Include="ExternalLibs\AssImp\include\assimp\vector3.inl" />
     <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

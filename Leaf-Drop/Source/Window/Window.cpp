@@ -72,10 +72,15 @@ BOOL Window::IsFullscreen() const
 
 void Window::Close()
 {	
-	m_isOpen = FALSE;
-	if(m_windowThread.joinable());
-		m_windowThread.join();
-	DestroyWindow(m_hwnd);
+	static bool isclosed = false;
+	if (!isclosed)
+	{
+		isclosed = true;
+		m_isOpen = FALSE;
+		if(m_windowThread.joinable())
+			m_windowThread.join();
+		DestroyWindow(m_hwnd);
+	}
 }
 
 LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

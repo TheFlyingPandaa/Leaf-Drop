@@ -21,6 +21,10 @@ public:
 
 	void Release();
 
+	ID3D12Device * GetDevice() const;
+	ID3D12CommandQueue * GetCommandQueue() const;
+	const UINT & GetFrameIndex() const;
+
 private:
 
 	ID3D12Device *				m_device = nullptr;
