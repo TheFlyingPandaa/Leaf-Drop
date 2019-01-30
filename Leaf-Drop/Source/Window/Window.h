@@ -23,6 +23,8 @@ public:
 
 	UINT2 GetWindowSize() const;
 
+	BOOL IsKeyPressed(int key);
+
 	HWND GetHwnd() const;
 
 	BOOL IsFullscreen() const;
@@ -43,6 +45,8 @@ private:
 	std::wstring m_windowTitle;
 
 	std::thread m_windowThread;
+
+	bool m_keyPress[256]	= { false };
 
 private:
 	Window();

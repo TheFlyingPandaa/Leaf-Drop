@@ -55,6 +55,11 @@ UINT2 Window::GetWindowSize() const
 	return {m_width, m_height};
 }
 
+BOOL Window::IsKeyPressed(int key)
+{
+	return m_keyPress[key];
+}
+
 HWND Window::GetHwnd() const
 {
 	return m_hwnd;
@@ -73,22 +78,33 @@ void Window::Close()
 
 LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-		switch (msg)
-		{
-		case WM_KEYDOWN:
-			if (wParam == VK_ESCAPE) {
-				if (MessageBox(0, L"Are you sure you want to exit?",
-					L"Really?", MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					PostQuitMessage(0);
-				}
-			}
-			return 0;
+	Window * wnd = Window::GetInstance();
 
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			return 0;
+	switch (msg)
+	{
+	case WM_KEYDOWN:
+		if (wParam == VK_ESCAPE) {
+			if (MessageBox(0, L"Are you sure you want to exit?",
+				L"Really?", MB_YESNO | MB_ICONQUESTION) == IDYES)
+			{
+				PostQuitMessage(0);
+			}
 		}
+
+		wnd->m_keyPress[wParam] = true;
+
+		return 0;
+
+		case WM_KEYUP:
+
+		wnd->m_keyPress[wParam] = false;
+
+		return 0;
+
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
 
 	return DefWindowProc(hWnd,
 		msg,
