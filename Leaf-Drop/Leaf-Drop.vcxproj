@@ -144,6 +144,7 @@
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector2.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector3.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\version.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\ConstantBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\d3dx12.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderTarget.h" />
@@ -306,6 +307,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderTarget.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Drawable.cpp" />

@@ -1,6 +1,8 @@
 #pragma once
 #include "Template/IRender.h"
 #include "../Wrappers/RenderTarget.h"
+#include "../Wrappers/ConstantBuffer.h"
+
 class GeometryPass : public IRender
 {
 private:
@@ -28,6 +30,8 @@ private:
 
 	D3D12_VIEWPORT m_viewport{};
 	D3D12_RECT m_scissorRect{};
+
+	ConstantBuffer m_camBuffer;
 
 private:
 	HRESULT _Init();

@@ -3,6 +3,8 @@
 
 #include "../Window/Window.h"
 
+#define MAX_DESCRIPTOR_HEAP_SIZE 1000
+
 namespace DEBUG
 {
 	HRESULT CreateError(const HRESULT& hr)
@@ -137,6 +139,8 @@ void CoreRender::Release()
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
 	SAFE_RELEASE(m_rtvDescriptorHeap);
+	SAFE_RELEASE(m_resourceDescriptorHeap);
+	
 	
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
@@ -186,6 +190,26 @@ IDXGISwapChain3 * CoreRender::GetSwapChain() const
 const UINT & CoreRender::GetFrameIndex() const
 {
 	return this->m_frameIndex;
+}
+
+ID3D12DescriptorHeap * CoreRender::GetResourceDescriptorHeap() const
+{
+	return m_resourceDescriptorHeap;
+}
+
+const SIZE_T & CoreRender::GetCurrentResourceIndex() const
+{
+	return m_currentResourceIndex;
+}
+
+const SIZE_T & CoreRender::GetResourceDescriptorHeapSize() const
+{
+	return m_resourceDescriptorHeapSize;
+}
+
+void CoreRender::IterateResourceIndex()
+{
+	m_currentResourceIndex++;
 }
 
 GeometryPass * CoreRender::GetGeometryPass() const
@@ -515,6 +539,25 @@ HRESULT CoreRender::_CreateFenceAndFenceEvent()
 	m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	if (nullptr == m_fenceEvent)
 		return E_FAIL;
+
+	return hr;
+}
+
+HRESULT CoreRender::_CreateResourceDescriptorHeap()
+{
+	HRESULT hr = 0;
+
+	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	heapDesc.NumDescriptors = MAX_DESCRIPTOR_HEAP_SIZE;
+	
+	if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_resourceDescriptorHeap))))
+		return hr;
+
+	m_resourceDescriptorHeapSize = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+
 
 	return hr;
 }

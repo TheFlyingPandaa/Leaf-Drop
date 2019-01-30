@@ -30,6 +30,14 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
+	if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4))))
+	{
+		return hr;
+	}
+
+	
+
+
 	return hr;
 }
 
@@ -61,7 +69,6 @@ void GeometryPass::Draw()
 		commandList->IASetVertexBuffers(0, 1, &p_drawQueue[i]->GetMesh()->GetVBV());
 		commandList->DrawInstanced(p_drawQueue[i]->GetMesh()->GetMesh()->size(), 1, 0, 0);
 	}
-	
 	
 	//ExecuteCommandList();
 }

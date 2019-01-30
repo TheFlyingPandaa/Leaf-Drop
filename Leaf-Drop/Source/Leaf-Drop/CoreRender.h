@@ -30,6 +30,12 @@ public:
 
 	const UINT & GetFrameIndex() const;
 
+	ID3D12DescriptorHeap *	GetResourceDescriptorHeap() const;
+	const SIZE_T &			GetCurrentResourceIndex() const;
+	const SIZE_T &			GetResourceDescriptorHeapSize() const;
+	void					IterateResourceIndex();
+
+
 	GeometryPass * GetGeometryPass() const;
 
 	HRESULT OpenCommandList();
@@ -43,6 +49,10 @@ private:
 	IDXGISwapChain3 *			m_swapChain = nullptr;
 	ID3D12CommandQueue *		m_commandQueue = nullptr;
 	ID3D12DescriptorHeap *		m_rtvDescriptorHeap = nullptr;
+
+	ID3D12DescriptorHeap *		m_resourceDescriptorHeap = nullptr;
+	SIZE_T						m_currentResourceIndex = 0;
+	SIZE_T						m_resourceDescriptorHeapSize = 0;
 
 	ID3D12GraphicsCommandList * m_commandList[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12CommandAllocator *	m_commandAllocator[FRAME_BUFFER_COUNT]{ nullptr };
@@ -71,6 +81,7 @@ private:
 	HRESULT _CreateCommandAllocators();
 	HRESULT _CreateCommandList();
 	HRESULT _CreateFenceAndFenceEvent();
+	HRESULT _CreateResourceDescriptorHeap();
 
 	void _Clear();
 

@@ -18,7 +18,7 @@ struct VS_OUTPUT
 	float2 uv : TEXCOORD;
 };
 
-VS_OUTPUT main(VS_INPUT input)
+VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	output.position =		input.position;
