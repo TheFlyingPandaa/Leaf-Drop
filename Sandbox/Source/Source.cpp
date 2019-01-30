@@ -26,7 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			
 		}
 	}
-
+	core->Release();
 	delete core;
 
 	return 0;

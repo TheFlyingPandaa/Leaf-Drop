@@ -1,4 +1,30 @@
 #pragma once
+#include <new>
+#include <stdint.h>
+
+//This is for EASTL
+//ole dole doff.
+//Kinke lane koff
+//Koffe lane binke bane ole dole doff
+
+//inline void* operator new[](size_t size, const char* pName, int flags, unsigned     debugFlags, const char* file, int line)
+//{
+//	return malloc(size);
+//}
+//
+//inline void* operator new[](size_t size, size_t alignment, size_t alignmentOffset, const char* pName, int flags, unsigned debugFlags, const char* file, int line)
+//{
+//	return malloc(size);
+//}
+inline void* __cdecl operator new[](size_t size, const char* pName, int flags, unsigned     debugFlags, const char* file, int line)
+{
+	return new uint8_t[size];
+}
+inline void* __cdecl operator new[](size_t size, size_t alignment, size_t alignmentOffset, const char* pName, int flags, unsigned debugFlags, const char* file, int line)
+{
+	return new uint8_t[size];
+}
+
 
 #include <Windows.h>
 
@@ -28,6 +54,7 @@
 #define SAFE_DELETE(p) {if ((p)) {delete (p); (p) = nullptr;}}
 
 #define SET_NAME(p, str) {if ((p)){ (p)->SetName((str));}}
+
 
 
 	

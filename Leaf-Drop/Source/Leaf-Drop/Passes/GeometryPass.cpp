@@ -3,10 +3,15 @@
 #include "../Wrappers/ShaderCreator.h"
 #include "../Objects/Drawable.h"
 #include "../Objects/StaticMesh.h"
+#include <EASTL/vector.h>
+
+
 GeometryPass::GeometryPass() : IRender()
 {
-}
+	eastl::vector<int> test;
+	test.push_back(1);
 
+}
 
 GeometryPass::~GeometryPass()
 {

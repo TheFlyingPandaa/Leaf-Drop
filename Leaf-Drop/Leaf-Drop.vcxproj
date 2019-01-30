@@ -50,6 +50,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Release;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
