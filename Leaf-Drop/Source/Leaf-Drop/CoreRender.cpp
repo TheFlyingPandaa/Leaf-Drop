@@ -56,7 +56,6 @@ HRESULT CoreRender::Init()
 		SAFE_RELEASE(adapter);
 		return DEBUG::CreateError(hr);
 	}
-
 #ifdef _DEBUG
 	if (FAILED(hr = D3D12GetDebugInterface(IID_PPV_ARGS(&m_debugLayer))))
 	{		
@@ -192,7 +191,7 @@ HRESULT CoreRender::_CreateCommandQueue()
 	{
 		SAFE_RELEASE(this->m_commandQueue);
 	}
-
+	SET_NAME(m_commandQueue, L"Default CommandQueue");
 	return hr;
 }
 
@@ -223,8 +222,6 @@ HRESULT CoreRender::_CreateSwapChain(IDXGIFactory4 * dxgiFactory)
 	swapChainDesc.Windowed = !m_windowPtr->IsFullscreen();
 
 	IDXGISwapChain * tmpSwapChain = nullptr;
-
-
 	if (SUCCEEDED(hr = dxgiFactory->CreateSwapChain(m_commandQueue,
 		&swapChainDesc,
 		&tmpSwapChain)))
@@ -263,8 +260,9 @@ HRESULT CoreRender::_CreateRenderTargetDescriptorHeap()
 			}
 			m_device->CreateRenderTargetView(m_renderTargets[i], nullptr, rtvHandle);
 			rtvHandle.ptr += m_rtvDescriptorSize;
+			SET_NAME(m_renderTargets[i], std::wstring(std::wstring(L"Default RenderTarget") + std::to_wstring(i)).c_str());
 		}
-
+		SET_NAME(m_rtvDescriptorHeap, L"RenderTargetViewDescriptorHeap");
 	}
 	return hr;
 }
@@ -279,6 +277,7 @@ HRESULT CoreRender::_CreateCommandAllocators()
 		{
 			break;
 		}
+		SET_NAME(m_commandAllocator[i], std::wstring(std::wstring(L"Default CommandAllocator") + std::to_wstring(i)).c_str());
 	}
 
 	return hr;
@@ -288,8 +287,11 @@ HRESULT CoreRender::_CreateCommandList()
 {
 	HRESULT hr = 0;
 
-	hr = m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator[0], nullptr, IID_PPV_ARGS(&m_commandList));
-	m_commandList->Close();
+	if (SUCCEEDED(hr = m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator[0], nullptr, IID_PPV_ARGS(&m_commandList))))
+	{
+		SET_NAME(m_commandList, L"Default CommandList");
+		m_commandList->Close();
+	}
 	return hr;
 }
 

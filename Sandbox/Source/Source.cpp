@@ -18,20 +18,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 #endif
 
 	Core core;
-	core.Init(hInstance);
-
-	Window * wnd = Window::GetInstance();
-
-	while (wnd->IsOpen())
+	if (SUCCEEDED(core.Init(hInstance)))
 	{
-		for (int i = 0; i < 256; i++)
+		Window * wnd = Window::GetInstance();
+	
+		while (core.Running())
 		{
-			if (wnd->IsKeyPressed(i))
-				std::cout << (char)i << ", ";
+		
 		}
 	}
-
-	std::cout << "lol" << std::endl;
 
 	return 0;
 

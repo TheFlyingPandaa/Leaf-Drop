@@ -45,9 +45,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -58,7 +60,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>CorePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -66,6 +68,7 @@
     </Link>
     <Lib>
       <OutputFile>$(ProjectDir)Lib\$(TargetName)_dbg$(TargetExt)</OutputFile>
+      <AdditionalDependencies>EASTL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -79,7 +82,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>CorePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,10 +92,154 @@
     </Link>
     <Lib>
       <OutputFile>$(ProjectDir)Lib\$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalDependencies>EASTL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CorePCH.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAAssert\eaassert.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eacompiler.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eacompilertraits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\config\eaplatform.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\eabase.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\eahave.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\earesult.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\eastdarg.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\eaunits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\int128.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\nullptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EABase\version.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAMain\EAMain.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EAAlignment.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EADateTime.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EAMemory.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EAProcess.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EASprintf.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EAStopwatch.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EAString.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EAStdC\EATextUtil.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\algorithm.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\allocator.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\allocator_malloc.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\any.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\array.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bitset.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bitvector.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\adaptors.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\call_traits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\compressed_pair.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\fixed_ring_buffer.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\fixed_tuple_vector.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\intrusive_sdlist.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\intrusive_slist.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\list_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\ring_buffer.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\sort_extra.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\sparse_matrix.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\bonus\tuple_vector.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\chrono.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\core_allocator.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\core_allocator_adapter.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\deque.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_allocator.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_function.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_hash_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_hash_set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_list.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_slist.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_string.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_substring.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\fixed_vector.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\functional.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\hash_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\hash_set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\heap.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\initializer_list.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\allocator_traits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\allocator_traits_fwd_decls.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\char_traits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\config.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\copy_help.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\enable_shared.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\fill_help.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\fixed_pool.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\function.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\functional_base.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\function_detail.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\function_help.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\generic_iterator.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\hashtable.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\integer_sequence.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\intrusive_hashtable.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\in_place_t.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\memory_base.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\mem_fn.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\meta.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\move_help.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\pair_fwd_decls.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\piecewise_construct_t.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\red_black_tree.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\smart_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\thread_support.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\tuple_fwd_decls.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\type_compound.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\type_fundamental.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\type_pod.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\type_properties.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\internal\type_transformations.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\intrusive_hash_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\intrusive_hash_set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\intrusive_list.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\intrusive_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\iterator.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\linked_array.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\linked_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\list.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\memory.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\meta.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\numeric.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\numeric_limits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\optional.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\priority_queue.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\queue.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\random.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\ratio.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\safe_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\scoped_array.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\scoped_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\segmented_vector.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\shared_array.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\shared_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\slist.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\sort.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\span.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\stack.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\string.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\string_hash_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\string_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\string_view.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\tuple.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\type_traits.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\unique_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\unordered_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\unordered_set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\utility.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\variant.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\vector.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\vector_map.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\vector_multimap.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\vector_multiset.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\vector_set.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\version.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\EASTL\weak_ptr.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\eathread\eathread.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\eathread\eathread_atomic.h" />
+    <ClInclude Include="ExternalLibs\EASTL\include\eathread\eathread_thread.h" />
+    <ClInclude Include="Source\Leaf-Drop\Passes\Template\IRender.h" />
     <ClInclude Include="Source\Leaf-Drop\CoreRender.h" />
     <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
@@ -103,9 +250,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Passes\Template\IRender.cpp" />
     <ClCompile Include="Source\Leaf-Drop\CoreRender.cpp" />
     <ClCompile Include="Source\Core.cpp" />
     <ClCompile Include="Source\Window\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

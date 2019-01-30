@@ -11,6 +11,9 @@
 #pragma comment (lib, "d3dcompiler.lib")
 #pragma comment (lib, "DXGI.lib")
 
+#include "Source/Window/Window.h"
+#include "Source/Leaf-Drop/CoreRender.h"
+
 #ifdef _DEBUG
 #include <iostream>
 
@@ -20,6 +23,8 @@
 #endif
 
 #define SAFE_RELEASE(p) {if ((p)) {(p)->Release(); (p) = nullptr;}}
+
+#define SET_NAME(p, str) {if ((p)){ (p)->SetName((str));}}
 
 
 	

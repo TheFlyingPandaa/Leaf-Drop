@@ -12,5 +12,7 @@ public:
 	~Core();
 
 	HRESULT Init(HINSTANCE hInstance);
+
+	BOOL Running() const;
 };
 

@@ -26,6 +26,8 @@ Window * Window::GetInstance()
 
 BOOL Window::Create(HINSTANCE hInstance, INT ShowWnd, UINT width, UINT height, BOOL fullscreen, const std::string & windowName, const std::string & windowTitle)
 {
+	if (m_isOpen)
+		return TRUE;
 	m_windowName = std::wstring(windowName.begin(), windowName.end());
 	m_windowTitle = std::wstring(windowTitle.begin(), windowTitle.end());
 	m_fullscreen = fullscreen;
