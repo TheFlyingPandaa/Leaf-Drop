@@ -1,5 +1,4 @@
 #include <iostream>
-#include <Windows.h>
 #include <Core.h>
 #if _DEBUG
 
@@ -19,6 +18,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 #endif
 
 	Core core;
+	core.Init(hInstance);
 
 
 	std::cout << "lol" << std::endl;
