@@ -30,10 +30,10 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4))))
-	{
-		return hr;
-	}
+	//if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4),L"Geometry")))
+	//{
+	//	return hr;
+	//}
 
 	
 
