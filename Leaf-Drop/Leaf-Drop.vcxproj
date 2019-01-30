@@ -95,6 +95,7 @@
     <ClInclude Include="CorePCH.h" />
     <ClInclude Include="Source\Leaf-Drop\CoreRender.h" />
     <ClInclude Include="Source\Core.h" />
+    <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
     <ClInclude Include="Source\Window\Window.h" />
   </ItemGroup>
   <ItemGroup>

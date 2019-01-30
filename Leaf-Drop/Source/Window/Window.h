@@ -29,6 +29,8 @@ public:
 
 	void Close();
 
+	
+
 private:
 	HWND	m_hwnd;
 	UINT	m_height;
