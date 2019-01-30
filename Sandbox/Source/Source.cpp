@@ -1,8 +1,8 @@
-
-#include <Windows.h>
-
-#if _DEBUG
 #include <iostream>
+#include <Windows.h>
+#include <Core.h>
+#if _DEBUG
+
 //Allocates memory to the console
 void _alocConsole() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -18,6 +18,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	_alocConsole();
 #endif
 
+	Core core;
 
 
 	std::cout << "lol" << std::endl;
