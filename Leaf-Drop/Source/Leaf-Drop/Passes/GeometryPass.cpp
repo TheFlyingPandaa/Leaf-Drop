@@ -5,6 +5,7 @@
 #include "../Objects/StaticMesh.h"
 #include <EASTL/vector.h>
 #include "../Objects/Texture.h"
+#include "../Objects/Camera.h"
 
 #define CAMERA_BUFFER	0
 #define TEXTURE_SLOT	1
@@ -53,16 +54,6 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-
-	DirectX::XMVECTOR pos = { 0,2,-2,1 };
-	DirectX::XMVECTOR dir = { 0,-.5f,0.5,0 };
-	DirectX::XMVECTOR up = { 0,1,0,0 };
-
-	UINT2 wndSize = p_window->GetWindowSize();
-
-	DirectX::XMStoreFloat4x4(&m_camera, DirectX::XMMatrixTranspose(DirectX::XMMatrixLookToLH(pos, dir, up) * DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(45.0f),
-		static_cast<float>(wndSize.x) / static_cast<float>(wndSize.y), 0.01f, 10.0f)));
-
 	return hr;
 }
 
@@ -106,7 +97,12 @@ void GeometryPass::Update()
 	}
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
-	m_camBuffer.SetData(&m_camera, sizeof(m_camera));
+	Camera * cam = Camera::GetActiveCamera();
+	cam->Update();
+
+	DirectX::XMFLOAT4X4A viewProj = cam->GetViewProjectionMatrix();
+
+	m_camBuffer.SetData(&viewProj, sizeof(DirectX::XMFLOAT4X4A));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 }
 
@@ -121,7 +117,7 @@ void GeometryPass::Draw()
 		t->Map(TEXTURE_SLOT, commandList);
 		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), p_drawQueue[i].ObjectData.size(), 0, 0);
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
 	}
 	
 	//ExecuteCommandList();

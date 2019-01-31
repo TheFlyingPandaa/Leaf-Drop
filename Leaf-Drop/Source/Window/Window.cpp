@@ -83,6 +83,27 @@ void Window::Close()
 	}
 }
 
+UINT2 Window::GetMousePosition()
+{
+	POINT p;
+
+	GetCursorPos(&p);
+	ScreenToClient(m_hwnd, &p);
+	return{ (UINT)p.x, (UINT)p.y };
+
+}
+
+void Window::ResetMouse()
+{
+	POINT p;
+
+	p.x = m_width / 2;
+	p.y = m_height / 2;
+
+	ClientToScreen(m_hwnd, &p);
+	SetCursorPos(p.x, p.y);
+}
+
 LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	Window * wnd = Window::GetInstance();

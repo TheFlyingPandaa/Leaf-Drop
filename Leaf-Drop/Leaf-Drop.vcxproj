@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Objects\Camera.h" />
     <ClInclude Include="CorePCH.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\ai_assert.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\anim.h" />
@@ -344,6 +345,7 @@
     <ClInclude Include="Source\Leaf-Drop\Objects\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Objects\Camera.cpp" />
     <ClCompile Include="CorePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

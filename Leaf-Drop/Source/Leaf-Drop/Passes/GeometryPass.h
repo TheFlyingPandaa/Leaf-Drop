@@ -37,8 +37,6 @@ private:
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;
 
-	DirectX::XMFLOAT4X4 m_camera;
-
 private:
 	HRESULT _Init();
 	HRESULT _InitRootSignature();
