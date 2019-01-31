@@ -7,6 +7,8 @@ class CoreRender;
 class Window;
 class Drawable;
 class Light;
+class Texture;
+class StaticMesh;
 
 class IRender
 {
@@ -27,7 +29,25 @@ public:
 protected:
 	IRender();
 
-	std::vector<Drawable*> p_drawQueue;
+	struct InstanceGroup
+	{
+
+		struct ObjectData
+		{
+			ObjectData(Drawable * drawable);
+
+			DirectX::XMFLOAT4X4 WorldMatrix;
+		};
+		
+		std::vector<ObjectData> ObjectData;
+		Texture * TexPtr;
+		StaticMesh * MeshPtr;
+
+		InstanceGroup(Drawable * drawable);
+		bool operator==(Drawable * drawable);
+	};
+
+	std::vector<InstanceGroup> p_drawQueue;
 	CoreRender * p_coreRender = nullptr;
 	Window * p_window = nullptr;
 

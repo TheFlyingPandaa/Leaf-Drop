@@ -37,6 +37,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		d2.SetTexture(t);
 		d2.SetMesh(m);
 		d2.SetScale(0.5f, 0.5f, 0.5f);
+		d2.Update();
 		float rot = 0;
 		timer.Start();
 
@@ -53,7 +54,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			d.Draw();
 			d2.Draw();
-			core->Flush();
+			if (FAILED(core->Flush()))
+			{
+				DEBUG::CreateError("LOL");
+				break;
+			}
 		}
 		core->ClearGPU();
 		delete m;

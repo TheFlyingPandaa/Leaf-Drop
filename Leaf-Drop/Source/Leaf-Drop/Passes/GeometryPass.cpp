@@ -48,6 +48,12 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
+	if (FAILED(hr = m_depthBuffer.Init(L"Geometry")))
+	{
+		return hr;
+	}
+
+
 	DirectX::XMVECTOR pos = { 0,2,-2,1 };
 	DirectX::XMVECTOR dir = { 0,-.5f,0.5,0 };
 	DirectX::XMVECTOR up = { 0,1,0,0 };
@@ -70,16 +76,33 @@ void GeometryPass::Update()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 	
+
+	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
+	{ p_coreRender->GetRTVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
+	frameIndex *
+	p_coreRender->GetRTVDescriptorHeapSize() };
+
+	auto h = m_depthBuffer.GetHandle();
+
+	commandList->OMSetRenderTargets(1, &rtvHandle, 1, &m_depthBuffer.GetHandle());
+	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
+	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	m_depthBuffer.Clear(commandList);
+	
 	commandList->SetPipelineState(m_pipelineState);
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 	commandList->RSSetViewports(1, &m_viewport);
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	int counter = 0;
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		auto world = p_drawQueue[i]->GetWorldMatrix();
-		m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * i);
+		for (size_t k = 0; k < p_drawQueue[i].ObjectData.size(); k++)
+		{
+			auto world = p_drawQueue[i].ObjectData[k];
+			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
+		}
 	}
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
@@ -94,12 +117,11 @@ void GeometryPass::Draw()
 
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-
-		Texture * t = p_drawQueue[i]->GetTexture();
+		Texture * t = p_drawQueue[i].TexPtr;
 		t->Map(TEXTURE_SLOT, commandList);
-		StaticMesh * m = p_drawQueue[i]->GetMesh();
+		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), 1, 0, 0);
+		commandList->DrawInstanced(m->GetNumberOfVertices(), p_drawQueue[i].ObjectData.size(), 0, 0);
 	}
 	
 	//ExecuteCommandList();
@@ -213,7 +235,7 @@ HRESULT GeometryPass::_InitPipelineState()
 	rastDesc.DepthBias = 0;
 	rastDesc.DepthBiasClamp = 0.0f;
 	rastDesc.SlopeScaledDepthBias = 0.0f;
-	rastDesc.DepthClipEnable = FALSE;
+	rastDesc.DepthClipEnable = TRUE;
 	rastDesc.MultisampleEnable = FALSE;
 	rastDesc.AntialiasedLineEnable = FALSE;
 	rastDesc.ForcedSampleCount = 0;
@@ -223,7 +245,7 @@ HRESULT GeometryPass::_InitPipelineState()
 	graphicsPipelineStateDesc.RasterizerState = rastDesc;
 
 	D3D12_DEPTH_STENCIL_DESC depthDesc{};
-	depthDesc.DepthEnable = FALSE;
+	depthDesc.DepthEnable = TRUE;
 	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 	depthDesc.StencilEnable = FALSE;
@@ -245,6 +267,7 @@ HRESULT GeometryPass::_InitPipelineState()
 	graphicsPipelineStateDesc.DepthStencilState = depthDesc;
 	
 	graphicsPipelineStateDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
 	DXGI_SWAP_CHAIN_DESC desc;
 	if (FAILED(hr = p_coreRender->GetSwapChain()->GetDesc(&desc)))

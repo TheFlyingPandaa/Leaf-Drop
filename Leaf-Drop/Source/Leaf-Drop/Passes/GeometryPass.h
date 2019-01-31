@@ -2,6 +2,7 @@
 #include "Template/IRender.h"
 #include "../Wrappers/RenderTarget.h"
 #include "../Wrappers/ConstantBuffer.h"
+#include "../Wrappers/DepthBuffer.h"
 
 class GeometryPass : public IRender
 {
@@ -30,6 +31,8 @@ private:
 
 	D3D12_VIEWPORT m_viewport{};
 	D3D12_RECT m_scissorRect{};
+
+	DepthBuffer m_depthBuffer;
 
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;

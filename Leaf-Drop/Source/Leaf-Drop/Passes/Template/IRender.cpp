@@ -1,6 +1,6 @@
 #include "CorePCH.h"
 #include "IRender.h"
-
+#include "Source/Leaf-Drop/Objects/Drawable.h"
 void IRender::Clear()
 {
 	p_drawQueue.clear();
@@ -84,9 +84,35 @@ IRender::~IRender()
 
 void IRender::Submit(Drawable * drawable)
 {
-	p_drawQueue.push_back(drawable);
+	auto it = std::find(p_drawQueue.begin(), p_drawQueue.end(), drawable);
+
+	if (it == p_drawQueue.end())
+	{
+		p_drawQueue.push_back(drawable);
+	}
+	else
+	{
+		it._Ptr->ObjectData.push_back(drawable);
+	}
 }
 
 void IRender::SubmitLight(Light * light)
 {
+}
+
+IRender::InstanceGroup::InstanceGroup(Drawable * drawable)
+{
+	ObjectData.push_back(drawable);
+	TexPtr = drawable->GetTexture();
+	MeshPtr = drawable->GetMesh();
+}
+
+bool IRender::InstanceGroup::operator==(Drawable * drawable)
+{
+	return TexPtr == drawable->GetTexture() && MeshPtr == drawable->GetMesh();
+}
+
+IRender::InstanceGroup::ObjectData::ObjectData(Drawable * drawable)
+{
+	WorldMatrix = drawable->GetWorldMatrix();
 }

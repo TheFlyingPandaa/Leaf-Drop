@@ -114,9 +114,7 @@ HRESULT CoreRender::Init()
 	{
 		return DEBUG::CreateError(hr);
 	}
-
-
-
+	
 	m_geometryPass = new GeometryPass();
 	if (FAILED(hr = m_geometryPass->Init()))
 	{
@@ -180,6 +178,16 @@ ID3D12GraphicsCommandList *const* CoreRender::GetCommandList() const
 IDXGISwapChain3 * CoreRender::GetSwapChain() const
 {
 	return this->m_swapChain;
+}
+
+ID3D12DescriptorHeap * CoreRender::GetRTVDescriptorHeap() const
+{
+	return m_rtvDescriptorHeap;
+}
+
+const UINT & CoreRender::GetRTVDescriptorHeapSize() const
+{
+	return m_rtvDescriptorSize;
 }
 
 const UINT & CoreRender::GetFrameIndex() const
@@ -324,14 +332,14 @@ HRESULT CoreRender::_UpdatePipeline()
 	}
 
 
-	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = 
+	/*const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = 
 		{ m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart().ptr + 
 		m_frameIndex * 
 		m_rtvDescriptorSize };
 
 	m_commandList[m_frameIndex]->OMSetRenderTargets(1, &rtvHandle, NULL, nullptr);
 	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
-	m_commandList[m_frameIndex]->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	m_commandList[m_frameIndex]->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);*/
 
 	m_geometryPass->Update();
 	m_geometryPass->Draw();

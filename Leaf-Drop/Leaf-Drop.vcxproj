@@ -185,6 +185,7 @@
     <ClInclude Include="ExternalLibs\DirectXTK\Src\vbo.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\ConstantBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\d3dx12.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\DepthBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderTarget.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Drawable.h" />
@@ -590,6 +591,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\ConstantBuffer.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\DepthBuffer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderTarget.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Drawable.cpp" />

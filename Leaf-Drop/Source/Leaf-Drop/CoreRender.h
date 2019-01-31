@@ -27,6 +27,8 @@ public:
 	ID3D12CommandQueue * GetCommandQueue() const;
 	ID3D12GraphicsCommandList *const* GetCommandList() const;
 	IDXGISwapChain3 * GetSwapChain() const;
+	ID3D12DescriptorHeap * GetRTVDescriptorHeap() const;
+	const UINT & GetRTVDescriptorHeapSize() const;
 
 	const UINT & GetFrameIndex() const;
 
