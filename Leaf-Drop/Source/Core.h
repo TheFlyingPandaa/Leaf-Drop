@@ -6,6 +6,7 @@
 #include "Leaf-Drop/Objects/Drawable.h"
 #include "Leaf-Drop/Objects/Texture.h"
 #include "Leaf-Drop/Utillity/Timer.h"
+#include "Leaf-Drop/Objects/Camera.h"
 
 class Core
 {

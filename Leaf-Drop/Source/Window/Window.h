@@ -31,7 +31,8 @@ public:
 
 	void Close();
 
-	
+	UINT2 GetMousePosition();
+	void ResetMouse();
 
 private:
 	HWND	m_hwnd;

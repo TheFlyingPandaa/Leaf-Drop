@@ -20,62 +20,117 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 #endif
 	Core * core = new Core();
 	
-	
+
 	Timer timer;
 	
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
+		Camera cam;
+		cam.CreateProjectionMatrix();
+		cam.SetPosition(0, 0, 0);
+		cam.SetAsActiveCamera();
+
 		StaticMesh * m = new StaticMesh();
 		Texture * t = new Texture();
 		t->LoadTexture(L"..\\Assets\\Textures\\BoobieWaSHere.png");
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
-		Drawable d;
-		Drawable d2;
-
-		Drawable d3[100];
-
-		for (int i = 0; i < 100; i++)
+		
+		Drawable d[4];
+		for (int i = 0; i < 4; i++)
 		{
-			d3[i].SetMesh(m);
-			d3[i].SetTexture(t);
-			d3[i].SetPosition(0, 0, (float)i * 0.1);
-			d3[i].Update();
+			d[i].SetTexture(t);
+			d[i].SetMesh(m);
 		}
+		
+		float dist = 5.0;
+		DirectX::XMFLOAT4 pos(dist, 0.0f, 0.0f, 1.0f);
+		d[0].SetPosition(pos);
+
+		pos.x = -dist;
+		d[1].SetPosition(pos);
+
+		pos.x = 0;
+		pos.z = -dist;
+		d[2].SetPosition(pos);
+
+		pos.z = dist;
+		d[3].SetPosition(pos);
 
 
-		d.SetTexture(t);
-		d.SetMesh(m);
-		d2.SetTexture(t);
-		d2.SetMesh(m);
-		d2.SetScale(0.5f, 0.5f, 0.5f);
-		d2.Update();
 		float rot = 0;
 		timer.Start();
 
 		Window * wnd = Window::GetInstance();
 
+		UINT2 mpStart = wnd->GetWindowSize();
+		DirectX::XMFLOAT2 mousePosLastFrame = { (float)mpStart.x, (float)mpStart.y };
+		mousePosLastFrame.x /= 2;
+		mousePosLastFrame.y /= 2;
+
+		wnd->ResetMouse();
+
 		while (core->Running())
 		{
-			const float dt = timer.Stop();
+			UINT2 mp = wnd->GetMousePosition();
+			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
+
+
+			const double dt = timer.Stop();
 			wnd->SetWindowTitle(std::to_string(dt));
 
-			rot += 1.0f * dt;
-			d.SetRotation(0, rot, -rot);
-			d.Update();
+			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
+			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			d.Draw();
-			d2.Draw();
-			for (int i = 0; i < 100; i++)
+			if (wnd->IsKeyPressed('W'))
+				moveDir.z += 1.0f;
+			if (wnd->IsKeyPressed('A'))
+				moveDir.x -= 1.0f;
+			if (wnd->IsKeyPressed('S'))
+				moveDir.z -= 1.0f;
+			if (wnd->IsKeyPressed('D'))
+				moveDir.x += 1.0f;
+			
+			if (wnd->IsKeyPressed('E'))
+				moveDir.y += 1.0f;
+			if (wnd->IsKeyPressed('Q'))
+				moveDir.y -= 1.0f;
+
+			float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
+			float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
+
+			if (deltaMouseX != 0 || deltaMouseY != 0)
 			{
-				d3[i].Draw();
+				rotDir.y = deltaMouseX * dt;
+				rotDir.x = deltaMouseY * dt;
+
+				cam.Rotate(rotDir);
 			}
 
+			moveDir.x *= dt;
+			moveDir.y *= dt;
+			moveDir.z *= dt;
 
+			cam.Translate(moveDir, false);
+			
+
+
+
+			rot += 1.0f * dt;
+
+			for (int i = 0; i < 4; i++)
+			{
+				d[i].SetRotation(0, rot, -rot);
+				d[i].Update();
+				d[i].Draw();
+			}
+			
 			if (FAILED(core->Flush()))
 			{
 				DEBUG::CreateError("LOL");
 				break;
 			}
+
+			wnd->ResetMouse();
 		}
 		core->ClearGPU();
 		delete m;
