@@ -32,6 +32,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		Drawable d;
 		Drawable d2;
 
+		Drawable d3[100];
+
+		for (int i = 0; i < 100; i++)
+		{
+			d3[i].SetMesh(m);
+			d3[i].SetTexture(t);
+			d3[i].SetPosition(0, 0, (float)i * 0.1);
+			d3[i].Update();
+		}
+
+
 		d.SetTexture(t);
 		d.SetMesh(m);
 		d2.SetTexture(t);
@@ -54,6 +65,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			d.Draw();
 			d2.Draw();
+			for (int i = 0; i < 100; i++)
+			{
+				d3[i].Draw();
+			}
+
+
 			if (FAILED(core->Flush()))
 			{
 				DEBUG::CreateError("LOL");
