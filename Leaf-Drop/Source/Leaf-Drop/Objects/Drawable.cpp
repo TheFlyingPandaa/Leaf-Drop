@@ -22,6 +22,16 @@ StaticMesh * Drawable::GetMesh() const
 	return m_mesh;
 }
 
+void Drawable::SetTexture(Texture * texture)
+{
+	m_texture = texture;
+}
+
+Texture * Drawable::GetTexture() const
+{
+	return m_texture;
+}
+
 void Drawable::Draw()
 {
 	m_coreRenderer->GetGeometryPass()->Submit(this);

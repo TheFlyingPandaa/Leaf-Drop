@@ -59,9 +59,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>CorePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop\ExternalLibs\DirectXTK\Inc;$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -84,9 +84,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>CorePCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Leaf-Drop\ExternalLibs\DirectXTK\Inc;$(SolutionDir)Leaf-Drop;$(SolutionDir)Leaf-Drop\ExternalLibs\EASTL\include;$(SolutionDir)Leaf-Drop\ExternalLibs\AssImp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +145,44 @@
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector2.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\vector3.h" />
     <ClInclude Include="ExternalLibs\AssImp\include\assimp\version.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\Audio.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\CommonStates.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\DDSTextureLoader.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\DescriptorHeap.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\DirectXHelpers.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\EffectPipelineStateDescription.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\Effects.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\GamePad.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\GeometricPrimitive.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\GraphicsMemory.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\Keyboard.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\Model.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\Mouse.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\PostProcess.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\PrimitiveBatch.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\RenderTargetState.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\ResourceUploadBatch.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\ScreenGrab.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\SimpleMath.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\SpriteBatch.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\SpriteFont.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\VertexTypes.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Inc\WICTextureLoader.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\AlignedNew.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\Bezier.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\BinaryReader.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\d3dx12.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\dds.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\DemandCreate.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\EffectCommon.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\Geometry.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\LinearAllocator.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\LoaderHelpers.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\pch.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\PlatformHelpers.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\SDKMesh.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\SharedResourcePool.h" />
+    <ClInclude Include="ExternalLibs\DirectXTK\Src\vbo.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\ConstantBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\d3dx12.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.h" />
@@ -302,11 +340,254 @@
     <ClInclude Include="Source\Window\Window.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
+    <ClInclude Include="Source\Leaf-Drop\Objects\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\AlphaTestEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\BasicEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\BasicPostProcess.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\BinaryReader.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\CommonStates.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\DDSTextureLoader.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\DebugEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\DescriptorHeap.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\DirectXHelpers.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\DualPostProcess.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\DualTextureEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\EffectCommon.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\EffectFactory.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\EffectPipelineStateDescription.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\EffectTextureFactory.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\EnvironmentMapEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\GamePad.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\GeometricPrimitive.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\Geometry.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\GraphicsMemory.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\Keyboard.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\LinearAllocator.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\Model.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\ModelLoadSDKMESH.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\ModelLoadVBO.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\Mouse.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\NormalMapEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\PBREffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\PBREffectFactory.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\PrimitiveBatch.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\ResourceUploadBatch.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\ScreenGrab.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\SimpleMath.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\SkinnedEffect.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\SpriteBatch.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\SpriteFont.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\ToneMapPostProcess.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\VertexTypes.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="ExternalLibs\DirectXTK\Src\WICTextureLoader.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName)TK.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\RenderingHelpClass.cpp" />
@@ -319,6 +600,7 @@
     <ClCompile Include="Source\Window\Window.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Transform.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Objects\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ExternalLibs\AssImp\include\assimp\color4.inl" />
@@ -328,6 +610,142 @@
     <None Include="ExternalLibs\AssImp\include\assimp\quaternion.inl" />
     <None Include="ExternalLibs\AssImp\include\assimp\vector2.inl" />
     <None Include="ExternalLibs\AssImp\include\assimp\vector3.inl" />
+    <None Include="ExternalLibs\DirectXTK\Inc\SimpleMath.inl" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_PSAlphaTestEqNe.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_PSAlphaTestEqNeNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_PSAlphaTestLtGt.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_PSAlphaTestLtGtNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_VSAlphaTest.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_VSAlphaTestNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_VSAlphaTestVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\AlphaTestEffect_VSAlphaTestVcNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasic.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicPixelLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicPixelLightingTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicTxNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicVertexLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicVertexLightingNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicVertexLightingTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_PSBasicVertexLightingTxNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasic.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingTxBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingTxVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingTxVcBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicPixelLightingVcBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicTxNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicTxVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicTxVcNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVcNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingTxBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingTxVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingTxVcBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\BasicEffect_VSBasicVertexLightingVcBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_PSHemiAmbient.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_PSRGBBiTangents.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_PSRGBNormals.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_PSRGBTangents.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_VSDebug.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_VSDebugBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_VSDebugVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DebugEffect_VSDebugVcBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DualTextureEffect_PSDualTexture.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DualTextureEffect_PSDualTextureNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DualTextureEffect_VSDualTexture.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DualTextureEffect_VSDualTextureNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DualTextureEffect_VSDualTextureVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\DualTextureEffect_VSDualTextureVcNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMap.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapPixelLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapPixelLightingFresnel.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapPixelLightingFresnelNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapPixelLightingNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapSpecular.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_PSEnvMapSpecularNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_VSEnvMap.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_VSEnvMapBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_VSEnvMapFresnel.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_VSEnvMapFresnelBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_VSEnvMapPixelLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\EnvironmentMapEffect_VSEnvMapPixelLightingBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\GenerateMips_main.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_PSNormalPixelLightingTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_PSNormalPixelLightingTxNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_PSNormalPixelLightingTxNoFogSpec.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_PSNormalPixelLightingTxNoSpec.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTx.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxNoSpec.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxNoSpecBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxVc.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxVcBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxVcNoSpec.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\NormalMapEffect_VSNormalPixelLightingTxVcNoSpecBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_PSConstant.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_PSTextured.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_PSTexturedEmissive.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_PSTexturedEmissiveVelocity.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_PSTexturedVelocity.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_VSConstant.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_VSConstantBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_VSConstantVelocity.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PBREffect_VSConstantVelocityBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSBloomBlur.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSBloomCombine.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSBloomExtract.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSCopy.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSDownScale2x2.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSDownScale4x4.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSGaussianBlur5x5.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSMerge.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSMonochrome.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_PSSepia.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_VSQuad.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_VSQuadDual.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\PostProcess_VSQuadNoCB.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_PSSkinnedPixelLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_PSSkinnedVertexLighting.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_PSSkinnedVertexLightingNoFog.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedPixelLightingFourBones.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedPixelLightingFourBonesBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedPixelLightingOneBone.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedPixelLightingOneBoneBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedPixelLightingTwoBones.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedPixelLightingTwoBonesBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedVertexLightingFourBones.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedVertexLightingFourBonesBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedVertexLightingOneBone.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedVertexLightingOneBoneBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedVertexLightingTwoBones.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SkinnedEffect_VSSkinnedVertexLightingTwoBonesBn.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SpriteEffect_SpritePixelShader.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SpriteEffect_SpritePixelShaderHeap.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SpriteEffect_SpriteVertexShader.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\SpriteEffect_SpriteVertexShaderHeap.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSACESFilmic.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSACESFilmic_SRGB.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSCopy.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSHDR10.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSReinhard.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSReinhard_SRGB.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSSaturate.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PSSaturate_SRGB.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_PS_SRGB.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_VSQuad.inc" />
+    <None Include="ExternalLibs\DirectXTK\Src\TeapotData.inc" />
     <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
   </ItemGroup>
   <ItemGroup>

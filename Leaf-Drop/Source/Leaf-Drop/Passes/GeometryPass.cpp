@@ -4,7 +4,10 @@
 #include "../Objects/Drawable.h"
 #include "../Objects/StaticMesh.h"
 #include <EASTL/vector.h>
+#include "../Objects/Texture.h"
 
+#define CAMERA_BUFFER 0
+#define TEXTURE_SLOT 1
 
 GeometryPass::GeometryPass() : IRender()
 {
@@ -35,13 +38,19 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-	//if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4),L"Geometry")))
-	//{
-	//	return hr;
-	//}
+	if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4),L"Geometry")))
+	{
+		return hr;
+	}
 
-	
+	DirectX::XMVECTOR pos = { 0,2,-2,1 };
+	DirectX::XMVECTOR dir = { 0,-.5f,0.5,0 };
+	DirectX::XMVECTOR up = { 0,1,0,0 };
 
+	UINT2 wndSize = p_window->GetWindowSize();
+
+	DirectX::XMStoreFloat4x4(&m_camera, DirectX::XMMatrixTranspose(DirectX::XMMatrixLookToLH(pos, dir, up) * DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(45.0f),
+		static_cast<float>(wndSize.x) / static_cast<float>(wndSize.y), 0.01f, 10.0f)));
 
 	return hr;
 }
@@ -62,6 +71,8 @@ void GeometryPass::Update()
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	m_camBuffer.SetData(&m_camera, sizeof(m_camera));
+	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 }
 
 void GeometryPass::Draw()
@@ -69,10 +80,16 @@ void GeometryPass::Draw()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 
+
+
+
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		commandList->IASetVertexBuffers(0, 1, &p_drawQueue[i]->GetMesh()->GetVBV());
-		commandList->DrawInstanced(p_drawQueue[i]->GetMesh()->GetMesh()->size(), 1, 0, 0);
+		Texture * t = p_drawQueue[i]->GetTexture();
+		t->Map(TEXTURE_SLOT, commandList);
+		StaticMesh * m = p_drawQueue[i]->GetMesh();
+		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
+		commandList->DrawInstanced(m->GetNumberOfVertices(), 1, 0, 0);
 	}
 	
 	//ExecuteCommandList();
@@ -89,22 +106,32 @@ void GeometryPass::Release()
 HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
-		
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.NumParameters = 0;
-	rootSignatureDesc.pParameters = nullptr;
-	rootSignatureDesc.NumStaticSamplers = 0;
-	rootSignatureDesc.pStaticSamplers = nullptr;
+	
+	CD3DX12_ROOT_PARAMETER1 rootParameters[2];
+	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
 
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
-		D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	rootParameters[TEXTURE_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+
+
+	rootSignatureDesc.Init_1_1(
+		_countof(rootParameters),
+		rootParameters,
+		1,
+		&samplerDesc,
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
+		//D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
-		D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
-		D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS;
+		D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS 
+		//D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS
+	);
 
 	ID3DBlob * signature = nullptr;
-	if (SUCCEEDED(hr = D3D12SerializeRootSignature(&rootSignatureDesc,
+	if (SUCCEEDED(hr = D3D12SerializeRootSignature(&rootSignatureDesc.Desc_1_0,
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		&signature,
 		nullptr)))
@@ -230,8 +257,8 @@ void GeometryPass::_CreateViewPort()
 	UINT2 wndSize = p_window->GetWindowSize();
 	m_viewport.TopLeftX = 0;
 	m_viewport.TopLeftY = 0;
-	m_viewport.Width = wndSize.x;
-	m_viewport.Height = wndSize.y;
+	m_viewport.Width = (FLOAT)wndSize.x;
+	m_viewport.Height = (FLOAT)wndSize.y;
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 

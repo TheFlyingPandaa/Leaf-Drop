@@ -43,6 +43,8 @@ public:
 
 	HRESULT Flush();
 
+	void ClearGPU();
+
 private:
 
 	ID3D12Device *				m_device = nullptr;

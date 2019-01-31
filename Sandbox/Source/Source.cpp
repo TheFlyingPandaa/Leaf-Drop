@@ -16,15 +16,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 #if _DEBUG
 	_alocConsole();
 #endif
-
-	Core * core = new Core();
+		Core * core = new Core();
+	
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
-		Window * wnd = Window::GetInstance();
+		StaticMesh * m = new StaticMesh();
+		Texture * t = new Texture();
+		t->LoadTexture(L"..\\Assets\\Textures\\BoobieWaSHere.png");
+		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
+		Drawable d;
+		d.SetTexture(t);
+		d.SetMesh(m);
+
 		while (core->Running())
 		{
-			
+			d.Draw();
+			core->Flush();
 		}
+		core->ClearGPU();
+		delete m;
 	}
 	core->Release();
 	delete core;

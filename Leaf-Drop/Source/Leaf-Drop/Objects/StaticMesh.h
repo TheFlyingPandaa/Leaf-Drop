@@ -11,7 +11,8 @@ public:
 	~StaticMesh();
 
 	bool LoadMesh(const std::string & path);
-	std::vector<STRUCTS::StaticVertex> * GetMesh();
+	std::vector<STRUCTS::StaticVertex> * GetRawVertices();
+	UINT GetNumberOfVertices() const;
 
 	const D3D12_VERTEX_BUFFER_VIEW & GetVBV() const;
 

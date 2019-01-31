@@ -1,0 +1,3 @@
+[submodule "Leaf-Drop/ExternalLibs/DirectXTK"]
+	path = Leaf-Drop/ExternalLibs/DirectXTK
+	url = https://github.com/Microsoft/DirectXTK12.git

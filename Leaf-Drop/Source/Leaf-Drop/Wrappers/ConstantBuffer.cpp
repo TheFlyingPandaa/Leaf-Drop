@@ -21,7 +21,9 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name)
 
 	UINT bufferSize = (sizeof(initialSize) + 255) & ~255;
 
-	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_CUSTOM);
+	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
 	D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize);
 
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
@@ -58,8 +60,23 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name)
 
 void ConstantBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset)
 {
+	const UINT currentFrame = m_coreRender->GetFrameIndex();
+	commandList->SetGraphicsRootConstantBufferView(rootParameterIndex, m_resource[currentFrame]->GetGPUVirtualAddress());
 }
 
 void ConstantBuffer::SetData(void * data, UINT size)
 {
+	const UINT currentFrame = m_coreRender->GetFrameIndex();
+	
+	CD3DX12_RANGE range(0, 0);
+	UINT8 * dataLocation = nullptr;
+
+	if (SUCCEEDED(m_resource[currentFrame]->Map(0, &range, reinterpret_cast<void**>(&dataLocation))))
+	{
+
+		memcpy(dataLocation, data, size);
+
+		m_resource[currentFrame]->Unmap(0, &range);
+	}
+
 }

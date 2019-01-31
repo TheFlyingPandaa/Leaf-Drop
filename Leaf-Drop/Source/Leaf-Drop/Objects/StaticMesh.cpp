@@ -110,9 +110,14 @@ bool StaticMesh::LoadMesh(const std::string & path)
 	return true;
 }
 
-std::vector<STRUCTS::StaticVertex>* StaticMesh::GetMesh()
+std::vector<STRUCTS::StaticVertex>* StaticMesh::GetRawVertices()
 {
 	return &m_mesh;
+}
+
+UINT StaticMesh::GetNumberOfVertices() const
+{
+	return (UINT)m_mesh.size();
 }
 
 const D3D12_VERTEX_BUFFER_VIEW & StaticMesh::GetVBV() const

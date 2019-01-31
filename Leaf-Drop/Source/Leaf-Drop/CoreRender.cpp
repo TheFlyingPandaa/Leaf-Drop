@@ -110,6 +110,13 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
+	if (FAILED(hr = _CreateResourceDescriptorHeap()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
+
+
 	m_geometryPass = new GeometryPass();
 	if (FAILED(hr = m_geometryPass->Init()))
 	{
@@ -120,19 +127,7 @@ HRESULT CoreRender::Init()
 
 void CoreRender::Release()
 {
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		if (m_fence[i]->GetCompletedValue() < m_fenceValue[i])
-		{
-			if (FAILED(m_fence[i]->SetEventOnCompletion(m_fenceValue[i], m_fenceEvent)))
-			{
 
-			}
-			WaitForSingleObject(m_fenceEvent, INFINITE);
-		}
-
-		m_fenceValue[i]++;
-	}
 
 	m_geometryPass->Release();
 
@@ -258,6 +253,23 @@ HRESULT CoreRender::Flush()
 	}
 
 	return hr;
+}
+
+void CoreRender::ClearGPU()
+{
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		if (m_fence[i]->GetCompletedValue() < m_fenceValue[i])
+		{
+			if (FAILED(m_fence[i]->SetEventOnCompletion(m_fenceValue[i], m_fenceEvent)))
+			{
+
+			}
+			WaitForSingleObject(m_fenceEvent, INFINITE);
+		}
+
+		m_fenceValue[i]++;
+	}
 }
 
 HRESULT CoreRender::_Flush()

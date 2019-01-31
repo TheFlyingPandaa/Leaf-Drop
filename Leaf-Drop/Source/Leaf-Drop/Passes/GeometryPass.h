@@ -33,6 +33,8 @@ private:
 
 	ConstantBuffer m_camBuffer;
 
+	DirectX::XMFLOAT4X4 m_camera;
+
 private:
 	HRESULT _Init();
 	HRESULT _InitRootSignature();

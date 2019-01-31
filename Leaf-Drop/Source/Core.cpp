@@ -5,7 +5,7 @@
 
 Core::Core()
 {
-	PRINT("LOL");
+	
 }
 
 Core::~Core()
@@ -42,6 +42,11 @@ BOOL Core::Running() const
 	}
 
 	return m_window->IsOpen();
+}
+
+void Core::ClearGPU()
+{
+	m_coreRenderer->ClearGPU();
 }
 
 void Core::Release()

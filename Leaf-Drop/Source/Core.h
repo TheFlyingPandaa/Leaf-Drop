@@ -4,6 +4,7 @@
 
 #include "Leaf-Drop/Objects/StaticMesh.h"
 #include "Leaf-Drop/Objects/Drawable.h"
+#include "Leaf-Drop/Objects/Texture.h"
 
 class Core
 {
@@ -18,6 +19,7 @@ public:
 
 	HRESULT Flush();
 
+	void ClearGPU();
 	void Release();
 
 	BOOL Running() const;

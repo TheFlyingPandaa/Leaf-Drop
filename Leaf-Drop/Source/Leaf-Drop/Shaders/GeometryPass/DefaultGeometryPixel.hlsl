@@ -1,3 +1,6 @@
+SamplerState defaultSampler : register(s0);
+Texture2D albedo : register(t0);
+
 
 struct VS_OUTPUT
 {
@@ -11,5 +14,5 @@ struct VS_OUTPUT
 
 float4 main(VS_OUTPUT input) : SV_TARGET
 {
-	return input.position;
+	return albedo.Sample(defaultSampler, input.uv);
 }

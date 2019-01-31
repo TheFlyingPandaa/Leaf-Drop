@@ -1,4 +1,9 @@
 
+cbuffer CAMERA : register(b0)
+{
+	float4x4 ViewProj;
+}
+
 struct VS_INPUT
 {
 	float4 position : POSITION;
@@ -21,7 +26,7 @@ struct VS_OUTPUT
 VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
-	output.position =		input.position;
+	output.position =		mul(input.position, ViewProj);
 	output.worldPosition =	input.position;
 	output.normal =			input.position;
 	output.tangent =		input.position;
