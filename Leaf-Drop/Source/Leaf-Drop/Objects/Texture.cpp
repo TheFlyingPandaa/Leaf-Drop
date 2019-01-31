@@ -9,6 +9,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
+	SAFE_RELEASE(m_texture);
 }
 
 HRESULT Texture::LoadTexture(const std::wstring & path)

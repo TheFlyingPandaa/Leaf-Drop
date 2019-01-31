@@ -251,7 +251,7 @@ HRESULT CoreRender::Flush()
 	{
 		return DEBUG::CreateError(hr);
 	}
-
+	_Clear();
 	return hr;
 }
 

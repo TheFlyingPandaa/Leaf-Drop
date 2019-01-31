@@ -5,6 +5,7 @@
 #include "Leaf-Drop/Objects/StaticMesh.h"
 #include "Leaf-Drop/Objects/Drawable.h"
 #include "Leaf-Drop/Objects/Texture.h"
+#include "Leaf-Drop/Utillity/Timer.h"
 
 class Core
 {

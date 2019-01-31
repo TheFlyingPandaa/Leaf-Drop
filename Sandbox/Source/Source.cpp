@@ -1,5 +1,7 @@
 #include <iostream>
 #include <Core.h>
+
+
 #if _DEBUG
 
 //Allocates memory to the console
@@ -16,7 +18,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 #if _DEBUG
 	_alocConsole();
 #endif
-		Core * core = new Core();
+	Core * core = new Core();
+	
+	
+	Timer timer;
 	
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
@@ -25,16 +30,34 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		t->LoadTexture(L"..\\Assets\\Textures\\BoobieWaSHere.png");
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		Drawable d;
+		Drawable d2;
+
 		d.SetTexture(t);
 		d.SetMesh(m);
+		d2.SetTexture(t);
+		d2.SetMesh(m);
+		d2.SetScale(0.5f, 0.5f, 0.5f);
+		float rot = 0;
+		timer.Start();
+
+		Window * wnd = Window::GetInstance();
 
 		while (core->Running())
 		{
+			const float dt = timer.Stop();
+			wnd->SetWindowTitle(std::to_string(dt));
+
+			rot += 1.0f * dt;
+			d.SetRotation(0, rot, -rot);
+			d.Update();
+
 			d.Draw();
+			d2.Draw();
 			core->Flush();
 		}
 		core->ClearGPU();
 		delete m;
+		delete t;
 	}
 	core->Release();
 	delete core;

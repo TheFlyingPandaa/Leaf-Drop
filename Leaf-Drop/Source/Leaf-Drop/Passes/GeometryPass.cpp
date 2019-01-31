@@ -6,8 +6,9 @@
 #include <EASTL/vector.h>
 #include "../Objects/Texture.h"
 
-#define CAMERA_BUFFER 0
-#define TEXTURE_SLOT 1
+#define CAMERA_BUFFER	0
+#define TEXTURE_SLOT	1
+#define WORLD_MATRICES	2
 
 GeometryPass::GeometryPass() : IRender()
 {
@@ -42,6 +43,10 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
+	if (FAILED(hr = m_worldMatrices.Init(1024 * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
+	{
+		return hr;
+	}
 
 	DirectX::XMVECTOR pos = { 0,2,-2,1 };
 	DirectX::XMVECTOR dir = { 0,-.5f,0.5,0 };
@@ -71,6 +76,13 @@ void GeometryPass::Update()
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	{
+		auto world = p_drawQueue[i]->GetWorldMatrix();
+		m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * i);
+	}
+	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
+
 	m_camBuffer.SetData(&m_camera, sizeof(m_camera));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 }
@@ -80,11 +92,9 @@ void GeometryPass::Draw()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 
-
-
-
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
+
 		Texture * t = p_drawQueue[i]->GetTexture();
 		t->Map(TEXTURE_SLOT, commandList);
 		StaticMesh * m = p_drawQueue[i]->GetMesh();
@@ -107,12 +117,14 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[2];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[3];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	rootParameters[TEXTURE_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+
+	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 

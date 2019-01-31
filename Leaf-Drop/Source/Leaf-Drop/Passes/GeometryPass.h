@@ -32,6 +32,7 @@ private:
 	D3D12_RECT m_scissorRect{};
 
 	ConstantBuffer m_camBuffer;
+	ConstantBuffer m_worldMatrices;
 
 	DirectX::XMFLOAT4X4 m_camera;
 
