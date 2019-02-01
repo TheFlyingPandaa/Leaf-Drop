@@ -129,6 +129,7 @@ void GeometryPass::Release()
 	//SAFE_DELETE(m_renderTarget);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
+	
 	m_depthBuffer.Release();
 }
 

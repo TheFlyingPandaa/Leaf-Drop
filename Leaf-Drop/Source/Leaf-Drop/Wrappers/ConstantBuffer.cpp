@@ -92,7 +92,13 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 		}
 			break;
 		}
-		
+		CD3DX12_RANGE range(0, 0);
+
+		if (FAILED(hr = m_resource[i]->Map(0, &range, reinterpret_cast<void**>(&m_resource_GPU_Location[i]))))
+		{
+
+		}
+
 		m_coreRender->IterateResourceIndex();
 	}
 
@@ -118,16 +124,5 @@ void ConstantBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * c
 void ConstantBuffer::SetData(void * data, UINT size, UINT offset)
 {
 	const UINT currentFrame = m_coreRender->GetFrameIndex();
-	
-	CD3DX12_RANGE range(0, 0);
-	UINT8 * dataLocation = nullptr;
-
-	if (SUCCEEDED(m_resource[currentFrame]->Map(0, &range, reinterpret_cast<void**>(&dataLocation))))
-	{
-
-		memcpy(dataLocation + offset, data, size);
-
-		m_resource[currentFrame]->Unmap(0, &range);
-	}
-
+	memcpy(m_resource_GPU_Location[currentFrame] + offset, data, size);
 }

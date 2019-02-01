@@ -24,6 +24,8 @@ private:
 	SIZE_T m_descriptorHeapOffset = 0;
 	CBV_TYPE m_type;
 
+	UINT8 * m_resource_GPU_Location[FRAME_BUFFER_COUNT] = { nullptr };
+
 private:
 	CoreRender * m_coreRender = nullptr;
 
