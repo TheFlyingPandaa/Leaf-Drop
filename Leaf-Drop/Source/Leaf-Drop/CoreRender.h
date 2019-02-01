@@ -7,6 +7,7 @@
 #include "Extern/Extern.h"
 
 #include "../Leaf-Drop/Passes/GeometryPass.h"
+#include "../Leaf-Drop/Passes/DeferredPass.h"
 
 class Window;
 
@@ -40,6 +41,7 @@ public:
 
 	GeometryPass * GetGeometryPass() const;
 
+
 	HRESULT OpenCommandList();
 	HRESULT ExecuteCommandList();
 
@@ -72,6 +74,7 @@ private:
 	Window * m_windowPtr = nullptr;
 
 	GeometryPass * m_geometryPass = nullptr;
+	DeferredPass * m_deferredPass = nullptr;
 
 	HRESULT _Flush();
 	HRESULT _UpdatePipeline();

@@ -1,53 +1,22 @@
 #include "CorePCH.h"
-#include "GeometryPass.h"
+#include "DeferredPass.h"
 #include "../Wrappers/ShaderCreator.h"
-#include "../Objects/Drawable.h"
-#include "../Objects/StaticMesh.h"
-#include <EASTL/vector.h>
-#include "../Objects/Texture.h"
-#include "../Objects/Camera.h"
 
-#define CAMERA_BUFFER	0
-#define TEXTURE_SLOT	1
-#define WORLD_MATRICES	2
-
-GeometryPass::GeometryPass() : IRender()
+DeferredPass::DeferredPass() : IRender()
 {
 	
 }
 
-GeometryPass::~GeometryPass()
+
+DeferredPass::~DeferredPass()
 {
 }
 
-HRESULT GeometryPass::Init()
+HRESULT DeferredPass::Init()
 {
 	HRESULT hr = 0;
-	//if (FAILED(hr = p_CreateCommandList(L"Geometry")))
-	//{
-	//	return hr;
-	//}
-	//
-	//if (FAILED(hr = OpenCommandList()))
-	//{
-	//	return hr;
-	//}
 
 	if (FAILED(hr = _Init()))
-	{
-		return hr;
-	}
-
-	if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4),L"Geometry")))
-	{
-		return hr;
-	}
-	if (FAILED(hr = m_worldMatrices.Init(16384 * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
-	{
-		return hr;
-	}
-
-	if (FAILED(hr = m_depthBuffer.Init(L"Geometry")))
 	{
 		return hr;
 	}
@@ -55,97 +24,148 @@ HRESULT GeometryPass::Init()
 	return hr;
 }
 
-void GeometryPass::Update()
+void DeferredPass::Update()
 {
-	//if (FAILED(OpenCommandList()))
-	//{
-	//	return;
-	//}
-
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
-	
+
 
 	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
 	{ p_coreRender->GetRTVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
 	frameIndex *
 	p_coreRender->GetRTVDescriptorHeapSize() };
 
-	auto h = m_depthBuffer.GetHandle();
-
-	commandList->OMSetRenderTargets(1, &rtvHandle, 1, &m_depthBuffer.GetHandle());
+	commandList->OMSetRenderTargets(1, &rtvHandle, 0, nullptr);
 	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
 	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	m_depthBuffer.Clear(commandList);
-	
+
 	commandList->SetPipelineState(m_pipelineState);
-	commandList->SetGraphicsRootSignature(m_rootSignature);
+	//commandList->SetGraphicsRootSignature(m_rootSignature);
 	commandList->RSSetViewports(1, &m_viewport);
-	commandList->RSSetScissorRects(1, &m_scissorRect);
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	int counter = 0;
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
-	{
-		for (size_t k = 0; k < p_drawQueue[i].ObjectData.size(); k++)
-		{
-			auto world = p_drawQueue[i].ObjectData[k];
-			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
-		}
-	}
-	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
-
-	Camera * cam = Camera::GetActiveCamera();
-	cam->Update();
-
-	DirectX::XMFLOAT4X4A viewProj = cam->GetViewProjectionMatrix();
-
-	m_camBuffer.SetData(&viewProj, sizeof(DirectX::XMFLOAT4X4A));
-	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
+	commandList->RSSetScissorRects(0, nullptr);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void GeometryPass::Draw()
+void DeferredPass::Draw()
 {
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
-	{
-		Texture * t = p_drawQueue[i].TexPtr;
-		t->Map(TEXTURE_SLOT, commandList);
-		StaticMesh * m = p_drawQueue[i].MeshPtr;
-		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
-	}
-	
-	//ExecuteCommandList();
+	commandList->IASetVertexBuffers(0, 1, &m_screenQuad.vertexBufferView);
+	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
 }
 
-void GeometryPass::Release()
+void DeferredPass::Release()
 {
+	m_screenQuad.Release();
 	//p_ReleaseCommandList();
 	//SAFE_DELETE(m_renderTarget);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
-	
-	m_depthBuffer.Release();
 }
 
-HRESULT GeometryPass::_InitRootSignature()
+HRESULT DeferredPass::_Init()
 {
 	HRESULT hr = 0;
-	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[3];
-	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
 
-	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-	rootParameters[TEXTURE_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
-	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+	CoreRender * coreRender = CoreRender::GetInstance();
+	const UINT FRAME_INDEX = coreRender->GetFrameIndex();
+	ID3D12GraphicsCommandList * commandList = coreRender->GetCommandList()[FRAME_INDEX];
 
-	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
+	if (FAILED(hr = _CreateScreenQuad(coreRender, FRAME_INDEX, commandList)))
+		return hr;
+
+	if (FAILED(hr = _InitRootSignature()))
+		return hr;
+
+	if (FAILED(hr = _InitShader()))
+		return hr;
+
+	if (FAILED(hr = _InitPipelineState()))
+		return hr;
+
+	_CreateViewPort();
+
+	return hr;
+}
+
+HRESULT DeferredPass::_CreateScreenQuad(CoreRender * coreRender, const UINT & frameIndex, ID3D12GraphicsCommandList * commandList)
+{
+	HRESULT hr = 0;
+
+	// Create ScreenQuad
+	ScreenQuad::Vertex topLeft(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f);
+	ScreenQuad::Vertex botLeft(-1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
+	ScreenQuad::Vertex botRight(1.0f, 1.0f, 0.0f, 1.0f, 1.0f);
+	ScreenQuad::Vertex topRight(1.0f, -1.0f, 0.0f, 1.0f, 0.0f);
+
+	m_screenQuad.mesh.push_back(topLeft);
+	m_screenQuad.mesh.push_back(botLeft);
+	m_screenQuad.mesh.push_back(botRight);
+	m_screenQuad.mesh.push_back(topRight);
+
+	if (SUCCEEDED(coreRender->OpenCommandList()))
+	{
+		m_screenQuad.vertexBufferSize = static_cast<UINT>(sizeof(ScreenQuad::Vertex) * 4);
+
+		if (SUCCEEDED(coreRender->GetDevice()->CreateCommittedResource(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+			D3D12_HEAP_FLAG_NONE,
+			&CD3DX12_RESOURCE_DESC::Buffer(m_screenQuad.vertexBufferSize),
+			D3D12_RESOURCE_STATE_COPY_DEST,
+			nullptr,
+			IID_PPV_ARGS(&m_screenQuad.vertexBuffer))))
+		{
+			SET_NAME(m_screenQuad.vertexBuffer, std::wstring(std::wstring(L"Deferred :") +
+				std::wstring(L": vertexBuffer")).c_str());
+
+			if (SUCCEEDED(coreRender->GetDevice()->CreateCommittedResource(
+				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+				D3D12_HEAP_FLAG_NONE,
+				&CD3DX12_RESOURCE_DESC::Buffer(m_screenQuad.vertexBufferSize),
+				D3D12_RESOURCE_STATE_GENERIC_READ,
+				nullptr,
+				IID_PPV_ARGS(&m_screenQuad.vertexUploadBuffer))))
+			{
+				SET_NAME(m_screenQuad.vertexUploadBuffer, std::wstring(std::wstring(L"Deferred :") +
+					std::wstring(L": vertexUploadBuffer")).c_str());
+
+				D3D12_SUBRESOURCE_DATA vertexData = {};
+				vertexData.pData = reinterpret_cast<void*>(m_screenQuad.mesh.data());
+				vertexData.RowPitch = m_screenQuad.vertexBufferSize;
+				vertexData.SlicePitch = m_screenQuad.vertexBufferSize;
+
+				UpdateSubresources(commandList, m_screenQuad.vertexBuffer, m_screenQuad.vertexUploadBuffer, 0, 0, 1, &vertexData);
+
+				commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_screenQuad.vertexBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
+				commandList->Close();
+				if (SUCCEEDED(coreRender->ExecuteCommandList()))
+				{
+					m_screenQuad.vertexBufferView.BufferLocation = m_screenQuad.vertexBuffer->GetGPUVirtualAddress();
+					m_screenQuad.vertexBufferView.StrideInBytes = sizeof(ScreenQuad::Vertex);
+					m_screenQuad.vertexBufferView.SizeInBytes = m_screenQuad.vertexBufferSize;
+					return true;
+				}
+			}
+		}
+	}
+
+	return hr;
+}
+
+HRESULT DeferredPass::_InitRootSignature()
+{
+	HRESULT hr = 0;
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
+	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	
+	CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+	
+	rootParameters[0].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
@@ -156,7 +176,7 @@ HRESULT GeometryPass::_InitRootSignature()
 		//D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
-		D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS 
+		D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS
 		//D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS
 	);
 
@@ -179,36 +199,36 @@ HRESULT GeometryPass::_InitRootSignature()
 	return hr;
 }
 
-HRESULT GeometryPass::_InitShader()
+HRESULT DeferredPass::_InitShader()
 {
 	HRESULT hr = 0;
+
+	
 	ID3DBlob * blob = nullptr;
-	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryVertex.hlsl", blob, "vs_5_1")))
+	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\DeferredPass\\DefaultDeferredVertex.hlsl", blob, "vs_5_1")))
 	{
 		return hr;
 	}
 	m_vertexShader.pShaderBytecode = blob->GetBufferPointer();
 	m_vertexShader.BytecodeLength = blob->GetBufferSize();
 
-	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1")))
+	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\DeferredPass\\DefaultDeferredPixel.hlsl", blob, "ps_5_1")))
 	{
 		return hr;
 	}
 	m_pixelShader.pShaderBytecode = blob->GetBufferPointer();
 	m_pixelShader.BytecodeLength = blob->GetBufferSize();
+	
 	return hr;
 }
 
-HRESULT GeometryPass::_InitPipelineState()
+HRESULT DeferredPass::_InitPipelineState()
 {
 	HRESULT hr = 0;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 64, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		{ "SV_Position", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMFLOAT4), D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
 	m_inputLayoutDesc.NumElements = sizeof(inputLayout) / sizeof(D3D12_INPUT_ELEMENT_DESC);
@@ -236,7 +256,7 @@ HRESULT GeometryPass::_InitPipelineState()
 	rastDesc.AntialiasedLineEnable = FALSE;
 	rastDesc.ForcedSampleCount = 0;
 	rastDesc.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
-	
+
 
 	graphicsPipelineStateDesc.RasterizerState = rastDesc;
 
@@ -259,9 +279,9 @@ HRESULT GeometryPass::_InitPipelineState()
 
 	depthDesc.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
 	depthDesc.BackFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	   
+
 	graphicsPipelineStateDesc.DepthStencilState = depthDesc;
-	
+
 	graphicsPipelineStateDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
@@ -278,12 +298,12 @@ HRESULT GeometryPass::_InitPipelineState()
 	{
 		SAFE_RELEASE(m_pipelineState);
 	}
-	
-	
+
+
 	return hr;
 }
 
-void GeometryPass::_CreateViewPort()
+void DeferredPass::_CreateViewPort()
 {
 	POINT wndSize = p_window->GetWindowSize();
 	m_viewport.TopLeftX = 0;
@@ -299,30 +319,8 @@ void GeometryPass::_CreateViewPort()
 	m_scissorRect.bottom = wndSize.y;
 }
 
-HRESULT GeometryPass::_Init()
+void DeferredPass::ScreenQuad::Release()
 {
-	HRESULT hr = 0;
-
-	//m_renderTarget = new RenderTarget();
-	//if (FAILED(hr = m_renderTarget->Init(L"Geometry")))
-	//{
-	//	return hr;
-	//}
-
-	if (FAILED(hr = _InitRootSignature()))
-	{
-		return hr;
-	}
-	if (FAILED(hr = _InitShader()))
-	{
-		return hr;
-	}
-	if (FAILED(hr = _InitPipelineState()))
-	{
-		return hr;
-	}
-
-	_CreateViewPort();
-
-	return hr;
+	SAFE_RELEASE(vertexBuffer);
+	SAFE_RELEASE(vertexUploadBuffer);
 }

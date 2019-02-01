@@ -30,7 +30,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
 		Camera cam;
-		cam.CreateProjectionMatrix();
+		cam.CreateProjectionMatrix(0.01f, 1000.0f);
 		cam.SetPosition(0, 0, 0);
 		cam.SetAsActiveCamera();
 
@@ -52,9 +52,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 
-
+			float scl = (FLOAT)(rand() % 3 + 1);
 
 			d[i].SetPosition(x, y, z);
+			d[i].SetScale(scl, scl, scl);
 		}
 		
 		
@@ -94,7 +95,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
 			if (wnd->IsKeyPressed(Input::D))
 				moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			
+
 			if (wnd->IsKeyPressed(Input::SPACE))
 				moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
 			if (wnd->IsKeyPressed(Input::CTRL))

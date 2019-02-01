@@ -39,6 +39,7 @@ CoreRender::CoreRender()
 CoreRender::~CoreRender()
 {
 	delete m_geometryPass;
+	delete m_deferredPass;
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -120,6 +121,14 @@ HRESULT CoreRender::Init()
 	{
 		return DEBUG::CreateError(hr);
 	}
+
+	m_deferredPass = new DeferredPass();
+	if (FAILED(hr = m_deferredPass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
+
 	return hr;
 }
 
@@ -128,6 +137,7 @@ void CoreRender::Release()
 
 
 	m_geometryPass->Release();
+	m_deferredPass->Release();
 
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
