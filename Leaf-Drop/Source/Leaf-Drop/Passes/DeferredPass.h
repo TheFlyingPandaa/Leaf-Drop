@@ -39,6 +39,11 @@ private:
 
 	};
 
+	struct CAMERA_VALUES
+	{
+		DirectX::XMFLOAT4 dir;
+		DirectX::XMFLOAT4 pos;
+	};
 
 	ID3D12PipelineState * m_pipelineState = nullptr;
 	ID3D12RootSignature * m_rootSignature = nullptr;
@@ -54,7 +59,7 @@ private:
 	D3D12_RECT m_scissorRect{};
 	
 	ConstantBuffer m_camBuffer;
-	ConstantBuffer m_worldMatrices;
+	ConstantBuffer m_lightsBuffer;
 
 	ScreenQuad m_screenQuad;
 

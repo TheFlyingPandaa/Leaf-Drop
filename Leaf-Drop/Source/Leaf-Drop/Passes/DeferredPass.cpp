@@ -1,6 +1,13 @@
 #include "CorePCH.h"
 #include "DeferredPass.h"
 #include "../Wrappers/ShaderCreator.h"
+#include "../Objects/Camera.h"
+
+#define CAMERA_BUFFER	0
+#define POSITION		1
+#define NORMAL			2
+#define ALBEDO			3
+#define METALLIC		4
 
 DeferredPass::DeferredPass() : IRender()
 {
@@ -21,6 +28,19 @@ HRESULT DeferredPass::Init()
 		return hr;
 	}
 
+
+	if (FAILED(hr = m_camBuffer.Init(sizeof(CAMERA_VALUES), L"DeferredCamera")))
+	{
+		return hr;
+	}
+
+	/*
+		if (FAILED(hr = m_camBuffer.Init(sizeof(Light), L"DeferredLights")))
+		{
+			return hr;
+		}
+	*/
+
 	return hr;
 }
 
@@ -40,10 +60,20 @@ void DeferredPass::Update()
 	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 	commandList->SetPipelineState(m_pipelineState);
-	//commandList->SetGraphicsRootSignature(m_rootSignature);
+	commandList->SetGraphicsRootSignature(m_rootSignature);
 	commandList->RSSetViewports(1, &m_viewport);
 	commandList->RSSetScissorRects(0, nullptr);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	Camera * cam = Camera::GetActiveCamera();
+
+	CAMERA_VALUES camVal;
+	camVal.dir = cam->GetDirectionVector();
+	camVal.pos = cam->GetPosition();
+
+	m_camBuffer.SetData(&camVal, sizeof(CAMERA_VALUES));
+	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
+
 }
 
 void DeferredPass::Draw()
@@ -161,11 +191,19 @@ HRESULT DeferredPass::_InitRootSignature()
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
-	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
+	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 2);
+	D3D12_DESCRIPTOR_RANGE1 descRange3 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 3);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[1];
-	
-	rootParameters[0].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+
+
+	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[POSITION].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[NORMAL].InitAsDescriptorTable(1, &descRange1, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[ALBEDO].InitAsDescriptorTable(1, &descRange2, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[METALLIC].InitAsDescriptorTable(1, &descRange3, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
@@ -181,10 +219,11 @@ HRESULT DeferredPass::_InitRootSignature()
 	);
 
 	ID3DBlob * signature = nullptr;
+	ID3DBlob * error = nullptr;
 	if (SUCCEEDED(hr = D3D12SerializeRootSignature(&rootSignatureDesc.Desc_1_0,
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		&signature,
-		nullptr)))
+		&error)))
 	{
 		if (FAILED(hr = p_coreRender->GetDevice()->CreateRootSignature(
 			0,
@@ -194,6 +233,11 @@ HRESULT DeferredPass::_InitRootSignature()
 		{
 			SAFE_RELEASE(m_rootSignature);
 		}
+	}
+	else
+	{
+		std::wcout << static_cast<LPSTR>(error->GetBufferPointer()) << std::endl;
+		error->Release();
 	}
 
 	return hr;
