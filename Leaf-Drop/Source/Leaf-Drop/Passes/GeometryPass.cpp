@@ -44,7 +44,7 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_worldMatrices.Init(1024 * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
+	if (FAILED(hr = m_worldMatrices.Init(16384 * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
 	{
 		return hr;
 	}

@@ -15,6 +15,9 @@ void _alocConsole() {
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
+
+	srand(time(0));
+
 #if _DEBUG
 	_alocConsole();
 #endif
@@ -35,27 +38,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		t->LoadTexture(L"..\\Assets\\Textures\\BoobieWaSHere.png");
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		Drawable d[4];
-		for (int i = 0; i < 4; i++)
+		const UINT NUMBER_OF_DRAWABLES = 16384;
+
+
+		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
+		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
 			d[i].SetTexture(t);
 			d[i].SetMesh(m);
+
+			float x = (rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float y = (rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float z = (rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+
+
+
+			d[i].SetPosition(x, y, z);
 		}
 		
-		float dist = 5.0;
-		DirectX::XMFLOAT4 pos(dist, 0.0f, 0.0f, 1.0f);
-		d[0].SetPosition(pos);
-
-		pos.x = -dist;
-		d[1].SetPosition(pos);
-
-		pos.x = 0;
-		pos.z = -dist;
-		d[2].SetPosition(pos);
-
-		pos.z = dist;
-		d[3].SetPosition(pos);
-
+		
 
 		float rot = 0;
 		timer.Start();
@@ -73,38 +74,42 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		{
 			UINT2 mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
+			static const float MOVE_SPEED = 10.0f;
+			static const float MOUSE_SENSITIVITY = 0.1f;
 
-
+			
 			const double dt = timer.Stop();
-			wnd->SetWindowTitle(std::to_string(dt));
+//			wnd->SetWindowTitle(std::to_string(dt));
 
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
 			if (wnd->IsKeyPressed('W'))
-				moveDir.z += 1.0f;
+				moveDir.z += MOVE_SPEED;
 			if (wnd->IsKeyPressed('A'))
-				moveDir.x -= 1.0f;
+				moveDir.x -= MOVE_SPEED;
 			if (wnd->IsKeyPressed('S'))
-				moveDir.z -= 1.0f;
+				moveDir.z -= MOVE_SPEED;
 			if (wnd->IsKeyPressed('D'))
-				moveDir.x += 1.0f;
+				moveDir.x += MOVE_SPEED;
 			
 			if (wnd->IsKeyPressed('E'))
-				moveDir.y += 1.0f;
+				moveDir.y += MOVE_SPEED;
 			if (wnd->IsKeyPressed('Q'))
-				moveDir.y -= 1.0f;
+				moveDir.y -= MOVE_SPEED;
 
 			float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
 			float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
 
-			if (deltaMouseX != 0 || deltaMouseY != 0)
-			{
-				rotDir.y = deltaMouseX * dt;
-				rotDir.x = deltaMouseY * dt;
+			rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
+			rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
 
-				cam.Rotate(rotDir);
-			}
+
+			wnd->SetWindowTitle(std::to_string(rotDir.x) + ";" + std::to_string(rotDir.y));
+
+			cam.Rotate(rotDir);
+
+			wnd->ResetMouse();
 
 			moveDir.x *= dt;
 			moveDir.y *= dt;
@@ -117,7 +122,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			rot += 1.0f * dt;
 
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
 				d[i].SetRotation(0, rot, -rot);
 				d[i].Update();
@@ -130,11 +135,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				break;
 			}
 
-			wnd->ResetMouse();
+			
 		}
 		core->ClearGPU();
 		delete m;
 		delete t;
+		delete[] d;
 	}
 	core->Release();
 	delete core;
