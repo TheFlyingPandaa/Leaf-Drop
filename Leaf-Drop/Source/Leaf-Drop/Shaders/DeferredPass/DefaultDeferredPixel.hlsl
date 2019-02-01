@@ -14,5 +14,11 @@ struct PS_INPUT
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
+	float4 worldPos = Position.Sample(defaultSampler, input.uv);
+	float4 normal	= Normal.Sample(defaultSampler, input.uv);
+	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
+	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
+
+
 	return Albedo.Sample(defaultSampler, input.uv);
 }

@@ -304,10 +304,10 @@ HRESULT GeometryPass::_Init()
 	HRESULT hr = 0;
 
 	//m_renderTarget = new RenderTarget();
-	//if (FAILED(hr = m_renderTarget->Init(L"Geometry")))
-	//{
-	//	return hr;
-	//}
+	/*if (FAILED(hr = m_renderTarget->Init(L"Geometry", 0, 0, 4, DXGI_FORMAT_R32G32B32A32_FLOAT, true)))
+	{
+		return hr;
+	}*/
 
 	if (FAILED(hr = _InitRootSignature()))
 	{

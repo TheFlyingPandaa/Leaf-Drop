@@ -236,7 +236,7 @@ HRESULT DeferredPass::_InitRootSignature()
 	}
 	else
 	{
-		std::wcout << static_cast<LPSTR>(error->GetBufferPointer()) << std::endl;
+		PRINT(static_cast<std::string>(error->GetBufferPointer()));
 		error->Release();
 	}
 
