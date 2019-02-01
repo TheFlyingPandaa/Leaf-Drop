@@ -63,6 +63,11 @@ BOOL Window::IsKeyPressed(int key)
 	return m_keyPress[key];
 }
 
+BOOL Window::IsMousePressed(int button)
+{
+	return m_mousePress[button];
+}
+
 HWND Window::GetHwnd() const
 {
 	return m_hwnd;
@@ -121,15 +126,24 @@ LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				wnd->m_isOpen = FALSE;
 			}
 		}
-
 		wnd->m_keyPress[wParam] = true;
 
 		return 0;
 
 	case WM_KEYUP:
-
 		wnd->m_keyPress[wParam] = false;
+		return 0;
 
+	case WM_LBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		wnd->m_mousePress[wParam] = true;
+		return 0;
+
+	case WM_LBUTTONUP:
+	case WM_MBUTTONUP:
+	case WM_RBUTTONUP:
+		wnd->m_mousePress[wParam] = false;
 		return 0;
 
 	case WM_DESTROY:
