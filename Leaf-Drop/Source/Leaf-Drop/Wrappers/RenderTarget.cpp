@@ -28,7 +28,7 @@ HRESULT RenderTarget::Init(const std::wstring & name, const UINT & width, const 
 
 	if (m_width == 0 || m_height == 0)
 	{
-		UINT2 wndSize = m_window->GetWindowSize();
+		POINT wndSize = m_window->GetWindowSize();
 		m_width = wndSize.x;
 		m_height = wndSize.y;
 	}

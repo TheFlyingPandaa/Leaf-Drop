@@ -446,7 +446,7 @@ HRESULT CoreRender::_CreateSwapChain(IDXGIFactory4 * dxgiFactory)
 	if (!dxgiFactory)
 		return E_INVALIDARG;
 
-	UINT2 windowSize = m_windowPtr->GetWindowSize();
+	POINT windowSize = m_windowPtr->GetWindowSize();
 
 	DXGI_MODE_DESC backBufferDesc = {};
 	backBufferDesc.Width = windowSize.x;

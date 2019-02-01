@@ -16,7 +16,7 @@ void _alocConsole() {
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 
-	srand(time(0));
+	srand(static_cast<UINT>(time(0)));
 
 #if _DEBUG
 	_alocConsole();
@@ -47,9 +47,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetTexture(t);
 			d[i].SetMesh(m);
 
-			float x = (rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float y = (rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float z = (rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 
 
 
@@ -63,7 +63,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		Window * wnd = Window::GetInstance();
 
-		UINT2 mpStart = wnd->GetWindowSize();
+		POINT mpStart = wnd->GetWindowSize();
 		DirectX::XMFLOAT2 mousePosLastFrame = { (float)mpStart.x, (float)mpStart.y };
 		mousePosLastFrame.x /= 2;
 		mousePosLastFrame.y /= 2;
@@ -72,14 +72,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		while (core->Running())
 		{
-			UINT2 mp = wnd->GetMousePosition();
+			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
 			static const float MOVE_SPEED = 10.0f;
-			static const float MOUSE_SENSITIVITY = 0.1f;
+			static const float MOUSE_SENSITIVITY = 0.05f;
 
 			
 			const double dt = timer.Stop();
-//			wnd->SetWindowTitle(std::to_string(dt));
 
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
@@ -104,23 +103,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
 			rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
 
-
-			wnd->SetWindowTitle(std::to_string(rotDir.x) + ";" + std::to_string(rotDir.y));
-
 			cam.Rotate(rotDir);
 
 			wnd->ResetMouse();
 
-			moveDir.x *= dt;
-			moveDir.y *= dt;
-			moveDir.z *= dt;
+			moveDir.x *= (FLOAT)dt;
+			moveDir.y *= (FLOAT)dt;
+			moveDir.z *= (FLOAT)dt;
 
 			cam.Translate(moveDir, false);
-			
 
-
-
-			rot += 1.0f * dt;
+			rot += 1.0f * (FLOAT)dt;
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{

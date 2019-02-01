@@ -287,7 +287,7 @@ HRESULT GeometryPass::_InitPipelineState()
 
 void GeometryPass::_CreateViewPort()
 {
-	UINT2 wndSize = p_window->GetWindowSize();
+	POINT wndSize = p_window->GetWindowSize();
 	m_viewport.TopLeftX = 0;
 	m_viewport.TopLeftY = 0;
 	m_viewport.Width = (FLOAT)wndSize.x;

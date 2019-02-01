@@ -3,11 +3,6 @@
 #include <string>
 #include <thread>
 
-struct UINT2
-{
-	UINT x, y;
-};
-
 class Window
 {
 public:
@@ -21,7 +16,7 @@ public:
 	
 	void SetWindowTitle(const std::string & windowTitle);
 
-	UINT2 GetWindowSize() const;
+	POINT GetWindowSize() const;
 
 	BOOL IsKeyPressed(int key);
 
@@ -31,7 +26,7 @@ public:
 
 	void Close();
 
-	UINT2 GetMousePosition();
+	POINT GetMousePosition();
 	void ResetMouse();
 
 private:

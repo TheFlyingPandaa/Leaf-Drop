@@ -19,7 +19,7 @@ HRESULT DepthBuffer::Init(const std::wstring & name, const UINT & width, const U
 
 	if (!width && !height)
 	{
-		UINT2 size =  Window::GetInstance()->GetWindowSize();
+		POINT size =  Window::GetInstance()->GetWindowSize();
 		m_width = size.x;
 		m_height = size.y;
 	}

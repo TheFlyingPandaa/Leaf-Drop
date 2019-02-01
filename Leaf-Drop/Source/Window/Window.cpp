@@ -50,9 +50,12 @@ void Window::SetWindowTitle(const std::string & windowTitle)
 	SetWindowText(m_hwnd, m_windowTitle.c_str());
 }
 
-UINT2 Window::GetWindowSize() const
+POINT Window::GetWindowSize() const
 {
-	return {m_width, m_height};
+	POINT p;
+	p.x = m_width;
+	p.y = m_height;
+	return p;
 }
 
 BOOL Window::IsKeyPressed(int key)
@@ -83,13 +86,13 @@ void Window::Close()
 	}
 }
 
-UINT2 Window::GetMousePosition()
+POINT Window::GetMousePosition()
 {
 	POINT p;
 
 	GetCursorPos(&p);
 	ScreenToClient(m_hwnd, &p);
-	return{ (UINT)p.x, (UINT)p.y };
+	return p;
 
 }
 
