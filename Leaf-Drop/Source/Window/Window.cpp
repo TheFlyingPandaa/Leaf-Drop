@@ -26,16 +26,25 @@ BOOL Window::Create(HINSTANCE hInstance, INT ShowWnd, UINT width, UINT height, B
 {
 	if (m_isOpen)
 		return TRUE;
+
 	m_windowName = std::wstring(windowName.begin(), windowName.end());
 	m_windowTitle = std::wstring(windowTitle.begin(), windowTitle.end());
 	m_fullscreen = fullscreen;
 	m_width = width;
 	m_height = height;
+	
 
 	m_windowThread = std::thread(&Window::_create, this, hInstance, ShowWnd);
 
 	while (m_creationError == FALSE && m_isOpen == FALSE);
+
+
 	
+
+	
+
+	
+
 	return m_isOpen;
 }
 
@@ -119,15 +128,7 @@ LRESULT Window::_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE) {
-			if (MessageBox(0, L"Are you sure you want to exit?",
-				L"Really?", MB_YESNO | MB_ICONQUESTION) == IDYES)
-			{				
-				wnd->m_isOpen = FALSE;
-			}
-		}
 		wnd->m_keyPress[wParam] = true;
-
 		return 0;
 
 	case WM_KEYUP:
@@ -239,9 +240,19 @@ void Window::_create(HINSTANCE hInstance, INT ShowWnd)
 	{
 		SetWindowLong(m_hwnd, GWL_STYLE, 0);
 	}
+	/*else
+	{
+		RECT rect;
+		GetWindowRect(m_hwnd, &rect);
+		AdjustWindowRect(&rect, WS_CHILD, FALSE);
+	}*/
+	
+
 
 	ShowWindow(m_hwnd, ShowWnd);
 	UpdateWindow(m_hwnd);
+
+
 	m_isOpen = TRUE;
 	
 	_run();

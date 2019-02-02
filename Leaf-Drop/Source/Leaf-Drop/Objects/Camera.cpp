@@ -132,8 +132,6 @@ void Camera::Rotate(const DirectX::XMFLOAT3 & rotation)
 		m_direction.w = 0.0f;
 	}
 
-
-
 	_calcForwardRightAndUp();
 }
 

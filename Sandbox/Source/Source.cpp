@@ -101,6 +101,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			if (wnd->IsKeyPressed(Input::CTRL))
 				moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
 
+			if (wnd->IsKeyPressed(Input::ESCAPE))
+				wnd->Close();
+
+
 			float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
 			float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
 
