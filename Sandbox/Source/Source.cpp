@@ -30,6 +30,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
 		Camera cam;
+		Camera camArr[10];
+
+		for (int i = 0; i < 10; i++)
+		{
+			camArr[i].CreateProjectionMatrix(0.01f, 1000.0f);
+			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+
+			camArr[i].SetPosition(x, y, z);
+
+			x = (FLOAT)(rand() % 500) * (rand() % 2 ? 1 : -1);
+			y = (FLOAT)(rand() % 500) * (rand() % 2 ? 1 : -1);
+			z = (FLOAT)(rand() % 500) * (rand() % 2 ? 1 : -1);
+
+			camArr[i].SetDirection(x, y, z);
+
+		}
+
+
 		cam.CreateProjectionMatrix(0.01f, 1000.0f);
 		cam.SetPosition(0, 0, 0);
 		cam.SetAsActiveCamera();
@@ -87,40 +107,70 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			if (wnd->IsKeyPressed(Input::W))
-				moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			if (wnd->IsKeyPressed(Input::A))
-				moveDir.x -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			if (wnd->IsKeyPressed(Input::S))
-				moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			if (wnd->IsKeyPressed(Input::D))
-				moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			if (Camera::GetActiveCamera() == &cam)
+			{
+				if (wnd->IsKeyPressed(Input::W))
+					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::A))
+					moveDir.x -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::S))
+					moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::D))
+					moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
 
-			if (wnd->IsKeyPressed(Input::SPACE))
-				moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			if (wnd->IsKeyPressed(Input::CTRL))
-				moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::SPACE))
+					moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::CTRL))
+					moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+
+				float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
+				float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
+
+				rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
+				rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
+
+				cam.Rotate(rotDir);
+
+				wnd->ResetMouse();
+
+				moveDir.x *= (FLOAT)dt;
+				moveDir.y *= (FLOAT)dt;
+				moveDir.z *= (FLOAT)dt;
+
+				cam.Translate(moveDir, false);
+
+
+			}
 
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
 
+			if (wnd->IsKeyPressed(Input::KEY_0))
+				camArr[0].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_1))
+				camArr[1].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_2))
+				camArr[2].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_3))
+				camArr[3].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_4))
+				camArr[4].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_5))
+				camArr[5].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_6))
+				camArr[6].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_7))
+				camArr[7].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_8))
+				camArr[8].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::KEY_9))
+				camArr[9].SetAsActiveCamera();
+			else if (wnd->IsKeyPressed(Input::BACKSPACE))
+				cam.SetAsActiveCamera();
 
-			float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
-			float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
 
-			rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
-			rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
 
-			cam.Rotate(rotDir);
-
-			wnd->ResetMouse();
-
-			moveDir.x *= (FLOAT)dt;
-			moveDir.y *= (FLOAT)dt;
-			moveDir.z *= (FLOAT)dt;
-
-			cam.Translate(moveDir, false);
-
+		
 			rot += 1.0f * (FLOAT)dt;
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
