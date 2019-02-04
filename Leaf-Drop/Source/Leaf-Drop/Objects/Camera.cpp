@@ -96,7 +96,7 @@ void Camera::SetDirection(const float & x, const float & y, const float & z)
 void Camera::Rotate(const DirectX::XMFLOAT3 & rotation)
 {
 	using namespace DirectX;
-	static const float MAX_TILT = 0.9f;
+	static const float MAX_TILT = 0.99f;
 	static const XMVECTOR UP = { 0.0f, 1.0f, 0.0f, 0.0f };
 
 	XMVECTOR right = XMLoadFloat4(&m_right);
@@ -123,13 +123,8 @@ void Camera::Rotate(const DirectX::XMFLOAT3 & rotation)
 	{
 		float angle = (fDot - MAX_TILT) * (dot < 0.0 ? -1.0f : 1.0f); // DETTA ÄR FEEEL
 
-		right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(UP, dir));
-		right = XMVectorMultiply(right, XMVECTOR{ angle, angle, angle });
-		rot = XMMatrixRotationRollPitchYawFromVector(right);
-		dir = XMVector3Normalize(XMVector3Transform(dir, rot));
-		
-		XMStoreFloat4(&m_direction, dir);
-		m_direction.w = 0.0f;
+		this->Rotate(angle, 0.0f, 0.0f);
+		return;
 	}
 
 	_calcForwardRightAndUp();
