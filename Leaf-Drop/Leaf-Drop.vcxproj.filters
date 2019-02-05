@@ -738,6 +738,9 @@
     <ClInclude Include="Source\Leaf-Drop\Passes\DeferredPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Passes\ComputePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -906,6 +909,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Passes\DeferredPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Passes\ComputePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1348,5 +1354,6 @@
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\DeferredPass\DefaultDeferredPixel.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\DeferredPass\DefaultDeferredVertex.hlsl" />
+    <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl" />
   </ItemGroup>
 </Project>

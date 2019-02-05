@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Passes\ComputePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\DeferredPass.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Camera.h" />
     <ClInclude Include="CorePCH.h" />
@@ -346,6 +347,7 @@
     <ClInclude Include="Source\Leaf-Drop\Objects\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Passes\ComputePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\DeferredPass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Camera.cpp" />
     <ClCompile Include="CorePCH.cpp">
@@ -755,6 +757,12 @@
     <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Source\Leaf-Drop\Shaders\DeferredPass\DefaultDeferredPixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>

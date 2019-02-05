@@ -50,7 +50,7 @@ void IRender::p_ReleaseCommandList()
 	}
 }
 
-HRESULT IRender::p_CreateCommandList(const std::wstring & name)
+HRESULT IRender::p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LIST_TYPE listType)
 {
 	HRESULT hr = 0;
 	D3D12_COMMAND_LIST_TYPE type{};
@@ -66,10 +66,11 @@ HRESULT IRender::p_CreateCommandList(const std::wstring & name)
 		}
 			SET_NAME(p_commandAllocator[i], std::wstring(name + std::wstring(L" CommandAllocator") + std::to_wstring(i)).c_str());
 
-		if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, p_commandAllocator[i], nullptr, IID_PPV_ARGS(&p_commandList[i]))))
+		if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandList(0, listType, p_commandAllocator[i], nullptr, IID_PPV_ARGS(&p_commandList[i]))))
 		{
 			return hr;
 		}
+
 		SET_NAME(p_commandList[i], std::wstring(name + std::wstring(L" CommandList") + std::to_wstring(i)).c_str());
 
 		p_commandList[i]->Close();

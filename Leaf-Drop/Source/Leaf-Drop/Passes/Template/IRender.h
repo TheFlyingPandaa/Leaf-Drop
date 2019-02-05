@@ -55,7 +55,7 @@ protected:
 	ID3D12CommandAllocator * p_commandAllocator[FRAME_BUFFER_COUNT]{nullptr};
 protected:
 	
-	HRESULT p_CreateCommandList(const std::wstring & name);
+	HRESULT p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LIST_TYPE listType = D3D12_COMMAND_LIST_TYPE_DIRECT);
 	void p_ReleaseCommandList();
 	
 };
