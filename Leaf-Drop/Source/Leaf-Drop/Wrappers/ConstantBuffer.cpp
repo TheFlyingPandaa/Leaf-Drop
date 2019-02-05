@@ -55,7 +55,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 			D3D12_BUFFER_UAV uav{};
 			uav.NumElements = 1;
 			uav.FirstElement = 0;
-			uav.StructureByteStride = bufferSize;
+			uav.StructureByteStride = sizeOfElement;
 			uav.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
 
 			D3D12_UNORDERED_ACCESS_VIEW_DESC unorderedAccessViewDesc{};

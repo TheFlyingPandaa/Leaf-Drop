@@ -28,5 +28,10 @@ private:
 	ID3D12PipelineState * m_pipelineState = nullptr;
 	ID3D12RootSignature * m_rootSignature = nullptr;
 
-	ID3D12CommandQueue * m_commandQueue = nullptr;
+	UINT8 m_computeIndex = 0;
+
+	ID3D12CommandQueue *	m_commandQueue = nullptr;
+	ID3D12Fence *			m_fence[FRAME_BUFFER_COUNT]{ nullptr };
+	UINT64 					m_fenceValue[FRAME_BUFFER_COUNT]{ 0 };
+	
 };

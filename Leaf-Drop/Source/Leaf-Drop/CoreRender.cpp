@@ -362,7 +362,7 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_geometryPass->Update();
 	m_geometryPass->Draw();
 	
-
+	Sleep(100);
 	m_computePass->Update();
 	m_computePass->Draw();
 

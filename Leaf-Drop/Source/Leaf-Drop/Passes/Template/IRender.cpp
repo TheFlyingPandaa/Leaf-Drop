@@ -8,8 +8,7 @@ void IRender::Clear()
 
 HRESULT IRender::OpenCommandList(ID3D12PipelineState * pipelineSate)
 {
-	HRESULT hr = 0;
-	
+	HRESULT hr = 0;	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	if (SUCCEEDED(p_commandAllocator[frameIndex]->Reset()))
@@ -64,7 +63,7 @@ HRESULT IRender::p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LI
 		{
 			return hr;
 		}
-			SET_NAME(p_commandAllocator[i], std::wstring(name + std::wstring(L" CommandAllocator") + std::to_wstring(i)).c_str());
+		SET_NAME(p_commandAllocator[i], std::wstring(name + std::wstring(L" CommandAllocator") + std::to_wstring(i)).c_str());
 
 		if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandList(0, listType, p_commandAllocator[i], nullptr, IID_PPV_ARGS(&p_commandList[i]))))
 		{

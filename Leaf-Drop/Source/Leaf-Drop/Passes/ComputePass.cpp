@@ -31,7 +31,9 @@ void ComputePass::Draw()
 	OpenCommandList(m_pipelineState);
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
-	p_commandList[frameIndex]->Dispatch(100, 100, 1);
+	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
+
+	p_commandList[frameIndex]->Dispatch(100, 0, 0);
 
 	_ExecuteCommandList();
 }
@@ -163,6 +165,11 @@ HRESULT ComputePass::_ExecuteCommandList()
 	{
 		ID3D12CommandList* ppCommandLists[] = { p_commandList[frameIndex] };
 		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+		if (FAILED(hr = m_commandQueue->Signal(m_fence[frameIndex], m_fenceValue[frameIndex])))
+		{
+			return hr;
+		}
 	}
 	return hr;
 }
