@@ -59,7 +59,7 @@ HRESULT IRender::p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LI
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
 		if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandAllocator(
-			type, 
+			listType,
 			IID_PPV_ARGS(&p_commandAllocator[i]))))
 		{
 			return hr;
@@ -77,7 +77,6 @@ HRESULT IRender::p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LI
 	}
 	return hr;
 }
-
 
 IRender::~IRender()
 {

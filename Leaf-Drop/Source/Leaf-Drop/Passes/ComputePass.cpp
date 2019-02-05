@@ -23,14 +23,24 @@ HRESULT ComputePass::Init()
 
 void ComputePass::Update()
 {
+
 }
 
 void ComputePass::Draw()
 {
+	OpenCommandList(m_pipelineState);
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
+
+	p_commandList[frameIndex]->Dispatch(100, 100, 1);
+
+	_ExecuteCommandList();
 }
 
 void ComputePass::Release()
 {
+	SAFE_RELEASE(m_pipelineState);
+	SAFE_RELEASE(m_rootSignature);
+	SAFE_RELEASE(m_commandQueue);
 }
 
 HRESULT ComputePass::_Init()
@@ -38,7 +48,14 @@ HRESULT ComputePass::_Init()
 	HRESULT hr = 0;
 
 	//Compute command list
-	if (FAILED(hr = p_CreateCommandList(L"Compute",D3D12_COMMAND_LIST_TYPE_COMPUTE)))
+	D3D12_COMMAND_QUEUE_DESC desc{};
+	desc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+
+	if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_commandQueue))))
+	{
+		return hr;
+	}
+	if (FAILED(hr = p_CreateCommandList(L"Compute", D3D12_COMMAND_LIST_TYPE_COMPUTE)))
 	{
 		return hr;
 	}
@@ -59,6 +76,10 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
+	if (FAILED(hr = _ExecuteCommandList()))
+	{
+		return hr;
+	}
 
 	return hr;
 }
@@ -67,7 +88,7 @@ HRESULT ComputePass::_InitShaders()
 {
 	HRESULT hr = 0;
 	ID3DBlob * blob = nullptr;
-	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\ComputePass\\DefaultComputeShader.hlsl", blob, "vs_5_1")))
+	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\ComputePass\\DefaultComputeShader.hlsl", blob, "cs_5_1")))
 	{
 		return hr;
 	}
@@ -88,7 +109,6 @@ HRESULT ComputePass::_InitRootSignature()
 		nullptr,
 		0,
 		nullptr,
-		//D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
@@ -131,5 +151,18 @@ HRESULT ComputePass::_InitPipelineState()
 		return hr;
 	}
 
+	return hr;
+}
+
+HRESULT ComputePass::_ExecuteCommandList()
+{
+	HRESULT hr = 0;
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
+
+	if (SUCCEEDED(hr = p_commandList[frameIndex]->Close()))
+	{
+		ID3D12CommandList* ppCommandLists[] = { p_commandList[frameIndex] };
+		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	}
 	return hr;
 }

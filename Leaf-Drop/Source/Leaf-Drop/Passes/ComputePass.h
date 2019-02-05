@@ -3,12 +3,7 @@
 
 class ComputePass : public IRender
 {
-private:
 
-	D3D12_SHADER_BYTECODE m_computeShader{};
-
-	ID3D12PipelineState * m_pipelineState = nullptr;
-	ID3D12RootSignature * m_rootSignature = nullptr;
 public:
 	ComputePass();
 	~ComputePass();
@@ -18,11 +13,20 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual void Release() override;
-private:
 
+private:
 	HRESULT _Init();
 	HRESULT _InitShaders();
 	HRESULT _InitRootSignature();
 	HRESULT _InitPipelineState();
 
+	HRESULT _ExecuteCommandList();
+private:
+
+	D3D12_SHADER_BYTECODE m_computeShader{};
+
+	ID3D12PipelineState * m_pipelineState = nullptr;
+	ID3D12RootSignature * m_rootSignature = nullptr;
+
+	ID3D12CommandQueue * m_commandQueue = nullptr;
 };

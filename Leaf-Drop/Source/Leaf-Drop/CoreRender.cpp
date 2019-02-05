@@ -40,6 +40,7 @@ CoreRender::~CoreRender()
 {
 	delete m_geometryPass;
 	delete m_deferredPass;
+	delete m_computePass;
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -128,6 +129,12 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
+	m_computePass = new ComputePass();
+	if (FAILED(hr = m_computePass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
 
 	return hr;
 }
@@ -138,6 +145,7 @@ void CoreRender::Release()
 
 	m_geometryPass->Release();
 	m_deferredPass->Release();
+	m_computePass->Release();
 
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
@@ -355,6 +363,9 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_geometryPass->Draw();
 	
 
+	m_computePass->Update();
+	m_computePass->Draw();
+
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
 		transition.pResource = m_renderTargets[m_frameIndex];
@@ -440,7 +451,7 @@ HRESULT CoreRender::_CreateCommandQueue()
 	HRESULT hr = 0;
 
 	D3D12_COMMAND_QUEUE_DESC desc = {};
-
+	desc.Flags = D3D12_COMMAND_QUEUE_FLAG_DISABLE_GPU_TIMEOUT;
 	if (FAILED(hr = this->m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_commandQueue))))
 	{
 		SAFE_RELEASE(this->m_commandQueue);

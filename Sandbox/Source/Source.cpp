@@ -59,7 +59,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		t->LoadTexture(L"..\\Assets\\Textures\\BoobieWaSHere.png");
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 16384;
+		const UINT NUMBER_OF_DRAWABLES = 100;
 
 
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];

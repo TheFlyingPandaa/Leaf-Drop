@@ -15,7 +15,7 @@ Core::~Core()
 HRESULT Core::Init(HINSTANCE hInstance)
 {
 	m_window = Window::GetInstance();
-	if (!m_window->Create(hInstance, 10, 1920, 1080))
+	if (!m_window->Create(hInstance, 10, 1280, 720))
 	{
 		return E_ABORT;
 	}

@@ -8,6 +8,7 @@
 
 #include "../Leaf-Drop/Passes/GeometryPass.h"
 #include "../Leaf-Drop/Passes/DeferredPass.h"
+#include "../Leaf-Drop/Passes/ComputePass.h"
 
 class Window;
 
@@ -75,6 +76,7 @@ private:
 
 	GeometryPass * m_geometryPass = nullptr;
 	DeferredPass * m_deferredPass = nullptr;
+	ComputePass * m_computePass = nullptr;
 
 	HRESULT _Flush();
 	HRESULT _UpdatePipeline();
