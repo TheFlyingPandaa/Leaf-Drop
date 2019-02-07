@@ -12,6 +12,8 @@ public:
 	virtual void Draw() override;
 	virtual void Release() override;
 
+	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
+
 private:
 	struct ScreenQuad
 	{
@@ -62,6 +64,9 @@ private:
 	ConstantBuffer m_lightsBuffer;
 
 	ScreenQuad m_screenQuad;
+
+	UINT m_geometryRenderTargetsSize = 0;
+	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
 private:
 	HRESULT _Init();

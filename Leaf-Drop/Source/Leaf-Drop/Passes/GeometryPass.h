@@ -8,6 +8,7 @@ class GeometryPass : public IRender
 {
 private:
 	static const UINT ROOT_PARAMETERS = 1;
+	static const UINT RENDER_TARGETS = 1;
 public:
 	GeometryPass();
 	~GeometryPass();

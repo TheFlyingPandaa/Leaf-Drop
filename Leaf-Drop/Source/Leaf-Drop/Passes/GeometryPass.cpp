@@ -52,6 +52,12 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
+	m_renderTarget = new RenderTarget();
+	if (FAILED(hr = m_renderTarget->Init(L"Geometry", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT, true)))
+	{
+		return hr;
+	}
+
 	return hr;
 }
 
@@ -66,16 +72,17 @@ void GeometryPass::Update()
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 	
 
+	m_renderTarget->SwitchToRTV(commandList);
 	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
-	{ p_coreRender->GetRTVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
+	{ m_renderTarget->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
 	frameIndex *
-	p_coreRender->GetRTVDescriptorHeapSize() };
+	m_renderTarget->GetRenderTargetDescriptorHeapSize() };
 
 	auto h = m_depthBuffer.GetHandle();
 
 	commandList->OMSetRenderTargets(1, &rtvHandle, 1, &m_depthBuffer.GetHandle());
-	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
-	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	
+	commandList->ClearRenderTargetView(rtvHandle, CLEAR_COLOR, 0, nullptr);
 	m_depthBuffer.Clear(commandList);
 	
 	commandList->SetPipelineState(m_pipelineState);
@@ -117,14 +124,16 @@ void GeometryPass::Draw()
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
 	}
-	
 	//ExecuteCommandList();
+	m_renderTarget->SwitchToSRV(commandList);
+
+	p_coreRender->GetDeferredPass()->SetGeometryData(&m_renderTarget, RENDER_TARGETS);
 }
 
 void GeometryPass::Release()
 {
 	//p_ReleaseCommandList();
-	//SAFE_DELETE(m_renderTarget);
+	SAFE_DELETE(m_renderTarget);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
 	
@@ -221,7 +230,7 @@ HRESULT GeometryPass::_InitPipelineState()
 	graphicsPipelineStateDesc.PS = m_pixelShader;
 	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	graphicsPipelineStateDesc.NumRenderTargets = 1;
-	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	graphicsPipelineStateDesc.SampleMask = 0xffffffff;
 
 	D3D12_RASTERIZER_DESC rastDesc{};
@@ -302,12 +311,6 @@ void GeometryPass::_CreateViewPort()
 HRESULT GeometryPass::_Init()
 {
 	HRESULT hr = 0;
-
-	//m_renderTarget = new RenderTarget();
-	/*if (FAILED(hr = m_renderTarget->Init(L"Geometry", 0, 0, 4, DXGI_FORMAT_R32G32B32A32_FLOAT, true)))
-	{
-		return hr;
-	}*/
 
 	if (FAILED(hr = _InitRootSignature()))
 	{

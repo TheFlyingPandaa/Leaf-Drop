@@ -238,6 +238,11 @@ GeometryPass * CoreRender::GetGeometryPass() const
 	return m_geometryPass;
 }
 
+DeferredPass * CoreRender::GetDeferredPass() const
+{
+	return this->m_deferredPass;
+}
+
 HRESULT CoreRender::OpenCommandList()
 {
 	HRESULT hr = 0;

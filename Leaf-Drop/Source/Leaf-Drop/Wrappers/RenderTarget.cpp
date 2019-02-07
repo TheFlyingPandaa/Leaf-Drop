@@ -125,6 +125,37 @@ HRESULT RenderTarget::Init(const std::wstring & name, const UINT & width, const 
 
 					m_coreRender->GetDevice()->CreateRenderTargetView(m_renderTarget[i], &renderTargetViewDesc, rtvHandle);
 					rtvHandle.ptr += m_renderTargetDescriptorHeapSize;
+
+					if (createSRV)
+					{
+						D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+						srvDesc.Format = format;
+						srvDesc.ViewDimension = arraySize - 1 ? D3D12_SRV_DIMENSION_TEXTURE2DARRAY : D3D12_SRV_DIMENSION_TEXTURE2D;
+						srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+						if (srvDesc.ViewDimension == D3D12_SRV_DIMENSION_TEXTURE2D)
+						{
+							srvDesc.Texture2D.MipLevels = 1;
+						}
+						else
+						{
+							srvDesc.Texture2DArray.ArraySize = arraySize;
+							srvDesc.Texture2DArray.FirstArraySlice = 0;
+							srvDesc.Texture2DArray.MipLevels = 1;
+							srvDesc.Texture2DArray.MostDetailedMip = 0;
+						}
+
+						m_textureDescriptorHeapOffset = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
+						const D3D12_CPU_DESCRIPTOR_HANDLE handle = 
+						{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_textureDescriptorHeapOffset };
+
+						m_coreRender->GetDevice()->CreateShaderResourceView(
+							m_renderTarget[i],
+							&srvDesc,
+							handle
+						);
+
+						m_coreRender->IterateResourceIndex();
+					}
 				}
 			}
 
@@ -132,6 +163,39 @@ HRESULT RenderTarget::Init(const std::wstring & name, const UINT & width, const 
 	}
 	SAFE_RELEASE(heap);
 	return hr;
+}
+
+ID3D12DescriptorHeap * RenderTarget::GetDescriptorHeap() const
+{
+	return this->m_renderTargetDescriptorHeap;
+}
+
+const UINT & RenderTarget::GetRenderTargetDescriptorHeapSize() const
+{
+	return m_renderTargetDescriptorHeapSize;
+}
+
+void RenderTarget::SetGraphicsRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList)
+{
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex,
+		{ m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_textureDescriptorHeapOffset });
+}
+
+void RenderTarget::SwitchToRTV(ID3D12GraphicsCommandList * commandList)
+{	
+	const UINT frameIndex = m_coreRender->GetFrameIndex();
+	if (m_renderTargetCurrentResourceState[frameIndex] == D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE)
+		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTarget[frameIndex], D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET));
+	m_renderTargetCurrentResourceState[frameIndex] = D3D12_RESOURCE_STATE_RENDER_TARGET;
+}
+
+void RenderTarget::SwitchToSRV(ID3D12GraphicsCommandList * commandList)
+{
+	const UINT frameIndex = m_coreRender->GetFrameIndex();
+	if (m_renderTargetCurrentResourceState[frameIndex] == D3D12_RESOURCE_STATE_RENDER_TARGET)
+		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTarget[m_coreRender->GetFrameIndex()], D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+	m_renderTargetCurrentResourceState[frameIndex] = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+
 }
 
 

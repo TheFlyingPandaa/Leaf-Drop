@@ -41,7 +41,7 @@ public:
 
 
 	GeometryPass * GetGeometryPass() const;
-
+	DeferredPass * GetDeferredPass() const;
 
 	HRESULT OpenCommandList();
 	HRESULT ExecuteCommandList();

@@ -19,6 +19,6 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
 
-	return float4(1, 0, 0, 1);
-	return Albedo.Sample(defaultSampler, input.uv);
+	//return float4(1, 0, 0, 1);
+	return worldPos;
 }

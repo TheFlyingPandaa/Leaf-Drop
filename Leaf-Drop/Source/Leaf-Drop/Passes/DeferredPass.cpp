@@ -74,6 +74,11 @@ void DeferredPass::Update()
 	m_camBuffer.SetData(&camVal, sizeof(CAMERA_VALUES));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 
+	for (UINT i = 0; i < m_geometryRenderTargetsSize; i++)
+	{
+		m_geometryRenderTargets[i]->SetGraphicsRootDescriptorTable(i + 1, commandList);
+	}
+
 }
 
 void DeferredPass::Draw()
@@ -92,6 +97,12 @@ void DeferredPass::Release()
 	//SAFE_DELETE(m_renderTarget);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
+}
+
+void DeferredPass::SetGeometryData(RenderTarget * const * renderTargets, const UINT & size)
+{
+	this->m_geometryRenderTargetsSize = size;
+	m_geometryRenderTargets = renderTargets;
 }
 
 HRESULT DeferredPass::_Init()
@@ -124,10 +135,10 @@ HRESULT DeferredPass::_CreateScreenQuad(CoreRender * coreRender, const UINT & fr
 	HRESULT hr = 0;
 
 	// Create ScreenQuad
-	ScreenQuad::Vertex topLeft(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f);
-	ScreenQuad::Vertex botLeft(-1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
-	ScreenQuad::Vertex topRight(1.0f, -1.0f, 0.0f, 1.0f, 0.0f);
-	ScreenQuad::Vertex botRight(1.0f, 1.0f, 0.0f, 1.0f, 1.0f);
+	ScreenQuad::Vertex topLeft(-1.0f, -1.0f, 0.0f, 0.0f, 1.0f);
+	ScreenQuad::Vertex botLeft(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+	ScreenQuad::Vertex topRight(1.0f, -1.0f, 0.0f, 1.0f, 1.0f);
+	ScreenQuad::Vertex botRight(1.0f, 1.0f, 0.0f, 1.0f, .0f);
 	
 
 	m_screenQuad.mesh.push_back(topLeft);
@@ -189,7 +200,17 @@ HRESULT DeferredPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0,
+		D3D12_FILTER_COMPARISON_MIN_MAG_MIP_POINT, 
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP, 
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP, 
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP, 
+		0.0f, 
+		16u, 
+		D3D12_COMPARISON_FUNC_NEVER, 
+		D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK,
+		0.0f, 
+		D3D12_FLOAT32_MAX);
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
