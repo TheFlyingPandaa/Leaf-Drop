@@ -27,12 +27,6 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
-	
-	//if (FAILED(hr = OpenCommandList()))
-	//{
-	//	return hr;
-	//}
-
 	if (FAILED(hr = _Init()))
 	{
 		return hr;
