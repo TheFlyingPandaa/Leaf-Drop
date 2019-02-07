@@ -303,6 +303,12 @@ void CoreRender::ClearGPU()
 	}
 }
 
+void CoreRender::SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList)
+{
+	ID3D12DescriptorHeap * heaps[]{ m_resourceDescriptorHeap };
+	commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+}
+
 HRESULT CoreRender::_Flush()
 {
 	HRESULT hr = 0;

@@ -23,15 +23,15 @@ GeometryPass::~GeometryPass()
 HRESULT GeometryPass::Init()
 {
 	HRESULT hr = 0;
-	//if (FAILED(hr = p_CreateCommandList(L"Geometry")))
-	//{
-	//	return hr;
-	//}
-	//
-	//if (FAILED(hr = OpenCommandList()))
-	//{
-	//	return hr;
-	//}
+	if (FAILED(hr = p_CreateCommandList(L"Geometry")))
+	{
+		return hr;
+	}
+	
+	if (FAILED(hr = OpenCommandList()))
+	{
+		return hr;
+	}
 
 	if (FAILED(hr = _Init()))
 	{
@@ -63,14 +63,15 @@ HRESULT GeometryPass::Init()
 
 void GeometryPass::Update()
 {
-	//if (FAILED(OpenCommandList()))
-	//{
-	//	return;
-	//}
+	if (FAILED(OpenCommandList()))
+	{
+		return;
+	}
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
-	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
+	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 	
+	p_coreRender->SetResourceDescriptorHeap(commandList);
 
 	m_renderTarget->SwitchToRTV(commandList);
 	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
@@ -114,7 +115,8 @@ void GeometryPass::Update()
 void GeometryPass::Draw()
 {
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
-	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
+	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
+
 
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
@@ -124,15 +126,16 @@ void GeometryPass::Draw()
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
 	}
-	//ExecuteCommandList();
 	m_renderTarget->SwitchToSRV(commandList);
 
+
+	ExecuteCommandList();
 	p_coreRender->GetDeferredPass()->SetGeometryData(&m_renderTarget, RENDER_TARGETS);
 }
 
 void GeometryPass::Release()
 {
-	//p_ReleaseCommandList();
+	p_ReleaseCommandList();
 	SAFE_DELETE(m_renderTarget);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);

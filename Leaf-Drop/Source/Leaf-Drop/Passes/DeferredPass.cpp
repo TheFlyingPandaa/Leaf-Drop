@@ -48,6 +48,7 @@ void DeferredPass::Update()
 {
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
+	p_coreRender->SetResourceDescriptorHeap(commandList);
 
 
 	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =

@@ -50,6 +50,8 @@ public:
 
 	void ClearGPU();
 
+	void SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList);
+
 private:
 
 	ID3D12Device *				m_device = nullptr;
