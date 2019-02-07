@@ -62,7 +62,7 @@ void DeferredPass::Update()
 	commandList->SetPipelineState(m_pipelineState);
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 	commandList->RSSetViewports(1, &m_viewport);
-	commandList->RSSetScissorRects(0, nullptr);
+	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	Camera * cam = Camera::GetActiveCamera();
@@ -126,13 +126,15 @@ HRESULT DeferredPass::_CreateScreenQuad(CoreRender * coreRender, const UINT & fr
 	// Create ScreenQuad
 	ScreenQuad::Vertex topLeft(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f);
 	ScreenQuad::Vertex botLeft(-1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
-	ScreenQuad::Vertex botRight(1.0f, 1.0f, 0.0f, 1.0f, 1.0f);
 	ScreenQuad::Vertex topRight(1.0f, -1.0f, 0.0f, 1.0f, 0.0f);
+	ScreenQuad::Vertex botRight(1.0f, 1.0f, 0.0f, 1.0f, 1.0f);
+	
 
 	m_screenQuad.mesh.push_back(topLeft);
 	m_screenQuad.mesh.push_back(botLeft);
-	m_screenQuad.mesh.push_back(botRight);
 	m_screenQuad.mesh.push_back(topRight);
+	m_screenQuad.mesh.push_back(botRight);
+	
 
 	if (SUCCEEDED(coreRender->OpenCommandList()))
 	{
@@ -295,7 +297,7 @@ HRESULT DeferredPass::_InitPipelineState()
 	rastDesc.DepthBias = 0;
 	rastDesc.DepthBiasClamp = 0.0f;
 	rastDesc.SlopeScaledDepthBias = 0.0f;
-	rastDesc.DepthClipEnable = TRUE;
+	rastDesc.DepthClipEnable = FALSE;
 	rastDesc.MultisampleEnable = FALSE;
 	rastDesc.AntialiasedLineEnable = FALSE;
 	rastDesc.ForcedSampleCount = 0;
@@ -305,7 +307,7 @@ HRESULT DeferredPass::_InitPipelineState()
 	graphicsPipelineStateDesc.RasterizerState = rastDesc;
 
 	D3D12_DEPTH_STENCIL_DESC depthDesc{};
-	depthDesc.DepthEnable = TRUE;
+	depthDesc.DepthEnable = FALSE;
 	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 	depthDesc.StencilEnable = FALSE;

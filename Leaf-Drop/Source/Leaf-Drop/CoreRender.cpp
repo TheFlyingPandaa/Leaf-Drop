@@ -129,11 +129,11 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
-	m_computePass = new ComputePass();
-	if (FAILED(hr = m_computePass->Init()))
-	{
-		return DEBUG::CreateError(hr);
-	}
+	//m_computePass = new ComputePass();
+	//if (FAILED(hr = m_computePass->Init()))
+	//{
+	//	return DEBUG::CreateError(hr);
+	//}
 
 
 	return hr;
@@ -145,7 +145,7 @@ void CoreRender::Release()
 
 	m_geometryPass->Release();
 	m_deferredPass->Release();
-	m_computePass->Release();
+	//m_computePass->Release();
 
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
@@ -362,9 +362,12 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_geometryPass->Update();
 	m_geometryPass->Draw();
 	
-	Sleep(100);
-	m_computePass->Update();
-	m_computePass->Draw();
+	m_deferredPass->Update();
+	m_deferredPass->Draw();
+
+	//Sleep(100);
+	//m_computePass->Update();
+	//m_computePass->Draw();
 
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
