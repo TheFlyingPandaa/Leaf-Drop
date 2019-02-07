@@ -345,6 +345,7 @@
     <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Texture.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\UAV.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Leaf-Drop\Passes\ComputePass.cpp" />
@@ -609,6 +610,7 @@
     <ClCompile Include="Source\Leaf-Drop\Objects\Transform.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Texture.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\UAV.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ExternalLibs\AssImp\include\assimp\color4.inl" />

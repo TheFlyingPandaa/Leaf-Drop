@@ -3,6 +3,7 @@
 #include "../Wrappers/RenderTarget.h"
 #include "../Wrappers/ConstantBuffer.h"
 #include "../Wrappers/DepthBuffer.h"
+#include "../Wrappers/UAV.h"
 
 class GeometryPass : public IRender
 {
@@ -37,6 +38,8 @@ private:
 
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;
+
+	UAV * m_uav;
 
 private:
 	HRESULT _Init();

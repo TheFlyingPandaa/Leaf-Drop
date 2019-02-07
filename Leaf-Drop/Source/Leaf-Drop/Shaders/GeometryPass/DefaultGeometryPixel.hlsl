@@ -20,6 +20,8 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
+RWBuffer<uint> RayStencil : register(u0);
+
 PS_OUTPUT main(VS_OUTPUT input)
 {
 	PS_OUTPUT output = (PS_OUTPUT)0;

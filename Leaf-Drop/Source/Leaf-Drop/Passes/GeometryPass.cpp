@@ -10,6 +10,9 @@
 #define CAMERA_BUFFER	0
 #define TEXTURE_SLOT	1
 #define WORLD_MATRICES	2
+#define UAV_OUTPUT		3
+
+#define FUCKED FAILED
 
 GeometryPass::GeometryPass() : IRender()
 {
@@ -53,6 +56,13 @@ HRESULT GeometryPass::Init()
 		{
 			return hr;
 		}
+	}
+
+
+	m_uav = new UAV();
+	if (FUCKED(hr = m_uav->Init(L"Cock", 1024 * 64, 64, 64)))
+	{
+		return hr;
 	}
 
 	return hr;
@@ -117,6 +127,10 @@ void GeometryPass::Update()
 
 	m_camBuffer.SetData(&viewProj, sizeof(DirectX::XMFLOAT4X4A));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
+
+
+	m_uav->Clear(commandList);
+	m_uav->Map(UAV_OUTPUT, commandList);
 }
 
 void GeometryPass::Draw()
@@ -146,10 +160,13 @@ void GeometryPass::Draw()
 void GeometryPass::Release()
 {
 	p_ReleaseCommandList();
+	m_uav->Release();
+	SAFE_DELETE(m_uav);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
 		SAFE_DELETE(m_renderTarget[i]);
 	}
+
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
 	
@@ -160,7 +177,7 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[3];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
@@ -168,6 +185,9 @@ HRESULT GeometryPass::_InitRootSignature()
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
+
+	rootParameters[UAV_OUTPUT].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
