@@ -28,10 +28,10 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 	
-	if (FAILED(hr = OpenCommandList()))
-	{
-		return hr;
-	}
+	//if (FAILED(hr = OpenCommandList()))
+	//{
+	//	return hr;
+	//}
 
 	if (FAILED(hr = _Init()))
 	{
@@ -47,15 +47,18 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_depthBuffer.Init(L"Geometry")))
+	if (FAILED(hr = m_depthBuffer.Init(L"Geometry",0,0,1,FALSE, DXGI_FORMAT_D32_FLOAT)))
 	{
 		return hr;
 	}
 
-	m_renderTarget = new RenderTarget();
-	if (FAILED(hr = m_renderTarget->Init(L"Geometry", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT, true)))
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
-		return hr;
+		m_renderTarget[i] = new RenderTarget();
+		if (FAILED(hr = m_renderTarget[i]->Init(L"Geometry", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT, true)))
+		{
+			return hr;
+		}
 	}
 
 	return hr;
@@ -73,17 +76,27 @@ void GeometryPass::Update()
 	
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 
-	m_renderTarget->SwitchToRTV(commandList);
-	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
-	{ m_renderTarget->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
-	frameIndex *
-	m_renderTarget->GetRenderTargetDescriptorHeapSize() };
+	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandles[RENDER_TARGETS];
+
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		m_renderTarget[i]->SwitchToRTV(commandList);
+	
+		const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
+		{ m_renderTarget[i]->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
+		frameIndex *
+		m_renderTarget[i]->GetRenderTargetDescriptorHeapSize() };
+
+		commandList->ClearRenderTargetView(rtvHandle, CLEAR_COLOR, 0, nullptr);
+		renderTargetHandles[i] = rtvHandle;
+
+	}
+	
 
 	auto h = m_depthBuffer.GetHandle();
 
-	commandList->OMSetRenderTargets(1, &rtvHandle, 1, &m_depthBuffer.GetHandle());
+	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_depthBuffer.GetHandle());
 	
-	commandList->ClearRenderTargetView(rtvHandle, CLEAR_COLOR, 0, nullptr);
 	m_depthBuffer.Clear(commandList);
 	
 	commandList->SetPipelineState(m_pipelineState);
@@ -126,17 +139,23 @@ void GeometryPass::Draw()
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
 	}
-	m_renderTarget->SwitchToSRV(commandList);
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		m_renderTarget[i]->SwitchToSRV(commandList);
+	}
 
 
 	ExecuteCommandList();
-	p_coreRender->GetDeferredPass()->SetGeometryData(&m_renderTarget, RENDER_TARGETS);
+	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 
 void GeometryPass::Release()
 {
 	p_ReleaseCommandList();
-	SAFE_DELETE(m_renderTarget);
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		SAFE_DELETE(m_renderTarget[i]);
+	}
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
 	
@@ -232,8 +251,9 @@ HRESULT GeometryPass::_InitPipelineState()
 	graphicsPipelineStateDesc.VS = m_vertexShader;
 	graphicsPipelineStateDesc.PS = m_pixelShader;
 	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	graphicsPipelineStateDesc.NumRenderTargets = 1;
-	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	graphicsPipelineStateDesc.NumRenderTargets = RENDER_TARGETS;
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+		graphicsPipelineStateDesc.RTVFormats[i] = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	graphicsPipelineStateDesc.SampleMask = 0xffffffff;
 
 	D3D12_RASTERIZER_DESC rastDesc{};

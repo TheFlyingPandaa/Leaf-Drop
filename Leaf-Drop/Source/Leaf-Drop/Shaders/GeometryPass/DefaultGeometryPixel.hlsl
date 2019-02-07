@@ -12,7 +12,20 @@ struct VS_OUTPUT
 	float2 uv : TEXCOORD;
 };
 
-float4 main(VS_OUTPUT input) : SV_TARGET
+struct PS_OUTPUT
 {
-	return albedo.Sample(defaultSampler, input.uv);
+	float4 position : SV_TARGET0;
+	float4 normal	: SV_TARGET1;
+	float4 albedo	: SV_TARGET2;
+	float4 metallic	: SV_TARGET3;
+};
+
+PS_OUTPUT main(VS_OUTPUT input)
+{
+	PS_OUTPUT output = (PS_OUTPUT)0;
+	output.position = input.worldPosition;
+	output.normal = input.normal;
+	output.albedo = albedo.Sample(defaultSampler, input.uv);
+	output.metallic = float4(1, 1, 1, 1);
+	return output;
 }

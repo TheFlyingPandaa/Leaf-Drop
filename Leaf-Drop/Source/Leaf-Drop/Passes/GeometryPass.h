@@ -8,7 +8,7 @@ class GeometryPass : public IRender
 {
 private:
 	static const UINT ROOT_PARAMETERS = 1;
-	static const UINT RENDER_TARGETS = 1;
+	static const UINT RENDER_TARGETS = 4;
 public:
 	GeometryPass();
 	~GeometryPass();
@@ -28,7 +28,7 @@ private:
 	D3D12_SHADER_BYTECODE m_vertexShader{}; 
 	D3D12_SHADER_BYTECODE m_pixelShader{};
 
-	RenderTarget * m_renderTarget = nullptr;
+	RenderTarget * m_renderTarget[RENDER_TARGETS] = { nullptr };
 
 	D3D12_VIEWPORT m_viewport{};
 	D3D12_RECT m_scissorRect{};
