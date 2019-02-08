@@ -4,14 +4,14 @@
 class ShaderCreator
 {
 public:
-	static HRESULT CreateShader(const std::wstring & path, ID3DBlob *& blob, const std::string & target, const std::string & entryPoint = "main")
+	static HRESULT CreateShader(const std::wstring & path, ID3DBlob *& blob, const std::string & target, const D3D_SHADER_MACRO * shaderMacro = nullptr, const std::string & entryPoint = "main")
 	{
 		HRESULT hr;
 
 		ID3DBlob * errorBlob = nullptr;
 		if (FAILED(hr = D3DCompileFromFile(
 			path.c_str(),
-			nullptr,
+			shaderMacro,
 			D3D_COMPILE_STANDARD_FILE_INCLUDE,
 			entryPoint.c_str(),
 			target.c_str(),

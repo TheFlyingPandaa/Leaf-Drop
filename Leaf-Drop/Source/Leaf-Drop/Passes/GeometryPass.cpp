@@ -6,7 +6,7 @@
 #include <EASTL/vector.h>
 #include "../Objects/Texture.h"
 #include "../Objects/Camera.h"
-
+#include <string>
 #define CAMERA_BUFFER	0
 #define TEXTURE_SLOT	1
 #define WORLD_MATRICES	2
@@ -129,6 +129,7 @@ void GeometryPass::Update()
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 
 
+
 	m_uav->Clear(commandList);
 	m_uav->Map(UAV_OUTPUT, commandList);
 }
@@ -156,11 +157,14 @@ void GeometryPass::Draw()
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
 	ExecuteCommandList();
 	
-	void * data = nullptr;
+	FLOAT * data = nullptr;
 	if (SUCCEEDED(m_uav->Read(data)))
 	{
+		PRINT(std::to_string(data[0]) + std::to_string(data[1]));
+		m_uav->Unmap();
 	}
 
+	m_uav->prevFrame = frameIndex;
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 
@@ -240,6 +244,7 @@ HRESULT GeometryPass::_InitShader()
 {
 	HRESULT hr = 0;
 	ID3DBlob * blob = nullptr;
+			
 	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryVertex.hlsl", blob, "vs_5_1")))
 	{
 		return hr;
@@ -247,7 +252,19 @@ HRESULT GeometryPass::_InitShader()
 	m_vertexShader.pShaderBytecode = blob->GetBufferPointer();
 	m_vertexShader.BytecodeLength = blob->GetBufferSize();
 
-	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1")))
+	std::string Wid(std::to_string(p_window->GetWindowSize().x));
+	std::string Hei(std::to_string(p_window->GetWindowSize().y));
+	std::string Wid_div(std::to_string(p_window->GetWindowSize().x / 32));
+	std::string Hei_div(std::to_string(p_window->GetWindowSize().y / 32));
+
+	D3D_SHADER_MACRO def[] = {
+		"WIDTH", Wid.c_str(),
+		"HEIGHT",Hei.c_str(),
+		"WIDTH_DIV",Wid_div.c_str(),
+		"HEIGHT_DIV", Hei_div.c_str(),
+		NULL,NULL};
+
+	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1", def)))
 	{
 		return hr;
 	}

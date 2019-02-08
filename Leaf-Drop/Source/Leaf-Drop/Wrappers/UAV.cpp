@@ -89,28 +89,13 @@ void UAV::Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * comm
 	commandList->SetGraphicsRootUnorderedAccessView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
 }
 
-HRESULT UAV::Read(void * data)
+void UAV::Unmap()
 {
-	HRESULT hr = 0;
-	const UINT frameIndex = m_coreRender->GetFrameIndex();
-
 	D3D12_RANGE range{ 0, m_bufferSize };
 
-	UINT * mapData = nullptr;
-
-	if (SUCCEEDED(hr = m_resource[frameIndex]->Map(0,&range, reinterpret_cast<void**>(&mapData))))
-	{
-		
-		//memcpy(data, mapData, m_bufferSize);
-
-		UINT lol = mapData[0];
-		PRINT(lol);
-
-		m_resource[frameIndex]->Unmap(0, &range);
-	}
-
-	return hr;
+	m_resource[prevFrame]->Unmap(0, &range);
 }
+
 
 ID3D12Resource * const * UAV::GetResource() const
 {

@@ -11,11 +11,15 @@ public:
 
 	void Clear(ID3D12GraphicsCommandList * commandList);
 	void Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
-	HRESULT Read(void * data);
+	template <typename T>
+	HRESULT Read(T*& data);
+	void Unmap();
+
+	
 
 	ID3D12Resource *const* GetResource() const;
 
-
+	UINT prevFrame;
 
 private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
@@ -26,4 +30,14 @@ private:
 
 	SIZE_T m_resourceDescriptorHeapOffset = 0;
 };
+
+template <typename T>
+HRESULT UAV::Read(T *& data)
+{
+	HRESULT hr = 0;
+	D3D12_RANGE range{ 0, m_bufferSize };
+	hr = m_resource[prevFrame]->Map(0, &range, reinterpret_cast<void**>(&data));
+	return hr;
+}
+
 

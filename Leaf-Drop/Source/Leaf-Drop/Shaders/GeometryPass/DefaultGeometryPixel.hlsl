@@ -20,7 +20,7 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
-RWStructuredBuffer<uint> RayStencil : register(u0);
+RWStructuredBuffer<float> RayStencil : register(u0);
 
 PS_OUTPUT main(VS_OUTPUT input)
 {
@@ -31,7 +31,8 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.metallic = float4(1, 1, 1, 1);
 	
 
-	RayStencil[0] = 1;
+	RayStencil[0] = WIDTH;
+	RayStencil[1] = HEIGHT;
 	
 	return output;
 }

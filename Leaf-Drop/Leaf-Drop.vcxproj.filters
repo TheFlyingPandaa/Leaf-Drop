@@ -1357,9 +1357,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryVertex.hlsl" />
-    <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\DeferredPass\DefaultDeferredPixel.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\DeferredPass\DefaultDeferredVertex.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl" />
+    <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
   </ItemGroup>
 </Project>
