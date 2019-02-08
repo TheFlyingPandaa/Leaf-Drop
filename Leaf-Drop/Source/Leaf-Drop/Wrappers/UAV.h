@@ -11,7 +11,11 @@ public:
 
 	void Clear(ID3D12GraphicsCommandList * commandList);
 	void Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
-	void Read(void * data, UINT * size);
+	HRESULT Read(void * data);
+
+	ID3D12Resource *const* GetResource() const;
+
+
 
 private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };

@@ -153,7 +153,14 @@ void GeometryPass::Draw()
 	}
 
 
+	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
 	ExecuteCommandList();
+	
+	void * data = nullptr;
+	if (SUCCEEDED(m_uav->Read(data)))
+	{
+	}
+
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 
@@ -171,6 +178,11 @@ void GeometryPass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	
 	m_depthBuffer.Release();
+}
+
+UAV * GeometryPass::GetUAV()
+{
+	return m_uav;
 }
 
 HRESULT GeometryPass::_InitRootSignature()

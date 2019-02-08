@@ -128,10 +128,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 				rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
 				rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
+				static bool moveCamera = true;
 
-				cam.Rotate(rotDir);
+				if (moveCamera)
+				{
+					cam.Rotate(rotDir);
 
-				wnd->ResetMouse();
+					wnd->ResetMouse();
+				}
+				if (wnd->IsKeyPressed(Input::Z))
+					moveCamera = true;
+				if (wnd->IsKeyPressed(Input::X))
+					moveCamera = false;
 
 				moveDir.x *= (FLOAT)dt;
 				moveDir.y *= (FLOAT)dt;

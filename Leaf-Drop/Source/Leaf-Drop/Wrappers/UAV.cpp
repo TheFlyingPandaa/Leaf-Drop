@@ -73,26 +73,14 @@ void UAV::Release()
 void UAV::Clear(ID3D12GraphicsCommandList * commandList)
 {
 	const UINT frameIndex = m_coreRender->GetFrameIndex();
-	//
-	//m_coreRender->SetResourceDescriptorHeap(commandList);
-	//
-	//commandList->ClearUnorderedAccessViewUint(
-	//	{ m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_resourceDescriptorHeapOffset },
-	//	{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_resourceDescriptorHeapOffset },
-	//	m_resource[frameIndex],
-	//	{ 0U },
-	//	0,
-	//	nullptr);
-
-	UINT64 nullData = 0;
 	UINT8 * data = nullptr;
 	D3D12_RANGE range{ 0,0 };
-	m_resource[frameIndex]->Map(0, &range, reinterpret_cast<void**>(&data));
-	
-	memcpy(data, &nullData, m_bufferSize);
 
-	m_resource[frameIndex]->Unmap(0,&range);
-
+	if (SUCCEEDED(m_resource[frameIndex]->Map(0, &range, reinterpret_cast<void**>(&data))))
+	{
+		ZeroMemory(data, m_bufferSize);
+		m_resource[frameIndex]->Unmap(0,&range);
+	}
 }
 
 void UAV::Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
@@ -101,6 +89,30 @@ void UAV::Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * comm
 	commandList->SetGraphicsRootUnorderedAccessView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
 }
 
-void UAV::Read(void * data, UINT * size)
+HRESULT UAV::Read(void * data)
 {
+	HRESULT hr = 0;
+	const UINT frameIndex = m_coreRender->GetFrameIndex();
+
+	D3D12_RANGE range{ 0, m_bufferSize };
+
+	UINT * mapData = nullptr;
+
+	if (SUCCEEDED(hr = m_resource[frameIndex]->Map(0,&range, reinterpret_cast<void**>(&mapData))))
+	{
+		
+		//memcpy(data, mapData, m_bufferSize);
+
+		UINT lol = mapData[0];
+		PRINT(lol);
+
+		m_resource[frameIndex]->Unmap(0, &range);
+	}
+
+	return hr;
+}
+
+ID3D12Resource * const * UAV::GetResource() const
+{
+	return m_resource;
 }

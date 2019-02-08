@@ -20,6 +20,8 @@ public:
 	void Draw() override;
 	void Release() override;
 
+	UAV * GetUAV();
+
 private:
 	ID3D12PipelineState * m_pipelineState = nullptr;
 	ID3D12RootSignature * m_rootSignature = nullptr;

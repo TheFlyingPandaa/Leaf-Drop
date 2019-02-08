@@ -20,7 +20,7 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
-RWBuffer<uint> RayStencil : register(u0);
+RWStructuredBuffer<uint> RayStencil : register(u0);
 
 PS_OUTPUT main(VS_OUTPUT input)
 {
@@ -29,5 +29,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.normal = input.normal;
 	output.albedo = albedo.Sample(defaultSampler, input.uv);
 	output.metallic = float4(1, 1, 1, 1);
+	
+
+	RayStencil[0] = 1;
+	
 	return output;
 }
