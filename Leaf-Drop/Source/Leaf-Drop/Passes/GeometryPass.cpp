@@ -256,12 +256,14 @@ HRESULT GeometryPass::_InitShader()
 	std::string Hei(std::to_string(p_window->GetWindowSize().y));
 	std::string Wid_div(std::to_string(p_window->GetWindowSize().x / 32));
 	std::string Hei_div(std::to_string(p_window->GetWindowSize().y / 32));
+	std::string RaySquareSize(std::to_string(32));
 
 	D3D_SHADER_MACRO def[] = {
 		"WIDTH", Wid.c_str(),
 		"HEIGHT",Hei.c_str(),
 		"WIDTH_DIV",Wid_div.c_str(),
 		"HEIGHT_DIV", Hei_div.c_str(),
+		"SQUARE_SIZE", RaySquareSize.c_str(),
 		NULL,NULL};
 
 	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1", def)))
