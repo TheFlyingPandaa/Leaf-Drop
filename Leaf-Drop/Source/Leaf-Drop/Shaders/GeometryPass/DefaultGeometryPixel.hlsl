@@ -32,7 +32,12 @@ PS_OUTPUT main(VS_OUTPUT input)
 
     float2 fIndex = (output.position.xy + float2(1.0f, 1.0f)) * 0.5f;
 
-    RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = length(output.metallic) > 0.5f;
+    //RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = 0.0f;
+    //RayStencil[0] = WIDTH_DIV;
+    //RayStencil[1] = HEIGHT_DIV;
 	
+    RayStencil[0] = 50;
+    RayStencil[1] = 10;
+
 	return output;
 }

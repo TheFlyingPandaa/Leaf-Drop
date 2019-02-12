@@ -58,12 +58,19 @@ HRESULT GeometryPass::Init()
 		}
 	}
 
+	Window * wnd = Window::GetInstance();
+	POINT p = wnd->GetWindowSize();
+	UINT elements = (p.x / 32) * (p.y / 32);
 
 	m_uav = new UAV();
 	if (FUCKED(hr = m_uav->Init(L"Cock", 1024 * 64, 64, 64)))
 	{
 		return hr;
 	}
+	/*if (FUCKED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
+	{
+		return hr;
+	}*/
 
 	return hr;
 }
@@ -158,9 +165,11 @@ void GeometryPass::Draw()
 	ExecuteCommandList();
 	
 	FLOAT * data = nullptr;
+	
+
 	if (SUCCEEDED(m_uav->Read(data)))
 	{
-		PRINT(std::to_string(data[0]) + std::to_string(data[1]));
+		PRINT(std::to_string(data[0]) + " " + std::to_string(data[1]));
 		m_uav->Unmap();
 	}
 
@@ -256,14 +265,12 @@ HRESULT GeometryPass::_InitShader()
 	std::string Hei(std::to_string(p_window->GetWindowSize().y));
 	std::string Wid_div(std::to_string(p_window->GetWindowSize().x / 32));
 	std::string Hei_div(std::to_string(p_window->GetWindowSize().y / 32));
-	std::string RaySquareSize(std::to_string(32));
 
 	D3D_SHADER_MACRO def[] = {
-		"WIDTH", Wid.c_str(),
-		"HEIGHT",Hei.c_str(),
-		"WIDTH_DIV",Wid_div.c_str(),
-		"HEIGHT_DIV", Hei_div.c_str(),
-		"SQUARE_SIZE", RaySquareSize.c_str(),
+		"WIDTH",		Wid.c_str(),
+		"HEIGHT",		Hei.c_str(),
+		"WIDTH_DIV",	Wid_div.c_str(),
+		"HEIGHT_DIV",	Hei_div.c_str(),
 		NULL,NULL};
 
 	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1", def)))
