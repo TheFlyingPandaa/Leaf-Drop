@@ -13,6 +13,7 @@ struct VS_OUTPUT
 	float4 biTangent : BITANGENT;
 	float3x3 TBN : TBN;
 	float2 uv : TEXCOORD;
+    float2 ndc : NDCCOORD;
 };
 
 struct PS_OUTPUT
@@ -23,7 +24,7 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
-RWStructuredBuffer<float> RayStencil : register(u0);
+RWStructuredBuffer<int> RayStencil : register(u0);
 
 PS_OUTPUT main(VS_OUTPUT input)
 {
@@ -34,8 +35,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.metallic = metallic.Sample(defaultSampler, input.uv);
 	
 
-	RayStencil[0] = WIDTH;
-	RayStencil[1] = HEIGHT;
-	
+    float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
+
+    RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = length(output.metallic.xyz) > 0.5;
+    
 	return output;
 }

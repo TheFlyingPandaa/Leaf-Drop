@@ -24,6 +24,7 @@ struct VS_OUTPUT
 	float4 biTangent : BITANGENT;
 	float3x3 TBN : TBN;
 	float2 uv : TEXCOORD;
+    float2 ndc : NDCCOORD;
 };
 
 VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
@@ -36,6 +37,7 @@ VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 	output.tangent =		input.tangent;
 	output.biTangent =		input.biTangent;
 	output.uv =				input.uv;
+    output.ndc =            output.position.xy / output.position.w;
 
 	float3 tangent = normalize(mul(input.tangent, WorldMatrix[instanceID]).xyz);
 	tangent = normalize(tangent - dot(tangent, output.normal.xyz) * output.normal.xyz).xyz;

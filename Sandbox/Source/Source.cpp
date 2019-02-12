@@ -24,7 +24,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 #endif
 	Core * core = new Core();
 	
-
 	Timer timer;
 	
 	if (SUCCEEDED(core->Init(hInstance)))
@@ -49,7 +48,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		}
 
-
 		cam.CreateProjectionMatrix(0.01f, 1000.0f);
 		cam.SetPosition(0, 0, 0);
 		cam.SetAsActiveCamera();
@@ -63,7 +61,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 100;
-
 
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
@@ -83,8 +80,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetScale(scl, scl, scl);
 		}
 		
-		
-
 		float rot = 0;
 		timer.Start();
 
@@ -188,7 +183,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
-				d[i].SetRotation(0, rot, -rot);
+				//d[i].SetRotation(0, rot, -rot);
 				d[i].Update();
 				d[i].Draw();
 			}
