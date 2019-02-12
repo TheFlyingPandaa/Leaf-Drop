@@ -103,6 +103,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Objects\Lights\DirectionalLight.h" />
+    <ClInclude Include="Source\Leaf-Drop\Objects\Lights\PointLight.h" />
+    <ClInclude Include="Source\Leaf-Drop\Objects\Lights\Template\ILight.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\ComputePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\DeferredPass.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Camera.h" />
@@ -348,6 +351,9 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\UAV.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Objects\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Objects\Lights\PointLight.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Objects\Lights\Template\ILight.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\ComputePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\DeferredPass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Camera.cpp" />
@@ -757,6 +763,7 @@
     <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_VSQuad.inc" />
     <None Include="ExternalLibs\DirectXTK\Src\TeapotData.inc" />
     <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
+    <None Include="Source\Leaf-Drop\Shaders\LightCalculations.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl">

@@ -1,9 +1,11 @@
 #include "CorePCH.h"
 #include "IRender.h"
 #include "Source/Leaf-Drop/Objects/Drawable.h"
+#include "../../Objects/Lights/Template/ILight.h"
 void IRender::Clear()
 {
 	p_drawQueue.clear();
+	p_lightQueue.clear();
 }
 
 HRESULT IRender::OpenCommandList(ID3D12PipelineState * pipelineSate)
@@ -95,8 +97,9 @@ void IRender::Submit(Drawable * drawable)
 	}
 }
 
-void IRender::SubmitLight(Light * light)
+void IRender::SubmitLight(ILight * light)
 {
+	p_lightQueue.push_back(light);
 }
 
 IRender::InstanceGroup::InstanceGroup(Drawable * drawable)

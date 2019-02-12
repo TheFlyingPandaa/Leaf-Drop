@@ -2,12 +2,17 @@
 #include "DeferredPass.h"
 #include "../Wrappers/ShaderCreator.h"
 #include "../Objects/Camera.h"
+#include "Source/Leaf-Drop/Objects/Lights/Template/ILight.h"
+#include "Source/Leaf-Drop/Objects/Lights/PointLight.h"
+#include "Source/Leaf-Drop/Objects/Lights/DirectionalLight.h"
 
 #define CAMERA_BUFFER	0
 #define POSITION		1
 #define NORMAL			2
 #define ALBEDO			3
 #define METALLIC		4
+#define LIGHT_TABLE		5
+#define LIGHT_BUFFER	6
 
 DeferredPass::DeferredPass() : IRender()
 {
@@ -33,13 +38,21 @@ HRESULT DeferredPass::Init()
 	{
 		return hr;
 	}
+	const UINT bufferSize = 1024 * 64;
+	const UINT elementSize = sizeof(LIGHT_VALUES);
 
-	/*
-		if (FAILED(hr = m_camBuffer.Init(sizeof(Light), L"DeferredLights")))
-		{
-			return hr;
-		}
-	*/
+	if (FAILED(hr = m_lightUav.Init(L"Deferred Lights", bufferSize, bufferSize / elementSize, elementSize)))
+	{		
+		return hr;
+	}
+
+	if (FAILED(hr = m_lightsBuffer.Init(256, L"Deferred Light", ConstantBuffer::CBV_TYPE::CONSTANT_BUFFER)))
+	{		
+		return hr;
+	}
+
+	m_lightUav.ConstantMap();
+	
 
 	return hr;
 }
@@ -50,6 +63,7 @@ void DeferredPass::Update()
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 
+	
 
 	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
 	{ p_coreRender->GetRTVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
@@ -65,6 +79,10 @@ void DeferredPass::Update()
 	commandList->RSSetViewports(1, &m_viewport);
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	_SetLightData();
+	m_lightUav.SetGraphicsRootShaderResourceView(LIGHT_TABLE, commandList);
+	m_lightsBuffer.Bind(LIGHT_BUFFER, commandList);
 
 	Camera * cam = Camera::GetActiveCamera();
 
@@ -93,9 +111,9 @@ void DeferredPass::Draw()
 
 void DeferredPass::Release()
 {
+	m_lightUav.Release();
 	m_screenQuad.Release();
-	//p_ReleaseCommandList();
-	//SAFE_DELETE(m_renderTarget);
+
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
 }
@@ -219,15 +237,18 @@ HRESULT DeferredPass::_InitRootSignature()
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
 	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 2);
 	D3D12_DESCRIPTOR_RANGE1 descRange3 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 3);
+	D3D12_DESCRIPTOR_RANGE1 descRange4 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1, 0);
 	
 
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[7];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[POSITION].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[NORMAL].InitAsDescriptorTable(1, &descRange1, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[ALBEDO].InitAsDescriptorTable(1, &descRange2, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[METALLIC].InitAsDescriptorTable(1, &descRange3, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
@@ -385,6 +406,44 @@ void DeferredPass::_CreateViewPort()
 	m_scissorRect.top = 0;
 	m_scissorRect.right = wndSize.x;
 	m_scissorRect.bottom = wndSize.y;
+}
+
+void DeferredPass::_SetLightData()
+{
+	LIGHT_VALUES values;
+
+	PointLight * pl;
+	DirectionalLight * dl;
+
+	struct
+	{
+		UINT a, b, c, d;
+	} uint4;
+
+	uint4.a = static_cast<UINT>(p_lightQueue.size());
+	m_lightsBuffer.SetData(&uint4, sizeof(UINT) * 4);
+
+
+	for (UINT i = 0; i < p_lightQueue.size(); i++)
+	{
+		values.Position = p_lightQueue[i]->GetPosition();
+		values.Color = p_lightQueue[i]->GetColor();
+
+		values.Type.x = p_lightQueue[i]->GetType();
+		values.Type.y = p_lightQueue[i]->GetType();
+		values.Type.z = p_lightQueue[i]->GetType();
+		values.Type.w = p_lightQueue[i]->GetType();
+		
+		if (pl = dynamic_cast<PointLight*>(p_lightQueue[i]))
+		{
+			values.Point = DirectX::XMFLOAT4(pl->GetIntensity(), pl->GetDropOff(), pl->GetPow(), pl->GetRadius());
+		}
+		if (dl = dynamic_cast<DirectionalLight*>(p_lightQueue[i]))
+		{
+			values.Direction = DirectX::XMFLOAT4(dl->GetDirection().x, dl->GetDirection().y, dl->GetDirection().z, dl->GetIntensity());
+		}
+		m_lightUav.CopyData(&values, sizeof(LIGHT_VALUES), i * sizeof(LIGHT_VALUES));
+	}
 }
 
 void DeferredPass::ScreenQuad::Release()
