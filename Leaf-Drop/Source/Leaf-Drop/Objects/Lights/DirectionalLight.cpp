@@ -1,0 +1,61 @@
+﻿#include "DirectionalLight.h"
+
+
+
+DirectionalLight::~DirectionalLight()
+{
+	SAFE_DELETE(m_camera);
+}
+
+BOOL DirectionalLight::Init()
+{
+	if (!ILight::Init())
+		return FALSE;
+	m_camera->Init();
+	if (FAILED(p_createDirectXContext()))
+	{
+		return FALSE;
+	}
+	return TRUE;
+}
+
+void DirectionalLight::Update()
+{
+	m_camera->Update();
+}
+
+void DirectionalLight::Release()
+{
+	m_camera->Release();
+	ILight::Release();
+}
+
+Camera* DirectionalLight::GetCamera() const
+{
+	return this->m_camera;
+}
+
+void DirectionalLight::SetDirection(const DirectX::XMFLOAT4& direction) const
+{
+	m_camera->SetDirection(direction);
+}
+
+void DirectionalLight::SetDirection(const float& x, const float& y, const float& z, const float& w) const
+{
+	this->SetDirection(DirectX::XMFLOAT4(x, y, z, w));
+}
+
+void DirectionalLight::SetPosition(const DirectX::XMFLOAT4& position)
+{
+	Transform::SetPosition(position);
+	this->m_camera->SetPosition(position);
+}
+
+void DirectionalLight::SetPosition(const float& x, const float& y, const float& z, const float& w)
+{
+	SetPosition(DirectX::XMFLOAT4(x, y, z, w));
+}
+
+
+
+
