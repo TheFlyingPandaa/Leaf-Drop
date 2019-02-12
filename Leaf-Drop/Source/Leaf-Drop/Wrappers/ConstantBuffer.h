@@ -1,8 +1,9 @@
 #pragma once
+#include "Template/LeafObject.h"
 
-class ConstantBuffer
+class ConstantBuffer : public LeafObject
 {
-public:
+
 	enum CBV_TYPE
 	{
 		CONSTANT_BUFFER,
@@ -19,6 +20,7 @@ public:
 	
 	void SetData(void * data, UINT size, UINT offset = 0);
 
+	void Release() override;
 private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
 	void * m_data = nullptr;
