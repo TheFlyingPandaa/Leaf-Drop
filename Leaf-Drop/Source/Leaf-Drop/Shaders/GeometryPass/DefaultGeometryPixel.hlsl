@@ -34,10 +34,13 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.albedo = albedo.Sample(defaultSampler, input.uv);
 	output.metallic = metallic.Sample(defaultSampler, input.uv);
 	
+    bool CastRay = length(output.metallic.xyz) > 0.5;
 
-    float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
-
-    RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = length(output.metallic.xyz) > 0.5;
+    if (CastRay)
+    {
+        float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
+        RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = 1;
+    }
     
 	return output;
 }
