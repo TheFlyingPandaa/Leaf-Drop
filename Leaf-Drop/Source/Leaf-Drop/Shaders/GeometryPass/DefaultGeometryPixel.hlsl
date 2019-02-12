@@ -34,7 +34,7 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.albedo = albedo.Sample(defaultSampler, input.uv);
 	output.metallic = metallic.Sample(defaultSampler, input.uv);
 	
-    bool CastRay = length(output.metallic.xyz) > 0.5;
+    bool CastRay = output.metallic.r > 0.5;
 
     if (CastRay)
     {

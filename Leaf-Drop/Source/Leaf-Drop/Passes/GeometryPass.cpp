@@ -137,6 +137,8 @@ void GeometryPass::Update()
 	m_uav->Map(UAV_OUTPUT, commandList);
 }
 
+
+#include <fstream>
 void GeometryPass::Draw()
 {
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
@@ -167,13 +169,18 @@ void GeometryPass::Draw()
 	ExecuteCommandList();
 	
 	INT * data = nullptr;
-	
 
-	if (SUCCEEDED(m_uav->Read(data)))
-	{
-		//PRINT(std::to_string(data[0]) + " " + std::to_string(data[1]));
-		m_uav->Unmap();
-	}
+	// Send m_uav to ray pass
+
+
+
+	//temp
+	//if (SUCCEEDED(m_uav->Read(data)))
+	//{
+
+	//	m_uav->Unmap();
+	//}
+	
 
 	m_uav->prevFrame = frameIndex;
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
