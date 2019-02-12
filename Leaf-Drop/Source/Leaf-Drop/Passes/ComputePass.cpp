@@ -4,6 +4,7 @@
 #include "../Objects/Camera.h"
 
 #define RAY_SQUARE_INDEX 0
+#define RAY_TEXTURE 1
 
 ComputePass::ComputePass()
 {
@@ -27,7 +28,7 @@ HRESULT ComputePass::Init()
 
 void ComputePass::Update()
 {
-
+	m_rayTexture.Clear(p_commandList[p_coreRender->GetFrameIndex()]);
 }
 
 void ComputePass::Draw()
@@ -52,6 +53,8 @@ void ComputePass::Draw()
 	data.viewerPos.y = (float)windowSize.y * 0.5f;
 	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
 	data.viewerPos.w = 1.0f;
+
+	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
 
 	for (LONG y = 0; y < nrOfRayTiles.y; y++)
 	{
@@ -121,6 +124,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
+	if (FAILED(hr = m_rayTexture.Init()))
+	{
+		return hr;
+	}
+
 	if (FAILED(hr = OpenCommandList()))
 	{
 		return hr;
@@ -163,8 +171,9 @@ HRESULT ComputePass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[2];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
+	rootParameters[RAY_TEXTURE].InitAsShaderResourceView(0);
 
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;

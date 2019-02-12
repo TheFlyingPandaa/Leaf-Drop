@@ -341,6 +341,7 @@
     <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
     <ClInclude Include="Source\Leaf-Drop\Utillity\Timer.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderCreator.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderResource.h" />
     <ClInclude Include="Source\Window\Window.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
@@ -606,6 +607,7 @@
     <ClCompile Include="Source\Leaf-Drop\Passes\Template\IRender.cpp" />
     <ClCompile Include="Source\Leaf-Drop\CoreRender.cpp" />
     <ClCompile Include="Source\Core.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\ShaderResource.cpp" />
     <ClCompile Include="Source\Window\Window.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Transform.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "Template/IRender.h"
+#include "../Wrappers/ShaderResource.h"
 
 class ComputePass : public IRender
 {
@@ -47,4 +48,5 @@ private:
 	UINT64 					m_fenceValue[FRAME_BUFFER_COUNT]{ 0 };
 
 	ConstantBuffer m_squareIndex;
+	ShaderResource m_rayTexture;
 };
