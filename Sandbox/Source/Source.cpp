@@ -55,8 +55,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		cam.SetAsActiveCamera();
 
 		StaticMesh * m = new StaticMesh();
-		Texture * t = new Texture();
-		t->LoadTexture(L"..\\Assets\\Textures\\BoobieWaSHere.png");
+		Texture * t = new Texture[3];
+		t[0].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_diffuse.bmp");
+		t[1].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_normal.bmp");
+		t[2].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_metallic.bmp");
+
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 100;
@@ -65,7 +68,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
-			d[i].SetTexture(t);
+			d[i].SetTexture(&t[0]);
+			d[i].SetNormal(&t[1]);
+			d[i].SetMetallic(&t[2]);
 			d[i].SetMesh(m);
 
 			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
@@ -198,7 +203,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		}
 		core->ClearGPU();
 		delete m;
-		delete t;
+		delete[] t;
 		delete[] d;
 	}
 	core->Release();

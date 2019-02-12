@@ -1,5 +1,7 @@
 SamplerState defaultSampler : register(s0);
 Texture2D albedo : register(t0);
+Texture2D normal : register(t1);
+Texture2D metallic : register(t2);
 
 
 struct VS_OUTPUT
@@ -9,6 +11,7 @@ struct VS_OUTPUT
 	float4 normal : NORMAL;
 	float4 tangent : TANGENT;
 	float4 biTangent : BITANGENT;
+	float3x3 TBN : TBN;
 	float2 uv : TEXCOORD;
 };
 
@@ -26,9 +29,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 {
 	PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
-	output.normal = input.normal;
+	output.normal = float4(normalize(input.normal.xyz + mul((2.0f * normal.Sample(defaultSampler, input.uv).xyz - 1.0f), input.TBN)), 0);
 	output.albedo = albedo.Sample(defaultSampler, input.uv);
-	output.metallic = float4(1, 1, 1, 1);
+	output.metallic = metallic.Sample(defaultSampler, input.uv);
 	
 
 	RayStencil[0] = WIDTH;

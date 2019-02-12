@@ -40,7 +40,9 @@ protected:
 		};
 		
 		std::vector<ObjectData> ObjectData;
-		Texture * TexPtr;
+		Texture * DiffuseTexture;
+		Texture * NormalTexture;
+		Texture * MetallicTexture;
 		StaticMesh * MeshPtr;
 
 		InstanceGroup(Drawable * drawable);

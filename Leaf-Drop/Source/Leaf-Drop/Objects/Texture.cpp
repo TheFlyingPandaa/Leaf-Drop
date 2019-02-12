@@ -1,6 +1,7 @@
 #include "CorePCH.h"
 #include "Texture.h"
 #include <ResourceUploadBatch.h>
+#include "WICTextureLoader.h"
 
 Texture::Texture()
 {
