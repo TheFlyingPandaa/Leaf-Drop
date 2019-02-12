@@ -65,9 +65,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 100;
+		const UINT NUMBER_OF_LIGHTS = 100;
 
-		PointLight * pointLight = new PointLight[NUMBER_OF_DRAWABLES / 2];
-		for (int i = 0; i < NUMBER_OF_DRAWABLES / 2; i++)
+		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
+		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
 		{
 			pointLight[i].SetIntensity(10);
 
@@ -220,7 +221,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				d[i].Draw();
 
 			}
-			for (UINT i = 0; i < NUMBER_OF_DRAWABLES / 2; i++)
+			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{
 				pointLight[i].Queue();
 			}

@@ -7,6 +7,8 @@
 #include "../Objects/Texture.h"
 #include "../Objects/Camera.h"
 #include <string>
+
+
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
 #define UAV_OUTPUT		2
@@ -39,7 +41,7 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_worldMatrices.Init(16384 * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
+	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
 	{
 		return hr;
 	}
