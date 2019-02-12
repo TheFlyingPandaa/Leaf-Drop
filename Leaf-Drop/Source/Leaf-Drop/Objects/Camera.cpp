@@ -29,10 +29,15 @@ void Camera::CreateProjectionMatrix(const float & nearPlane, const float & farPl
 {
 	POINT wndSize = Window::GetInstance()->GetWindowSize();
 
-	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov),
+	m_NearPlane = nearPlane;
+	m_FarPlane = farPlane;
+	m_FOV = DirectX::XMConvertToRadians(fov);
+
+	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(m_FOV,
 		static_cast<float>(wndSize.x) / static_cast<float>(wndSize.y), nearPlane, farPlane);
 
 	DirectX::XMStoreFloat4x4A(&m_projectionMatrix, proj);
+
 }
 
 void Camera::Update()
@@ -168,6 +173,21 @@ const DirectX::XMFLOAT4X4A & Camera::GetProjectionMatrix() const
 const DirectX::XMFLOAT4X4A & Camera::GetViewProjectionMatrix() const
 {
 	return m_viewProjectionMatrix;
+}
+
+const float & Camera::GetNearPlaneDistance() const
+{
+	return m_NearPlane;
+}
+
+const float & Camera::GetFarPlaneDistance() const
+{
+	return m_FarPlane;
+}
+
+const float & Camera::GetFOV() const
+{
+	return m_FOV;
 }
 
 void Camera::_calcMatrices()

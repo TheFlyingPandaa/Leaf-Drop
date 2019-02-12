@@ -35,10 +35,19 @@ public:
 	const DirectX::XMFLOAT4X4A & GetProjectionMatrix() const;
 	const DirectX::XMFLOAT4X4A & GetViewProjectionMatrix() const;
 
+	const float & GetNearPlaneDistance() const;
+	const float & GetFarPlaneDistance() const;
+	const float & GetFOV() const;
+
 private:
 	DirectX::XMFLOAT4 m_position =	DirectX::XMFLOAT4(0, 0, 0, 1);
 	DirectX::XMFLOAT4 m_up =		DirectX::XMFLOAT4(0, 1, 0, 0);
 	DirectX::XMFLOAT4 m_direction = DirectX::XMFLOAT4(0, 0, 1, 0);
+
+	float m_FOV = 0.0f;
+	float m_NearPlane = 0.0f;
+	float m_FarPlane = 0.0f;
+
 
 	DirectX::XMFLOAT4 m_forward = DirectX::XMFLOAT4(0, 0, 1, 0);
 	DirectX::XMFLOAT4 m_right = DirectX::XMFLOAT4(1, 0, 0, 0);
@@ -46,6 +55,9 @@ private:
 	DirectX::XMFLOAT4X4A m_viewMatrix;
 	DirectX::XMFLOAT4X4A m_projectionMatrix;
 	DirectX::XMFLOAT4X4A m_viewProjectionMatrix;
+
+
+
 
 private:
 	void _calcMatrices();

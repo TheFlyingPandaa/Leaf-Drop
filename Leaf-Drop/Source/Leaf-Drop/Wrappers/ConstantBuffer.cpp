@@ -121,6 +121,21 @@ void ConstantBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * c
 	
 }
 
+void ConstantBuffer::BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset)
+{
+	const UINT currentFrame = m_coreRender->GetFrameIndex();
+
+	switch (m_type)
+	{
+	case ConstantBuffer::CONSTANT_BUFFER:
+		commandList->SetComputeRootConstantBufferView(rootParameterIndex, m_resource[currentFrame]->GetGPUVirtualAddress() + offset);
+		break;
+	case ConstantBuffer::STRUCTURED_BUFFER:
+		commandList->SetComputeRootShaderResourceView(rootParameterIndex, m_resource[currentFrame]->GetGPUVirtualAddress() + offset);
+		break;
+	}
+}
+
 void ConstantBuffer::SetData(void * data, UINT size, UINT offset)
 {
 	const UINT currentFrame = m_coreRender->GetFrameIndex();
