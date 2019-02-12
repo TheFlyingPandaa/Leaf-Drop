@@ -68,6 +68,22 @@ private:
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
+	struct LIGHT_VALUES
+	{
+		DirectX::XMUINT4 Type;
+		DirectX::XMFLOAT4 Position;
+		DirectX::XMFLOAT4 Color;
+		union
+		{
+			DirectX::XMFLOAT4 Direction;
+			DirectX::XMFLOAT4 Point;
+		};
+			
+	};
+
+	UAV m_lightUav;
+	
+
 private:
 	HRESULT _Init();
 	HRESULT _CreateScreenQuad(CoreRender * coreRender, const UINT & frameIndex, ID3D12GraphicsCommandList * commandList);
@@ -76,5 +92,7 @@ private:
 	HRESULT _InitShader();
 	HRESULT _InitPipelineState();
 	void	_CreateViewPort();
+
+	void _SetLightData();
 };
 

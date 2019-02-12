@@ -11,10 +11,14 @@ public:
 
 	void Clear(ID3D12GraphicsCommandList * commandList);
 	void Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
+	void SetGraphicsRootShaderResourceView(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList);
 	template <typename T>
 	HRESULT Read(T*& data);
 	void Unmap();
 
+	HRESULT ConstantMap();
+	void UnmapAll();
+	void CopyData(void * data, const UINT & size, const UINT & offset = 0); /*The Uav must be mapped for this to work*/
 	
 
 	ID3D12Resource *const* GetResource() const;
@@ -22,6 +26,7 @@ public:
 	UINT prevFrame;
 
 private:
+	UINT8 * m_gpuAddress[FRAME_BUFFER_COUNT] = { nullptr };
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
 
 	CoreRender * m_coreRender = nullptr;

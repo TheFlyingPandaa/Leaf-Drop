@@ -1,5 +1,7 @@
 #include <iostream>
 #include <Core.h>
+#include "Leaf-Drop/Objects/Lights/DirectionalLight.h"
+#include "Leaf-Drop/Objects/Lights/PointLight.h"
 
 #if _DEBUG
 
@@ -64,7 +66,28 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		const UINT NUMBER_OF_DRAWABLES = 100;
 
+		PointLight * pointLight = new PointLight[NUMBER_OF_DRAWABLES / 2];
+		for (int i = 0; i < NUMBER_OF_DRAWABLES / 2; i++)
+		{
+			pointLight[i].SetIntensity(10);
 
+			float r = static_cast<float>(rand() % 100) / 100.0f;
+			float g = static_cast<float>(rand() % 100) / 100.0f;
+			float b = static_cast<float>(rand() % 100)  / 100.0f;
+
+			pointLight[i].SetColor(r, g, b, 1);
+			pointLight[i].SetDropOff(1.1f);
+			pointLight[i].SetPow(1.5f);
+
+			float x = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float y = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float z = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+
+			float scl = static_cast<float>(rand() % 100 + 1);
+			pointLight[i].SetPosition(x, y, z);
+			pointLight[i].SetIntensity(scl);
+
+		}
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
@@ -97,6 +120,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		wnd->ResetMouse();
 
+
+
+		DirectionalLight light;
+		light.SetDirection(1, -1, 0);
+		light.SetIntensity(1.2f);
 		while (core->Running())
 		{
 			POINT mp = wnd->GetMousePosition();
@@ -181,8 +209,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			else if (wnd->IsKeyPressed(Input::BACKSPACE))
 				cam.SetAsActiveCamera();
 
-
-
+			light.Queue();
 		
 			rot += 1.0f * (FLOAT)dt;
 
@@ -191,6 +218,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				d[i].SetRotation(0, rot, -rot);
 				d[i].Update();
 				d[i].Draw();
+
+			}
+			for (UINT i = 0; i < NUMBER_OF_DRAWABLES / 2; i++)
+			{
+				pointLight[i].Queue();
 			}
 			
 			if (FAILED(core->Flush()))
@@ -205,6 +237,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		delete m;
 		delete[] t;
 		delete[] d;
+		delete[] pointLight;
 	}
 	core->Release();
 	delete core;

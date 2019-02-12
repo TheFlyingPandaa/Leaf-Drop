@@ -1,8 +1,7 @@
 #pragma once
 #include "../../Transform.h"
 #include <DirectXMath.h>
-#include <d3d12.h>
-#include "Source/Leaf-Drop/CoreRender.h"
+#include "../../../CoreRender.h"
 
 class Window;
 
@@ -27,8 +26,6 @@ public:
 
 
 	virtual const UINT & GetType() const;
-	virtual const UINT & GetNumRenderTargets() const;
-
 
 protected:
 	ILight(const LightType & lightType);
@@ -42,6 +39,5 @@ private:
 	
 	UINT m_lightTypeInteger;
 	float m_intensity = 1;
-	BOOL m_castShadows = TRUE;
 };
 

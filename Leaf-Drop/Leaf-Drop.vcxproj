@@ -763,6 +763,7 @@
     <None Include="ExternalLibs\DirectXTK\Src\Shaders\Compiled\ToneMap_VSQuad.inc" />
     <None Include="ExternalLibs\DirectXTK\Src\TeapotData.inc" />
     <None Include="ExternalLibs\EASTL\include\EAMain\EAEntryPointMain.inl" />
+    <None Include="Source\Leaf-Drop\Shaders\LightCalculations.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl">

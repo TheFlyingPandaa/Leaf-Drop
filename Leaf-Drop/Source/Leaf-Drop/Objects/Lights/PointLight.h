@@ -7,6 +7,8 @@ class PointLight :
 {
 
 public:
+	PointLight();
+
 	void SetDropOff(const float & dropOff);
 	void SetPow(const float & pow);
 	void SetRadius(const float & radius);

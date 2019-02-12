@@ -1372,6 +1372,7 @@
     <None Include="ExternalLibs\DirectXTK\Src\TeapotData.inc">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Source\Leaf-Drop\Shaders\LightCalculations.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryVertex.hlsl" />

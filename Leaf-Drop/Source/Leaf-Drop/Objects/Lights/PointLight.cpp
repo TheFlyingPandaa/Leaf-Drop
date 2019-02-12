@@ -2,7 +2,9 @@
 #include "PointLight.h"
 
 
-
+PointLight::PointLight() : ILight(Point)
+{
+}
 
 void PointLight::SetDropOff(const float& dropOff)
 {
