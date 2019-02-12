@@ -8,11 +8,11 @@
 #include "../Objects/Camera.h"
 #include <string>
 #define CAMERA_BUFFER	0
-#define TEXTURE_SLOT	1
-#define WORLD_MATRICES	2
-#define UAV_OUTPUT		3
-
-#define FUCKED FAILED
+#define WORLD_MATRICES	1
+#define UAV_OUTPUT		2
+#define TEXTURE_SLOT	3
+#define NORMAL_SLOT		4
+#define METALLIC_SLOT	5
 
 GeometryPass::GeometryPass() : IRender()
 {
@@ -60,7 +60,7 @@ HRESULT GeometryPass::Init()
 
 
 	m_uav = new UAV();
-	if (FUCKED(hr = m_uav->Init(L"Cock", 1024 * 64, 64, 64)))
+	if (FAILED(hr = m_uav->Init(L"Cock", 1024 * 64, 64, 64)))
 	{
 		return hr;
 	}
@@ -142,8 +142,14 @@ void GeometryPass::Draw()
 
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		Texture * t = p_drawQueue[i].TexPtr;
-		t->Map(TEXTURE_SLOT, commandList);
+		Texture * diffuse = p_drawQueue[i].DiffuseTexture;
+		Texture * normal = p_drawQueue[i].NormalTexture;
+		Texture * metallic = p_drawQueue[i].MetallicTexture;
+
+		diffuse->Map(TEXTURE_SLOT, commandList);
+		normal->Map(NORMAL_SLOT, commandList);
+		metallic->Map(METALLIC_SLOT, commandList);
+
 		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
@@ -160,7 +166,7 @@ void GeometryPass::Draw()
 	FLOAT * data = nullptr;
 	if (SUCCEEDED(m_uav->Read(data)))
 	{
-		PRINT(std::to_string(data[0]) + std::to_string(data[1]));
+		//PRINT(std::to_string(data[0]) + std::to_string(data[1]));
 		m_uav->Unmap();
 	}
 
@@ -193,11 +199,22 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
 
-	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-	rootParameters[TEXTURE_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	{
+		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+		rootParameters[TEXTURE_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);		
+	}
+	{
+		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
+		rootParameters[NORMAL_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	} 
+	{
+		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2);
+		rootParameters[METALLIC_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	}
+
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);

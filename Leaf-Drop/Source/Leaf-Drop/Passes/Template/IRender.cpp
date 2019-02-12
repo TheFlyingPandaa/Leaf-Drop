@@ -102,13 +102,18 @@ void IRender::SubmitLight(Light * light)
 IRender::InstanceGroup::InstanceGroup(Drawable * drawable)
 {
 	ObjectData.push_back(drawable);
-	TexPtr = drawable->GetTexture();
+	DiffuseTexture = drawable->GetTexture();
+	NormalTexture = drawable->GetNormal();
+	MetallicTexture = drawable->GetMetallic();
 	MeshPtr = drawable->GetMesh();
 }
 
 bool IRender::InstanceGroup::operator==(Drawable * drawable)
 {
-	return TexPtr == drawable->GetTexture() && MeshPtr == drawable->GetMesh();
+	return	DiffuseTexture == drawable->GetTexture() &&
+			NormalTexture == drawable->GetNormal() &&
+			MetallicTexture == drawable->GetMetallic() &&
+			MeshPtr == drawable->GetMesh();
 }
 
 IRender::InstanceGroup::ObjectData::ObjectData(Drawable * drawable)

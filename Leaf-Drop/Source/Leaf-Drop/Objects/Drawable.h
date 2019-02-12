@@ -16,12 +16,20 @@ public:
 	void SetTexture(Texture * texture);
 	Texture * GetTexture() const;
 
+	void SetMetallic(Texture * texture);
+	Texture * GetMetallic() const;
+
+	void SetNormal(Texture * texture);
+	Texture * GetNormal() const;
+	
 	void Draw();
 
 private:
 	StaticMesh * m_mesh = nullptr;
 	CoreRender * m_coreRenderer = nullptr;
 	Texture	* m_texture = nullptr;
+	Texture	* m_metallic = nullptr;
+	Texture	* m_normal = nullptr;
 
 };
 

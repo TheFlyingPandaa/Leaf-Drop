@@ -32,6 +32,26 @@ Texture * Drawable::GetTexture() const
 	return m_texture;
 }
 
+void Drawable::SetMetallic(Texture* texture)
+{
+	this->m_metallic = texture;
+}
+
+Texture* Drawable::GetMetallic() const
+{
+	return this->m_metallic;
+}
+
+void Drawable::SetNormal(Texture* texture)
+{
+	this->m_normal = texture;
+}
+
+Texture* Drawable::GetNormal() const
+{
+	return this->m_normal;
+}
+
 void Drawable::Draw()
 {
 	m_coreRenderer->GetGeometryPass()->Submit(this);
