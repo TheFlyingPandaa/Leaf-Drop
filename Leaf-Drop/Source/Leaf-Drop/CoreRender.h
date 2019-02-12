@@ -39,9 +39,9 @@ public:
 	const SIZE_T &			GetResourceDescriptorHeapSize() const;
 	void					IterateResourceIndex();
 
-
 	GeometryPass * GetGeometryPass() const;
 	DeferredPass * GetDeferredPass() const;
+	ComputePass	 * GetComputePass() const;
 
 	HRESULT OpenCommandList();
 	HRESULT ExecuteCommandList();

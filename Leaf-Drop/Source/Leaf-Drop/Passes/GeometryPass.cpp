@@ -137,8 +137,6 @@ void GeometryPass::Update()
 	m_uav->Map(UAV_OUTPUT, commandList);
 }
 
-
-#include <fstream>
 void GeometryPass::Draw()
 {
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
@@ -168,21 +166,10 @@ void GeometryPass::Draw()
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
 	ExecuteCommandList();
 	
-	INT * data = nullptr;
-
-	// Send m_uav to ray pass
-
-
-
-	//temp
-	//if (SUCCEEDED(m_uav->Read(data)))
-	//{
-
-	//	m_uav->Unmap();
-	//}
-	
-
 	m_uav->prevFrame = frameIndex;
+
+	p_coreRender->GetComputePass()->SetRayTiles(m_uav);
+
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 

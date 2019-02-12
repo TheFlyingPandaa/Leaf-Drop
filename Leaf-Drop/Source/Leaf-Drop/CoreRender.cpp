@@ -129,12 +129,11 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
-	//m_computePass = new ComputePass();
-	//if (FAILED(hr = m_computePass->Init()))
-	//{
-	//	return DEBUG::CreateError(hr);
-	//}
-
+	m_computePass = new ComputePass();
+	if (FAILED(hr = m_computePass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}
 
 	return hr;
 }
@@ -241,6 +240,11 @@ GeometryPass * CoreRender::GetGeometryPass() const
 DeferredPass * CoreRender::GetDeferredPass() const
 {
 	return this->m_deferredPass;
+}
+
+ComputePass * CoreRender::GetComputePass() const
+{
+	return m_computePass;
 }
 
 HRESULT CoreRender::OpenCommandList()
@@ -373,6 +377,9 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_geometryPass->Update();
 	m_geometryPass->Draw();
 	
+	m_computePass->Update();
+	m_computePass->Draw();
+
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
 

@@ -1,6 +1,10 @@
 #include "CorePCH.h"
 #include "ComputePass.h"
 #include "../Wrappers/ShaderCreator.h"
+#include "../Objects/Camera.h"
+
+#define RAY_SQUARE_INDEX 0
+
 ComputePass::ComputePass()
 {
 }
@@ -28,14 +32,55 @@ void ComputePass::Update()
 
 void ComputePass::Draw()
 {
+	INT * rayTiles = nullptr;
+	if (FAILED(m_rayTiles->Read(rayTiles)))
+		return;
+	m_rayTiles->Unmap();
+
 	OpenCommandList(m_pipelineState);
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
-	p_commandList[frameIndex]->Dispatch(100, 0, 0);
+	POINT windowSize = p_window->GetWindowSize();
+	POINT nrOfRayTiles;
+	nrOfRayTiles.x = windowSize.x / 32;
+	nrOfRayTiles.y = windowSize.y / 32;
+	
+	RAY_BOX data;
+	data.viewerPos.x = (float)windowSize.x * 0.5f;
+	data.viewerPos.y = (float)windowSize.y * 0.5f;
+	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
+	data.viewerPos.w = 1.0f;
+
+	for (LONG y = 0; y < nrOfRayTiles.y; y++)
+	{
+		for (LONG x = 0; x < nrOfRayTiles.x; x++)
+		{
+			LONG index = x + y * nrOfRayTiles.y;
+			if (rayTiles[index])
+			{
+				data.index.x = x;
+				data.index.y = y;
+
+				/*DirectX::XMFLOAT4 viewerPos = data.viewerPos;
+				DirectX::XMFLOAT4 pixelPos = {(float)x, (float)y, 0.0f, 1.0f};
+				DirectX::XMFLOAT4 ray;
+				DirectX::XMStoreFloat4(&ray, DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&pixelPos), DirectX::XMLoadFloat4(&viewerPos))));
+				*/
+
+				m_squareIndex.SetData(&data, sizeof(&data));
+				m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
+				p_commandList[frameIndex]->Dispatch(32, 32, 1);
+			}
+		}
+	}
+
+
 
 	_ExecuteCommandList();
+
+	m_rayTiles = nullptr;
 }
 
 void ComputePass::Release()
@@ -43,6 +88,11 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
+}
+
+void ComputePass::SetRayTiles(UAV * rayTiles)
+{
+	m_rayTiles = rayTiles;
 }
 
 HRESULT ComputePass::_Init()
@@ -61,6 +111,16 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
+	if (FAILED(hr = _CreateFenceAndFenceEvent()))
+	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_squareIndex.Init(sizeof(RAY_BOX), L"RaySqueare", ConstantBuffer::CONSTANT_BUFFER, sizeof(RAY_BOX))))
+	{
+		return hr;
+	}
+
 	if (FAILED(hr = OpenCommandList()))
 	{
 		return hr;
@@ -77,7 +137,6 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-
 	if (FAILED(hr = _ExecuteCommandList()))
 	{
 		return hr;
@@ -104,11 +163,15 @@ HRESULT ComputePass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 
+	CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
+
+
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
 	rootSignatureDesc.Init_1_1(
-		NULL,
-		nullptr,
+		_countof(rootParameters),
+		rootParameters,
 		0,
 		nullptr,
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
@@ -152,6 +215,28 @@ HRESULT ComputePass::_InitPipelineState()
 	{
 		return hr;
 	}
+
+	return hr;
+}
+
+HRESULT ComputePass::_CreateFenceAndFenceEvent()
+{
+	HRESULT hr = 0;
+
+	ID3D12Device * device = CoreRender::GetInstance()->GetDevice();
+
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		if (FAILED(hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence[i]))))
+		{
+			break;
+		}
+		m_fenceValue[i] = 0;
+	}
+
+	m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+	if (nullptr == m_fenceEvent)
+		return E_FAIL;
 
 	return hr;
 }
