@@ -10,6 +10,7 @@ struct VS_OUTPUT
 	float4 tangent : TANGENT;
 	float4 biTangent : BITANGENT;
 	float2 uv : TEXCOORD;
+    float2 ndc : NDCCOORD;
 };
 
 struct PS_OUTPUT
@@ -30,14 +31,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.albedo = albedo.Sample(defaultSampler, input.uv);
 	output.metallic = float4(1, 1, 1, 1);
 
-    float2 fIndex = (output.position.xy + float2(1.0f, 1.0f)) * 0.5f;
+    float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
 
-    //RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = 0.0f;
-    //RayStencil[0] = WIDTH_DIV;
-    //RayStencil[1] = HEIGHT_DIV;
-	
-    RayStencil[0] = 50;
-    RayStencil[1] = 10;
-
+    RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = length(output.metallic.xyz) > 0.5;
+    
 	return output;
 }

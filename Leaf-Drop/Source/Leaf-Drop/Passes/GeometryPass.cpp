@@ -63,14 +63,10 @@ HRESULT GeometryPass::Init()
 	UINT elements = (p.x / 32) * (p.y / 32);
 
 	m_uav = new UAV();
-	if (FUCKED(hr = m_uav->Init(L"Cock", 1024 * 64, 64, 64)))
+	if (FUCKED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
 	{
 		return hr;
 	}
-	/*if (FUCKED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
-	{
-		return hr;
-	}*/
 
 	return hr;
 }
@@ -164,7 +160,7 @@ void GeometryPass::Draw()
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
 	ExecuteCommandList();
 	
-	FLOAT * data = nullptr;
+	INT * data = nullptr;
 	
 
 	if (SUCCEEDED(m_uav->Read(data)))

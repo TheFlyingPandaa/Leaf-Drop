@@ -23,6 +23,7 @@ struct VS_OUTPUT
 	float4 tangent : TANGENT;
 	float4 biTangent : BITANGENT;
 	float2 uv : TEXCOORD;
+    float2 ndc : NDCCOORD;
 };
 
 VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
@@ -30,11 +31,11 @@ VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	output.worldPosition =	mul(input.position, WorldMatrix[instanceID]);
 	output.position =		mul(output.worldPosition, ViewProj);
-	//output.position =		mul(input.position, ViewProj);
 	output.normal =			input.normal;
 	output.tangent =		input.tangent;
 	output.biTangent =		input.biTangent;
 	output.uv =				input.uv;
+    output.ndc =            output.position.xy / output.position.w;
 
 	return output;
 }		   

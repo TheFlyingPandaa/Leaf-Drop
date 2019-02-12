@@ -178,7 +178,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
-				d[i].SetRotation(0, rot, -rot);
+				//d[i].SetRotation(0, rot, -rot);
 				d[i].Update();
 				d[i].Draw();
 			}
