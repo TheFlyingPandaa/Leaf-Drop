@@ -63,7 +63,7 @@ HRESULT GeometryPass::Init()
 	UINT elements = (p.x / 32) * (p.y / 32);
 
 	m_uav = new UAV();
-	if (FUCKED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
+	if (FAILED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
 	{
 		return hr;
 	}
