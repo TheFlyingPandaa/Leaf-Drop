@@ -36,10 +36,12 @@ PS_OUTPUT main(VS_OUTPUT input)
 	
     bool CastRay = output.metallic.r > 0.5;
 
-    if (CastRay)
+	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
+	int index = (int)(fIndex.x * (float)WIDTH_DIV) + (int)(fIndex.y * (float)HEIGHT_DIV) * HEIGHT_DIV;
+
+    if (index > -1 && index < WIDTH_DIV * HEIGHT_DIV && CastRay)
     {
-        float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
-        RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = 1;
+        RayStencil[index] = 1;
     }
     
 	return output;

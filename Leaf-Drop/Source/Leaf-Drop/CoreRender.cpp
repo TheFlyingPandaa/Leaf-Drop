@@ -377,8 +377,8 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_geometryPass->Update();
 	m_geometryPass->Draw();
 	
-	m_computePass->Update();
-	m_computePass->Draw();
+	/*m_computePass->Update();
+	m_computePass->Draw();*/
 
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
