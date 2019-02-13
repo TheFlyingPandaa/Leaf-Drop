@@ -1,5 +1,7 @@
 #pragma once
 #include "Template/IRender.h"
+#include "../Wrappers/GpuTimer.h"
+
 class DeferredPass : public IRender
 {
 public:
@@ -83,6 +85,7 @@ private:
 
 	UAV m_lightUav;
 	
+	GpuTimer timer;
 
 private:
 	HRESULT _Init();

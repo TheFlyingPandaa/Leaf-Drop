@@ -16,12 +16,13 @@
 
 DeferredPass::DeferredPass() : IRender()
 {
-	
+	timer.OpenLog("Deferred.txt");
 }
 
 
 DeferredPass::~DeferredPass()
 {
+	timer.CloseLog();
 }
 
 HRESULT DeferredPass::Init()
@@ -59,6 +60,8 @@ HRESULT DeferredPass::Init()
 
 void DeferredPass::Update()
 {
+	timer.Start();
+
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 	p_coreRender->SetResourceDescriptorHeap(commandList);
@@ -107,6 +110,7 @@ void DeferredPass::Draw()
 
 	commandList->IASetVertexBuffers(0, 1, &m_screenQuad.vertexBufferView);
 	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
+	timer.LogTime();
 }
 
 void DeferredPass::Release()

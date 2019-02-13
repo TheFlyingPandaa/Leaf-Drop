@@ -62,13 +62,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 100;
+		const UINT NUMBER_OF_DRAWABLES = 16000;
 		const UINT NUMBER_OF_LIGHTS = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
-		{
-			pointLight[i].SetIntensity(10);
+		{	
 
 			float r = static_cast<float>(rand() % 100) / 100.0f;
 			float g = static_cast<float>(rand() % 100) / 100.0f;
@@ -82,7 +81,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			float y = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 			float z = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 
-			float scl = static_cast<float>(rand() % 100 + 1);
+			float scl = static_cast<float>(rand() % 50 );
 			pointLight[i].SetPosition(x, y, z);
 			pointLight[i].SetIntensity(scl);
 
@@ -121,7 +120,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		DirectionalLight light;
 		light.SetDirection(1, -1, 0);
-		light.SetIntensity(1.2f);
+		light.SetIntensity(0.2f);
 		while (core->Running())
 		{
 			POINT mp = wnd->GetMousePosition();

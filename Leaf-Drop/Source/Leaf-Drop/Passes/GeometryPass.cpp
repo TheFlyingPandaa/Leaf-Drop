@@ -18,11 +18,12 @@
 
 GeometryPass::GeometryPass() : IRender()
 {
-	
+	timer.OpenLog("GeometryPass.txt");
 }
 
 GeometryPass::~GeometryPass()
 {
+	timer.CloseLog();
 }
 
 HRESULT GeometryPass::Init()
@@ -79,6 +80,7 @@ void GeometryPass::Update()
 	{
 		return;
 	}
+	timer.Start();
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
@@ -166,8 +168,10 @@ void GeometryPass::Draw()
 
 
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
-	ExecuteCommandList();
 	
+	timer.LogTime();
+
+	ExecuteCommandList();
 	m_uav->prevFrame = frameIndex;
 
 	p_coreRender->GetComputePass()->SetRayTiles(m_uav);

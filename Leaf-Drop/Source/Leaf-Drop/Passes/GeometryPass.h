@@ -4,6 +4,7 @@
 #include "../Wrappers/ConstantBuffer.h"
 #include "../Wrappers/DepthBuffer.h"
 #include "../Wrappers/UAV.h"
+#include "../Wrappers/GpuTimer.h"
 
 class GeometryPass : public IRender
 {
@@ -42,6 +43,8 @@ private:
 	ConstantBuffer m_worldMatrices;
 
 	UAV * m_uav;
+
+	GpuTimer timer;
 
 private:
 	HRESULT _Init();
