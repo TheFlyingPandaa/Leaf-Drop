@@ -88,6 +88,15 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
+
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		SAFE_RELEASE(m_fence[i]);
+	}
+
+	p_ReleaseCommandList();
+
+	m_squareIndex.Release();
 }
 
 void ComputePass::SetRayTiles(UAV * rayTiles)

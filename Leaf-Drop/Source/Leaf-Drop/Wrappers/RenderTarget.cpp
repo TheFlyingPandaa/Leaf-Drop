@@ -11,11 +11,7 @@ RenderTarget::RenderTarget()
 
 RenderTarget::~RenderTarget()
 {
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		SAFE_RELEASE(m_renderTarget[i]);
-	}
-	SAFE_RELEASE(m_renderTargetDescriptorHeap);
+
 }
 
 HRESULT RenderTarget::Init(const std::wstring & name, const UINT & width, const UINT & height, const UINT arraySize, const DXGI_FORMAT & format, const BOOL & createSRV)
@@ -196,6 +192,15 @@ void RenderTarget::SwitchToSRV(ID3D12GraphicsCommandList * commandList)
 		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTarget[m_coreRender->GetFrameIndex()], D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 	m_renderTargetCurrentResourceState[frameIndex] = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 
+}
+
+void RenderTarget::Release()
+{
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		SAFE_RELEASE(m_renderTarget[i]);
+	}
+	SAFE_RELEASE(m_renderTargetDescriptorHeap);
 }
 
 

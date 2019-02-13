@@ -114,6 +114,9 @@ void DeferredPass::Release()
 	m_lightUav.Release();
 	m_screenQuad.Release();
 
+	m_camBuffer.Release();
+	m_lightsBuffer.Release();
+
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
 }

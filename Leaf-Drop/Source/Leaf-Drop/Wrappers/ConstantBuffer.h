@@ -3,7 +3,7 @@
 
 class ConstantBuffer : public LeafObject
 {
-
+public:
 	enum CBV_TYPE
 	{
 		CONSTANT_BUFFER,

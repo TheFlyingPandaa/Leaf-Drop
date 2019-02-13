@@ -1,5 +1,5 @@
 #pragma once
-class UAV
+class UAV : public LeafObject
 {
 public:
 	UAV();
@@ -7,7 +7,6 @@ public:
 
 	HRESULT Init(const std::wstring & name, const UINT & bufferSize, const UINT & maxElements, const UINT & elementSize);
 
-	void Release();
 
 	void Clear(ID3D12GraphicsCommandList * commandList);
 	void Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
@@ -24,6 +23,8 @@ public:
 	ID3D12Resource *const* GetResource() const;
 
 	UINT prevFrame;
+
+	void Release() override;
 
 private:
 	UINT8 * m_gpuAddress[FRAME_BUFFER_COUNT] = { nullptr };

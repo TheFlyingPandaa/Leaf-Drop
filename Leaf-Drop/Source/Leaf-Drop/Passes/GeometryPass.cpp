@@ -182,6 +182,7 @@ void GeometryPass::Release()
 	SAFE_DELETE(m_uav);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
+		m_renderTarget[i]->Release();
 		SAFE_DELETE(m_renderTarget[i]);
 	}
 
@@ -189,6 +190,10 @@ void GeometryPass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	
 	m_depthBuffer.Release();
+
+
+	m_camBuffer.Release();
+	m_worldMatrices.Release();
 }
 
 UAV * GeometryPass::GetUAV()
