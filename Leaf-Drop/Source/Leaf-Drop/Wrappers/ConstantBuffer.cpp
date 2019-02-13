@@ -96,7 +96,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 
 		if (FAILED(hr = m_resource[i]->Map(0, &range, reinterpret_cast<void**>(&m_resource_GPU_Location[i]))))
 		{
-
+			return hr;
 		}
 
 		m_coreRender->IterateResourceIndex();

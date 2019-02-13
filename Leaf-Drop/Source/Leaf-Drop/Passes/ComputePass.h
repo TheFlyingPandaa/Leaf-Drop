@@ -15,13 +15,19 @@ public:
 	virtual void Draw() override;
 	virtual void Release() override;
 
+	void ClearDraw();
+
 	void SetRayTiles(UAV * rayTiles);
 
 private:
 	HRESULT _Init();
 	HRESULT _InitShaders();
+
 	HRESULT _InitRootSignature();
+	HRESULT _InitClearRootSignature();
+
 	HRESULT _InitPipelineState();
+	HRESULT _InitClearPipelineState();
 
 	HRESULT _CreateFenceAndFenceEvent();
 
@@ -35,9 +41,14 @@ private:
 
 
 	D3D12_SHADER_BYTECODE m_computeShader{};
+	D3D12_SHADER_BYTECODE m_clearComputeShader{};
 
 	ID3D12PipelineState * m_pipelineState = nullptr;
+	ID3D12PipelineState * m_clearPipelineState = nullptr;
+
 	ID3D12RootSignature * m_rootSignature = nullptr;
+	//ID3D12RootSignature * m_clearRootSignature = nullptr;
+
 	ID3D12CommandQueue *  m_commandQueue = nullptr;
 
 	UINT8 m_computeIndex = 0;

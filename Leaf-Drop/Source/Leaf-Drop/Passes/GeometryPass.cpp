@@ -134,7 +134,7 @@ void GeometryPass::Update()
 
 
 	m_uav->Clear(commandList);
-	m_uav->Map(UAV_OUTPUT, commandList);
+	m_uav->Bind(UAV_OUTPUT, commandList);
 }
 
 void GeometryPass::Draw()

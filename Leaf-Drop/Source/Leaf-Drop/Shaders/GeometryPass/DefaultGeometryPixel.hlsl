@@ -43,6 +43,7 @@ PS_OUTPUT main(VS_OUTPUT input)
     {
         RayStencil[index] = 1;
     }
-    
+ 
+
 	return output;
 }

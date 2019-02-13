@@ -9,7 +9,7 @@ ShaderResource::~ShaderResource()
 {
 }
 
-HRESULT ShaderResource::Init(const UINT & width, const UINT & height, const UINT & arraySize, const DXGI_FORMAT & format)
+HRESULT ShaderResource::Init(const std::string & name, const UINT & width, const UINT & height, const UINT & arraySize, const DXGI_FORMAT & format)
 {
 	HRESULT hr = 0;
 
@@ -29,17 +29,14 @@ HRESULT ShaderResource::Init(const UINT & width, const UINT & height, const UINT
 
 
 	CD3DX12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_CUSTOM);
-	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE;
 	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-	
 
 	D3D12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		format,
 		m_width, m_height,
 		arraySize, 1, 1, 0,
 		D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);
-
-	//resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	for (int i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
@@ -67,14 +64,16 @@ HRESULT ShaderResource::Init(const UINT & width, const UINT & height, const UINT
 				srvDesc.Texture2DArray.MostDetailedMip = 0;
 			}
 		
-			m_descriptorHeapOffset = cr->GetCurrentResourceIndex() * cr->GetResourceDescriptorHeapSize();
+			m_descriptorHeapOffset[i] = cr->GetCurrentResourceIndex() * cr->GetResourceDescriptorHeapSize();
 			const D3D12_CPU_DESCRIPTOR_HANDLE handle =
-			{ cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
+			{ cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[i] };
 
 			cr->GetDevice()->CreateShaderResourceView(
 				m_resource[i],
 				&srvDesc,
 				handle);
+
+			SET_NAME(m_resource[i], std::wstring(std::wstring(L"COCKNBALLS ") + std::to_wstring(i)).c_str());
 
 			cr->IterateResourceIndex();
 		}
@@ -97,12 +96,21 @@ void ShaderResource::BindComputeShader(const UINT & rootParameterIndex, ID3D12Gr
 	static CoreRender * cr = CoreRender::GetInstance();
 	const UINT currentFrame = cr->GetFrameIndex();
 
-	commandList->SetComputeRootShaderResourceView(rootParameterIndex, m_resource[currentFrame]->GetGPUVirtualAddress() + offset);
+	commandList->SetComputeRootDescriptorTable(rootParameterIndex, {cr->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[currentFrame]});
+}
+
+void ShaderResource::BindComputeShaderUAV(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset)
+{
+	static CoreRender * cr = CoreRender::GetInstance();
+	const UINT currentFrame = cr->GetFrameIndex();
+
+	commandList->SetComputeRootUnorderedAccessView(rootParameterIndex, m_resource[currentFrame]->GetGPUVirtualAddress() + offset);
+
 }
 
 void ShaderResource::Clear(ID3D12GraphicsCommandList * commandList)
 {
-	/*static CoreRender * cr = CoreRender::GetInstance();
+	static CoreRender * cr = CoreRender::GetInstance();
 	static Window * wnd = Window::GetInstance();
 	POINT wndSize = wnd->GetWindowSize();
 
@@ -110,14 +118,17 @@ void ShaderResource::Clear(ID3D12GraphicsCommandList * commandList)
 	UINT8 * data = nullptr;
 	D3D12_RANGE range{ 0,0 };
 
-	if (SUCCEEDED(m_resource[frameIndex]->Map(0, &range, reinterpret_cast<void**>(&data))))
-	{
-		DXGI_FORMAT format = m_resource[frameIndex]->GetDesc().Format;
-		
-		ZeroMemory(data, m_width * m_height * _GetDXGIFormatBitsPerPixel(format));
-		m_resource[frameIndex]->Unmap(0, &range);
-	}
-	*/
+	//if (SUCCEEDED(m_resource[frameIndex]->Map(0, &range, reinterpret_cast<void**>(&data))))
+	//{
+	//	DXGI_FORMAT format = m_resource[frameIndex]->GetDesc().Format;
+	//	
+	//	ZeroMemory(data, m_width * m_height * _GetDXGIFormatBitsPerPixel(format));
+	//	m_resource[frameIndex]->Unmap(0, &range);
+	//}
+	D3D12_GPU_DESCRIPTOR_HANDLE h = {cr->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[frameIndex] };
+	D3D12_CPU_DESCRIPTOR_HANDLE c = {cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[frameIndex] };
+	float lol[4]{0,0,0,0};
+	commandList->ClearUnorderedAccessViewFloat(h, c, m_resource[frameIndex], lol, 1, NULL);
 }
 
 ID3D12Resource * ShaderResource::GetResource() const

@@ -83,7 +83,7 @@ void UAV::Clear(ID3D12GraphicsCommandList * commandList)
 	}
 }
 
-void UAV::Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
+void UAV::Bind(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
 {
 	const UINT frameIndex = m_coreRender->GetFrameIndex();
 	commandList->SetGraphicsRootUnorderedAccessView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());

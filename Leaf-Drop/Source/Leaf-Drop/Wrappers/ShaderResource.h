@@ -7,6 +7,7 @@ public:
 	~ShaderResource();
 
 	HRESULT Init(
+		const std::string & name,
 		const UINT & width = 0,
 		const UINT & height = 0,
 		const UINT& arraySize = 1,
@@ -14,6 +15,7 @@ public:
 
 	void Bind(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
 	void BindComputeShader(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
+	void BindComputeShaderUAV(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
 	void Clear(ID3D12GraphicsCommandList * commandList);
 
 	ID3D12Resource * GetResource() const;
@@ -26,7 +28,7 @@ private:
 
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
 
-	SIZE_T m_descriptorHeapOffset = 0;
+	SIZE_T m_descriptorHeapOffset[FRAME_BUFFER_COUNT] = {0};
 private:
 	int _GetDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 

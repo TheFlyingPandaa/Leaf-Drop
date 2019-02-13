@@ -10,7 +10,7 @@ public:
 	void Release();
 
 	void Clear(ID3D12GraphicsCommandList * commandList);
-	void Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
+	void Bind(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
 	template <typename T>
 	HRESULT Read(T*& data);
 	void Unmap();
