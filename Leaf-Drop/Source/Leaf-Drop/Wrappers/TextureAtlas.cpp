@@ -49,7 +49,7 @@ HRESULT TextureAtlas::Init(const UINT& width, const UINT& height, const UINT& ar
 		{
 			srvDesc.Texture2DArray.ArraySize = arraySize;
 			srvDesc.Texture2DArray.FirstArraySlice = 0;
-			srvDesc.Texture2DArray.MipLevels = 1;
+			srvDesc.Texture2DArray.MipLevels = maxMips;
 			srvDesc.Texture2DArray.MostDetailedMip = 0;
 		}
 
@@ -106,13 +106,15 @@ void TextureAtlas::CopySubresource(ID3D12Resource* resource, const UINT& dstInde
 		srcLocation.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
 		srcLocation.SubresourceIndex = counter++;
 
+		D3D12_BOX box{ 0,0, 0, desc.Width, desc.Height, desc.MipLevels };
+
 		commandList->CopyTextureRegion(
 			&dstLocation,
 			0,
 			0,
 			0,
 			&srcLocation,
-			nullptr);
+			&box);
 	}
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(resource, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }

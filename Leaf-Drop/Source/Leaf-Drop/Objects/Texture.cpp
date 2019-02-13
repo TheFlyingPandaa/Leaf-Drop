@@ -84,3 +84,8 @@ void Texture::Release()
 {
 	SAFE_RELEASE(m_texture);
 }
+
+ID3D12Resource* Texture::GetResource() const
+{
+	return this->m_texture;
+}

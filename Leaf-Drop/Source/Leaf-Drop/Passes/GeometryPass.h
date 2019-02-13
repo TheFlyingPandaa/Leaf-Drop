@@ -5,6 +5,7 @@
 #include "../Wrappers/DepthBuffer.h"
 #include "../Wrappers/UAV.h"
 #include "../Wrappers/GpuTimer.h"
+#include "../Wrappers/TextureAtlas.h"
 
 class GeometryPass : public IRender
 {
@@ -44,7 +45,9 @@ private:
 
 	UAV * m_uav;
 
-	GpuTimer timer;
+	GpuTimer m_timer;
+
+	TextureAtlas m_atlas;
 
 private:
 	HRESULT _Init();
