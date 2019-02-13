@@ -59,5 +59,6 @@ private:
 	UINT64 					m_fenceValue[FRAME_BUFFER_COUNT]{ 0 };
 
 	ConstantBuffer m_squareIndex;
+	ConstantBuffer m_indicesBuffer;
 	ShaderResource m_rayTexture;
 };

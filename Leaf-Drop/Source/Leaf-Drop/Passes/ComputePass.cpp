@@ -3,8 +3,11 @@
 #include "../Wrappers/ShaderCreator.h"
 #include "../Objects/Camera.h"
 
+#include <iostream>
+
 #define RAY_SQUARE_INDEX 0
 #define RAY_TEXTURE 1
+#define RAY_INDICES 2
 
 ComputePass::ComputePass()
 {
@@ -29,62 +32,92 @@ HRESULT ComputePass::Init()
 void ComputePass::Update()
 {
 	
-	//m_rayTexture.Clear(p_commandList[p_coreRender->GetFrameIndex()]);
 }
+
 #include <fstream>
+
 void ComputePass::Draw()
 {
-	OpenCommandList(m_pipelineState);
+
 	INT * rayTiles = nullptr;
 	if (FAILED(m_rayTiles->Read(rayTiles)))
 		return;
 	m_rayTiles->Unmap();
 
-	const UINT frameIndex = p_coreRender->GetFrameIndex();
-
-	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
-	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
-
+	
 
 	POINT windowSize = p_window->GetWindowSize();
 	POINT nrOfRayTiles;
 	nrOfRayTiles.x = windowSize.x / 32;
 	nrOfRayTiles.y = windowSize.y / 32;
-	
+
 	RAY_BOX data;
 	data.viewerPos.x = (float)windowSize.x * 0.5f;
 	data.viewerPos.y = (float)windowSize.y * 0.5f;
 	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
 	data.viewerPos.w = 1.0f;
-	data.index.z = windowSize.x;
-	data.index.w = windowSize.y;
+	data.index.x = windowSize.x;
+	data.index.y = windowSize.y;
 
-	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
+	if (Window::GetInstance()->IsKeyPressed('P'))
+	{
+		std::ofstream lol;
+		lol.open("SCREEEN");
+		for (LONG y = 0; y < nrOfRayTiles.y; y++)
+		{
+			for (LONG x = 0; x < nrOfRayTiles.x; x++)
+			{
+				LONG index = x + y * nrOfRayTiles.y;
+				UINT shootRay = rayTiles[index];
+				lol << std::to_string(shootRay) + " ";
+			}
+			lol << "\n";
+		}
+		lol.close();
+		int lol2 = 0;
+	}
 
+
+	DirectX::XMUINT2 indices[1024] = {};
+
+	UINT counter = 0;
 	for (LONG y = 0; y < nrOfRayTiles.y; y++)
 	{
 		for (LONG x = 0; x < nrOfRayTiles.x; x++)
 		{
 			LONG index = x + y * nrOfRayTiles.y;
-			UINT assDick = rayTiles[index];
-			if (assDick == 1)
+			UINT shootRay = rayTiles[index];
+			if (shootRay > 0)
 			{
-				data.index.x = x;
-				data.index.y = y;
-
-				/*DirectX::XMFLOAT4 viewerPos = data.viewerPos;
-				DirectX::XMFLOAT4 pixelPos = {(float)x, (float)y, 0.0f, 1.0f};
-				DirectX::XMFLOAT4 ray;
-				DirectX::XMStoreFloat4(&ray, DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&pixelPos), DirectX::XMLoadFloat4(&viewerPos))));*/
-
-				m_squareIndex.SetData(&data, sizeof(data));
-				m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
-				p_commandList[frameIndex]->Dispatch(1, 1, 1);
+				indices[counter++] = { (UINT)x, (UINT)y };
 			}
 		}
 	}
+	if (counter == 0)
+		return;
+
+	OpenCommandList(m_pipelineState);
+
+	data.index.z = UINT(counter / 2.0f + 0.5f);
+	data.index.w = UINT(counter / 2.0f + 0.5f);
 
 
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
+
+
+	OpenCommandList(m_pipelineState);
+
+	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
+	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
+
+
+	m_indicesBuffer.SetData(&indices, sizeof(indices));
+	m_indicesBuffer.BindComputeShader(RAY_INDICES, p_commandList[frameIndex]);
+	m_squareIndex.SetData(&data, sizeof(data));
+	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
+	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
+
+	p_commandList[frameIndex]->Dispatch(data.index.z, data.index.w, 1);
 
 	_ExecuteCommandList();
 
@@ -112,8 +145,8 @@ void ComputePass::ClearDraw()
 	data.viewerPos.y = (float)windowSize.y * 0.5f;
 	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
 	data.viewerPos.w = 1.0f;
-	data.index.x = 0;
-	data.index.y = 0;
+	data.index.x = windowSize.x;
+	data.index.y = windowSize.y;
 	data.index.z = windowSize.x;
 	data.index.w = windowSize.y;
 
@@ -121,9 +154,13 @@ void ComputePass::ClearDraw()
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
 	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
 
-	p_commandList[frameIndex]->Dispatch(1, 1, 1);
+	POINT wndSize = Window::GetInstance()->GetWindowSize();
 
-	//p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
+	p_commandList[frameIndex]->Dispatch(
+		UINT((wndSize.x / 32.0f) + 0.5f),	// We need equal or more threads then we have pixels
+		UINT((wndSize.y / 32.0f) + 0.5f),	// We need equal or more threads then we have pixels
+		1);
+	
 
 	_ExecuteCommandList();
 }
@@ -158,7 +195,10 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-
+	if (FAILED(hr = m_indicesBuffer.Init(sizeof(DirectX::XMINT2) * 1024, L"RayIndices", ConstantBuffer::STRUCTURED_BUFFER, sizeof(DirectX::XMINT2))))
+	{
+		return hr;
+	}
 	if (FAILED(hr = m_rayTexture.Init("COkc")))
 	{
 		return hr;
@@ -216,10 +256,11 @@ HRESULT ComputePass::_InitRootSignature()
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[2];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[3];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	//rootParameters[RAY_TEXTURE].InitAsShaderResourceView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
+	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	//rootParameters[RAY_TEXTURE].InitAsUnorderedAccessView(0);
 
 

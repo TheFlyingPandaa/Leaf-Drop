@@ -403,8 +403,6 @@ HRESULT CoreRender::_UpdatePipeline()
 	}
 
 	m_commandList[m_frameIndex]->Close();
-
-	//m_computePass->ClearDraw();
 	return hr;
 
 }
@@ -629,4 +627,5 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 void CoreRender::_Clear()
 {
 	m_geometryPass->Clear();
+	m_computePass->ClearDraw();
 }
