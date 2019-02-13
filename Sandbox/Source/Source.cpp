@@ -231,7 +231,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			
 		}
 		core->ClearGPU();
+		m->Release();
 		delete m;
+		for (UINT i = 0; i < 3; i++)
+		{
+			t->Release();
+		}
 		delete[] t;
 		delete[] d;
 		delete[] pointLight;

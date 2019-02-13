@@ -10,6 +10,7 @@ UAV::UAV()
 
 UAV::~UAV()
 {
+	Release();
 }
 
 HRESULT UAV::Init(const std::wstring & name, const UINT & bufferSize, const UINT & maxElements, const UINT & elementSize)

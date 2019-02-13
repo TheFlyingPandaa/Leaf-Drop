@@ -7,6 +7,7 @@ DepthBuffer::DepthBuffer()
 
 DepthBuffer::~DepthBuffer()
 {
+	Release();
 }
 
 HRESULT DepthBuffer::Init(const std::wstring & name, const UINT & width, const UINT & height, const UINT & arraySize, const BOOL & asTexture, const DXGI_FORMAT & format)

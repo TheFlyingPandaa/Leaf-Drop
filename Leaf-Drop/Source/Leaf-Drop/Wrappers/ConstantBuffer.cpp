@@ -8,7 +8,7 @@ ConstantBuffer::ConstantBuffer()
 
 ConstantBuffer::~ConstantBuffer()
 {
-
+	Release();
 }
 
 HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const CBV_TYPE & type, UINT sizeOfElement)

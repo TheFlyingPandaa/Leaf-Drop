@@ -11,6 +11,7 @@ RenderTarget::RenderTarget()
 
 RenderTarget::~RenderTarget()
 {
+	Release();
 
 }
 

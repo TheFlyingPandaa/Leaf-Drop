@@ -21,8 +21,7 @@ StaticMesh::StaticMesh()
 
 StaticMesh::~StaticMesh()
 {
-	SAFE_RELEASE(m_vertexBuffer);
-	SAFE_RELEASE(m_vertexUploadBuffer);
+
 }
 
 bool StaticMesh::LoadMesh(const std::string & path)
@@ -123,4 +122,10 @@ UINT StaticMesh::GetNumberOfVertices() const
 const D3D12_VERTEX_BUFFER_VIEW & StaticMesh::GetVBV() const
 {
 	return this->m_vertexBufferView;
+}
+
+void StaticMesh::Release()
+{
+	SAFE_RELEASE(m_vertexBuffer);
+	SAFE_RELEASE(m_vertexUploadBuffer);
 }
