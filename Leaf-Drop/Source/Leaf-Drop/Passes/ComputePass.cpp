@@ -38,18 +38,15 @@ void ComputePass::Update()
 
 void ComputePass::Draw()
 {
-
 	INT * rayTiles = nullptr;
 	if (FAILED(m_rayTiles->Read(rayTiles)))
 		return;
 	m_rayTiles->Unmap();
 
-	
-
 	POINT windowSize = p_window->GetWindowSize();
-	POINT nrOfRayTiles;
-	nrOfRayTiles.x = windowSize.x / 32;
-	nrOfRayTiles.y = windowSize.y / 32;
+	DirectX::XMUINT2 nrOfRayTiles;
+	nrOfRayTiles.x = windowSize.x / 32.0f + 0.5f;
+	nrOfRayTiles.y = windowSize.y / 32.0f + 0.5f;
 
 	RAY_BOX data;
 	data.viewerPos.x = (float)windowSize.x * 0.5f;
@@ -98,18 +95,20 @@ void ComputePass::Draw()
 
 	OpenCommandList(m_pipelineState);
 
-	data.index.z = UINT(counter / 2.0f + 0.5f);
-	data.index.w = UINT(counter / 2.0f + 0.5f);
+	float decrease = (float)counter / (float)(nrOfRayTiles.x * nrOfRayTiles.y);
 
+	data.index.z = (float)nrOfRayTiles.x * decrease + 0.5f;
+	data.index.w = (float)nrOfRayTiles.y * decrease + 0.5f;
+
+	data.index.z = (data.index.z != 0 ? data.index.z : 1);
+	data.index.w = (data.index.w != 0 ? data.index.w : 1);
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
-
 
 	OpenCommandList(m_pipelineState);
 
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
-
 
 	m_indicesBuffer.SetData(&indices, sizeof(indices));
 	m_indicesBuffer.BindComputeShader(RAY_INDICES, p_commandList[frameIndex]);
