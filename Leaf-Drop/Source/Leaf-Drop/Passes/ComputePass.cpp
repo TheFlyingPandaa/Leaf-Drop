@@ -58,7 +58,10 @@ void ComputePass::Draw()
 	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
 		DirectX::XMMatrixInverse(nullptr,
 		DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse)));
-	Sleep(100);
+	
+	// TODO :: FENCE
+	Sleep(1);
+
 	UINT c = 0;
 	if (rayCounter)
 		c = rayCounter[0];
@@ -70,15 +73,18 @@ void ComputePass::Draw()
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
-	m_rayStencil->BindCompute(RAY_INDICES, p_commandList[frameIndex]);
 	m_squareIndex.SetData(&data, sizeof(data));
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
 	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
+
+	m_rayStencil->BindCompute(RAY_INDICES, p_commandList[frameIndex]);
 
 	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
 
+	// TODO :: FENCE
+	Sleep(1);
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
 
 }
@@ -156,6 +162,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 	
+	if (FAILED(hr = m_rayTexture.Init(L"RayTexture")))
+	{
+		return hr;
+	}
+
 	if (FAILED(hr = m_rayTexture.Init(L"RayTexture")))
 	{
 		return hr;

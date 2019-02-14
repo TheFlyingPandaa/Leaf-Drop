@@ -44,6 +44,7 @@ PS_OUTPUT main(VS_OUTPUT input)
     if (CastRay && index.x > -1 && index.x < WIDTH && index.y > -1 && index.y < HEIGHT)
 	{
 		uint accessIndex = 0;
+		//CounterStencil[0] += 1;
 		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
 		RayStencil[accessIndex] = uint2(index);
     }

@@ -13,9 +13,10 @@ void main(uint3 threadID : SV_DispatchThreadID)
 {
 	uint2 pixelLocation = indices[threadID.x];
 	float4 pixelMidPosition = float4(float2(pixelLocation) + float2(0.5f, 0.5f), 0.0f, 1.0f);
-	float4 ray = pixelMidPosition - ViewerPosition;
+	float4 rayViewPosition = pixelMidPosition - ViewerPosition;
 
-	ray = normalize(mul(ray, ViewMatrixInverse));
+	float4 rayWorld = float4(normalize(mul(rayViewPosition, ViewMatrixInverse)).xyz, 0.0f);
+	float4 startPosWorld = float4(mul(ViewerPosition, ViewMatrixInverse).xyz, 1.0f);
 
-	outputTexture[indices[threadID.x]] = ray;
+	outputTexture[indices[threadID.x]] = rayWorld + startPosWorld;
 }

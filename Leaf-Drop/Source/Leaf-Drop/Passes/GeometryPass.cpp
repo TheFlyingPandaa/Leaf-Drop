@@ -171,7 +171,7 @@ void GeometryPass::Draw()
 	}
 
 
-	//commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
+	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayStencil->GetResource()[frameIndex]));
 	ExecuteCommandList();
 	
 	m_rayStencil->prevFrame = frameIndex;

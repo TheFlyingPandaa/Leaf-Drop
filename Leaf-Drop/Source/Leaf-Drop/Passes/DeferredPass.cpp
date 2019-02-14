@@ -89,24 +89,63 @@ void DeferredPass::Update()
 	if (m_pRaySRV)
 	{		
 		m_rayTexture.SwitchToSRV(commandList);
-		/*D3D12_RESOURCE_TRANSITION_BARRIER transition;
-		transition.pResource = m_pRaySRV->GetResource();
-		transition.StateBefore = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
-		transition.StateAfter = D3D12_RESOURCE_STATE_COPY_SOURCE;
-		transition.Subresource = 0;
+		{
+			D3D12_RESOURCE_TRANSITION_BARRIER transition;
+			transition.pResource = m_pRaySRV->GetResource();
+			transition.StateBefore = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+			transition.StateAfter = D3D12_RESOURCE_STATE_COPY_SOURCE;
+			transition.Subresource = 0;
 
-		D3D12_RESOURCE_BARRIER barrier;
-		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-		barrier.Transition = transition;
+			D3D12_RESOURCE_BARRIER barrier;
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+			barrier.Transition = transition;
 
-		commandList->ResourceBarrier(1, &barrier);*/
+			commandList->ResourceBarrier(1, &barrier);
+		}
+		{
+			D3D12_RESOURCE_TRANSITION_BARRIER transition;
+			transition.pResource = m_rayTexture.GetResource();
+			transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+			transition.StateAfter = D3D12_RESOURCE_STATE_COPY_DEST;
+			transition.Subresource = 0;
+
+			D3D12_RESOURCE_BARRIER barrier;
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+			barrier.Transition = transition;
+
+			commandList->ResourceBarrier(1, &barrier);
+		}
 		commandList->CopyResource(m_rayTexture.GetResource(), m_pRaySRV->GetResource());
+		{
+			D3D12_RESOURCE_TRANSITION_BARRIER transition;
+			transition.pResource = m_pRaySRV->GetResource();
+			transition.StateBefore = D3D12_RESOURCE_STATE_COPY_SOURCE;
+			transition.StateAfter = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+			transition.Subresource = 0;
 
-		/*transition.StateBefore = D3D12_RESOURCE_STATE_COPY_SOURCE;
-		transition.StateAfter = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+			D3D12_RESOURCE_BARRIER barrier;
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+			barrier.Transition = transition;
 
-		commandList->ResourceBarrier(1, &barrier);*/
+			commandList->ResourceBarrier(1, &barrier);
+		}
+		{
+			D3D12_RESOURCE_TRANSITION_BARRIER transition;
+			transition.pResource = m_rayTexture.GetResource();
+			transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+			transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+			transition.Subresource = 0;
+
+			D3D12_RESOURCE_BARRIER barrier;
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+			barrier.Transition = transition;
+
+			commandList->ResourceBarrier(1, &barrier);
+		}
 
 		m_rayTexture.SetGraphicsRootDescriptorTable(RAY_TRACING, commandList);
 	}

@@ -20,5 +20,5 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
 	float4 rays		= RayTracing.Sample(defaultSampler, input.uv);
 
-	return  albedo;
+	return  rays;
 }
