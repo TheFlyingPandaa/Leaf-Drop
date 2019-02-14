@@ -42,6 +42,7 @@ private:
 
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;
+	ConstantBuffer m_textureIndex;
 
 	UAV * m_uav;
 
