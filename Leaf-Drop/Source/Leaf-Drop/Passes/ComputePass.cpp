@@ -105,8 +105,6 @@ void ComputePass::Draw()
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
-	OpenCommandList(m_pipelineState);
-
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 

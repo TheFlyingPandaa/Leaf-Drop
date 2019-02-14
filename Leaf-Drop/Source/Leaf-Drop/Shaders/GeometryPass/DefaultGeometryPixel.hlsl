@@ -24,7 +24,9 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
-RWStructuredBuffer<int> RayStencil : register(u0);
+//RWStructuredBuffer<int> RayStencil : register(u0);
+RWStructuredBuffer<uint2> RayStencil : register(u0);
+RWStructuredBuffer<uint> CounterStencil : register(u1);
 
 PS_OUTPUT main(VS_OUTPUT input)
 {
@@ -37,11 +39,13 @@ PS_OUTPUT main(VS_OUTPUT input)
     bool CastRay = output.metallic.r > 0.5;
 
 	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
-	int index = (int)(fIndex.x * (float)WIDTH_DIV) + (int)(fIndex.y * (float)HEIGHT_DIV) * HEIGHT_DIV;
+	int2 index = int2((int)(fIndex.x * (float)WIDTH), (int)(fIndex.y * (float)HEIGHT));
 
-    if (index > -1 && index < WIDTH_DIV * HEIGHT_DIV && CastRay)
-    {
-        RayStencil[index] = 1;
+    if (CastRay && index.x > -1 && index.x < WIDTH && index.y > -1 && index.y < HEIGHT)
+	{
+		uint accessIndex = 0;
+		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
+		RayStencil[accessIndex] = uint2(index);
     }
  
 

@@ -377,8 +377,8 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_geometryPass->Update();
 	m_geometryPass->Draw();
 	
-	m_computePass->Update();
-	m_computePass->Draw();
+	/*m_computePass->Update();
+	m_computePass->Draw();*/
 
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
@@ -627,5 +627,5 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 void CoreRender::_Clear()
 {
 	m_geometryPass->Clear();
-	m_computePass->ClearDraw();
+	//m_computePass->ClearDraw();
 }

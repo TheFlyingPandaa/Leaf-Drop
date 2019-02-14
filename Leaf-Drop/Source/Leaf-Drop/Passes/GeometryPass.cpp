@@ -9,10 +9,11 @@
 #include <string>
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
-#define UAV_OUTPUT		2
+#define RAY_STENCIL		2
 #define TEXTURE_SLOT	3
 #define NORMAL_SLOT		4
 #define METALLIC_SLOT	5
+#define COUNTER_STENCIL	6
 
 GeometryPass::GeometryPass() : IRender()
 {
@@ -60,10 +61,15 @@ HRESULT GeometryPass::Init()
 
 	Window * wnd = Window::GetInstance();
 	POINT p = wnd->GetWindowSize();
-	UINT elements = (p.x / 32) * (p.y / 32);
+	UINT elements = (p.x * p.y);
 
-	m_uav = new UAV();
-	if (FAILED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
+	m_rayStencil = new UAV();
+	if (FAILED(hr = m_rayStencil->Init(L"RayStencil", elements * sizeof(UINT) * 2, elements, sizeof(UINT) * 2)))
+	{
+		return hr;
+	}
+	m_counterStencil = new UAV();
+	if (FAILED(hr = m_counterStencil->Init(L"Counter", sizeof(UINT), 1, sizeof(UINT))))
 	{
 		return hr;
 	}
@@ -132,9 +138,11 @@ void GeometryPass::Update()
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 
 
+	m_rayStencil->Clear(commandList);
+	m_counterStencil->Clear(commandList);
 
-	m_uav->Clear(commandList);
-	m_uav->Bind(UAV_OUTPUT, commandList);
+	m_rayStencil->Bind(RAY_STENCIL, commandList);
+	m_counterStencil->Bind(COUNTER_STENCIL, commandList);
 }
 
 void GeometryPass::Draw()
@@ -163,12 +171,13 @@ void GeometryPass::Draw()
 	}
 
 
-	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
+	//commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
 	ExecuteCommandList();
 	
-	m_uav->prevFrame = frameIndex;
+	m_rayStencil->prevFrame = frameIndex;
+	m_counterStencil->prevFrame = frameIndex;
 
-	p_coreRender->GetComputePass()->SetRayTiles(m_uav);
+	//p_coreRender->GetComputePass()->SetRayTiles(m_uav);
 
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
@@ -176,8 +185,10 @@ void GeometryPass::Draw()
 void GeometryPass::Release()
 {
 	p_ReleaseCommandList();
-	m_uav->Release();
-	SAFE_DELETE(m_uav);
+	m_rayStencil->Release();
+	SAFE_DELETE(m_rayStencil);
+	m_counterStencil->Release();
+	SAFE_DELETE(m_counterStencil);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
 		SAFE_DELETE(m_renderTarget[i]);
@@ -191,14 +202,14 @@ void GeometryPass::Release()
 
 UAV * GeometryPass::GetUAV()
 {
-	return m_uav;
+	return nullptr;
 }
 
 HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[7];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
 
 	{
@@ -218,7 +229,8 @@ HRESULT GeometryPass::_InitRootSignature()
 
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 
-	rootParameters[UAV_OUTPUT].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[COUNTER_STENCIL].InitAsUnorderedAccessView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);

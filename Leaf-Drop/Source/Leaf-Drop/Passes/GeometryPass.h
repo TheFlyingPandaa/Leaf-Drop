@@ -41,7 +41,8 @@ private:
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;
 
-	UAV * m_uav;
+	UAV * m_rayStencil;
+	UAV * m_counterStencil;
 
 private:
 	HRESULT _Init();
