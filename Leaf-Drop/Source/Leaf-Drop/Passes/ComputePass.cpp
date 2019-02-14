@@ -34,19 +34,18 @@ void ComputePass::Update()
 	
 }
 
-#include <fstream>
-
 void ComputePass::Draw()
 {
-	INT * rayTiles = nullptr;
-	if (FAILED(m_rayTiles->Read(rayTiles)))
+	UINT * rayCounter = nullptr;
+
+	if (FAILED(m_counterStencil->Read(rayCounter)))
 		return;
-	m_rayTiles->Unmap();
+	m_counterStencil->Unmap();
+
+	if (!rayCounter || *rayCounter == 0)
+		return;
 
 	POINT windowSize = p_window->GetWindowSize();
-	DirectX::XMUINT2 nrOfRayTiles;
-	nrOfRayTiles.x = windowSize.x / 32.0f + 0.5f;
-	nrOfRayTiles.y = windowSize.y / 32.0f + 0.5f;
 
 	RAY_BOX data;
 	data.viewerPos.x = (float)windowSize.x * 0.5f;
@@ -56,69 +55,21 @@ void ComputePass::Draw()
 	data.index.x = windowSize.x;
 	data.index.y = windowSize.y;
 
-	if (Window::GetInstance()->IsKeyPressed('P'))
-	{
-		std::ofstream lol;
-		lol.open("SCREEEN");
-		for (LONG y = 0; y < nrOfRayTiles.y; y++)
-		{
-			for (LONG x = 0; x < nrOfRayTiles.x; x++)
-			{
-				LONG index = x + y * nrOfRayTiles.y;
-				UINT shootRay = rayTiles[index];
-				lol << std::to_string(shootRay) + " ";
-			}
-			lol << "\n";
-		}
-		lol.close();
-		int lol2 = 0;
-	}
-
-
-	DirectX::XMUINT2 indices[1024] = {};
-
-	UINT counter = 0;
-	for (LONG y = 0; y < nrOfRayTiles.y; y++)
-	{
-		for (LONG x = 0; x < nrOfRayTiles.x; x++)
-		{
-			LONG index = x + y * nrOfRayTiles.y;
-			UINT shootRay = rayTiles[index];
-			if (shootRay > 0)
-			{
-				indices[counter++] = { (UINT)x, (UINT)y };
-			}
-		}
-	}
-	if (counter == 0)
-		return;
-
 	OpenCommandList(m_pipelineState);
-
-	float decrease = (float)counter / (float)(nrOfRayTiles.x * nrOfRayTiles.y);
-
-	data.index.z = (float)nrOfRayTiles.x * decrease + 0.5f;
-	data.index.w = (float)nrOfRayTiles.y * decrease + 0.5f;
-
-	data.index.z = (data.index.z != 0 ? data.index.z : 1);
-	data.index.w = (data.index.w != 0 ? data.index.w : 1);
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
-	m_indicesBuffer.SetData(&indices, sizeof(indices));
-	m_indicesBuffer.BindComputeShader(RAY_INDICES, p_commandList[frameIndex]);
+	m_rayStencil->BindCompute(RAY_INDICES, p_commandList[frameIndex]);
 	m_squareIndex.SetData(&data, sizeof(data));
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
 	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
 
-	p_commandList[frameIndex]->Dispatch(data.index.z, data.index.w, 1);
+	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
-
-	m_rayTiles = nullptr;
 }
 
 void ComputePass::Release()
@@ -162,9 +113,10 @@ void ComputePass::ClearDraw()
 	_ExecuteCommandList();
 }
 
-void ComputePass::SetRayTiles(UAV * rayTiles)
+void ComputePass::SetRayData(UAV * rayStencil, UAV * counterStencil)
 {
-	m_rayTiles = rayTiles;
+	m_rayStencil = rayStencil;
+	m_counterStencil = counterStencil;
 }
 
 HRESULT ComputePass::_Init()
@@ -192,11 +144,8 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_indicesBuffer.Init(sizeof(DirectX::XMINT2) * 1024, L"RayIndices", ConstantBuffer::STRUCTURED_BUFFER, sizeof(DirectX::XMINT2))))
-	{
-		return hr;
-	}
-	if (FAILED(hr = m_rayTexture.Init("COkc")))
+	
+	if (FAILED(hr = m_rayTexture.Init(L"RayTexture")))
 	{
 		return hr;
 	}
@@ -257,7 +206,7 @@ HRESULT ComputePass::_InitRootSignature()
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	//rootParameters[RAY_TEXTURE].InitAsShaderResourceView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
-	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
+	rootParameters[RAY_INDICES].InitAsUnorderedAccessView(1);
 	//rootParameters[RAY_TEXTURE].InitAsUnorderedAccessView(0);
 
 

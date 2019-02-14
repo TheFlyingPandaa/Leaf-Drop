@@ -7,7 +7,7 @@ public:
 	~ShaderResource();
 
 	HRESULT Init(
-		const std::string & name,
+		const std::wstring & name,
 		const UINT & width = 0,
 		const UINT & height = 0,
 		const UINT& arraySize = 1,

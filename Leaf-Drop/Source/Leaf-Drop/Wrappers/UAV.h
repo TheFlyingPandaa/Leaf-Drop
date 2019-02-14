@@ -11,6 +11,7 @@ public:
 
 	void Clear(ID3D12GraphicsCommandList * commandList);
 	void Bind(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
+	void BindCompute(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList);
 	template <typename T>
 	HRESULT Read(T*& data);
 	void Unmap();

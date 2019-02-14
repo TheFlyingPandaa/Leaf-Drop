@@ -177,7 +177,7 @@ void GeometryPass::Draw()
 	m_rayStencil->prevFrame = frameIndex;
 	m_counterStencil->prevFrame = frameIndex;
 
-	//p_coreRender->GetComputePass()->SetRayTiles(m_uav);
+	p_coreRender->GetComputePass()->SetRayData(m_rayStencil, m_counterStencil);
 
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }

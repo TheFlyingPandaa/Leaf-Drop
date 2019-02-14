@@ -9,7 +9,7 @@ ShaderResource::~ShaderResource()
 {
 }
 
-HRESULT ShaderResource::Init(const std::string & name, const UINT & width, const UINT & height, const UINT & arraySize, const DXGI_FORMAT & format)
+HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, const UINT & height, const UINT & arraySize, const DXGI_FORMAT & format)
 {
 	HRESULT hr = 0;
 
@@ -73,7 +73,7 @@ HRESULT ShaderResource::Init(const std::string & name, const UINT & width, const
 				&srvDesc,
 				handle);
 
-			SET_NAME(m_resource[i], std::wstring(std::wstring(L"COCKNBALLS ") + std::to_wstring(i)).c_str());
+			SET_NAME(m_resource[i], std::wstring(name + std::wstring(L" shaderResource ") + std::to_wstring(i)).c_str());
 
 			cr->IterateResourceIndex();
 		}
