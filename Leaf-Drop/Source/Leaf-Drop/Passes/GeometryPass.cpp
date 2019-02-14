@@ -71,7 +71,7 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_atlas.Init(4096, 4096, 16, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
+	if (FAILED(hr = m_atlas.Init(L"Geometry", 4096, 4096, 4, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
 	{
 		
 		return hr;
@@ -129,9 +129,9 @@ void GeometryPass::Update()
 			auto world = p_drawQueue[i].ObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
-		//m_atlas.CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter++, commandList);
-		//m_atlas.CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter++, commandList);
-		//m_atlas.CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter++, commandList);
+		m_atlas.CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
+		m_atlas.CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
+		m_atlas.CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 	}
 	m_atlas.End(commandList);
 
