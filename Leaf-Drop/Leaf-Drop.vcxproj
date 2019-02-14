@@ -350,6 +350,7 @@
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Texture.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\UAV.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\TextureAtlas.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\GpuTimer.cpp" />
@@ -619,6 +620,7 @@
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Texture.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\UAV.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\TextureAtlas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ExternalLibs\AssImp\include\assimp\color4.inl" />

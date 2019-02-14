@@ -12,6 +12,8 @@ public:
 
 	void Release();
 
+	ID3D12Resource * GetResource() const;
+
 private:
 	ID3D12Resource * m_texture = nullptr;
 

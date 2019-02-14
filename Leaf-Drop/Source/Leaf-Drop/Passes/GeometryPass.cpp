@@ -12,18 +12,24 @@
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
 #define UAV_OUTPUT		2
-#define TEXTURE_SLOT	3
-#define NORMAL_SLOT		4
-#define METALLIC_SLOT	5
+#define TEXTURE_TABLE	3
+#define TEXTURE_INDEX	4
+
+struct UINT4
+{
+
+	UINT x, y, z, w;
+
+};
 
 GeometryPass::GeometryPass() : IRender()
 {
-	timer.OpenLog("GeometryPass.txt");
+	m_timer.OpenLog("GeometryPass.txt");
 }
 
 GeometryPass::~GeometryPass()
 {
-	timer.CloseLog();
+	m_timer.CloseLog();
 }
 
 HRESULT GeometryPass::Init()
@@ -38,15 +44,19 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4),L"Geometry")))
+	if (FAILED(hr = m_camBuffer.Init(sizeof(DirectX::XMFLOAT4X4),L"Geometry Camera")))
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(DirectX::XMFLOAT4X4), L"Geometry", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
+	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(DirectX::XMFLOAT4X4), L"Geometry Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
 	{
 		return hr;
 	}
-
+	if (FAILED(hr = m_textureIndex.Init(1024 * 64, L"Geometry Index", ConstantBuffer::CBV_TYPE::CONSTANT_BUFFER, sizeof(UINT4))))
+	{
+		
+		return hr;
+	}
 	if (FAILED(hr = m_depthBuffer.Init(L"Geometry",0,0,1,FALSE, DXGI_FORMAT_D32_FLOAT)))
 	{
 		return hr;
@@ -62,12 +72,18 @@ HRESULT GeometryPass::Init()
 	}
 
 	Window * wnd = Window::GetInstance();
-	POINT p = wnd->GetWindowSize();
-	UINT elements = (p.x / 32) * (p.y / 32);
+	const POINT p = wnd->GetWindowSize();
+	const UINT elements = (p.x / 32) * (p.y / 32);
 
 	m_uav = new UAV();
 	if (FAILED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
 	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_atlas.Init(L"Geometry", 4096, 4096, 4, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
+	{
+		
 		return hr;
 	}
 
@@ -80,7 +96,7 @@ void GeometryPass::Update()
 	{
 		return;
 	}
-	timer.Start();
+	m_timer.Start();
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
@@ -102,9 +118,6 @@ void GeometryPass::Update()
 		renderTargetHandles[i] = rtvHandle;
 
 	}
-	
-
-	auto h = m_depthBuffer.GetHandle();
 
 	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_depthBuffer.GetHandle());
 	
@@ -117,6 +130,9 @@ void GeometryPass::Update()
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	int counter = 0;
+	UINT textureCounter = 0;
+	m_atlas.Begin(commandList);
+	UINT4 textureOffset{ 0,0,0,0 };
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
 		for (size_t k = 0; k < p_drawQueue[i].ObjectData.size(); k++)
@@ -124,7 +140,15 @@ void GeometryPass::Update()
 			auto world = p_drawQueue[i].ObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
+		m_atlas.CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
+		m_atlas.CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
+		m_atlas.CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
+		textureOffset.x = i * 3;
+		textureOffset.y = 3;
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * i);
 	}
+	m_atlas.End(commandList);
+
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
 	Camera * cam = Camera::GetActiveCamera();
@@ -146,16 +170,11 @@ void GeometryPass::Draw()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 
+	m_atlas.SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		Texture * diffuse = p_drawQueue[i].DiffuseTexture;
-		Texture * normal = p_drawQueue[i].NormalTexture;
-		Texture * metallic = p_drawQueue[i].MetallicTexture;
-
-		diffuse->Map(TEXTURE_SLOT, commandList);
-		normal->Map(NORMAL_SLOT, commandList);
-		metallic->Map(METALLIC_SLOT, commandList);
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, i * sizeof(UINT4));
 
 		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
@@ -169,7 +188,7 @@ void GeometryPass::Draw()
 
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
 	
-	timer.LogTime();
+	m_timer.LogTime();
 
 	ExecuteCommandList();
 	m_uav->prevFrame = frameIndex;
@@ -182,7 +201,8 @@ void GeometryPass::Draw()
 void GeometryPass::Release()
 {
 	p_ReleaseCommandList();
-	m_uav->Release();
+	if (m_uav)
+		m_uav->Release();
 	SAFE_DELETE(m_uav);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
@@ -195,9 +215,11 @@ void GeometryPass::Release()
 	
 	m_depthBuffer.Release();
 
+	m_atlas.Release();
 
 	m_camBuffer.Release();
 	m_worldMatrices.Release();
+	m_textureIndex.Release();
 }
 
 UAV * GeometryPass::GetUAV()
@@ -209,20 +231,12 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
-	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
-
+	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
+	
 	{
 		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-		rootParameters[TEXTURE_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);		
-	}
-	{
-		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
-		rootParameters[NORMAL_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
-	} 
-	{
-		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2);
-		rootParameters[METALLIC_SLOT].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+		rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 	}
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
@@ -231,6 +245,7 @@ HRESULT GeometryPass::_InitRootSignature()
 
 	rootParameters[UAV_OUTPUT].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
+	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(0,0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
