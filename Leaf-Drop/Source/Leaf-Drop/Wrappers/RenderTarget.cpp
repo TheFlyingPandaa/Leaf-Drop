@@ -181,6 +181,11 @@ void RenderTarget::SetGraphicsRootDescriptorTable(const UINT & rootParameterInde
 		{ m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_textureDescriptorHeapOffset });
 }
 
+ID3D12Resource * RenderTarget::GetResource()
+{
+	return m_renderTarget[CoreRender::GetInstance()->GetFrameIndex()];
+}
+
 void RenderTarget::SwitchToRTV(ID3D12GraphicsCommandList * commandList)
 {	
 	const UINT frameIndex = m_coreRender->GetFrameIndex();

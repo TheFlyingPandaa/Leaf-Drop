@@ -35,6 +35,7 @@ private:
 private:
 	struct RAY_BOX
 	{
+		DirectX::XMFLOAT4X4A viewMatrixInverse;
 		DirectX::XMFLOAT4A	viewerPos;
 		DirectX::XMINT4		index;
 	};

@@ -1,5 +1,6 @@
 #pragma once
 #include "Template/IRender.h"
+#include "../Wrappers/ShaderResource.h"
 class DeferredPass : public IRender
 {
 public:
@@ -13,6 +14,7 @@ public:
 	virtual void Release() override;
 
 	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
+	void SetRayData(ShaderResource * rayTexture);
 
 private:
 	struct ScreenQuad
@@ -67,6 +69,9 @@ private:
 
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
+
+	RenderTarget m_rayTexture;
+	ShaderResource * m_pRaySRV = nullptr;
 
 private:
 	HRESULT _Init();

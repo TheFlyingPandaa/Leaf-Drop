@@ -8,6 +8,7 @@
 #define NORMAL			2
 #define ALBEDO			3
 #define METALLIC		4
+#define RAY_TRACING		5
 
 DeferredPass::DeferredPass() : IRender()
 {
@@ -30,6 +31,11 @@ HRESULT DeferredPass::Init()
 
 
 	if (FAILED(hr = m_camBuffer.Init(sizeof(CAMERA_VALUES), L"DeferredCamera")))
+	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_rayTexture.Init(L"DeferredRay", 0, 0, 1, DXGI_FORMAT_R8G8B8A8_UNORM, TRUE)))
 	{
 		return hr;
 	}
@@ -80,6 +86,30 @@ void DeferredPass::Update()
 		m_geometryRenderTargets[i]->SetGraphicsRootDescriptorTable(i + 1, commandList);
 	}
 
+	if (m_pRaySRV)
+	{		
+		m_rayTexture.SwitchToSRV(commandList);
+		/*D3D12_RESOURCE_TRANSITION_BARRIER transition;
+		transition.pResource = m_pRaySRV->GetResource();
+		transition.StateBefore = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+		transition.StateAfter = D3D12_RESOURCE_STATE_COPY_SOURCE;
+		transition.Subresource = 0;
+
+		D3D12_RESOURCE_BARRIER barrier;
+		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+		barrier.Transition = transition;
+
+		commandList->ResourceBarrier(1, &barrier);*/
+		commandList->CopyResource(m_rayTexture.GetResource(), m_pRaySRV->GetResource());
+
+		/*transition.StateBefore = D3D12_RESOURCE_STATE_COPY_SOURCE;
+		transition.StateAfter = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+
+		commandList->ResourceBarrier(1, &barrier);*/
+
+		m_rayTexture.SetGraphicsRootDescriptorTable(RAY_TRACING, commandList);
+	}
 }
 
 void DeferredPass::Draw()
@@ -104,6 +134,11 @@ void DeferredPass::SetGeometryData(RenderTarget * const * renderTargets, const U
 {
 	this->m_geometryRenderTargetsSize = size;
 	m_geometryRenderTargets = renderTargets;
+}
+
+void DeferredPass::SetRayData(ShaderResource * rayTexture)
+{
+	m_pRaySRV = rayTexture;
 }
 
 HRESULT DeferredPass::_Init()
@@ -219,15 +254,16 @@ HRESULT DeferredPass::_InitRootSignature()
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
 	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 2);
 	D3D12_DESCRIPTOR_RANGE1 descRange3 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 3);
+	D3D12_DESCRIPTOR_RANGE1 descRange4 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 4);
 	
-
-
-	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[POSITION].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[NORMAL].InitAsDescriptorTable(1, &descRange1, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[ALBEDO].InitAsDescriptorTable(1, &descRange2, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[METALLIC].InitAsDescriptorTable(1, &descRange3, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[RAY_TRACING].InitAsDescriptorTable(1, &descRange4, D3D12_SHADER_VISIBILITY_PIXEL);
+	//rootParameters[RAY_TRACING].InitAsShaderResourceView(0, 4, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),

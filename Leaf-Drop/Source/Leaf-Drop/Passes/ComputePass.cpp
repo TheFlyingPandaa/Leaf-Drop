@@ -42,8 +42,7 @@ void ComputePass::Draw()
 		return;
 	m_counterStencil->Unmap();
 
-	if (!rayCounter || *rayCounter == 0)
-		return;
+	
 
 	POINT windowSize = p_window->GetWindowSize();
 
@@ -54,9 +53,18 @@ void ComputePass::Draw()
 	data.viewerPos.w = 1.0f;
 	data.index.x = windowSize.x;
 	data.index.y = windowSize.y;
+	data.viewMatrixInverse = Camera::GetActiveCamera()->GetViewMatrix();
 
+	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
+		DirectX::XMMatrixInverse(nullptr,
+		DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse)));
+	Sleep(100);
+	UINT c = 0;
+	if (rayCounter)
+		c = rayCounter[0];
+	if (c == 0)
+		return;
 	OpenCommandList(m_pipelineState);
-
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
@@ -70,6 +78,9 @@ void ComputePass::Draw()
 	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
+
+	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
+
 }
 
 void ComputePass::Release()
