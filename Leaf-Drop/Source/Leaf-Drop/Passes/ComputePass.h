@@ -56,6 +56,9 @@ private:
 	UINT8 m_computeIndex = 0;
 	UAV * m_rayStencil = nullptr;
 	UAV * m_counterStencil = nullptr;
+
+	ConstantBuffer m_meshTriangles;
+
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 

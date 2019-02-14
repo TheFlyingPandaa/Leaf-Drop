@@ -1,12 +1,26 @@
 cbuffer RAY_BOX : register(b0)
 {
+	float4x4 ViewMatrixInverse;
 	float4 ViewerPosition;
-	int4 Info; // X and Y windowSize
+	uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 
-RWTexture2D<float4> outputTexture : register(u0);
+struct Vertex
+{
+	float4 pos;
+	float4 normal;
+	float2 uv;
+};
 
-StructuredBuffer<uint2> indices : register(t1);
+struct Triangle
+{
+	Vertex v0, v1, v2;
+};
+
+
+RWTexture2D<float4> outputTexture : register(u0);
+RWStructuredBuffer<uint2> indices : register(u1);
+StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 
 [numthreads(32, 32, 1)]
 void main(uint3 threadID : SV_DispatchThreadID)

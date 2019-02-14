@@ -9,6 +9,19 @@
 #define RAY_SQUARE_INDEX 0
 #define RAY_TEXTURE 1
 #define RAY_INDICES 2
+#define TRIANGLES	3
+
+struct Vertex
+{
+	DirectX::XMFLOAT4 pos;
+	DirectX::XMFLOAT4 normal;
+	DirectX::XMFLOAT2 uv;
+};
+
+struct Triangle
+{
+	Vertex v1, v2, v3;
+};
 
 ComputePass::ComputePass()
 {
@@ -35,17 +48,7 @@ void ComputePass::Update()
 	
 }
 
-struct Vertex
-{
-	DirectX::XMFLOAT4 pos;
-	DirectX::XMFLOAT4 normal;
-	DirectX::XMFLOAT2 uv;
-};
 
-struct Triangle
-{
-	Vertex v1, v2, v3;
-};
 
 void ComputePass::Draw()
 {
@@ -54,6 +57,7 @@ void ComputePass::Draw()
 
 	if (first)
 	{
+		first = false;
 		for (int dq = 0; dq < p_drawQueue.size(); dq++)
 		{
 			for (int m = 0; m < p_drawQueue[dq].ObjectData.size(); m++)
@@ -62,17 +66,33 @@ void ComputePass::Draw()
 				Triangle t;
 				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
 				{
+					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].ObjectData[m].WorldMatrix;
+					
+					DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&world));
+
 					t.v1.pos = mesh->GetRawVertices()->at(v).Position;
 					t.v1.normal = mesh->GetRawVertices()->at(v).Normal;
 					t.v1.uv = mesh->GetRawVertices()->at(v).UV;
+
+
+					DirectX::XMStoreFloat4(&t.v1.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix));
+					DirectX::XMStoreFloat4(&t.v1.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix)));
 
 					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
 					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
 					t.v2.uv = mesh->GetRawVertices()->at(v + 1).UV;
 
+
+					DirectX::XMStoreFloat4(&t.v2.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix));
+					DirectX::XMStoreFloat4(&t.v2.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix)));
+
 					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
 					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
 					t.v3.uv = mesh->GetRawVertices()->at(v + 2).UV;
+
+
+					DirectX::XMStoreFloat4(&t.v3.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix));
+					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix)));
 
 					triangles.push_back(t);
 				}
@@ -99,6 +119,7 @@ void ComputePass::Draw()
 	data.viewerPos.w = 1.0f;
 	data.index.x = windowSize.x;
 	data.index.y = windowSize.y;
+	data.index.z = triangles.size();
 	data.viewMatrixInverse = Camera::GetActiveCamera()->GetViewMatrix();
 
 	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
@@ -125,9 +146,15 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindCompute(RAY_INDICES, p_commandList[frameIndex]);
 
+	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(Triangle));
+	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
+
+
 	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
+
+	Sleep(100);
 
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
 
@@ -222,6 +249,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
+	if (FAILED(hr = m_meshTriangles.Init(sizeof(Triangle) * 1024 * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(Triangle))))
+	{
+		return hr;
+	}
+
 	if (FAILED(hr = OpenCommandList()))
 	{
 		return hr;
@@ -274,12 +306,11 @@ HRESULT ComputePass::_InitRootSignature()
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[3];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
-	//rootParameters[RAY_TEXTURE].InitAsShaderResourceView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsUnorderedAccessView(1);
-	//rootParameters[RAY_TEXTURE].InitAsUnorderedAccessView(0);
+	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
