@@ -2,6 +2,7 @@
 #include "ComputePass.h"
 #include "../Wrappers/ShaderCreator.h"
 #include "../Objects/Camera.h"
+#include "../Objects/StaticMesh.h"
 
 #include <iostream>
 
@@ -34,8 +35,53 @@ void ComputePass::Update()
 	
 }
 
+struct Vertex
+{
+	DirectX::XMFLOAT4 pos;
+	DirectX::XMFLOAT4 normal;
+	DirectX::XMFLOAT2 uv;
+};
+
+struct Triangle
+{
+	Vertex v1, v2, v3;
+};
+
 void ComputePass::Draw()
 {
+	static bool first = true;
+	static std::vector<Triangle> triangles;
+
+	if (first)
+	{
+		for (int dq = 0; dq < p_drawQueue.size(); dq++)
+		{
+			for (int m = 0; m < p_drawQueue[dq].ObjectData.size(); m++)
+			{
+				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
+				Triangle t;
+				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
+				{
+					t.v1.pos = mesh->GetRawVertices()->at(v).Position;
+					t.v1.normal = mesh->GetRawVertices()->at(v).Normal;
+					t.v1.uv = mesh->GetRawVertices()->at(v).UV;
+
+					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
+					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
+					t.v2.uv = mesh->GetRawVertices()->at(v + 1).UV;
+
+					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
+					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
+					t.v3.uv = mesh->GetRawVertices()->at(v + 2).UV;
+
+					triangles.push_back(t);
+				}
+			}
+		}
+	}
+
+	p_drawQueue.clear();
+
 	UINT * rayCounter = nullptr;
 
 	if (FAILED(m_counterStencil->Read(rayCounter)))
@@ -83,8 +129,6 @@ void ComputePass::Draw()
 
 	_ExecuteCommandList();
 
-	// TODO :: FENCE
-	Sleep(1);
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
 
 }
@@ -128,6 +172,12 @@ void ComputePass::ClearDraw()
 	
 
 	_ExecuteCommandList();
+}
+
+void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UINT & size)
+{
+	this->m_geometryRenderTargetsSize = size;
+	m_geometryRenderTargets = renderTargets;
 }
 
 void ComputePass::SetRayData(UAV * rayStencil, UAV * counterStencil)

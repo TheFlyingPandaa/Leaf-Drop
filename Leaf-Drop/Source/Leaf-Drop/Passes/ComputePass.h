@@ -17,6 +17,7 @@ public:
 
 	void ClearDraw();
 
+	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
 	void SetRayData(UAV * rayStencil, UAV * counterStencil);
 
 private:
@@ -55,6 +56,8 @@ private:
 	UINT8 m_computeIndex = 0;
 	UAV * m_rayStencil = nullptr;
 	UAV * m_counterStencil = nullptr;
+	UINT m_geometryRenderTargetsSize = 0;
+	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
 	ID3D12Fence *			m_fence[FRAME_BUFFER_COUNT]{ nullptr };
 	HANDLE					m_fenceEvent = nullptr;

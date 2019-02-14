@@ -170,8 +170,8 @@ void GeometryPass::Draw()
 		m_renderTarget[i]->SwitchToSRV(commandList);
 	}
 
-
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayStencil->GetResource()[frameIndex]));
+
 	ExecuteCommandList();
 	
 	m_rayStencil->prevFrame = frameIndex;
@@ -180,6 +180,7 @@ void GeometryPass::Draw()
 	p_coreRender->GetComputePass()->SetRayData(m_rayStencil, m_counterStencil);
 
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
+	p_coreRender->GetComputePass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 
 void GeometryPass::Release()
