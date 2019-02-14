@@ -108,19 +108,39 @@ void ComputePass::Draw()
 		return;
 	m_counterStencil->Unmap();
 
-	
+	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
+	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
+
 
 	POINT windowSize = p_window->GetWindowSize();
 
 	RAY_BOX data;
-	data.viewerPos.x = (float)windowSize.x * 0.5f;
-	data.viewerPos.y = (float)windowSize.y * 0.5f;
-	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
+	
+	data.viewerPosViewSpace.x = (float)windowSize.x * 0.5f;
+	data.viewerPosViewSpace.y = (float)windowSize.y * 0.5f;
+	data.viewerPosViewSpace.z = -(data.viewerPosViewSpace.x / tan(Camera::GetActiveCamera()->GetFOV()));
+	data.viewerPosViewSpace.w = 1.0f;
+	
+	data.viewerPos.x = camPos.x;
+	data.viewerPos.y = camPos.y;
+	data.viewerPos.z = camPos.z;
 	data.viewerPos.w = 1.0f;
+	
+	data.viewerPos.x = camPos.x;
+	data.viewerPos.y = camPos.y;
+	data.viewerPos.z = camPos.z;
+	data.viewerPos.w = 1.0f;
+
+	data.cameraDir.x = camDir.x;
+	data.cameraDir.y = camDir.y;
+	data.cameraDir.z = camDir.z;
+	data.cameraDir.w = 0.0f;
+
 	data.index.x = windowSize.x;
 	data.index.y = windowSize.y;
 	data.index.z = triangles.size();
-	data.viewMatrixInverse = Camera::GetActiveCamera()->GetViewMatrix();
+	
+	data.viewMatrixInverse = Camera::GetActiveCamera()->GetViewProjectionMatrix();
 
 	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
 		DirectX::XMMatrixInverse(nullptr,

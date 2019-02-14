@@ -1,7 +1,9 @@
 cbuffer RAY_BOX : register(b0)
 {
 	float4x4 ViewMatrixInverse;
-    float4 ViewerPosition;
+    float4 ViewerPositionViewSpace;
+    float4 ViewerPosition; // World space
+    float4 ViewerDirection; // World Space
     uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 
@@ -27,13 +29,17 @@ StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 void main(uint3 threadID : SV_DispatchThreadID)
 {
 	const float EPSILON = 0.000001f;
-	float4 finalColor = float4(1,0,0,1);
-	uint2 pixelLocation = indices[threadID.x];
-	float4 pixelMidPosition = float4(float2(pixelLocation) + float2(0.5f, 0.5f), 0.0f, 1.0f);
-	float4 rayViewPosition = pixelMidPosition - ViewerPosition;
 	
-	float4 rayWorld = float4(normalize(mul(rayViewPosition, ViewMatrixInverse)).xyz, 0.0f);
-	float4 startPosWorld = float4(mul(ViewerPosition, ViewMatrixInverse).xyz, 1.0f);
+    float4 finalColor = float4(1,0,0,1);
+	
+    uint2 pixelLocation = indices[threadID.x];
+	
+    float4 pixelMidPosition = float4((float2(pixelLocation) - float2(Info.xy) * 0.5f) / (float2(Info.xy) * 0.5f), 1.0f, 1.0f);
+
+    //float4 rayView = pixelMidPosition - ViewerPositionViewSpace;
+	
+    float4 rayWorld = float4(normalize(mul(pixelMidPosition, ViewMatrixInverse)).xyz, 0.0f);
+    float4 startPosWorld = ViewerPosition;
 
 	float minT = 999.0f;
 	int index = -1;
