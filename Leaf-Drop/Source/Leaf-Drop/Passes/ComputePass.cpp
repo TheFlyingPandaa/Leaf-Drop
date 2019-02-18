@@ -140,11 +140,11 @@ void ComputePass::Draw()
 
 	DirectX::XMStoreFloat4x4A(&data.projMatrixInverse,
 		DirectX::XMMatrixInverse(nullptr,
-			DirectX::XMLoadFloat4x4A(&data.projMatrixInverse)));
+			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.projMatrixInverse))));
 
 	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
 		DirectX::XMMatrixInverse(nullptr,
-		DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse)));
+			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse))));
 	
 	// TODO :: FENCE
 	Sleep(200);

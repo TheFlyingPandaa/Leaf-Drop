@@ -38,17 +38,15 @@ void main(uint3 threadID : SV_DispatchThreadID)
     float4 pixelMidPosition = float4(
         (2.0f * (float)pixelLocation.x) / (float)Info.x - 1.0f,
         1.0f - (2.0f * (float)pixelLocation.y) / Info.y,
-        0.0f,
+        1.0f,
         1.0f);
 
     float4 pixelViewSpace = mul(pixelMidPosition, ProjectionMatrixInverse);
 
-    pixelViewSpace.xyz = float4(pixelViewSpace.xy, 1.0f, 0.0f);
+    pixelViewSpace = float4(pixelViewSpace.xy, 1.0f, 1.0f);
 
     float4 rayWorld = float4(normalize(mul(pixelViewSpace, ViewMatrixInverse)).xyz, 0.0f);
 
-    //float4 rayView = pixelMidPosition - ViewerPositionViewSpace;
-	
     float4 startPosWorld = ViewerPosition;
 
 	float minT = 999.0f;
@@ -85,7 +83,10 @@ void main(uint3 threadID : SV_DispatchThreadID)
 		{
 			minT = t;
 			index = i;
-		}
+            finalColor = float4(1, 1, 1, 1);
+            outputTexture[indices[threadID.x]] = finalColor;
+            return;
+        }
 		
 	}
 

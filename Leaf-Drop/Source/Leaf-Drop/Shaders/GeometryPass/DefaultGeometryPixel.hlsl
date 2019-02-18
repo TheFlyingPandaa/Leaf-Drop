@@ -37,7 +37,7 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.metallic = metallic.Sample(defaultSampler, input.uv);
 	
     bool CastRay = output.metallic.r > 0.5;
-
+    CastRay = true;
 	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
 	int2 index = int2((int)(fIndex.x * (float)WIDTH), (int)(fIndex.y * (float)HEIGHT));
 
