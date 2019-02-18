@@ -139,12 +139,12 @@ void ComputePass::Draw()
 	data.projMatrixInverse = Camera::GetActiveCamera()->GetProjectionMatrix();
 
 	DirectX::XMStoreFloat4x4A(&data.projMatrixInverse,
-		DirectX::XMMatrixInverse(nullptr,
-			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.projMatrixInverse))));
+		DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,
+			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.projMatrixInverse)))));
 
 	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
-		DirectX::XMMatrixInverse(nullptr,
-			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse))));
+		DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,
+			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse)))));
 	
 	// TODO :: FENCE
 	Sleep(200);

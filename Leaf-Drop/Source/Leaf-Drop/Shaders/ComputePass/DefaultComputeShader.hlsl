@@ -83,9 +83,6 @@ void main(uint3 threadID : SV_DispatchThreadID)
 		{
 			minT = t;
 			index = i;
-            finalColor = float4(1, 1, 1, 1);
-            outputTexture[indices[threadID.x]] = finalColor;
-            return;
         }
 		
 	}
