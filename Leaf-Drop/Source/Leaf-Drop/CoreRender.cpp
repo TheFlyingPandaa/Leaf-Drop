@@ -628,4 +628,5 @@ void CoreRender::_Clear()
 {
 	m_geometryPass->Clear();
 	m_computePass->ClearDraw();
+	Sleep(10);
 }

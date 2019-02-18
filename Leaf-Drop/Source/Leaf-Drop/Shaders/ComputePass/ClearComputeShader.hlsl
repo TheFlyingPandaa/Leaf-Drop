@@ -1,20 +1,23 @@
 cbuffer RAY_BOX : register(b0)
 {
-	float4x4 ViewMatrixInverse;
-	float4 ViewerPosition;
-	uint4 Info; // X and Y are windowSize. Z is number of triangles
+    float4x4 ViewMatrixInverse;
+    float4x4 ProjectionMatrixInverse;
+    float4 ViewerPositionViewSpace;
+    float4 ViewerPosition; // World space
+    float4 ViewerDirection; // World Space
+    uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 
 struct Vertex
 {
-	float4 pos;
-	float4 normal;
-	float2 uv;
+    float4 pos;
+    float4 normal;
+    float2 uv;
 };
 
 struct Triangle
 {
-	Vertex v0, v1, v2;
+    Vertex v0, v1, v2;
 };
 
 

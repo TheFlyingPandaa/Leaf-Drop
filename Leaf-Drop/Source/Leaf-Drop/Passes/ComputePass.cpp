@@ -125,11 +125,6 @@ void ComputePass::Draw()
 	data.viewerPos.y = camPos.y;
 	data.viewerPos.z = camPos.z;
 	data.viewerPos.w = 1.0f;
-	
-	data.viewerPos.x = camPos.x;
-	data.viewerPos.y = camPos.y;
-	data.viewerPos.z = camPos.z;
-	data.viewerPos.w = 1.0f;
 
 	data.cameraDir.x = camDir.x;
 	data.cameraDir.y = camDir.y;
@@ -141,13 +136,18 @@ void ComputePass::Draw()
 	data.index.z = triangles.size();
 	
 	data.viewMatrixInverse = Camera::GetActiveCamera()->GetViewProjectionMatrix();
+	data.projMatrixInverse = Camera::GetActiveCamera()->GetProjectionMatrix();
+
+	DirectX::XMStoreFloat4x4A(&data.projMatrixInverse,
+		DirectX::XMMatrixInverse(nullptr,
+			DirectX::XMLoadFloat4x4A(&data.projMatrixInverse)));
 
 	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
 		DirectX::XMMatrixInverse(nullptr,
 		DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse)));
 	
 	// TODO :: FENCE
-	Sleep(1);
+	Sleep(200);
 
 	UINT c = 0;
 	if (rayCounter)
@@ -174,7 +174,7 @@ void ComputePass::Draw()
 
 	_ExecuteCommandList();
 
-	Sleep(100);
+	Sleep(200);
 
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
 
@@ -259,12 +259,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 	
-	if (FAILED(hr = m_rayTexture.Init(L"RayTexture")))
-	{
-		return hr;
-	}
-
-	if (FAILED(hr = m_rayTexture.Init(L"RayTexture")))
+	if (FAILED(hr = m_rayTexture.Init(L"RayTexture", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT)))
 	{
 		return hr;
 	}

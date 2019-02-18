@@ -1,6 +1,7 @@
 cbuffer RAY_BOX : register(b0)
 {
 	float4x4 ViewMatrixInverse;
+	float4x4 ProjectionMatrixInverse;
     float4 ViewerPositionViewSpace;
     float4 ViewerPosition; // World space
     float4 ViewerDirection; // World Space
@@ -34,11 +35,20 @@ void main(uint3 threadID : SV_DispatchThreadID)
 	
     uint2 pixelLocation = indices[threadID.x];
 	
-    float4 pixelMidPosition = float4((float2(pixelLocation) - float2(Info.xy) * 0.5f) / (float2(Info.xy) * 0.5f), 1.0f, 1.0f);
+    float4 pixelMidPosition = float4(
+        (2.0f * (float)pixelLocation.x) / (float)Info.x - 1.0f,
+        1.0f - (2.0f * (float)pixelLocation.y) / Info.y,
+        0.0f,
+        1.0f);
+
+    float4 pixelViewSpace = mul(pixelMidPosition, ProjectionMatrixInverse);
+
+    pixelViewSpace.xyz = float4(pixelViewSpace.xy, 1.0f, 0.0f);
+
+    float4 rayWorld = float4(normalize(mul(pixelViewSpace, ViewMatrixInverse)).xyz, 0.0f);
 
     //float4 rayView = pixelMidPosition - ViewerPositionViewSpace;
 	
-    float4 rayWorld = float4(normalize(mul(pixelMidPosition, ViewMatrixInverse)).xyz, 0.0f);
     float4 startPosWorld = ViewerPosition;
 
 	float minT = 999.0f;

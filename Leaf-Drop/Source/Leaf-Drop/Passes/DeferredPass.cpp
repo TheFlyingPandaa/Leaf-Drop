@@ -35,7 +35,7 @@ HRESULT DeferredPass::Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_rayTexture.Init(L"DeferredRay", 0, 0, 1, DXGI_FORMAT_R8G8B8A8_UNORM, TRUE)))
+	if (FAILED(hr = m_rayTexture.Init(L"DeferredRay", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
 	{
 		return hr;
 	}
