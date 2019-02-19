@@ -32,7 +32,7 @@ BOOL Window::Create(HINSTANCE hInstance, INT ShowWnd, UINT width, UINT height, B
 	m_fullscreen = fullscreen;
 	m_width = width;
 	m_height = height;
-	
+
 
 	m_windowThread = std::thread(&Window::_create, this, hInstance, ShowWnd);
 
@@ -184,6 +184,11 @@ void Window::_run()
 
 void Window::_create(HINSTANCE hInstance, INT ShowWnd)
 {
+	RECT r;
+	r.top = 0;
+	r.left = 0;
+	r.right = m_width;
+	r.bottom = m_height;
 	if (m_fullscreen)
 	{
 		HMONITOR hmon = MonitorFromWindow(m_hwnd, MONITOR_DEFAULTTONEAREST);
@@ -192,9 +197,15 @@ void Window::_create(HINSTANCE hInstance, INT ShowWnd)
 
 		m_width = mi.rcMonitor.right - mi.rcMonitor.left;
 		m_height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+		r.right = m_width;
+		r.bottom = m_height;
 	}
-
+	else
+	{
+		AdjustWindowRect(&r, WS_OVERLAPPEDWINDOW, false);
+	}
 	WNDCLASSEX wc;
+
 
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -222,7 +233,7 @@ void Window::_create(HINSTANCE hInstance, INT ShowWnd)
 		m_windowTitle.c_str(),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		m_width, m_height,
+		r.right - r.left, r.bottom - r.top,
 		NULL,
 		NULL,
 		hInstance,
