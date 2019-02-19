@@ -212,9 +212,9 @@ void main(uint3 threadID : SV_DispatchThreadID)
 	/*
 	Test
 	*/
-    //rayLoad.strength = 1.0f;
-	//BounceRay2(rayWorld, startPosWorld, rayLoad, rayWorld, startPosWorld);
-	//rayLoad.color = float4(0, 0, 0, 0);
+	rayLoad.strength = 1.0f;
+	BounceRay2(rayWorld, startPosWorld, rayLoad, rayWorld, startPosWorld);
+	rayLoad.color = float4(0, 0, 0, 0);
 	/*
 	End Test
 	*/
