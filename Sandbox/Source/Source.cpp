@@ -64,8 +64,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 10;
-		const UINT NUMBER_OF_LIGHTS = 5;
+		const UINT NUMBER_OF_LIGHTS = 25;
 		const UINT MAX_DISTANCE = 10;
+		const UINT MAX_LIGHT_DISTANCE = 25;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
@@ -79,9 +80,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			pointLight[i].SetDropOff(1.1f);
 			pointLight[i].SetPow(1.5f);
 
-			float x = static_cast<float>(rand() % MAX_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
-			float y = static_cast<float>(rand() % MAX_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
-			float z = static_cast<float>(rand() % MAX_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
+			float x = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
+			float y = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
+			float z = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 
 			float scl = static_cast<float>(rand() % 50 );
 			pointLight[i].SetPosition(x, y, z);
