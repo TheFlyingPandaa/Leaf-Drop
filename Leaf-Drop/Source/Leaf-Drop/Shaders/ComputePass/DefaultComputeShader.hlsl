@@ -31,11 +31,11 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 SamplerState	defaultTextureAtlasSampler : register(s0);
 Texture2DArray	TextureAtlas : register(t2);
 
-void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit, out float3 uvw)
+void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit, out float3 uvw, out uint index)
 {
 	const float EPSILON = 0.000001f;
 	float minT = 9999.0f;
-	int index = -1;
+	index = -1;
 	uvw.x = -1.0f;
 	uvw.y = -1.0f;
 	uvw.z = -1.0f;
@@ -110,12 +110,12 @@ void main(uint3 threadID : SV_DispatchThreadID)
 	Triangle tri;
 	bool hit = false;
 	float3 uvw;
+    uint index;
 
-	BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw);
+    BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw, index);
 	
 	if (hit)
 	{
-
 		float4 e1 = tri.v1.pos - tri.v0.pos;
 		float4 e2 = tri.v2.pos - tri.v0.pos;
 
@@ -123,7 +123,19 @@ void main(uint3 threadID : SV_DispatchThreadID)
 		float4 newRay = float4(normalize(rayWorld.xyz - (2.0f * (normal * (dot(rayWorld.xyz, normal))))), 0.0f);
 		float4 newStartPos = float4(intersectionPoint, 1.0f);
 
-		BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw);
+        float2 uv;
+        
+        if (index % 2 == 0)
+            uv = tri.v0.uv * uvw.z + tri.v1.uv * uvw.y + tri.v2.uv * uvw.x;
+		else
+            uv = tri.v0.uv * uvw.z + tri.v1.uv * uvw.x + tri.v2.uv * uvw.y;
+	   //
+       //float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
+       //outputTexture[pixelLocation] = color;
+	   //
+       //return;
+
+        BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw, index);
 
 		if (hit)
 		{
