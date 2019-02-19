@@ -27,7 +27,15 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
-RWStructuredBuffer<int> RayStencil : register(u0);
+//RWStructuredBuffer<int> RayStencil : register(u0);
+
+struct RAY_STRUCT
+{
+	float4	worldPos;
+	uint2	pixelCoord;
+};
+RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
+RWStructuredBuffer<uint> CounterStencil : register(u1);
 
 PS_OUTPUT main(VS_OUTPUT input)
 {
@@ -40,12 +48,18 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
     bool CastRay = output.metallic.r > 0.5;
+	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
+	int2 index = int2((int)(fIndex.x * (float)WIDTH), (int)(fIndex.y * (float)HEIGHT));
 
-    if (CastRay)
-    {
-        float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
-       // RayStencil[(int) (fIndex.x * WIDTH_DIV) + (int) (fIndex.y * HEIGHT_DIV) * HEIGHT_DIV] = 1;
+    if (CastRay && index.x > -1 && index.x < WIDTH && index.y > -1 && index.y < HEIGHT)
+	{
+		uint accessIndex = 0;
+		//CounterStencil[0] += 1;
+		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
+		RayStencil[accessIndex].pixelCoord = uint2(index);
+		RayStencil[accessIndex].worldPos = input.worldPosition;
     }
-    
+ 
+
 	return output;
 }

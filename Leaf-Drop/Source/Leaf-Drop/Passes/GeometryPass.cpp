@@ -11,9 +11,10 @@
 
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
-#define UAV_OUTPUT		2
+#define RAY_STENCIL		2
 #define TEXTURE_TABLE	3
 #define TEXTURE_INDEX	4
+#define COUNTER_STENCIL	5
 
 struct UINT4
 {
@@ -72,11 +73,22 @@ HRESULT GeometryPass::Init()
 	}
 
 	Window * wnd = Window::GetInstance();
-	const POINT p = wnd->GetWindowSize();
-	const UINT elements = (p.x / 32) * (p.y / 32);
+	POINT p = wnd->GetWindowSize();
+	UINT elements = (p.x * p.y);
 
-	m_uav = new UAV();
-	if (FAILED(hr = m_uav->Init(L"Cock", elements * 4, elements, 4)))
+	struct RAY_STRUCT
+	{
+		DirectX::XMFLOAT4 ray;
+		DirectX::XMUINT2 pixelPos;
+	};
+
+	m_rayStencil = new UAV();
+	if (FAILED(hr = m_rayStencil->Init(L"RayStencil", elements * sizeof(RAY_STRUCT), elements, sizeof(RAY_STRUCT))))
+	{
+		return hr;
+	}
+	m_counterStencil = new UAV();
+	if (FAILED(hr = m_counterStencil->Init(L"Counter", sizeof(UINT), 1, sizeof(UINT))))
 	{
 		return hr;
 	}
@@ -160,9 +172,11 @@ void GeometryPass::Update()
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 
 
+	m_rayStencil->Clear(commandList);
+	m_counterStencil->Clear(commandList);
 
-	m_uav->Clear(commandList);
-	m_uav->Map(UAV_OUTPUT, commandList);
+	m_rayStencil->Bind(RAY_STENCIL, commandList);
+	m_counterStencil->Bind(COUNTER_STENCIL, commandList);
 }
 
 void GeometryPass::Draw()
@@ -185,25 +199,29 @@ void GeometryPass::Draw()
 		m_renderTarget[i]->SwitchToSRV(commandList);
 	}
 
+	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayStencil->GetResource()[frameIndex]));
 
-	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_uav->GetResource()[frameIndex]));
-	
 	m_timer.LogTime();
-
 	ExecuteCommandList();
-	m_uav->prevFrame = frameIndex;
+	
+	m_fence.WaitForFinnishExecution();
 
-	p_coreRender->GetComputePass()->SetRayTiles(m_uav);
+	m_rayStencil->prevFrame = frameIndex;
+	m_counterStencil->prevFrame = frameIndex;
+
+	p_coreRender->GetComputePass()->SetRayData(m_rayStencil, m_counterStencil);
 
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
+	p_coreRender->GetComputePass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 
 void GeometryPass::Release()
 {
 	p_ReleaseCommandList();
-	if (m_uav)
-		m_uav->Release();
-	SAFE_DELETE(m_uav);
+	m_rayStencil->Release();
+	SAFE_DELETE(m_rayStencil);
+	m_counterStencil->Release();
+	SAFE_DELETE(m_counterStencil);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
 		m_renderTarget[i]->Release();
@@ -212,6 +230,8 @@ void GeometryPass::Release()
 
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
+
+	m_fence.Release();
 	
 	m_depthBuffer.Release();
 
@@ -224,16 +244,17 @@ void GeometryPass::Release()
 
 UAV * GeometryPass::GetUAV()
 {
-	return m_uav;
+	return nullptr;
 }
 
 HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
+	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
+
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
-	
 	{
 		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 		rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
@@ -243,7 +264,8 @@ HRESULT GeometryPass::_InitRootSignature()
 
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 
-	rootParameters[UAV_OUTPUT].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[COUNTER_STENCIL].InitAsUnorderedAccessView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(0,0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
@@ -416,6 +438,8 @@ void GeometryPass::_CreateViewPort()
 	m_scissorRect.bottom = wndSize.y;
 }
 
+
+
 HRESULT GeometryPass::_Init()
 {
 	HRESULT hr = 0;
@@ -429,6 +453,10 @@ HRESULT GeometryPass::_Init()
 		return hr;
 	}
 	if (FAILED(hr = _InitPipelineState()))
+	{
+		return hr;
+	}
+	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCommandQueue())))
 	{
 		return hr;
 	}

@@ -55,4 +55,5 @@ Texture* Drawable::GetNormal() const
 void Drawable::Draw()
 {
 	m_coreRenderer->GetGeometryPass()->Submit(this);
+	m_coreRenderer->GetComputePass()->Submit(this);
 }

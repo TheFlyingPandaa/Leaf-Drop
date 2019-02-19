@@ -84,7 +84,7 @@ void UAV::Clear(ID3D12GraphicsCommandList * commandList)
 	}
 }
 
-void UAV::Map(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
+void UAV::Bind(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
 {
 	const UINT frameIndex = m_coreRender->GetFrameIndex();
 	commandList->SetGraphicsRootUnorderedAccessView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
@@ -94,6 +94,18 @@ void UAV::SetGraphicsRootShaderResourceView(const UINT& rootParameterIndex, ID3D
 {
 	const UINT frameIndex = m_coreRender->GetFrameIndex();
 	commandList->SetGraphicsRootShaderResourceView(rootParameterIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
+}
+
+void UAV::BindCompute(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
+{
+	const UINT frameIndex = m_coreRender->GetFrameIndex();
+	commandList->SetComputeRootUnorderedAccessView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
+}
+
+void UAV::BindComputeSrv(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
+{
+	const UINT frameIndex = m_coreRender->GetFrameIndex();
+	commandList->SetComputeRootShaderResourceView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
 }
 
 void UAV::Unmap()

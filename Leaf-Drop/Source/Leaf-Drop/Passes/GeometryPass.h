@@ -4,6 +4,7 @@
 #include "../Wrappers/ConstantBuffer.h"
 #include "../Wrappers/DepthBuffer.h"
 #include "../Wrappers/UAV.h"
+#include "../Wrappers/Fence.h"
 #include "../Wrappers/GpuTimer.h"
 #include "../Wrappers/TextureAtlas.h"
 
@@ -44,11 +45,14 @@ private:
 	ConstantBuffer m_worldMatrices;
 	ConstantBuffer m_textureIndex;
 
-	UAV * m_uav;
+	UAV * m_rayStencil;
+	UAV * m_counterStencil;
 
 	GpuTimer m_timer;
 
 	TextureAtlas m_atlas;
+
+	Fence m_fence;
 
 private:
 	HRESULT _Init();

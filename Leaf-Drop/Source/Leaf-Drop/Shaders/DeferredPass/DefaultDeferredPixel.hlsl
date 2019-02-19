@@ -1,10 +1,11 @@
 #include "../LightCalculations.hlsli"
 SamplerState defaultSampler : register(s0);
 
-Texture2D Position	: register(t0, space0);
-Texture2D Normal    : register(t0, space1);
-Texture2D Albedo    : register(t0, space2);
-Texture2D Metallic  : register(t0, space3);
+Texture2D Position		: register(t0, space0);
+Texture2D Normal		: register(t0, space1);
+Texture2D Albedo		: register(t0, space2);
+Texture2D Metallic		: register(t0, space3);
+Texture2D RayTracing	: register(t0, space4);
 
 
 StructuredBuffer<LIGHT> Lights : register(t1);
@@ -32,7 +33,8 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 normal	= Normal.Sample(defaultSampler, input.uv);
 	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
-
+	float4 rays		= RayTracing.Sample(defaultSampler, input.uv);
+	return rays;
 	float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
 	uint numStructs;

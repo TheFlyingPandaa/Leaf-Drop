@@ -1,7 +1,7 @@
 #pragma once
 #include "Template/IRender.h"
 #include "../Wrappers/GpuTimer.h"
-
+#include "../Wrappers/ShaderResource.h"
 class DeferredPass : public IRender
 {
 public:
@@ -15,6 +15,7 @@ public:
 	virtual void Release() override;
 
 	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
+	void SetRayData(ShaderResource * rayTexture);
 
 private:
 	struct ScreenQuad
@@ -86,6 +87,9 @@ private:
 	UAV m_lightUav;
 	
 	GpuTimer timer;
+
+	RenderTarget m_rayTexture;
+	ShaderResource * m_pRaySRV = nullptr;
 
 private:
 	HRESULT _Init();

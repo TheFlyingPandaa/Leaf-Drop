@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\Fence.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\GpuTimer.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Lights\DirectionalLight.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Lights\PointLight.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="Source\Leaf-Drop\Extern\Extern.h" />
     <ClInclude Include="Source\Leaf-Drop\Utillity\Timer.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderCreator.h" />
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderResource.h" />
     <ClInclude Include="Source\Window\Window.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Transform.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\StaticMesh.h" />
@@ -353,6 +355,7 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\TextureAtlas.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\Fence.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\GpuTimer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Lights\DirectionalLight.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Lights\PointLight.cpp" />
@@ -615,6 +618,7 @@
     <ClCompile Include="Source\Leaf-Drop\Passes\Template\IRender.cpp" />
     <ClCompile Include="Source\Leaf-Drop\CoreRender.cpp" />
     <ClCompile Include="Source\Core.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\ShaderResource.cpp" />
     <ClCompile Include="Source\Window\Window.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Transform.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\StaticMesh.cpp" />
@@ -770,6 +774,12 @@
     <None Include="Source\Leaf-Drop\Shaders\LightCalculations.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\ClearComputeShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>

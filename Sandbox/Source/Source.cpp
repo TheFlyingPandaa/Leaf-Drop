@@ -62,7 +62,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 16000;
+		const UINT NUMBER_OF_DRAWABLES = 100;
 		const UINT NUMBER_OF_LIGHTS = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
@@ -149,7 +149,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 				if (wnd->IsKeyPressed(Input::SPACE))
 					moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-				if (wnd->IsKeyPressed(Input::CTRL))
+				if (wnd->IsKeyPressed(Input::C))
 					moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
 
 				float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;

@@ -744,6 +744,12 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\UAV.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\ShaderResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\Fence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Leaf-Drop\Objects\Lights\Template\ILight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -933,6 +939,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\UAV.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\ShaderResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\Fence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Objects\Lights\Template\ILight.cpp">
@@ -1392,5 +1404,6 @@
     <FxCompile Include="Source\Leaf-Drop\Shaders\DeferredPass\DefaultDeferredVertex.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
+    <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\ClearComputeShader.hlsl" />
   </ItemGroup>
 </Project>

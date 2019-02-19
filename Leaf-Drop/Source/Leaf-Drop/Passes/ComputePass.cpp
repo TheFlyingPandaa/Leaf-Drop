@@ -2,8 +2,26 @@
 #include "ComputePass.h"
 #include "../Wrappers/ShaderCreator.h"
 #include "../Objects/Camera.h"
+#include "../Objects/StaticMesh.h"
+
+#include <iostream>
 
 #define RAY_SQUARE_INDEX 0
+#define RAY_TEXTURE 1
+#define RAY_INDICES 2
+#define TRIANGLES	3
+
+struct Vertex
+{
+	DirectX::XMFLOAT4 pos;
+	DirectX::XMFLOAT4 normal;
+	DirectX::XMFLOAT2 uv;
+};
+
+struct Triangle
+{
+	Vertex v1, v2, v3;
+};
 
 ComputePass::ComputePass()
 {
@@ -27,60 +45,115 @@ HRESULT ComputePass::Init()
 
 void ComputePass::Update()
 {
-
+	
 }
+
+
 
 void ComputePass::Draw()
 {
-	INT * rayTiles = nullptr;
-	if (FAILED(m_rayTiles->Read(rayTiles)))
-		return;
-	m_rayTiles->Unmap();
+	static bool first = true;
+	static std::vector<Triangle> triangles;
 
-	OpenCommandList(m_pipelineState);
-	const UINT frameIndex = p_coreRender->GetFrameIndex();
-
-	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
-
-	POINT windowSize = p_window->GetWindowSize();
-	POINT nrOfRayTiles;
-	nrOfRayTiles.x = windowSize.x / 32;
-	nrOfRayTiles.y = windowSize.y / 32;
-	
-	RAY_BOX data;
-	data.viewerPos.x = (float)windowSize.x * 0.5f;
-	data.viewerPos.y = (float)windowSize.y * 0.5f;
-	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
-	data.viewerPos.w = 1.0f;
-
-	for (LONG y = 0; y < nrOfRayTiles.y; y++)
+	if (first)
 	{
-		for (LONG x = 0; x < nrOfRayTiles.x; x++)
+		first = false;
+		for (int dq = 0; dq < p_drawQueue.size(); dq++)
 		{
-			LONG index = x + y * nrOfRayTiles.y;
-			if (rayTiles[index])
+			for (int m = 0; m < p_drawQueue[dq].ObjectData.size(); m++)
 			{
-				data.index.x = x;
-				data.index.y = y;
+				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
+				Triangle t;
+				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
+				{
+					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].ObjectData[m].WorldMatrix;
+					
+					DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&world));
 
-				/*DirectX::XMFLOAT4 viewerPos = data.viewerPos;
-				DirectX::XMFLOAT4 pixelPos = {(float)x, (float)y, 0.0f, 1.0f};
-				DirectX::XMFLOAT4 ray;
-				DirectX::XMStoreFloat4(&ray, DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&pixelPos), DirectX::XMLoadFloat4(&viewerPos))));
-				*/
+					t.v1.pos = mesh->GetRawVertices()->at(v).Position;
+					t.v1.normal = mesh->GetRawVertices()->at(v).Normal;
+					t.v1.uv = mesh->GetRawVertices()->at(v).UV;
 
-				m_squareIndex.SetData(&data, sizeof(&data));
-				m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
-				p_commandList[frameIndex]->Dispatch(32, 32, 1);
+
+					DirectX::XMStoreFloat4(&t.v1.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix));
+					DirectX::XMStoreFloat4(&t.v1.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix)));
+
+					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
+					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
+					t.v2.uv = mesh->GetRawVertices()->at(v + 1).UV;
+
+
+					DirectX::XMStoreFloat4(&t.v2.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix));
+					DirectX::XMStoreFloat4(&t.v2.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix)));
+
+					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
+					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
+					t.v3.uv = mesh->GetRawVertices()->at(v + 2).UV;
+
+
+					DirectX::XMStoreFloat4(&t.v3.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix));
+					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix)));
+
+					triangles.push_back(t);
+				}
 			}
 		}
 	}
 
+	p_drawQueue.clear();
 
+	UINT * rayCounter = nullptr;
+
+	if (FAILED(m_counterStencil->Read(rayCounter)))
+		return;
+	m_counterStencil->Unmap();
+
+	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
+	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
+
+
+	POINT windowSize = p_window->GetWindowSize();
+
+	RAY_BOX data;
+	data.viewerPos.x = camPos.x;
+	data.viewerPos.y = camPos.y;
+	data.viewerPos.z = camPos.z;
+	data.viewerPos.w = 1.0f;
+
+	data.info.x = windowSize.x;
+	data.info.y = windowSize.y;
+	data.info.z = triangles.size();
+	
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
+
+	UINT c = 0;
+	if (rayCounter)
+		c = rayCounter[0];
+	if (c == 0)
+		return;
+	OpenCommandList(m_pipelineState);
+
+	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
+	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
+
+	m_squareIndex.SetData(&data, sizeof(data));
+	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
+	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
+
+	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
+
+	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(Triangle));
+	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
+
+
+	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
+	
+	m_fence.WaitForFinnishExecution();
 
-	m_rayTiles = nullptr;
+	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
+
 }
 
 void ComputePass::Release()
@@ -88,20 +161,23 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
-
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		SAFE_RELEASE(m_fence[i]);
-	}
-
+	m_fence.Release();
 	p_ReleaseCommandList();
-
 	m_squareIndex.Release();
+	m_meshTriangles.Release();
+	m_rayTexture.Release();
 }
 
-void ComputePass::SetRayTiles(UAV * rayTiles)
+void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UINT & size)
 {
-	m_rayTiles = rayTiles;
+	this->m_geometryRenderTargetsSize = size;
+	m_geometryRenderTargets = renderTargets;
+}
+
+void ComputePass::SetRayData(UAV * rayStencil, UAV * counterStencil)
+{
+	m_rayStencil = rayStencil;
+	m_counterStencil = counterStencil;
 }
 
 HRESULT ComputePass::_Init()
@@ -120,12 +196,22 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = _CreateFenceAndFenceEvent()))
+	if (FAILED(hr = m_fence.CreateFence(m_commandQueue)))
 	{
 		return hr;
 	}
 
 	if (FAILED(hr = m_squareIndex.Init(sizeof(RAY_BOX), L"RaySqueare", ConstantBuffer::CONSTANT_BUFFER, sizeof(RAY_BOX))))
+	{
+		return hr;
+	}
+	
+	if (FAILED(hr = m_rayTexture.Init(L"RayTexture", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT)))
+	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_meshTriangles.Init(sizeof(Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(Triangle))))
 	{
 		return hr;
 	}
@@ -165,6 +251,14 @@ HRESULT ComputePass::_InitShaders()
 	m_computeShader.pShaderBytecode = blob->GetBufferPointer();
 	m_computeShader.BytecodeLength = blob->GetBufferSize();
 
+
+	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\ComputePass\\ClearComputeShader.hlsl", blob, "cs_5_1")))
+	{
+		return hr;
+	}
+	m_clearComputeShader.pShaderBytecode = blob->GetBufferPointer();
+	m_clearComputeShader.BytecodeLength = blob->GetBufferSize();
+
 	return hr;
 }
 
@@ -172,8 +266,13 @@ HRESULT ComputePass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
+	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
+	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
+	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
@@ -206,6 +305,11 @@ HRESULT ComputePass::_InitRootSignature()
 		}
 	}
 
+	//if (FAILED(hr = _InitClearRootSignature()))
+	//{
+	//	return hr;
+	//}
+
 	return hr;
 }
 
@@ -228,28 +332,6 @@ HRESULT ComputePass::_InitPipelineState()
 	return hr;
 }
 
-HRESULT ComputePass::_CreateFenceAndFenceEvent()
-{
-	HRESULT hr = 0;
-
-	ID3D12Device * device = CoreRender::GetInstance()->GetDevice();
-
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		if (FAILED(hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence[i]))))
-		{
-			break;
-		}
-		m_fenceValue[i] = 0;
-	}
-
-	m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-	if (nullptr == m_fenceEvent)
-		return E_FAIL;
-
-	return hr;
-}
-
 HRESULT ComputePass::_ExecuteCommandList()
 {
 	HRESULT hr = 0;
@@ -259,11 +341,6 @@ HRESULT ComputePass::_ExecuteCommandList()
 	{
 		ID3D12CommandList* ppCommandLists[] = { p_commandList[frameIndex] };
 		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
-		if (FAILED(hr = m_commandQueue->Signal(m_fence[frameIndex], m_fenceValue[frameIndex])))
-		{
-			return hr;
-		}
 	}
 	return hr;
 }

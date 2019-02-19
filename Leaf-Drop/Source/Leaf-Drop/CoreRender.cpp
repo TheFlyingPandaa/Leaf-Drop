@@ -383,9 +383,6 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
 
-	//Sleep(100);
-	//m_computePass->Update();
-	//m_computePass->Draw();
 
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
@@ -420,6 +417,7 @@ HRESULT CoreRender::_waitForPreviousFrame()
 			return hr;
 		}
 		WaitForSingleObject(m_fenceEvent, INFINITE);
+		
 	}
 
 	m_fenceValue[m_frameIndex]++;
@@ -613,7 +611,7 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	heapDesc.NumDescriptors = MAX_DESCRIPTOR_HEAP_SIZE;
-	
+
 	if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_resourceDescriptorHeap))))
 		return hr;
 
@@ -627,5 +625,7 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 void CoreRender::_Clear()
 {
 	m_geometryPass->Clear();
+	//m_computePass->ClearDraw();
+	//Sleep(10);
 	m_deferredPass->Clear();
 }

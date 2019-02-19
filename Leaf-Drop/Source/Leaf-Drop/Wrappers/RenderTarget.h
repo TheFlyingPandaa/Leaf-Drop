@@ -20,6 +20,8 @@ public:
 
 	void SetGraphicsRootDescriptorTable(const UINT& rootParameterIndex, ID3D12GraphicsCommandList* commandList);
 
+	ID3D12Resource * GetResource();
+
 	void SwitchToRTV(ID3D12GraphicsCommandList * commandList);
 	void SwitchToSRV(ID3D12GraphicsCommandList * commandList);
 
