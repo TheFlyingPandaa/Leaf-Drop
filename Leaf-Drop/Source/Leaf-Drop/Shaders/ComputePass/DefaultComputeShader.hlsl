@@ -27,6 +27,7 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 
 
+
 [numthreads(1, 1, 1)]
 void main(uint3 threadID : SV_DispatchThreadID)
 {
@@ -82,7 +83,7 @@ void main(uint3 threadID : SV_DispatchThreadID)
 	if (index != -1)
 	{
 		float3 intersctionPoint = startPosWorld.xyz + rayWorld.xyz * minT;
-		finalColor = float4(1,1,1,1);
+		finalColor = float4(1,1,1, length(intersctionPoint - startPosWorld.xyz));
 	}
 	
 	outputTexture[pixelLocation] = finalColor;

@@ -59,6 +59,8 @@ PS_OUTPUT main(VS_OUTPUT input)
 		RayStencil[accessIndex].pixelCoord = uint2(index);
 		RayStencil[accessIndex].worldPos = input.worldPosition;
     }
+
+
  
 
 	return output;
