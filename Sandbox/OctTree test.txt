@@ -1,0 +1,5256 @@
+[0]
+Position: -256.000000, -256.000000, -256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 8, 9, 10, 11, 12, 13, 14, 15, 
+
+[1]
+Position: 256.000000, -256.000000, -256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 16, 17, 18, 19, 20, 21, 22, 23, 
+
+[2]
+Position: -256.000000, -256.000000, 256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 24, 25, 26, 27, 28, 29, 30, 31, 
+
+[3]
+Position: 256.000000, -256.000000, 256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 32, 33, 34, 35, 36, 37, 38, 39, 
+
+[4]
+Position: -256.000000, 256.000000, -256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 40, 41, 42, 43, 44, 45, 46, 47, 
+
+[5]
+Position: 256.000000, 256.000000, -256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 48, 49, 50, 51, 52, 53, 54, 55, 
+
+[6]
+Position: -256.000000, 256.000000, 256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 56, 57, 58, 59, 60, 61, 62, 63, 
+
+[7]
+Position: 256.000000, 256.000000, 256.000000
+axis: 256.000000, 256.000000, 256.000000
+level: 0
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 64, 65, 66, 67, 68, 69, 70, 71, 
+
+[8]
+Position: -448.000000, -448.000000, -448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 128, 129, 130, 131, 132, 133, 134, 135, 
+
+[9]
+Position: -320.000000, -448.000000, -448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 256, 257, 258, 259, 260, 261, 262, 263, 
+
+[10]
+Position: -448.000000, -448.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 384, 385, 386, 387, 388, 389, 390, 391, 
+
+[11]
+Position: -320.000000, -448.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 512, 513, 514, 515, 516, 517, 518, 519, 
+
+[12]
+Position: -448.000000, -320.000000, -448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 640, 641, 642, 643, 644, 645, 646, 647, 
+
+[13]
+Position: -320.000000, -320.000000, -448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 768, 769, 770, 771, 772, 773, 774, 775, 
+
+[14]
+Position: -448.000000, -320.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 896, 897, 898, 899, 900, 901, 902, 903, 
+
+[15]
+Position: -320.000000, -320.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 
+
+[16]
+Position: -384.000000, -384.000000, -384.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1152, 1153, 1154, 1155, 1156, 1157, 1158, 1159, 
+
+[17]
+Position: -128.000000, -384.000000, -384.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1280, 1281, 1282, 1283, 1284, 1285, 1286, 1287, 
+
+[18]
+Position: -384.000000, -384.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 
+
+[19]
+Position: -128.000000, -384.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 
+
+[20]
+Position: -384.000000, -128.000000, -384.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1664, 1665, 1666, 1667, 1668, 1669, 1670, 1671, 
+
+[21]
+Position: -128.000000, -128.000000, -384.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1792, 1793, 1794, 1795, 1796, 1797, 1798, 1799, 
+
+[22]
+Position: -384.000000, -128.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 
+
+[23]
+Position: -128.000000, -128.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2048, 2049, 2050, 2051, 2052, 2053, 2054, 2055, 
+
+[24]
+Position: -320.000000, -320.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2176, 2177, 2178, 2179, 2180, 2181, 2182, 2183, 
+
+[25]
+Position: 64.000000, -320.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2304, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 
+
+[26]
+Position: -320.000000, -320.000000, 64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2432, 2433, 2434, 2435, 2436, 2437, 2438, 2439, 
+
+[27]
+Position: 64.000000, -320.000000, 64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2560, 2561, 2562, 2563, 2564, 2565, 2566, 2567, 
+
+[28]
+Position: -320.000000, 64.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2688, 2689, 2690, 2691, 2692, 2693, 2694, 2695, 
+
+[29]
+Position: 64.000000, 64.000000, -320.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2816, 2817, 2818, 2819, 2820, 2821, 2822, 2823, 
+
+[30]
+Position: -320.000000, 64.000000, 64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 2944, 2945, 2946, 2947, 2948, 2949, 2950, 2951, 
+
+[31]
+Position: 64.000000, 64.000000, 64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3072, 3073, 3074, 3075, 3076, 3077, 3078, 3079, 
+
+[32]
+Position: -256.000000, -256.000000, -256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 
+
+[33]
+Position: 256.000000, -256.000000, -256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3328, 3329, 3330, 3331, 3332, 3333, 3334, 3335, 
+
+[34]
+Position: -256.000000, -256.000000, 256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3456, 3457, 3458, 3459, 3460, 3461, 3462, 3463, 
+
+[35]
+Position: 256.000000, -256.000000, 256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3584, 3585, 3586, 3587, 3588, 3589, 3590, 3591, 
+
+[36]
+Position: -256.000000, 256.000000, -256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 
+
+[37]
+Position: 256.000000, 256.000000, -256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3840, 3841, 3842, 3843, 3844, 3845, 3846, 3847, 
+
+[38]
+Position: -256.000000, 256.000000, 256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3968, 3969, 3970, 3971, 3972, 3973, 3974, 3975, 
+
+[39]
+Position: 256.000000, 256.000000, 256.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4096, 4097, 4098, 4099, 4100, 4101, 4102, 4103, 
+
+[40]
+Position: -192.000000, -192.000000, -192.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4224, 4225, 4226, 4227, 4228, 4229, 4230, 4231, 
+
+[41]
+Position: 448.000000, -192.000000, -192.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4352, 4353, 4354, 4355, 4356, 4357, 4358, 4359, 
+
+[42]
+Position: -192.000000, -192.000000, 448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4480, 4481, 4482, 4483, 4484, 4485, 4486, 4487, 
+
+[43]
+Position: 448.000000, -192.000000, 448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4608, 4609, 4610, 4611, 4612, 4613, 4614, 4615, 
+
+[44]
+Position: -192.000000, 448.000000, -192.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4736, 4737, 4738, 4739, 4740, 4741, 4742, 4743, 
+
+[45]
+Position: 448.000000, 448.000000, -192.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4864, 4865, 4866, 4867, 4868, 4869, 4870, 4871, 
+
+[46]
+Position: -192.000000, 448.000000, 448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 
+
+[47]
+Position: 448.000000, 448.000000, 448.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5120, 5121, 5122, 5123, 5124, 5125, 5126, 5127, 
+
+[48]
+Position: -128.000000, -128.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5248, 5249, 5250, 5251, 5252, 5253, 5254, 5255, 
+
+[49]
+Position: 640.000000, -128.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5376, 5377, 5378, 5379, 5380, 5381, 5382, 5383, 
+
+[50]
+Position: -128.000000, -128.000000, 640.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5504, 5505, 5506, 5507, 5508, 5509, 5510, 5511, 
+
+[51]
+Position: 640.000000, -128.000000, 640.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5632, 5633, 5634, 5635, 5636, 5637, 5638, 5639, 
+
+[52]
+Position: -128.000000, 640.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5760, 5761, 5762, 5763, 5764, 5765, 5766, 5767, 
+
+[53]
+Position: 640.000000, 640.000000, -128.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 5888, 5889, 5890, 5891, 5892, 5893, 5894, 5895, 
+
+[54]
+Position: -128.000000, 640.000000, 640.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6016, 6017, 6018, 6019, 6020, 6021, 6022, 6023, 
+
+[55]
+Position: 640.000000, 640.000000, 640.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 
+
+[56]
+Position: -64.000000, -64.000000, -64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6272, 6273, 6274, 6275, 6276, 6277, 6278, 6279, 
+
+[57]
+Position: 832.000000, -64.000000, -64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6400, 6401, 6402, 6403, 6404, 6405, 6406, 6407, 
+
+[58]
+Position: -64.000000, -64.000000, 832.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6528, 6529, 6530, 6531, 6532, 6533, 6534, 6535, 
+
+[59]
+Position: 832.000000, -64.000000, 832.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6656, 6657, 6658, 6659, 6660, 6661, 6662, 6663, 
+
+[60]
+Position: -64.000000, 832.000000, -64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6784, 6785, 6786, 6787, 6788, 6789, 6790, 6791, 
+
+[61]
+Position: 832.000000, 832.000000, -64.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6912, 6913, 6914, 6915, 6916, 6917, 6918, 6919, 
+
+[62]
+Position: -64.000000, 832.000000, 832.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7040, 7041, 7042, 7043, 7044, 7045, 7046, 7047, 
+
+[63]
+Position: 832.000000, 832.000000, 832.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7168, 7169, 7170, 7171, 7172, 7173, 7174, 7175, 
+
+[64]
+Position: 0.000000, 0.000000, 0.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7296, 7297, 7298, 7299, 7300, 7301, 7302, 7303, 
+
+[65]
+Position: 1024.000000, 0.000000, 0.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7424, 7425, 7426, 7427, 7428, 7429, 7430, 7431, 
+
+[66]
+Position: 0.000000, 0.000000, 1024.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7552, 7553, 7554, 7555, 7556, 7557, 7558, 7559, 
+
+[67]
+Position: 1024.000000, 0.000000, 1024.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7680, 7681, 7682, 7683, 7684, 7685, 7686, 7687, 
+
+[68]
+Position: 0.000000, 1024.000000, 0.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7808, 7809, 7810, 7811, 7812, 7813, 7814, 7815, 
+
+[69]
+Position: 1024.000000, 1024.000000, 0.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7936, 7937, 7938, 7939, 7940, 7941, 7942, 7943, 
+
+[70]
+Position: 0.000000, 1024.000000, 1024.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 8064, 8065, 8066, 8067, 8068, 8069, 8070, 8071, 
+
+[71]
+Position: 1024.000000, 1024.000000, 1024.000000
+axis: 64.000000, 64.000000, 64.000000
+level: 1
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 
+
+[72]
+Position: -496.000000, -496.000000, -496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 
+
+[73]
+Position: -464.000000, -496.000000, -496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 3072, 3073, 3074, 3075, 3076, 3077, 3078, 3079, 
+
+[74]
+Position: -496.000000, -496.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 4608, 4609, 4610, 4611, 4612, 4613, 4614, 4615, 
+
+[75]
+Position: -464.000000, -496.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 
+
+[76]
+Position: -496.000000, -464.000000, -496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 7680, 7681, 7682, 7683, 7684, 7685, 7686, 7687, 
+
+[77]
+Position: -464.000000, -464.000000, -496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 9216, 9217, 9218, 9219, 9220, 9221, 9222, 9223, 
+
+[78]
+Position: -496.000000, -464.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 10752, 10753, 10754, 10755, 10756, 10757, 10758, 10759, 
+
+[79]
+Position: -464.000000, -464.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 12288, 12289, 12290, 12291, 12292, 12293, 12294, 12295, 
+
+[80]
+Position: -480.000000, -480.000000, -480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 13824, 13825, 13826, 13827, 13828, 13829, 13830, 13831, 
+
+[81]
+Position: -416.000000, -480.000000, -480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 15360, 15361, 15362, 15363, 15364, 15365, 15366, 15367, 
+
+[82]
+Position: -480.000000, -480.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 16896, 16897, 16898, 16899, 16900, 16901, 16902, 16903, 
+
+[83]
+Position: -416.000000, -480.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 18432, 18433, 18434, 18435, 18436, 18437, 18438, 18439, 
+
+[84]
+Position: -480.000000, -416.000000, -480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 19968, 19969, 19970, 19971, 19972, 19973, 19974, 19975, 
+
+[85]
+Position: -416.000000, -416.000000, -480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 21504, 21505, 21506, 21507, 21508, 21509, 21510, 21511, 
+
+[86]
+Position: -480.000000, -416.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 23040, 23041, 23042, 23043, 23044, 23045, 23046, 23047, 
+
+[87]
+Position: -416.000000, -416.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 24576, 24577, 24578, 24579, 24580, 24581, 24582, 24583, 
+
+[88]
+Position: -464.000000, -464.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 26112, 26113, 26114, 26115, 26116, 26117, 26118, 26119, 
+
+[89]
+Position: -368.000000, -464.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 27648, 27649, 27650, 27651, 27652, 27653, 27654, 27655, 
+
+[90]
+Position: -464.000000, -464.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 29184, 29185, 29186, 29187, 29188, 29189, 29190, 29191, 
+
+[91]
+Position: -368.000000, -464.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 30720, 30721, 30722, 30723, 30724, 30725, 30726, 30727, 
+
+[92]
+Position: -464.000000, -368.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 32256, 32257, 32258, 32259, 32260, 32261, 32262, 32263, 
+
+[93]
+Position: -368.000000, -368.000000, -464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 33792, 33793, 33794, 33795, 33796, 33797, 33798, 33799, 
+
+[94]
+Position: -464.000000, -368.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 35328, 35329, 35330, 35331, 35332, 35333, 35334, 35335, 
+
+[95]
+Position: -368.000000, -368.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 36864, 36865, 36866, 36867, 36868, 36869, 36870, 36871, 
+
+[96]
+Position: -448.000000, -448.000000, -448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 38400, 38401, 38402, 38403, 38404, 38405, 38406, 38407, 
+
+[97]
+Position: -320.000000, -448.000000, -448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 39936, 39937, 39938, 39939, 39940, 39941, 39942, 39943, 
+
+[98]
+Position: -448.000000, -448.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 41472, 41473, 41474, 41475, 41476, 41477, 41478, 41479, 
+
+[99]
+Position: -320.000000, -448.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 43008, 43009, 43010, 43011, 43012, 43013, 43014, 43015, 
+
+[100]
+Position: -448.000000, -320.000000, -448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 44544, 44545, 44546, 44547, 44548, 44549, 44550, 44551, 
+
+[101]
+Position: -320.000000, -320.000000, -448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 46080, 46081, 46082, 46083, 46084, 46085, 46086, 46087, 
+
+[102]
+Position: -448.000000, -320.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 47616, 47617, 47618, 47619, 47620, 47621, 47622, 47623, 
+
+[103]
+Position: -320.000000, -320.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 49152, 49153, 49154, 49155, 49156, 49157, 49158, 49159, 
+
+[104]
+Position: -432.000000, -432.000000, -432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 50688, 50689, 50690, 50691, 50692, 50693, 50694, 50695, 
+
+[105]
+Position: -272.000000, -432.000000, -432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 52224, 52225, 52226, 52227, 52228, 52229, 52230, 52231, 
+
+[106]
+Position: -432.000000, -432.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 53760, 53761, 53762, 53763, 53764, 53765, 53766, 53767, 
+
+[107]
+Position: -272.000000, -432.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 55296, 55297, 55298, 55299, 55300, 55301, 55302, 55303, 
+
+[108]
+Position: -432.000000, -272.000000, -432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 56832, 56833, 56834, 56835, 56836, 56837, 56838, 56839, 
+
+[109]
+Position: -272.000000, -272.000000, -432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 58368, 58369, 58370, 58371, 58372, 58373, 58374, 58375, 
+
+[110]
+Position: -432.000000, -272.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 59904, 59905, 59906, 59907, 59908, 59909, 59910, 59911, 
+
+[111]
+Position: -272.000000, -272.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 61440, 61441, 61442, 61443, 61444, 61445, 61446, 61447, 
+
+[112]
+Position: -416.000000, -416.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 62976, 62977, 62978, 62979, 62980, 62981, 62982, 62983, 
+
+[113]
+Position: -224.000000, -416.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 64512, 64513, 64514, 64515, 64516, 64517, 64518, 64519, 
+
+[114]
+Position: -416.000000, -416.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 66048, 66049, 66050, 66051, 66052, 66053, 66054, 66055, 
+
+[115]
+Position: -224.000000, -416.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 67584, 67585, 67586, 67587, 67588, 67589, 67590, 67591, 
+
+[116]
+Position: -416.000000, -224.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 69120, 69121, 69122, 69123, 69124, 69125, 69126, 69127, 
+
+[117]
+Position: -224.000000, -224.000000, -416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 70656, 70657, 70658, 70659, 70660, 70661, 70662, 70663, 
+
+[118]
+Position: -416.000000, -224.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 72192, 72193, 72194, 72195, 72196, 72197, 72198, 72199, 
+
+[119]
+Position: -224.000000, -224.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 73728, 73729, 73730, 73731, 73732, 73733, 73734, 73735, 
+
+[120]
+Position: -400.000000, -400.000000, -400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 75264, 75265, 75266, 75267, 75268, 75269, 75270, 75271, 
+
+[121]
+Position: -176.000000, -400.000000, -400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 76800, 76801, 76802, 76803, 76804, 76805, 76806, 76807, 
+
+[122]
+Position: -400.000000, -400.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 78336, 78337, 78338, 78339, 78340, 78341, 78342, 78343, 
+
+[123]
+Position: -176.000000, -400.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 79872, 79873, 79874, 79875, 79876, 79877, 79878, 79879, 
+
+[124]
+Position: -400.000000, -176.000000, -400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 81408, 81409, 81410, 81411, 81412, 81413, 81414, 81415, 
+
+[125]
+Position: -176.000000, -176.000000, -400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 82944, 82945, 82946, 82947, 82948, 82949, 82950, 82951, 
+
+[126]
+Position: -400.000000, -176.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 84480, 84481, 84482, 84483, 84484, 84485, 84486, 84487, 
+
+[127]
+Position: -176.000000, -176.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 86016, 86017, 86018, 86019, 86020, 86021, 86022, 86023, 
+
+[128]
+Position: -384.000000, -384.000000, -384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 87552, 87553, 87554, 87555, 87556, 87557, 87558, 87559, 
+
+[129]
+Position: -128.000000, -384.000000, -384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 89088, 89089, 89090, 89091, 89092, 89093, 89094, 89095, 
+
+[130]
+Position: -384.000000, -384.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 90624, 90625, 90626, 90627, 90628, 90629, 90630, 90631, 
+
+[131]
+Position: -128.000000, -384.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 92160, 92161, 92162, 92163, 92164, 92165, 92166, 92167, 
+
+[132]
+Position: -384.000000, -128.000000, -384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 93696, 93697, 93698, 93699, 93700, 93701, 93702, 93703, 
+
+[133]
+Position: -128.000000, -128.000000, -384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 95232, 95233, 95234, 95235, 95236, 95237, 95238, 95239, 
+
+[134]
+Position: -384.000000, -128.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 96768, 96769, 96770, 96771, 96772, 96773, 96774, 96775, 
+
+[135]
+Position: -128.000000, -128.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 98304, 98305, 98306, 98307, 98308, 98309, 98310, 98311, 
+
+[136]
+Position: -368.000000, -368.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 99840, 99841, 99842, 99843, 99844, 99845, 99846, 99847, 
+
+[137]
+Position: -80.000000, -368.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 101376, 101377, 101378, 101379, 101380, 101381, 101382, 101383, 
+
+[138]
+Position: -368.000000, -368.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 102912, 102913, 102914, 102915, 102916, 102917, 102918, 102919, 
+
+[139]
+Position: -80.000000, -368.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 104448, 104449, 104450, 104451, 104452, 104453, 104454, 104455, 
+
+[140]
+Position: -368.000000, -80.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 105984, 105985, 105986, 105987, 105988, 105989, 105990, 105991, 
+
+[141]
+Position: -80.000000, -80.000000, -368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 107520, 107521, 107522, 107523, 107524, 107525, 107526, 107527, 
+
+[142]
+Position: -368.000000, -80.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 109056, 109057, 109058, 109059, 109060, 109061, 109062, 109063, 
+
+[143]
+Position: -80.000000, -80.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 110592, 110593, 110594, 110595, 110596, 110597, 110598, 110599, 
+
+[144]
+Position: -352.000000, -352.000000, -352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 112128, 112129, 112130, 112131, 112132, 112133, 112134, 112135, 
+
+[145]
+Position: -32.000000, -352.000000, -352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 113664, 113665, 113666, 113667, 113668, 113669, 113670, 113671, 
+
+[146]
+Position: -352.000000, -352.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 115200, 115201, 115202, 115203, 115204, 115205, 115206, 115207, 
+
+[147]
+Position: -32.000000, -352.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 116736, 116737, 116738, 116739, 116740, 116741, 116742, 116743, 
+
+[148]
+Position: -352.000000, -32.000000, -352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 118272, 118273, 118274, 118275, 118276, 118277, 118278, 118279, 
+
+[149]
+Position: -32.000000, -32.000000, -352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 119808, 119809, 119810, 119811, 119812, 119813, 119814, 119815, 
+
+[150]
+Position: -352.000000, -32.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 121344, 121345, 121346, 121347, 121348, 121349, 121350, 121351, 
+
+[151]
+Position: -32.000000, -32.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 122880, 122881, 122882, 122883, 122884, 122885, 122886, 122887, 
+
+[152]
+Position: -336.000000, -336.000000, -336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 124416, 124417, 124418, 124419, 124420, 124421, 124422, 124423, 
+
+[153]
+Position: 16.000000, -336.000000, -336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 125952, 125953, 125954, 125955, 125956, 125957, 125958, 125959, 
+
+[154]
+Position: -336.000000, -336.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 127488, 127489, 127490, 127491, 127492, 127493, 127494, 127495, 
+
+[155]
+Position: 16.000000, -336.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 129024, 129025, 129026, 129027, 129028, 129029, 129030, 129031, 
+
+[156]
+Position: -336.000000, 16.000000, -336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 130560, 130561, 130562, 130563, 130564, 130565, 130566, 130567, 
+
+[157]
+Position: 16.000000, 16.000000, -336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 132096, 132097, 132098, 132099, 132100, 132101, 132102, 132103, 
+
+[158]
+Position: -336.000000, 16.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 133632, 133633, 133634, 133635, 133636, 133637, 133638, 133639, 
+
+[159]
+Position: 16.000000, 16.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 135168, 135169, 135170, 135171, 135172, 135173, 135174, 135175, 
+
+[160]
+Position: -320.000000, -320.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 136704, 136705, 136706, 136707, 136708, 136709, 136710, 136711, 
+
+[161]
+Position: 64.000000, -320.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 138240, 138241, 138242, 138243, 138244, 138245, 138246, 138247, 
+
+[162]
+Position: -320.000000, -320.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 139776, 139777, 139778, 139779, 139780, 139781, 139782, 139783, 
+
+[163]
+Position: 64.000000, -320.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 141312, 141313, 141314, 141315, 141316, 141317, 141318, 141319, 
+
+[164]
+Position: -320.000000, 64.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 142848, 142849, 142850, 142851, 142852, 142853, 142854, 142855, 
+
+[165]
+Position: 64.000000, 64.000000, -320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 144384, 144385, 144386, 144387, 144388, 144389, 144390, 144391, 
+
+[166]
+Position: -320.000000, 64.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 145920, 145921, 145922, 145923, 145924, 145925, 145926, 145927, 
+
+[167]
+Position: 64.000000, 64.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 147456, 147457, 147458, 147459, 147460, 147461, 147462, 147463, 
+
+[168]
+Position: -304.000000, -304.000000, -304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 148992, 148993, 148994, 148995, 148996, 148997, 148998, 148999, 
+
+[169]
+Position: 112.000000, -304.000000, -304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 150528, 150529, 150530, 150531, 150532, 150533, 150534, 150535, 
+
+[170]
+Position: -304.000000, -304.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 152064, 152065, 152066, 152067, 152068, 152069, 152070, 152071, 
+
+[171]
+Position: 112.000000, -304.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 153600, 153601, 153602, 153603, 153604, 153605, 153606, 153607, 
+
+[172]
+Position: -304.000000, 112.000000, -304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 155136, 155137, 155138, 155139, 155140, 155141, 155142, 155143, 
+
+[173]
+Position: 112.000000, 112.000000, -304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 156672, 156673, 156674, 156675, 156676, 156677, 156678, 156679, 
+
+[174]
+Position: -304.000000, 112.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 158208, 158209, 158210, 158211, 158212, 158213, 158214, 158215, 
+
+[175]
+Position: 112.000000, 112.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 159744, 159745, 159746, 159747, 159748, 159749, 159750, 159751, 
+
+[176]
+Position: -288.000000, -288.000000, -288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 161280, 161281, 161282, 161283, 161284, 161285, 161286, 161287, 
+
+[177]
+Position: 160.000000, -288.000000, -288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 162816, 162817, 162818, 162819, 162820, 162821, 162822, 162823, 
+
+[178]
+Position: -288.000000, -288.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 164352, 164353, 164354, 164355, 164356, 164357, 164358, 164359, 
+
+[179]
+Position: 160.000000, -288.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 165888, 165889, 165890, 165891, 165892, 165893, 165894, 165895, 
+
+[180]
+Position: -288.000000, 160.000000, -288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 167424, 167425, 167426, 167427, 167428, 167429, 167430, 167431, 
+
+[181]
+Position: 160.000000, 160.000000, -288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 168960, 168961, 168962, 168963, 168964, 168965, 168966, 168967, 
+
+[182]
+Position: -288.000000, 160.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 170496, 170497, 170498, 170499, 170500, 170501, 170502, 170503, 
+
+[183]
+Position: 160.000000, 160.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 172032, 172033, 172034, 172035, 172036, 172037, 172038, 172039, 
+
+[184]
+Position: -272.000000, -272.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 173568, 173569, 173570, 173571, 173572, 173573, 173574, 173575, 
+
+[185]
+Position: 208.000000, -272.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 175104, 175105, 175106, 175107, 175108, 175109, 175110, 175111, 
+
+[186]
+Position: -272.000000, -272.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 176640, 176641, 176642, 176643, 176644, 176645, 176646, 176647, 
+
+[187]
+Position: 208.000000, -272.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 178176, 178177, 178178, 178179, 178180, 178181, 178182, 178183, 
+
+[188]
+Position: -272.000000, 208.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 179712, 179713, 179714, 179715, 179716, 179717, 179718, 179719, 
+
+[189]
+Position: 208.000000, 208.000000, -272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 181248, 181249, 181250, 181251, 181252, 181253, 181254, 181255, 
+
+[190]
+Position: -272.000000, 208.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 182784, 182785, 182786, 182787, 182788, 182789, 182790, 182791, 
+
+[191]
+Position: 208.000000, 208.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 184320, 184321, 184322, 184323, 184324, 184325, 184326, 184327, 
+
+[192]
+Position: -256.000000, -256.000000, -256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 185856, 185857, 185858, 185859, 185860, 185861, 185862, 185863, 
+
+[193]
+Position: 256.000000, -256.000000, -256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 187392, 187393, 187394, 187395, 187396, 187397, 187398, 187399, 
+
+[194]
+Position: -256.000000, -256.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 188928, 188929, 188930, 188931, 188932, 188933, 188934, 188935, 
+
+[195]
+Position: 256.000000, -256.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 190464, 190465, 190466, 190467, 190468, 190469, 190470, 190471, 
+
+[196]
+Position: -256.000000, 256.000000, -256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 192000, 192001, 192002, 192003, 192004, 192005, 192006, 192007, 
+
+[197]
+Position: 256.000000, 256.000000, -256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 193536, 193537, 193538, 193539, 193540, 193541, 193542, 193543, 
+
+[198]
+Position: -256.000000, 256.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 195072, 195073, 195074, 195075, 195076, 195077, 195078, 195079, 
+
+[199]
+Position: 256.000000, 256.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 196608, 196609, 196610, 196611, 196612, 196613, 196614, 196615, 
+
+[200]
+Position: -240.000000, -240.000000, -240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 198144, 198145, 198146, 198147, 198148, 198149, 198150, 198151, 
+
+[201]
+Position: 304.000000, -240.000000, -240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 199680, 199681, 199682, 199683, 199684, 199685, 199686, 199687, 
+
+[202]
+Position: -240.000000, -240.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 201216, 201217, 201218, 201219, 201220, 201221, 201222, 201223, 
+
+[203]
+Position: 304.000000, -240.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 202752, 202753, 202754, 202755, 202756, 202757, 202758, 202759, 
+
+[204]
+Position: -240.000000, 304.000000, -240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 204288, 204289, 204290, 204291, 204292, 204293, 204294, 204295, 
+
+[205]
+Position: 304.000000, 304.000000, -240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 205824, 205825, 205826, 205827, 205828, 205829, 205830, 205831, 
+
+[206]
+Position: -240.000000, 304.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 207360, 207361, 207362, 207363, 207364, 207365, 207366, 207367, 
+
+[207]
+Position: 304.000000, 304.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 208896, 208897, 208898, 208899, 208900, 208901, 208902, 208903, 
+
+[208]
+Position: -224.000000, -224.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 210432, 210433, 210434, 210435, 210436, 210437, 210438, 210439, 
+
+[209]
+Position: 352.000000, -224.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 211968, 211969, 211970, 211971, 211972, 211973, 211974, 211975, 
+
+[210]
+Position: -224.000000, -224.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 213504, 213505, 213506, 213507, 213508, 213509, 213510, 213511, 
+
+[211]
+Position: 352.000000, -224.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 215040, 215041, 215042, 215043, 215044, 215045, 215046, 215047, 
+
+[212]
+Position: -224.000000, 352.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 216576, 216577, 216578, 216579, 216580, 216581, 216582, 216583, 
+
+[213]
+Position: 352.000000, 352.000000, -224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 218112, 218113, 218114, 218115, 218116, 218117, 218118, 218119, 
+
+[214]
+Position: -224.000000, 352.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 219648, 219649, 219650, 219651, 219652, 219653, 219654, 219655, 
+
+[215]
+Position: 352.000000, 352.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 221184, 221185, 221186, 221187, 221188, 221189, 221190, 221191, 
+
+[216]
+Position: -208.000000, -208.000000, -208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 222720, 222721, 222722, 222723, 222724, 222725, 222726, 222727, 
+
+[217]
+Position: 400.000000, -208.000000, -208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 224256, 224257, 224258, 224259, 224260, 224261, 224262, 224263, 
+
+[218]
+Position: -208.000000, -208.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 225792, 225793, 225794, 225795, 225796, 225797, 225798, 225799, 
+
+[219]
+Position: 400.000000, -208.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 227328, 227329, 227330, 227331, 227332, 227333, 227334, 227335, 
+
+[220]
+Position: -208.000000, 400.000000, -208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 228864, 228865, 228866, 228867, 228868, 228869, 228870, 228871, 
+
+[221]
+Position: 400.000000, 400.000000, -208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 230400, 230401, 230402, 230403, 230404, 230405, 230406, 230407, 
+
+[222]
+Position: -208.000000, 400.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 231936, 231937, 231938, 231939, 231940, 231941, 231942, 231943, 
+
+[223]
+Position: 400.000000, 400.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 233472, 233473, 233474, 233475, 233476, 233477, 233478, 233479, 
+
+[224]
+Position: -192.000000, -192.000000, -192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 235008, 235009, 235010, 235011, 235012, 235013, 235014, 235015, 
+
+[225]
+Position: 448.000000, -192.000000, -192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 236544, 236545, 236546, 236547, 236548, 236549, 236550, 236551, 
+
+[226]
+Position: -192.000000, -192.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 238080, 238081, 238082, 238083, 238084, 238085, 238086, 238087, 
+
+[227]
+Position: 448.000000, -192.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 239616, 239617, 239618, 239619, 239620, 239621, 239622, 239623, 
+
+[228]
+Position: -192.000000, 448.000000, -192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 241152, 241153, 241154, 241155, 241156, 241157, 241158, 241159, 
+
+[229]
+Position: 448.000000, 448.000000, -192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 242688, 242689, 242690, 242691, 242692, 242693, 242694, 242695, 
+
+[230]
+Position: -192.000000, 448.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 244224, 244225, 244226, 244227, 244228, 244229, 244230, 244231, 
+
+[231]
+Position: 448.000000, 448.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 245760, 245761, 245762, 245763, 245764, 245765, 245766, 245767, 
+
+[232]
+Position: -176.000000, -176.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 247296, 247297, 247298, 247299, 247300, 247301, 247302, 247303, 
+
+[233]
+Position: 496.000000, -176.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 248832, 248833, 248834, 248835, 248836, 248837, 248838, 248839, 
+
+[234]
+Position: -176.000000, -176.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 250368, 250369, 250370, 250371, 250372, 250373, 250374, 250375, 
+
+[235]
+Position: 496.000000, -176.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 251904, 251905, 251906, 251907, 251908, 251909, 251910, 251911, 
+
+[236]
+Position: -176.000000, 496.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 253440, 253441, 253442, 253443, 253444, 253445, 253446, 253447, 
+
+[237]
+Position: 496.000000, 496.000000, -176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 254976, 254977, 254978, 254979, 254980, 254981, 254982, 254983, 
+
+[238]
+Position: -176.000000, 496.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 256512, 256513, 256514, 256515, 256516, 256517, 256518, 256519, 
+
+[239]
+Position: 496.000000, 496.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 258048, 258049, 258050, 258051, 258052, 258053, 258054, 258055, 
+
+[240]
+Position: -160.000000, -160.000000, -160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 259584, 259585, 259586, 259587, 259588, 259589, 259590, 259591, 
+
+[241]
+Position: 544.000000, -160.000000, -160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 261120, 261121, 261122, 261123, 261124, 261125, 261126, 261127, 
+
+[242]
+Position: -160.000000, -160.000000, 544.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 262656, 262657, 262658, 262659, 262660, 262661, 262662, 262663, 
+
+[243]
+Position: 544.000000, -160.000000, 544.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 264192, 264193, 264194, 264195, 264196, 264197, 264198, 264199, 
+
+[244]
+Position: -160.000000, 544.000000, -160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 265728, 265729, 265730, 265731, 265732, 265733, 265734, 265735, 
+
+[245]
+Position: 544.000000, 544.000000, -160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 267264, 267265, 267266, 267267, 267268, 267269, 267270, 267271, 
+
+[246]
+Position: -160.000000, 544.000000, 544.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 268800, 268801, 268802, 268803, 268804, 268805, 268806, 268807, 
+
+[247]
+Position: 544.000000, 544.000000, 544.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 270336, 270337, 270338, 270339, 270340, 270341, 270342, 270343, 
+
+[248]
+Position: -144.000000, -144.000000, -144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 271872, 271873, 271874, 271875, 271876, 271877, 271878, 271879, 
+
+[249]
+Position: 592.000000, -144.000000, -144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 273408, 273409, 273410, 273411, 273412, 273413, 273414, 273415, 
+
+[250]
+Position: -144.000000, -144.000000, 592.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 274944, 274945, 274946, 274947, 274948, 274949, 274950, 274951, 
+
+[251]
+Position: 592.000000, -144.000000, 592.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 276480, 276481, 276482, 276483, 276484, 276485, 276486, 276487, 
+
+[252]
+Position: -144.000000, 592.000000, -144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 278016, 278017, 278018, 278019, 278020, 278021, 278022, 278023, 
+
+[253]
+Position: 592.000000, 592.000000, -144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 279552, 279553, 279554, 279555, 279556, 279557, 279558, 279559, 
+
+[254]
+Position: -144.000000, 592.000000, 592.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 281088, 281089, 281090, 281091, 281092, 281093, 281094, 281095, 
+
+[255]
+Position: 592.000000, 592.000000, 592.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 282624, 282625, 282626, 282627, 282628, 282629, 282630, 282631, 
+
+[256]
+Position: -128.000000, -128.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 284160, 284161, 284162, 284163, 284164, 284165, 284166, 284167, 
+
+[257]
+Position: 640.000000, -128.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 285696, 285697, 285698, 285699, 285700, 285701, 285702, 285703, 
+
+[258]
+Position: -128.000000, -128.000000, 640.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 287232, 287233, 287234, 287235, 287236, 287237, 287238, 287239, 
+
+[259]
+Position: 640.000000, -128.000000, 640.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 288768, 288769, 288770, 288771, 288772, 288773, 288774, 288775, 
+
+[260]
+Position: -128.000000, 640.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 290304, 290305, 290306, 290307, 290308, 290309, 290310, 290311, 
+
+[261]
+Position: 640.000000, 640.000000, -128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 291840, 291841, 291842, 291843, 291844, 291845, 291846, 291847, 
+
+[262]
+Position: -128.000000, 640.000000, 640.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 293376, 293377, 293378, 293379, 293380, 293381, 293382, 293383, 
+
+[263]
+Position: 640.000000, 640.000000, 640.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 294912, 294913, 294914, 294915, 294916, 294917, 294918, 294919, 
+
+[264]
+Position: -112.000000, -112.000000, -112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 296448, 296449, 296450, 296451, 296452, 296453, 296454, 296455, 
+
+[265]
+Position: 688.000000, -112.000000, -112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 297984, 297985, 297986, 297987, 297988, 297989, 297990, 297991, 
+
+[266]
+Position: -112.000000, -112.000000, 688.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 299520, 299521, 299522, 299523, 299524, 299525, 299526, 299527, 
+
+[267]
+Position: 688.000000, -112.000000, 688.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 301056, 301057, 301058, 301059, 301060, 301061, 301062, 301063, 
+
+[268]
+Position: -112.000000, 688.000000, -112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 302592, 302593, 302594, 302595, 302596, 302597, 302598, 302599, 
+
+[269]
+Position: 688.000000, 688.000000, -112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 304128, 304129, 304130, 304131, 304132, 304133, 304134, 304135, 
+
+[270]
+Position: -112.000000, 688.000000, 688.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 305664, 305665, 305666, 305667, 305668, 305669, 305670, 305671, 
+
+[271]
+Position: 688.000000, 688.000000, 688.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 307200, 307201, 307202, 307203, 307204, 307205, 307206, 307207, 
+
+[272]
+Position: -96.000000, -96.000000, -96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 308736, 308737, 308738, 308739, 308740, 308741, 308742, 308743, 
+
+[273]
+Position: 736.000000, -96.000000, -96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 310272, 310273, 310274, 310275, 310276, 310277, 310278, 310279, 
+
+[274]
+Position: -96.000000, -96.000000, 736.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 311808, 311809, 311810, 311811, 311812, 311813, 311814, 311815, 
+
+[275]
+Position: 736.000000, -96.000000, 736.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 313344, 313345, 313346, 313347, 313348, 313349, 313350, 313351, 
+
+[276]
+Position: -96.000000, 736.000000, -96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 314880, 314881, 314882, 314883, 314884, 314885, 314886, 314887, 
+
+[277]
+Position: 736.000000, 736.000000, -96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 316416, 316417, 316418, 316419, 316420, 316421, 316422, 316423, 
+
+[278]
+Position: -96.000000, 736.000000, 736.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 317952, 317953, 317954, 317955, 317956, 317957, 317958, 317959, 
+
+[279]
+Position: 736.000000, 736.000000, 736.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 319488, 319489, 319490, 319491, 319492, 319493, 319494, 319495, 
+
+[280]
+Position: -80.000000, -80.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 321024, 321025, 321026, 321027, 321028, 321029, 321030, 321031, 
+
+[281]
+Position: 784.000000, -80.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 322560, 322561, 322562, 322563, 322564, 322565, 322566, 322567, 
+
+[282]
+Position: -80.000000, -80.000000, 784.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 324096, 324097, 324098, 324099, 324100, 324101, 324102, 324103, 
+
+[283]
+Position: 784.000000, -80.000000, 784.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 325632, 325633, 325634, 325635, 325636, 325637, 325638, 325639, 
+
+[284]
+Position: -80.000000, 784.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 327168, 327169, 327170, 327171, 327172, 327173, 327174, 327175, 
+
+[285]
+Position: 784.000000, 784.000000, -80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 328704, 328705, 328706, 328707, 328708, 328709, 328710, 328711, 
+
+[286]
+Position: -80.000000, 784.000000, 784.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 330240, 330241, 330242, 330243, 330244, 330245, 330246, 330247, 
+
+[287]
+Position: 784.000000, 784.000000, 784.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 331776, 331777, 331778, 331779, 331780, 331781, 331782, 331783, 
+
+[288]
+Position: -64.000000, -64.000000, -64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 333312, 333313, 333314, 333315, 333316, 333317, 333318, 333319, 
+
+[289]
+Position: 832.000000, -64.000000, -64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 334848, 334849, 334850, 334851, 334852, 334853, 334854, 334855, 
+
+[290]
+Position: -64.000000, -64.000000, 832.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 336384, 336385, 336386, 336387, 336388, 336389, 336390, 336391, 
+
+[291]
+Position: 832.000000, -64.000000, 832.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 337920, 337921, 337922, 337923, 337924, 337925, 337926, 337927, 
+
+[292]
+Position: -64.000000, 832.000000, -64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 339456, 339457, 339458, 339459, 339460, 339461, 339462, 339463, 
+
+[293]
+Position: 832.000000, 832.000000, -64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 340992, 340993, 340994, 340995, 340996, 340997, 340998, 340999, 
+
+[294]
+Position: -64.000000, 832.000000, 832.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 342528, 342529, 342530, 342531, 342532, 342533, 342534, 342535, 
+
+[295]
+Position: 832.000000, 832.000000, 832.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 344064, 344065, 344066, 344067, 344068, 344069, 344070, 344071, 
+
+[296]
+Position: -48.000000, -48.000000, -48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 345600, 345601, 345602, 345603, 345604, 345605, 345606, 345607, 
+
+[297]
+Position: 880.000000, -48.000000, -48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 347136, 347137, 347138, 347139, 347140, 347141, 347142, 347143, 
+
+[298]
+Position: -48.000000, -48.000000, 880.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 348672, 348673, 348674, 348675, 348676, 348677, 348678, 348679, 
+
+[299]
+Position: 880.000000, -48.000000, 880.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 350208, 350209, 350210, 350211, 350212, 350213, 350214, 350215, 
+
+[300]
+Position: -48.000000, 880.000000, -48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 351744, 351745, 351746, 351747, 351748, 351749, 351750, 351751, 
+
+[301]
+Position: 880.000000, 880.000000, -48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 353280, 353281, 353282, 353283, 353284, 353285, 353286, 353287, 
+
+[302]
+Position: -48.000000, 880.000000, 880.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 354816, 354817, 354818, 354819, 354820, 354821, 354822, 354823, 
+
+[303]
+Position: 880.000000, 880.000000, 880.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 356352, 356353, 356354, 356355, 356356, 356357, 356358, 356359, 
+
+[304]
+Position: -32.000000, -32.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 357888, 357889, 357890, 357891, 357892, 357893, 357894, 357895, 
+
+[305]
+Position: 928.000000, -32.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 359424, 359425, 359426, 359427, 359428, 359429, 359430, 359431, 
+
+[306]
+Position: -32.000000, -32.000000, 928.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 360960, 360961, 360962, 360963, 360964, 360965, 360966, 360967, 
+
+[307]
+Position: 928.000000, -32.000000, 928.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 362496, 362497, 362498, 362499, 362500, 362501, 362502, 362503, 
+
+[308]
+Position: -32.000000, 928.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 364032, 364033, 364034, 364035, 364036, 364037, 364038, 364039, 
+
+[309]
+Position: 928.000000, 928.000000, -32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 365568, 365569, 365570, 365571, 365572, 365573, 365574, 365575, 
+
+[310]
+Position: -32.000000, 928.000000, 928.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 367104, 367105, 367106, 367107, 367108, 367109, 367110, 367111, 
+
+[311]
+Position: 928.000000, 928.000000, 928.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 368640, 368641, 368642, 368643, 368644, 368645, 368646, 368647, 
+
+[312]
+Position: -16.000000, -16.000000, -16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 370176, 370177, 370178, 370179, 370180, 370181, 370182, 370183, 
+
+[313]
+Position: 976.000000, -16.000000, -16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 371712, 371713, 371714, 371715, 371716, 371717, 371718, 371719, 
+
+[314]
+Position: -16.000000, -16.000000, 976.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 373248, 373249, 373250, 373251, 373252, 373253, 373254, 373255, 
+
+[315]
+Position: 976.000000, -16.000000, 976.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 374784, 374785, 374786, 374787, 374788, 374789, 374790, 374791, 
+
+[316]
+Position: -16.000000, 976.000000, -16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 376320, 376321, 376322, 376323, 376324, 376325, 376326, 376327, 
+
+[317]
+Position: 976.000000, 976.000000, -16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 377856, 377857, 377858, 377859, 377860, 377861, 377862, 377863, 
+
+[318]
+Position: -16.000000, 976.000000, 976.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 379392, 379393, 379394, 379395, 379396, 379397, 379398, 379399, 
+
+[319]
+Position: 976.000000, 976.000000, 976.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 380928, 380929, 380930, 380931, 380932, 380933, 380934, 380935, 
+
+[320]
+Position: 0.000000, 0.000000, 0.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 382464, 382465, 382466, 382467, 382468, 382469, 382470, 382471, 
+
+[321]
+Position: 1024.000000, 0.000000, 0.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 384000, 384001, 384002, 384003, 384004, 384005, 384006, 384007, 
+
+[322]
+Position: 0.000000, 0.000000, 1024.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 385536, 385537, 385538, 385539, 385540, 385541, 385542, 385543, 
+
+[323]
+Position: 1024.000000, 0.000000, 1024.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 387072, 387073, 387074, 387075, 387076, 387077, 387078, 387079, 
+
+[324]
+Position: 0.000000, 1024.000000, 0.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 388608, 388609, 388610, 388611, 388612, 388613, 388614, 388615, 
+
+[325]
+Position: 1024.000000, 1024.000000, 0.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 390144, 390145, 390146, 390147, 390148, 390149, 390150, 390151, 
+
+[326]
+Position: 0.000000, 1024.000000, 1024.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 391680, 391681, 391682, 391683, 391684, 391685, 391686, 391687, 
+
+[327]
+Position: 1024.000000, 1024.000000, 1024.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 393216, 393217, 393218, 393219, 393220, 393221, 393222, 393223, 
+
+[328]
+Position: 16.000000, 16.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 394752, 394753, 394754, 394755, 394756, 394757, 394758, 394759, 
+
+[329]
+Position: 1072.000000, 16.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 396288, 396289, 396290, 396291, 396292, 396293, 396294, 396295, 
+
+[330]
+Position: 16.000000, 16.000000, 1072.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 397824, 397825, 397826, 397827, 397828, 397829, 397830, 397831, 
+
+[331]
+Position: 1072.000000, 16.000000, 1072.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 399360, 399361, 399362, 399363, 399364, 399365, 399366, 399367, 
+
+[332]
+Position: 16.000000, 1072.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 400896, 400897, 400898, 400899, 400900, 400901, 400902, 400903, 
+
+[333]
+Position: 1072.000000, 1072.000000, 16.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 402432, 402433, 402434, 402435, 402436, 402437, 402438, 402439, 
+
+[334]
+Position: 16.000000, 1072.000000, 1072.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 403968, 403969, 403970, 403971, 403972, 403973, 403974, 403975, 
+
+[335]
+Position: 1072.000000, 1072.000000, 1072.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 405504, 405505, 405506, 405507, 405508, 405509, 405510, 405511, 
+
+[336]
+Position: 32.000000, 32.000000, 32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 407040, 407041, 407042, 407043, 407044, 407045, 407046, 407047, 
+
+[337]
+Position: 1120.000000, 32.000000, 32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 408576, 408577, 408578, 408579, 408580, 408581, 408582, 408583, 
+
+[338]
+Position: 32.000000, 32.000000, 1120.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 410112, 410113, 410114, 410115, 410116, 410117, 410118, 410119, 
+
+[339]
+Position: 1120.000000, 32.000000, 1120.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 411648, 411649, 411650, 411651, 411652, 411653, 411654, 411655, 
+
+[340]
+Position: 32.000000, 1120.000000, 32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 413184, 413185, 413186, 413187, 413188, 413189, 413190, 413191, 
+
+[341]
+Position: 1120.000000, 1120.000000, 32.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 414720, 414721, 414722, 414723, 414724, 414725, 414726, 414727, 
+
+[342]
+Position: 32.000000, 1120.000000, 1120.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 416256, 416257, 416258, 416259, 416260, 416261, 416262, 416263, 
+
+[343]
+Position: 1120.000000, 1120.000000, 1120.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 417792, 417793, 417794, 417795, 417796, 417797, 417798, 417799, 
+
+[344]
+Position: 48.000000, 48.000000, 48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 419328, 419329, 419330, 419331, 419332, 419333, 419334, 419335, 
+
+[345]
+Position: 1168.000000, 48.000000, 48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 420864, 420865, 420866, 420867, 420868, 420869, 420870, 420871, 
+
+[346]
+Position: 48.000000, 48.000000, 1168.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 422400, 422401, 422402, 422403, 422404, 422405, 422406, 422407, 
+
+[347]
+Position: 1168.000000, 48.000000, 1168.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 423936, 423937, 423938, 423939, 423940, 423941, 423942, 423943, 
+
+[348]
+Position: 48.000000, 1168.000000, 48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 425472, 425473, 425474, 425475, 425476, 425477, 425478, 425479, 
+
+[349]
+Position: 1168.000000, 1168.000000, 48.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 427008, 427009, 427010, 427011, 427012, 427013, 427014, 427015, 
+
+[350]
+Position: 48.000000, 1168.000000, 1168.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 428544, 428545, 428546, 428547, 428548, 428549, 428550, 428551, 
+
+[351]
+Position: 1168.000000, 1168.000000, 1168.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 430080, 430081, 430082, 430083, 430084, 430085, 430086, 430087, 
+
+[352]
+Position: 64.000000, 64.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 431616, 431617, 431618, 431619, 431620, 431621, 431622, 431623, 
+
+[353]
+Position: 1216.000000, 64.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 433152, 433153, 433154, 433155, 433156, 433157, 433158, 433159, 
+
+[354]
+Position: 64.000000, 64.000000, 1216.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 434688, 434689, 434690, 434691, 434692, 434693, 434694, 434695, 
+
+[355]
+Position: 1216.000000, 64.000000, 1216.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 436224, 436225, 436226, 436227, 436228, 436229, 436230, 436231, 
+
+[356]
+Position: 64.000000, 1216.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 437760, 437761, 437762, 437763, 437764, 437765, 437766, 437767, 
+
+[357]
+Position: 1216.000000, 1216.000000, 64.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 439296, 439297, 439298, 439299, 439300, 439301, 439302, 439303, 
+
+[358]
+Position: 64.000000, 1216.000000, 1216.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 440832, 440833, 440834, 440835, 440836, 440837, 440838, 440839, 
+
+[359]
+Position: 1216.000000, 1216.000000, 1216.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 442368, 442369, 442370, 442371, 442372, 442373, 442374, 442375, 
+
+[360]
+Position: 80.000000, 80.000000, 80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 443904, 443905, 443906, 443907, 443908, 443909, 443910, 443911, 
+
+[361]
+Position: 1264.000000, 80.000000, 80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 445440, 445441, 445442, 445443, 445444, 445445, 445446, 445447, 
+
+[362]
+Position: 80.000000, 80.000000, 1264.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 446976, 446977, 446978, 446979, 446980, 446981, 446982, 446983, 
+
+[363]
+Position: 1264.000000, 80.000000, 1264.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 448512, 448513, 448514, 448515, 448516, 448517, 448518, 448519, 
+
+[364]
+Position: 80.000000, 1264.000000, 80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 450048, 450049, 450050, 450051, 450052, 450053, 450054, 450055, 
+
+[365]
+Position: 1264.000000, 1264.000000, 80.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 451584, 451585, 451586, 451587, 451588, 451589, 451590, 451591, 
+
+[366]
+Position: 80.000000, 1264.000000, 1264.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 453120, 453121, 453122, 453123, 453124, 453125, 453126, 453127, 
+
+[367]
+Position: 1264.000000, 1264.000000, 1264.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 454656, 454657, 454658, 454659, 454660, 454661, 454662, 454663, 
+
+[368]
+Position: 96.000000, 96.000000, 96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 456192, 456193, 456194, 456195, 456196, 456197, 456198, 456199, 
+
+[369]
+Position: 1312.000000, 96.000000, 96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 457728, 457729, 457730, 457731, 457732, 457733, 457734, 457735, 
+
+[370]
+Position: 96.000000, 96.000000, 1312.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 459264, 459265, 459266, 459267, 459268, 459269, 459270, 459271, 
+
+[371]
+Position: 1312.000000, 96.000000, 1312.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 460800, 460801, 460802, 460803, 460804, 460805, 460806, 460807, 
+
+[372]
+Position: 96.000000, 1312.000000, 96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 462336, 462337, 462338, 462339, 462340, 462341, 462342, 462343, 
+
+[373]
+Position: 1312.000000, 1312.000000, 96.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 463872, 463873, 463874, 463875, 463876, 463877, 463878, 463879, 
+
+[374]
+Position: 96.000000, 1312.000000, 1312.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 465408, 465409, 465410, 465411, 465412, 465413, 465414, 465415, 
+
+[375]
+Position: 1312.000000, 1312.000000, 1312.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 466944, 466945, 466946, 466947, 466948, 466949, 466950, 466951, 
+
+[376]
+Position: 112.000000, 112.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 468480, 468481, 468482, 468483, 468484, 468485, 468486, 468487, 
+
+[377]
+Position: 1360.000000, 112.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 470016, 470017, 470018, 470019, 470020, 470021, 470022, 470023, 
+
+[378]
+Position: 112.000000, 112.000000, 1360.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 471552, 471553, 471554, 471555, 471556, 471557, 471558, 471559, 
+
+[379]
+Position: 1360.000000, 112.000000, 1360.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 473088, 473089, 473090, 473091, 473092, 473093, 473094, 473095, 
+
+[380]
+Position: 112.000000, 1360.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 474624, 474625, 474626, 474627, 474628, 474629, 474630, 474631, 
+
+[381]
+Position: 1360.000000, 1360.000000, 112.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 476160, 476161, 476162, 476163, 476164, 476165, 476166, 476167, 
+
+[382]
+Position: 112.000000, 1360.000000, 1360.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 477696, 477697, 477698, 477699, 477700, 477701, 477702, 477703, 
+
+[383]
+Position: 1360.000000, 1360.000000, 1360.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 479232, 479233, 479234, 479235, 479236, 479237, 479238, 479239, 
+
+[384]
+Position: 128.000000, 128.000000, 128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 480768, 480769, 480770, 480771, 480772, 480773, 480774, 480775, 
+
+[385]
+Position: 1408.000000, 128.000000, 128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 482304, 482305, 482306, 482307, 482308, 482309, 482310, 482311, 
+
+[386]
+Position: 128.000000, 128.000000, 1408.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 483840, 483841, 483842, 483843, 483844, 483845, 483846, 483847, 
+
+[387]
+Position: 1408.000000, 128.000000, 1408.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 485376, 485377, 485378, 485379, 485380, 485381, 485382, 485383, 
+
+[388]
+Position: 128.000000, 1408.000000, 128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 486912, 486913, 486914, 486915, 486916, 486917, 486918, 486919, 
+
+[389]
+Position: 1408.000000, 1408.000000, 128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 488448, 488449, 488450, 488451, 488452, 488453, 488454, 488455, 
+
+[390]
+Position: 128.000000, 1408.000000, 1408.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 489984, 489985, 489986, 489987, 489988, 489989, 489990, 489991, 
+
+[391]
+Position: 1408.000000, 1408.000000, 1408.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 491520, 491521, 491522, 491523, 491524, 491525, 491526, 491527, 
+
+[392]
+Position: 144.000000, 144.000000, 144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 493056, 493057, 493058, 493059, 493060, 493061, 493062, 493063, 
+
+[393]
+Position: 1456.000000, 144.000000, 144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 494592, 494593, 494594, 494595, 494596, 494597, 494598, 494599, 
+
+[394]
+Position: 144.000000, 144.000000, 1456.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 496128, 496129, 496130, 496131, 496132, 496133, 496134, 496135, 
+
+[395]
+Position: 1456.000000, 144.000000, 1456.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 497664, 497665, 497666, 497667, 497668, 497669, 497670, 497671, 
+
+[396]
+Position: 144.000000, 1456.000000, 144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 499200, 499201, 499202, 499203, 499204, 499205, 499206, 499207, 
+
+[397]
+Position: 1456.000000, 1456.000000, 144.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 500736, 500737, 500738, 500739, 500740, 500741, 500742, 500743, 
+
+[398]
+Position: 144.000000, 1456.000000, 1456.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 502272, 502273, 502274, 502275, 502276, 502277, 502278, 502279, 
+
+[399]
+Position: 1456.000000, 1456.000000, 1456.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 503808, 503809, 503810, 503811, 503812, 503813, 503814, 503815, 
+
+[400]
+Position: 160.000000, 160.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 505344, 505345, 505346, 505347, 505348, 505349, 505350, 505351, 
+
+[401]
+Position: 1504.000000, 160.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 506880, 506881, 506882, 506883, 506884, 506885, 506886, 506887, 
+
+[402]
+Position: 160.000000, 160.000000, 1504.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 508416, 508417, 508418, 508419, 508420, 508421, 508422, 508423, 
+
+[403]
+Position: 1504.000000, 160.000000, 1504.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 509952, 509953, 509954, 509955, 509956, 509957, 509958, 509959, 
+
+[404]
+Position: 160.000000, 1504.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 511488, 511489, 511490, 511491, 511492, 511493, 511494, 511495, 
+
+[405]
+Position: 1504.000000, 1504.000000, 160.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 513024, 513025, 513026, 513027, 513028, 513029, 513030, 513031, 
+
+[406]
+Position: 160.000000, 1504.000000, 1504.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 514560, 514561, 514562, 514563, 514564, 514565, 514566, 514567, 
+
+[407]
+Position: 1504.000000, 1504.000000, 1504.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 516096, 516097, 516098, 516099, 516100, 516101, 516102, 516103, 
+
+[408]
+Position: 176.000000, 176.000000, 176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 517632, 517633, 517634, 517635, 517636, 517637, 517638, 517639, 
+
+[409]
+Position: 1552.000000, 176.000000, 176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 519168, 519169, 519170, 519171, 519172, 519173, 519174, 519175, 
+
+[410]
+Position: 176.000000, 176.000000, 1552.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 520704, 520705, 520706, 520707, 520708, 520709, 520710, 520711, 
+
+[411]
+Position: 1552.000000, 176.000000, 1552.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 522240, 522241, 522242, 522243, 522244, 522245, 522246, 522247, 
+
+[412]
+Position: 176.000000, 1552.000000, 176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 523776, 523777, 523778, 523779, 523780, 523781, 523782, 523783, 
+
+[413]
+Position: 1552.000000, 1552.000000, 176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 525312, 525313, 525314, 525315, 525316, 525317, 525318, 525319, 
+
+[414]
+Position: 176.000000, 1552.000000, 1552.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 526848, 526849, 526850, 526851, 526852, 526853, 526854, 526855, 
+
+[415]
+Position: 1552.000000, 1552.000000, 1552.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 528384, 528385, 528386, 528387, 528388, 528389, 528390, 528391, 
+
+[416]
+Position: 192.000000, 192.000000, 192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 529920, 529921, 529922, 529923, 529924, 529925, 529926, 529927, 
+
+[417]
+Position: 1600.000000, 192.000000, 192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 531456, 531457, 531458, 531459, 531460, 531461, 531462, 531463, 
+
+[418]
+Position: 192.000000, 192.000000, 1600.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 532992, 532993, 532994, 532995, 532996, 532997, 532998, 532999, 
+
+[419]
+Position: 1600.000000, 192.000000, 1600.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 534528, 534529, 534530, 534531, 534532, 534533, 534534, 534535, 
+
+[420]
+Position: 192.000000, 1600.000000, 192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 536064, 536065, 536066, 536067, 536068, 536069, 536070, 536071, 
+
+[421]
+Position: 1600.000000, 1600.000000, 192.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 537600, 537601, 537602, 537603, 537604, 537605, 537606, 537607, 
+
+[422]
+Position: 192.000000, 1600.000000, 1600.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 539136, 539137, 539138, 539139, 539140, 539141, 539142, 539143, 
+
+[423]
+Position: 1600.000000, 1600.000000, 1600.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 540672, 540673, 540674, 540675, 540676, 540677, 540678, 540679, 
+
+[424]
+Position: 208.000000, 208.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 542208, 542209, 542210, 542211, 542212, 542213, 542214, 542215, 
+
+[425]
+Position: 1648.000000, 208.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 543744, 543745, 543746, 543747, 543748, 543749, 543750, 543751, 
+
+[426]
+Position: 208.000000, 208.000000, 1648.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 545280, 545281, 545282, 545283, 545284, 545285, 545286, 545287, 
+
+[427]
+Position: 1648.000000, 208.000000, 1648.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 546816, 546817, 546818, 546819, 546820, 546821, 546822, 546823, 
+
+[428]
+Position: 208.000000, 1648.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 548352, 548353, 548354, 548355, 548356, 548357, 548358, 548359, 
+
+[429]
+Position: 1648.000000, 1648.000000, 208.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 549888, 549889, 549890, 549891, 549892, 549893, 549894, 549895, 
+
+[430]
+Position: 208.000000, 1648.000000, 1648.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 551424, 551425, 551426, 551427, 551428, 551429, 551430, 551431, 
+
+[431]
+Position: 1648.000000, 1648.000000, 1648.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 552960, 552961, 552962, 552963, 552964, 552965, 552966, 552967, 
+
+[432]
+Position: 224.000000, 224.000000, 224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 554496, 554497, 554498, 554499, 554500, 554501, 554502, 554503, 
+
+[433]
+Position: 1696.000000, 224.000000, 224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 556032, 556033, 556034, 556035, 556036, 556037, 556038, 556039, 
+
+[434]
+Position: 224.000000, 224.000000, 1696.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 557568, 557569, 557570, 557571, 557572, 557573, 557574, 557575, 
+
+[435]
+Position: 1696.000000, 224.000000, 1696.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 559104, 559105, 559106, 559107, 559108, 559109, 559110, 559111, 
+
+[436]
+Position: 224.000000, 1696.000000, 224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 560640, 560641, 560642, 560643, 560644, 560645, 560646, 560647, 
+
+[437]
+Position: 1696.000000, 1696.000000, 224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 562176, 562177, 562178, 562179, 562180, 562181, 562182, 562183, 
+
+[438]
+Position: 224.000000, 1696.000000, 1696.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 563712, 563713, 563714, 563715, 563716, 563717, 563718, 563719, 
+
+[439]
+Position: 1696.000000, 1696.000000, 1696.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 565248, 565249, 565250, 565251, 565252, 565253, 565254, 565255, 
+
+[440]
+Position: 240.000000, 240.000000, 240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 566784, 566785, 566786, 566787, 566788, 566789, 566790, 566791, 
+
+[441]
+Position: 1744.000000, 240.000000, 240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 568320, 568321, 568322, 568323, 568324, 568325, 568326, 568327, 
+
+[442]
+Position: 240.000000, 240.000000, 1744.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 569856, 569857, 569858, 569859, 569860, 569861, 569862, 569863, 
+
+[443]
+Position: 1744.000000, 240.000000, 1744.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 571392, 571393, 571394, 571395, 571396, 571397, 571398, 571399, 
+
+[444]
+Position: 240.000000, 1744.000000, 240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 572928, 572929, 572930, 572931, 572932, 572933, 572934, 572935, 
+
+[445]
+Position: 1744.000000, 1744.000000, 240.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 574464, 574465, 574466, 574467, 574468, 574469, 574470, 574471, 
+
+[446]
+Position: 240.000000, 1744.000000, 1744.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 576000, 576001, 576002, 576003, 576004, 576005, 576006, 576007, 
+
+[447]
+Position: 1744.000000, 1744.000000, 1744.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 577536, 577537, 577538, 577539, 577540, 577541, 577542, 577543, 
+
+[448]
+Position: 256.000000, 256.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 579072, 579073, 579074, 579075, 579076, 579077, 579078, 579079, 
+
+[449]
+Position: 1792.000000, 256.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 580608, 580609, 580610, 580611, 580612, 580613, 580614, 580615, 
+
+[450]
+Position: 256.000000, 256.000000, 1792.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 582144, 582145, 582146, 582147, 582148, 582149, 582150, 582151, 
+
+[451]
+Position: 1792.000000, 256.000000, 1792.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 583680, 583681, 583682, 583683, 583684, 583685, 583686, 583687, 
+
+[452]
+Position: 256.000000, 1792.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 585216, 585217, 585218, 585219, 585220, 585221, 585222, 585223, 
+
+[453]
+Position: 1792.000000, 1792.000000, 256.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 586752, 586753, 586754, 586755, 586756, 586757, 586758, 586759, 
+
+[454]
+Position: 256.000000, 1792.000000, 1792.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 588288, 588289, 588290, 588291, 588292, 588293, 588294, 588295, 
+
+[455]
+Position: 1792.000000, 1792.000000, 1792.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 589824, 589825, 589826, 589827, 589828, 589829, 589830, 589831, 
+
+[456]
+Position: 272.000000, 272.000000, 272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 591360, 591361, 591362, 591363, 591364, 591365, 591366, 591367, 
+
+[457]
+Position: 1840.000000, 272.000000, 272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 592896, 592897, 592898, 592899, 592900, 592901, 592902, 592903, 
+
+[458]
+Position: 272.000000, 272.000000, 1840.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 594432, 594433, 594434, 594435, 594436, 594437, 594438, 594439, 
+
+[459]
+Position: 1840.000000, 272.000000, 1840.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 595968, 595969, 595970, 595971, 595972, 595973, 595974, 595975, 
+
+[460]
+Position: 272.000000, 1840.000000, 272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 597504, 597505, 597506, 597507, 597508, 597509, 597510, 597511, 
+
+[461]
+Position: 1840.000000, 1840.000000, 272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 599040, 599041, 599042, 599043, 599044, 599045, 599046, 599047, 
+
+[462]
+Position: 272.000000, 1840.000000, 1840.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 600576, 600577, 600578, 600579, 600580, 600581, 600582, 600583, 
+
+[463]
+Position: 1840.000000, 1840.000000, 1840.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 602112, 602113, 602114, 602115, 602116, 602117, 602118, 602119, 
+
+[464]
+Position: 288.000000, 288.000000, 288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 603648, 603649, 603650, 603651, 603652, 603653, 603654, 603655, 
+
+[465]
+Position: 1888.000000, 288.000000, 288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 605184, 605185, 605186, 605187, 605188, 605189, 605190, 605191, 
+
+[466]
+Position: 288.000000, 288.000000, 1888.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 606720, 606721, 606722, 606723, 606724, 606725, 606726, 606727, 
+
+[467]
+Position: 1888.000000, 288.000000, 1888.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 608256, 608257, 608258, 608259, 608260, 608261, 608262, 608263, 
+
+[468]
+Position: 288.000000, 1888.000000, 288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 609792, 609793, 609794, 609795, 609796, 609797, 609798, 609799, 
+
+[469]
+Position: 1888.000000, 1888.000000, 288.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 611328, 611329, 611330, 611331, 611332, 611333, 611334, 611335, 
+
+[470]
+Position: 288.000000, 1888.000000, 1888.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 612864, 612865, 612866, 612867, 612868, 612869, 612870, 612871, 
+
+[471]
+Position: 1888.000000, 1888.000000, 1888.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 614400, 614401, 614402, 614403, 614404, 614405, 614406, 614407, 
+
+[472]
+Position: 304.000000, 304.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 615936, 615937, 615938, 615939, 615940, 615941, 615942, 615943, 
+
+[473]
+Position: 1936.000000, 304.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 617472, 617473, 617474, 617475, 617476, 617477, 617478, 617479, 
+
+[474]
+Position: 304.000000, 304.000000, 1936.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 619008, 619009, 619010, 619011, 619012, 619013, 619014, 619015, 
+
+[475]
+Position: 1936.000000, 304.000000, 1936.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 620544, 620545, 620546, 620547, 620548, 620549, 620550, 620551, 
+
+[476]
+Position: 304.000000, 1936.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 622080, 622081, 622082, 622083, 622084, 622085, 622086, 622087, 
+
+[477]
+Position: 1936.000000, 1936.000000, 304.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 623616, 623617, 623618, 623619, 623620, 623621, 623622, 623623, 
+
+[478]
+Position: 304.000000, 1936.000000, 1936.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 625152, 625153, 625154, 625155, 625156, 625157, 625158, 625159, 
+
+[479]
+Position: 1936.000000, 1936.000000, 1936.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 626688, 626689, 626690, 626691, 626692, 626693, 626694, 626695, 
+
+[480]
+Position: 320.000000, 320.000000, 320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 628224, 628225, 628226, 628227, 628228, 628229, 628230, 628231, 
+
+[481]
+Position: 1984.000000, 320.000000, 320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 629760, 629761, 629762, 629763, 629764, 629765, 629766, 629767, 
+
+[482]
+Position: 320.000000, 320.000000, 1984.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 631296, 631297, 631298, 631299, 631300, 631301, 631302, 631303, 
+
+[483]
+Position: 1984.000000, 320.000000, 1984.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 632832, 632833, 632834, 632835, 632836, 632837, 632838, 632839, 
+
+[484]
+Position: 320.000000, 1984.000000, 320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 634368, 634369, 634370, 634371, 634372, 634373, 634374, 634375, 
+
+[485]
+Position: 1984.000000, 1984.000000, 320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 635904, 635905, 635906, 635907, 635908, 635909, 635910, 635911, 
+
+[486]
+Position: 320.000000, 1984.000000, 1984.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 637440, 637441, 637442, 637443, 637444, 637445, 637446, 637447, 
+
+[487]
+Position: 1984.000000, 1984.000000, 1984.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 638976, 638977, 638978, 638979, 638980, 638981, 638982, 638983, 
+
+[488]
+Position: 336.000000, 336.000000, 336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 640512, 640513, 640514, 640515, 640516, 640517, 640518, 640519, 
+
+[489]
+Position: 2032.000000, 336.000000, 336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 642048, 642049, 642050, 642051, 642052, 642053, 642054, 642055, 
+
+[490]
+Position: 336.000000, 336.000000, 2032.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 643584, 643585, 643586, 643587, 643588, 643589, 643590, 643591, 
+
+[491]
+Position: 2032.000000, 336.000000, 2032.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 645120, 645121, 645122, 645123, 645124, 645125, 645126, 645127, 
+
+[492]
+Position: 336.000000, 2032.000000, 336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 646656, 646657, 646658, 646659, 646660, 646661, 646662, 646663, 
+
+[493]
+Position: 2032.000000, 2032.000000, 336.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 648192, 648193, 648194, 648195, 648196, 648197, 648198, 648199, 
+
+[494]
+Position: 336.000000, 2032.000000, 2032.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 649728, 649729, 649730, 649731, 649732, 649733, 649734, 649735, 
+
+[495]
+Position: 2032.000000, 2032.000000, 2032.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 651264, 651265, 651266, 651267, 651268, 651269, 651270, 651271, 
+
+[496]
+Position: 352.000000, 352.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 652800, 652801, 652802, 652803, 652804, 652805, 652806, 652807, 
+
+[497]
+Position: 2080.000000, 352.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 654336, 654337, 654338, 654339, 654340, 654341, 654342, 654343, 
+
+[498]
+Position: 352.000000, 352.000000, 2080.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 655872, 655873, 655874, 655875, 655876, 655877, 655878, 655879, 
+
+[499]
+Position: 2080.000000, 352.000000, 2080.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 657408, 657409, 657410, 657411, 657412, 657413, 657414, 657415, 
+
+[500]
+Position: 352.000000, 2080.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 658944, 658945, 658946, 658947, 658948, 658949, 658950, 658951, 
+
+[501]
+Position: 2080.000000, 2080.000000, 352.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 660480, 660481, 660482, 660483, 660484, 660485, 660486, 660487, 
+
+[502]
+Position: 352.000000, 2080.000000, 2080.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 662016, 662017, 662018, 662019, 662020, 662021, 662022, 662023, 
+
+[503]
+Position: 2080.000000, 2080.000000, 2080.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 663552, 663553, 663554, 663555, 663556, 663557, 663558, 663559, 
+
+[504]
+Position: 368.000000, 368.000000, 368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 665088, 665089, 665090, 665091, 665092, 665093, 665094, 665095, 
+
+[505]
+Position: 2128.000000, 368.000000, 368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 666624, 666625, 666626, 666627, 666628, 666629, 666630, 666631, 
+
+[506]
+Position: 368.000000, 368.000000, 2128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 668160, 668161, 668162, 668163, 668164, 668165, 668166, 668167, 
+
+[507]
+Position: 2128.000000, 368.000000, 2128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 669696, 669697, 669698, 669699, 669700, 669701, 669702, 669703, 
+
+[508]
+Position: 368.000000, 2128.000000, 368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 671232, 671233, 671234, 671235, 671236, 671237, 671238, 671239, 
+
+[509]
+Position: 2128.000000, 2128.000000, 368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 672768, 672769, 672770, 672771, 672772, 672773, 672774, 672775, 
+
+[510]
+Position: 368.000000, 2128.000000, 2128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 674304, 674305, 674306, 674307, 674308, 674309, 674310, 674311, 
+
+[511]
+Position: 2128.000000, 2128.000000, 2128.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 675840, 675841, 675842, 675843, 675844, 675845, 675846, 675847, 
+
+[512]
+Position: 384.000000, 384.000000, 384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 677376, 677377, 677378, 677379, 677380, 677381, 677382, 677383, 
+
+[513]
+Position: 2176.000000, 384.000000, 384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 678912, 678913, 678914, 678915, 678916, 678917, 678918, 678919, 
+
+[514]
+Position: 384.000000, 384.000000, 2176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 680448, 680449, 680450, 680451, 680452, 680453, 680454, 680455, 
+
+[515]
+Position: 2176.000000, 384.000000, 2176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 681984, 681985, 681986, 681987, 681988, 681989, 681990, 681991, 
+
+[516]
+Position: 384.000000, 2176.000000, 384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 683520, 683521, 683522, 683523, 683524, 683525, 683526, 683527, 
+
+[517]
+Position: 2176.000000, 2176.000000, 384.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 685056, 685057, 685058, 685059, 685060, 685061, 685062, 685063, 
+
+[518]
+Position: 384.000000, 2176.000000, 2176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 686592, 686593, 686594, 686595, 686596, 686597, 686598, 686599, 
+
+[519]
+Position: 2176.000000, 2176.000000, 2176.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 688128, 688129, 688130, 688131, 688132, 688133, 688134, 688135, 
+
+[520]
+Position: 400.000000, 400.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 689664, 689665, 689666, 689667, 689668, 689669, 689670, 689671, 
+
+[521]
+Position: 2224.000000, 400.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 691200, 691201, 691202, 691203, 691204, 691205, 691206, 691207, 
+
+[522]
+Position: 400.000000, 400.000000, 2224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 692736, 692737, 692738, 692739, 692740, 692741, 692742, 692743, 
+
+[523]
+Position: 2224.000000, 400.000000, 2224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 694272, 694273, 694274, 694275, 694276, 694277, 694278, 694279, 
+
+[524]
+Position: 400.000000, 2224.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 695808, 695809, 695810, 695811, 695812, 695813, 695814, 695815, 
+
+[525]
+Position: 2224.000000, 2224.000000, 400.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 697344, 697345, 697346, 697347, 697348, 697349, 697350, 697351, 
+
+[526]
+Position: 400.000000, 2224.000000, 2224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 698880, 698881, 698882, 698883, 698884, 698885, 698886, 698887, 
+
+[527]
+Position: 2224.000000, 2224.000000, 2224.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 700416, 700417, 700418, 700419, 700420, 700421, 700422, 700423, 
+
+[528]
+Position: 416.000000, 416.000000, 416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 701952, 701953, 701954, 701955, 701956, 701957, 701958, 701959, 
+
+[529]
+Position: 2272.000000, 416.000000, 416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 703488, 703489, 703490, 703491, 703492, 703493, 703494, 703495, 
+
+[530]
+Position: 416.000000, 416.000000, 2272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 705024, 705025, 705026, 705027, 705028, 705029, 705030, 705031, 
+
+[531]
+Position: 2272.000000, 416.000000, 2272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 706560, 706561, 706562, 706563, 706564, 706565, 706566, 706567, 
+
+[532]
+Position: 416.000000, 2272.000000, 416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 708096, 708097, 708098, 708099, 708100, 708101, 708102, 708103, 
+
+[533]
+Position: 2272.000000, 2272.000000, 416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 709632, 709633, 709634, 709635, 709636, 709637, 709638, 709639, 
+
+[534]
+Position: 416.000000, 2272.000000, 2272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 711168, 711169, 711170, 711171, 711172, 711173, 711174, 711175, 
+
+[535]
+Position: 2272.000000, 2272.000000, 2272.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 712704, 712705, 712706, 712707, 712708, 712709, 712710, 712711, 
+
+[536]
+Position: 432.000000, 432.000000, 432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 714240, 714241, 714242, 714243, 714244, 714245, 714246, 714247, 
+
+[537]
+Position: 2320.000000, 432.000000, 432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 715776, 715777, 715778, 715779, 715780, 715781, 715782, 715783, 
+
+[538]
+Position: 432.000000, 432.000000, 2320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 717312, 717313, 717314, 717315, 717316, 717317, 717318, 717319, 
+
+[539]
+Position: 2320.000000, 432.000000, 2320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 718848, 718849, 718850, 718851, 718852, 718853, 718854, 718855, 
+
+[540]
+Position: 432.000000, 2320.000000, 432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 720384, 720385, 720386, 720387, 720388, 720389, 720390, 720391, 
+
+[541]
+Position: 2320.000000, 2320.000000, 432.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 721920, 721921, 721922, 721923, 721924, 721925, 721926, 721927, 
+
+[542]
+Position: 432.000000, 2320.000000, 2320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 723456, 723457, 723458, 723459, 723460, 723461, 723462, 723463, 
+
+[543]
+Position: 2320.000000, 2320.000000, 2320.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 724992, 724993, 724994, 724995, 724996, 724997, 724998, 724999, 
+
+[544]
+Position: 448.000000, 448.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 726528, 726529, 726530, 726531, 726532, 726533, 726534, 726535, 
+
+[545]
+Position: 2368.000000, 448.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 728064, 728065, 728066, 728067, 728068, 728069, 728070, 728071, 
+
+[546]
+Position: 448.000000, 448.000000, 2368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 729600, 729601, 729602, 729603, 729604, 729605, 729606, 729607, 
+
+[547]
+Position: 2368.000000, 448.000000, 2368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 731136, 731137, 731138, 731139, 731140, 731141, 731142, 731143, 
+
+[548]
+Position: 448.000000, 2368.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 732672, 732673, 732674, 732675, 732676, 732677, 732678, 732679, 
+
+[549]
+Position: 2368.000000, 2368.000000, 448.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 734208, 734209, 734210, 734211, 734212, 734213, 734214, 734215, 
+
+[550]
+Position: 448.000000, 2368.000000, 2368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 735744, 735745, 735746, 735747, 735748, 735749, 735750, 735751, 
+
+[551]
+Position: 2368.000000, 2368.000000, 2368.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 737280, 737281, 737282, 737283, 737284, 737285, 737286, 737287, 
+
+[552]
+Position: 464.000000, 464.000000, 464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 738816, 738817, 738818, 738819, 738820, 738821, 738822, 738823, 
+
+[553]
+Position: 2416.000000, 464.000000, 464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 740352, 740353, 740354, 740355, 740356, 740357, 740358, 740359, 
+
+[554]
+Position: 464.000000, 464.000000, 2416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 741888, 741889, 741890, 741891, 741892, 741893, 741894, 741895, 
+
+[555]
+Position: 2416.000000, 464.000000, 2416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 743424, 743425, 743426, 743427, 743428, 743429, 743430, 743431, 
+
+[556]
+Position: 464.000000, 2416.000000, 464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 744960, 744961, 744962, 744963, 744964, 744965, 744966, 744967, 
+
+[557]
+Position: 2416.000000, 2416.000000, 464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 746496, 746497, 746498, 746499, 746500, 746501, 746502, 746503, 
+
+[558]
+Position: 464.000000, 2416.000000, 2416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 748032, 748033, 748034, 748035, 748036, 748037, 748038, 748039, 
+
+[559]
+Position: 2416.000000, 2416.000000, 2416.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 749568, 749569, 749570, 749571, 749572, 749573, 749574, 749575, 
+
+[560]
+Position: 480.000000, 480.000000, 480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 751104, 751105, 751106, 751107, 751108, 751109, 751110, 751111, 
+
+[561]
+Position: 2464.000000, 480.000000, 480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 752640, 752641, 752642, 752643, 752644, 752645, 752646, 752647, 
+
+[562]
+Position: 480.000000, 480.000000, 2464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 754176, 754177, 754178, 754179, 754180, 754181, 754182, 754183, 
+
+[563]
+Position: 2464.000000, 480.000000, 2464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 755712, 755713, 755714, 755715, 755716, 755717, 755718, 755719, 
+
+[564]
+Position: 480.000000, 2464.000000, 480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 757248, 757249, 757250, 757251, 757252, 757253, 757254, 757255, 
+
+[565]
+Position: 2464.000000, 2464.000000, 480.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 758784, 758785, 758786, 758787, 758788, 758789, 758790, 758791, 
+
+[566]
+Position: 480.000000, 2464.000000, 2464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 760320, 760321, 760322, 760323, 760324, 760325, 760326, 760327, 
+
+[567]
+Position: 2464.000000, 2464.000000, 2464.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 761856, 761857, 761858, 761859, 761860, 761861, 761862, 761863, 
+
+[568]
+Position: 496.000000, 496.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 763392, 763393, 763394, 763395, 763396, 763397, 763398, 763399, 
+
+[569]
+Position: 2512.000000, 496.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 764928, 764929, 764930, 764931, 764932, 764933, 764934, 764935, 
+
+[570]
+Position: 496.000000, 496.000000, 2512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 766464, 766465, 766466, 766467, 766468, 766469, 766470, 766471, 
+
+[571]
+Position: 2512.000000, 496.000000, 2512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 768000, 768001, 768002, 768003, 768004, 768005, 768006, 768007, 
+
+[572]
+Position: 496.000000, 2512.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 769536, 769537, 769538, 769539, 769540, 769541, 769542, 769543, 
+
+[573]
+Position: 2512.000000, 2512.000000, 496.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 771072, 771073, 771074, 771075, 771076, 771077, 771078, 771079, 
+
+[574]
+Position: 496.000000, 2512.000000, 2512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 772608, 772609, 772610, 772611, 772612, 772613, 772614, 772615, 
+
+[575]
+Position: 2512.000000, 2512.000000, 2512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 774144, 774145, 774146, 774147, 774148, 774149, 774150, 774151, 
+
+[576]
+Position: 512.000000, 512.000000, 512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 775680, 775681, 775682, 775683, 775684, 775685, 775686, 775687, 
+
+[577]
+Position: 2560.000000, 512.000000, 512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 777216, 777217, 777218, 777219, 777220, 777221, 777222, 777223, 
+
+[578]
+Position: 512.000000, 512.000000, 2560.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 778752, 778753, 778754, 778755, 778756, 778757, 778758, 778759, 
+
+[579]
+Position: 2560.000000, 512.000000, 2560.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 780288, 780289, 780290, 780291, 780292, 780293, 780294, 780295, 
+
+[580]
+Position: 512.000000, 2560.000000, 512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 781824, 781825, 781826, 781827, 781828, 781829, 781830, 781831, 
+
+[581]
+Position: 2560.000000, 2560.000000, 512.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 783360, 783361, 783362, 783363, 783364, 783365, 783366, 783367, 
+
+[582]
+Position: 512.000000, 2560.000000, 2560.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 784896, 784897, 784898, 784899, 784900, 784901, 784902, 784903, 
+
+[583]
+Position: 2560.000000, 2560.000000, 2560.000000
+axis: 16.000000, 16.000000, 16.000000
+level: 2
+nrOfSubAABB: 8
+triangleStartIndex: 0
+numberOfTriangles: 0
+SubAABBIndex: 786432, 786433, 786434, 786435, 786436, 786437, 786438, 786439, 
+
