@@ -129,8 +129,6 @@ void ComputePass::Draw()
 	UINT c = 0;
 	if (rayCounter)
 		c = rayCounter[0];
-	if (c == 0)
-		return;
 	OpenCommandList(m_pipelineState);
 
 	m_rayTexture.Clear(p_commandList[frameIndex]);

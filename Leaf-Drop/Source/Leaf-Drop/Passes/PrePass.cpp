@@ -99,9 +99,12 @@ void PrePass::Release()
 	m_worldMatrices.Release();
 	m_renderTarget.Release();
 	m_depthBuffer.Release();
+	p_ReleaseCommandList();
+
 	
-	SAFE_RELEASE(m_pipelineState)
-	SAFE_RELEASE(m_rootSignature)
+
+	SAFE_RELEASE(m_pipelineState);
+	SAFE_RELEASE(m_rootSignature);
 }
 
 HRESULT PrePass::_Init()
