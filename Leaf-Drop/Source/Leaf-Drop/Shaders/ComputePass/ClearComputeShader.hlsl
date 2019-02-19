@@ -1,10 +1,6 @@
 cbuffer RAY_BOX : register(b0)
 {
-    float4x4 ViewMatrixInverse;
-    float4x4 ProjectionMatrixInverse;
-    float4 ViewerPositionViewSpace;
-    float4 ViewerPosition; // World space
-    float4 ViewerDirection; // World Space
+	float4 ViewerPosition;
     uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 

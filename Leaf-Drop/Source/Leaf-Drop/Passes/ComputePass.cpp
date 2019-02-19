@@ -115,36 +115,14 @@ void ComputePass::Draw()
 	POINT windowSize = p_window->GetWindowSize();
 
 	RAY_BOX data;
-	
-	data.viewerPosViewSpace.x = (float)windowSize.x * 0.5f;
-	data.viewerPosViewSpace.y = (float)windowSize.y * 0.5f;
-	data.viewerPosViewSpace.z = -(data.viewerPosViewSpace.x / tan(Camera::GetActiveCamera()->GetFOV()));
-	data.viewerPosViewSpace.w = 1.0f;
-	
 	data.viewerPos.x = camPos.x;
 	data.viewerPos.y = camPos.y;
 	data.viewerPos.z = camPos.z;
 	data.viewerPos.w = 1.0f;
 
-	data.cameraDir.x = camDir.x;
-	data.cameraDir.y = camDir.y;
-	data.cameraDir.z = camDir.z;
-	data.cameraDir.w = 0.0f;
-
-	data.index.x = windowSize.x;
-	data.index.y = windowSize.y;
-	data.index.z = triangles.size();
-	
-	data.viewMatrixInverse = Camera::GetActiveCamera()->GetViewProjectionMatrix();
-	data.projMatrixInverse = Camera::GetActiveCamera()->GetProjectionMatrix();
-
-	DirectX::XMStoreFloat4x4A(&data.projMatrixInverse,
-		DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,
-			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.projMatrixInverse)))));
-
-	DirectX::XMStoreFloat4x4A(&data.viewMatrixInverse,
-		DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,
-			DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&data.viewMatrixInverse)))));
+	data.info.x = windowSize.x;
+	data.info.y = windowSize.y;
+	data.info.z = triangles.size();
 	
 	// TODO :: FENCE
 	Sleep(200);
@@ -201,10 +179,8 @@ void ComputePass::ClearDraw()
 	data.viewerPos.y = (float)windowSize.y * 0.5f;
 	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
 	data.viewerPos.w = 1.0f;
-	data.index.x = windowSize.x;
-	data.index.y = windowSize.y;
-	data.index.z = windowSize.x;
-	data.index.w = windowSize.y;
+	data.info.x = windowSize.x;
+	data.info.y = windowSize.y;
 
 	m_squareIndex.SetData(&data, sizeof(data));
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);

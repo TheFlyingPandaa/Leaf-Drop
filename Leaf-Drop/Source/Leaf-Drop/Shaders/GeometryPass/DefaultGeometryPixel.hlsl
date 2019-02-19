@@ -25,7 +25,13 @@ struct PS_OUTPUT
 };
 
 //RWStructuredBuffer<int> RayStencil : register(u0);
-RWStructuredBuffer<uint2> RayStencil : register(u0);
+
+struct RAY_STRUCT
+{
+	float4	worldPos;
+	uint2	pixelCoord;
+};
+RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
 RWStructuredBuffer<uint> CounterStencil : register(u1);
 
 PS_OUTPUT main(VS_OUTPUT input)
@@ -37,7 +43,6 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.metallic = metallic.Sample(defaultSampler, input.uv);
 	
     bool CastRay = output.metallic.r > 0.5;
-    CastRay = true;
 	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
 	int2 index = int2((int)(fIndex.x * (float)WIDTH), (int)(fIndex.y * (float)HEIGHT));
 
@@ -46,7 +51,8 @@ PS_OUTPUT main(VS_OUTPUT input)
 		uint accessIndex = 0;
 		//CounterStencil[0] += 1;
 		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
-		RayStencil[accessIndex] = uint2(index);
+		RayStencil[accessIndex].pixelCoord = uint2(index);
+		RayStencil[accessIndex].worldPos = input.worldPosition;
     }
  
 

@@ -63,8 +63,14 @@ HRESULT GeometryPass::Init()
 	POINT p = wnd->GetWindowSize();
 	UINT elements = (p.x * p.y);
 
+	struct RAY_STRUCT
+	{
+		DirectX::XMFLOAT4 ray;
+		DirectX::XMUINT2 pixelPos;
+	};
+
 	m_rayStencil = new UAV();
-	if (FAILED(hr = m_rayStencil->Init(L"RayStencil", elements * sizeof(UINT) * 2, elements, sizeof(UINT) * 2)))
+	if (FAILED(hr = m_rayStencil->Init(L"RayStencil", elements * sizeof(RAY_STRUCT), elements, sizeof(RAY_STRUCT))))
 	{
 		return hr;
 	}

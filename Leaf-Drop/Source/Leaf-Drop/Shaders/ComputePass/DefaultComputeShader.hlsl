@@ -1,10 +1,6 @@
 cbuffer RAY_BOX : register(b0)
 {
-	float4x4 ViewMatrixInverse;
-	float4x4 ProjectionMatrixInverse;
-    float4 ViewerPositionViewSpace;
     float4 ViewerPosition; // World space
-    float4 ViewerDirection; // World Space
     uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 
@@ -22,7 +18,12 @@ struct Triangle
 
 
 RWTexture2D<float4> outputTexture : register(u0);
-RWStructuredBuffer<uint2> indices : register(u1);
+struct RAY_STRUCT
+{
+	float4	worldPos;
+	uint2	pixelCoord;
+};
+RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u1);
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 
 
@@ -33,19 +34,10 @@ void main(uint3 threadID : SV_DispatchThreadID)
 	
     float4 finalColor = float4(1,0,0,1);
 	
-    uint2 pixelLocation = indices[threadID.x];
-	
-    float4 pixelMidPosition = float4(
-        (2.0f * (float)pixelLocation.x) / (float)Info.x - 1.0f,
-        1.0f - (2.0f * (float)pixelLocation.y) / Info.y,
-        1.0f,
-        1.0f);
+	uint2 pixelLocation = RayStencil[threadID.x].pixelCoord;
+	float4 fragmentWorld = RayStencil[threadID.x].worldPos;
 
-    float4 pixelViewSpace = mul(pixelMidPosition, ProjectionMatrixInverse);
-
-    pixelViewSpace = float4(pixelViewSpace.xy, 1.0f, 1.0f);
-
-    float4 rayWorld = float4(normalize(mul(pixelViewSpace, ViewMatrixInverse)).xyz, 0.0f);
+    float4 rayWorld = float4(normalize(fragmentWorld - ViewerPosition).xyz, 0.0f);
 
     float4 startPosWorld = ViewerPosition;
 
@@ -89,9 +81,9 @@ void main(uint3 threadID : SV_DispatchThreadID)
 
 	if (index != -1)
 	{
-		float3 intersctionPoint = startPosWorld + rayWorld * minT;
+		float3 intersctionPoint = startPosWorld.xyz + rayWorld.xyz * minT;
 		finalColor = float4(1,1,1,1);
 	}
 	
-	outputTexture[indices[threadID.x]] = finalColor;
+	outputTexture[pixelLocation] = finalColor;
 }

@@ -36,12 +36,8 @@ private:
 private:
 	struct RAY_BOX
 	{
-		DirectX::XMFLOAT4X4A viewMatrixInverse;
-		DirectX::XMFLOAT4X4A projMatrixInverse;
-		DirectX::XMFLOAT4A	viewerPosViewSpace;
 		DirectX::XMFLOAT4A	viewerPos;
-		DirectX::XMFLOAT4A	cameraDir;
-		DirectX::XMINT4		index;
+		DirectX::XMUINT4	info;
 	};
 
 
