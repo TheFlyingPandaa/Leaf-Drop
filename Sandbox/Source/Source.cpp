@@ -63,7 +63,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 50;
+		const UINT NUMBER_OF_DRAWABLES = 2;
 		const UINT NUMBER_OF_LIGHTS = 10;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
@@ -88,24 +88,39 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		}
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
+		d[0].SetPosition(5, 0, 0);
+		d[1].SetPosition(-5,0,0);
+		d[0].SetScale(2,2,2);
+		d[1].SetScale(2,2,2);
+
+		d[0].SetTexture(&t[0]);
+		d[0].SetNormal(&t[1]);
+		d[0].SetMetallic(&t[2]);
+		d[0].SetMesh(m);
+
+
+		d[1].SetTexture(&t[0]);
+		d[1].SetNormal(&t[1]);
+		d[1].SetMetallic(&t[2]);
+		d[1].SetMesh(m);
 		
-		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
-		{
-			d[i].SetTexture(&t[0]);
-			d[i].SetNormal(&t[1]);
-			d[i].SetMetallic(&t[2]);
-			d[i].SetMesh(m);
-
-			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-
-			float scl = (FLOAT)(rand() % 3 + 1);
-
-			d[i].SetPosition(x, y, z);
-			d[i].SetScale(scl, scl, scl);
-			d[i].SetScale(10,10,10);
-		}
+		//for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
+		//{
+		//	d[i].SetTexture(&t[0]);
+		//	d[i].SetNormal(&t[1]);
+		//	d[i].SetMetallic(&t[2]);
+		//	d[i].SetMesh(m);
+		//
+		//	float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+		//	float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+		//	float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+		//
+		//	float scl = (FLOAT)(rand() % 3 + 1);
+		//
+		//	d[i].SetPosition(x, y, z);
+		//	d[i].SetScale(scl, scl, scl);
+		//	d[i].SetScale(10,10,10);
+		//}
 		
 		float rot = 0;
 		timer.Start();

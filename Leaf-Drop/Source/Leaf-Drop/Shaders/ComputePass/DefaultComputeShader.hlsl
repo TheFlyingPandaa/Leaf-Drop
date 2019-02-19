@@ -98,8 +98,7 @@ void BounceRay2(in float4 rayDirection, in float4 startPos, inout RayPayload ray
 
         float2 uv = tri.v0.uv * barycentrics.x + tri.v1.uv * barycentrics.y + tri.v2.uv * barycentrics.z;
 
-        //TODO fence bobby fix
-
+        //normal mapping bobby please fix
         float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
         //float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), 0);
         float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
@@ -196,45 +195,12 @@ void main(uint3 threadID : SV_DispatchThreadID)
 
     RayPayload rayLoad = (RayPayload)0;
     rayLoad.strength = 1.0f;
-
     
-
-
     for (uint i = 0; i < 3; i++)
     {
         if (rayLoad.strength > 0)
             BounceRay2(rayWorld, startPosWorld, rayLoad, rayWorld, startPosWorld);
     }
     
-    
     outputTexture[pixelLocation] = rayLoad.color;
-
-   //BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw, index);
-	
-	//if (hit)
-	//{
-	//	float4 e1 = tri.v1.pos - tri.v0.pos;
-	//	float4 e2 = tri.v2.pos - tri.v0.pos;
-
-	//	float3 normal = normalize(cross(e1.xyz, e2.xyz));
-	//	float4 newRay = float4(normalize(rayWorld.xyz - (2.0f * (normal * (dot(rayWorld.xyz, normal))))), 0.0f);
-	//	float4 newStartPos = float4(intersectionPoint, 1.0f);
-
- //       float2 uv;
-        
-   
- //       uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;       	   
-
-
- //       BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw, index);
-
-	//	if (hit)
-	//	{
-	//		float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
-	//		float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
-	//		outputTexture[pixelLocation] = color;
-        
-	//	}
-
-	//}
 }
