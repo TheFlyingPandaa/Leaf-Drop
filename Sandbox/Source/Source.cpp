@@ -62,7 +62,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 1000;
+		const UINT NUMBER_OF_DRAWABLES = 10;
 		const UINT NUMBER_OF_LIGHTS = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
@@ -102,6 +102,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			d[i].SetPosition(x, y, z);
 			d[i].SetScale(scl, scl, scl);
+			d[i].SetScale(10,10,10);
 		}
 		
 		float rot = 0;
