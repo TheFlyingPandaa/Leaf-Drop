@@ -13,6 +13,12 @@ TextureAtlas::~TextureAtlas()
 {
 }
 
+TextureAtlas * TextureAtlas::GetInstance()
+{
+	static TextureAtlas textureAtlas;
+	return &textureAtlas;
+}
+
 HRESULT TextureAtlas::Init(const std::wstring & name, const UINT& width, const UINT& height, const UINT& arraySize, const UINT & maxMips, const DXGI_FORMAT& format)
 {
 	HRESULT hr = 0;
@@ -162,6 +168,14 @@ void TextureAtlas::SetGraphicsRootDescriptorTable(const UINT& rootParameterIndex
 	handle.ptr += m_descriptorHeapOffset;
 
 	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, handle);
+}
+
+void TextureAtlas::SetMagnusRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList) const
+{
+	D3D12_GPU_DESCRIPTOR_HANDLE handle = m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
+	handle.ptr += m_descriptorHeapOffset;
+
+	commandList->SetComputeRootDescriptorTable(rootParameterIndex, handle);
 }
 
 ID3D12Resource* TextureAtlas::GetResource() const

@@ -58,9 +58,11 @@ float4 main(PS_INPUT input) : SV_TARGET
 
 	float lengthToFragment = length(worldPos - CameraPosition);
 
-	float3 rayColor = lengthToFragment >= rays.a ? rays.rgb : float3(0, 0, 0);
+//	float3 rayColor = lengthToFragment >= rays.a ? rays.rgb : float3(0, 0, 0);
+	
 
 	//return float4(rays.a, 0.0f, 0.0f, 1.0f);
 
-	return saturate(finalColor + ambient + float4(rayColor, 1.0f));
+    return saturate(finalColor + ambient + (float4(rays.rgb, 1.0f) * metallic));
+	//return saturate(float4(rays.rgb, 1.0f));
 }

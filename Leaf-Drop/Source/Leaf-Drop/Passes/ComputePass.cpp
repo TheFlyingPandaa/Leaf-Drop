@@ -10,6 +10,7 @@
 #define RAY_TEXTURE 1
 #define RAY_INDICES 2
 #define TRIANGLES	3
+#define TEXTURE_ATLAS	4
 
 struct Vertex
 {
@@ -146,6 +147,8 @@ void ComputePass::Draw()
 	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(Triangle));
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 
+	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
+
 
 	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
@@ -272,21 +275,23 @@ HRESULT ComputePass::_InitRootSignature()
 	HRESULT hr = 0;
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
-
-	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
+	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
+	
+	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
+	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
 
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
 		rootParameters,
-		0,
-		nullptr,
+		1,
+		&samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
@@ -295,10 +300,11 @@ HRESULT ComputePass::_InitRootSignature()
 	);
 
 	ID3DBlob * signature = nullptr;
+	ID3DBlob * error = nullptr;
 	if (SUCCEEDED(hr = D3D12SerializeRootSignature(&rootSignatureDesc.Desc_1_0,
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		&signature,
-		nullptr)))
+		&error)))
 	{
 		if (FAILED(hr = p_coreRender->GetDevice()->CreateRootSignature(
 			0,
@@ -309,6 +315,12 @@ HRESULT ComputePass::_InitRootSignature()
 			SAFE_RELEASE(m_rootSignature);
 		}
 	}
+	else
+	{
+		OutputDebugStringA(static_cast<char*>(error->GetBufferPointer()));
+		error->Release();
+	}
+
 
 	//if (FAILED(hr = _InitClearRootSignature()))
 	//{

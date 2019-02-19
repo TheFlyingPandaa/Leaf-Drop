@@ -22,15 +22,23 @@ struct RAY_STRUCT
 	uint2	pixelCoord;
 };
 
-RWTexture2D<float4> outputTexture : register(u0);
-StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
-StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 
-void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit)
+
+RWTexture2D<float4> outputTexture : register(u0);
+StructuredBuffer<Triangle> TriangleBuffer : register(t0);
+StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
+
+SamplerState	defaultTextureAtlasSampler : register(s0);
+Texture2DArray	TextureAtlas : register(t2);
+
+void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit, out float3 uvw)
 {
 	const float EPSILON = 0.000001f;
 	float minT = 9999.0f;
 	int index = -1;
+	uvw.x = -1.0f;
+	uvw.y = -1.0f;
+	uvw.z = -1.0f;
 
 	intersectionPoint = float3(0,0,0);
 	tri = (Triangle)0;
@@ -71,6 +79,9 @@ void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, 
 		{
 			minT = t;
 			index = i;
+			uvw.x = u;
+			uvw.y = v;
+			uvw.z = 1.0f - u - v;
 		}
 
 	}
@@ -98,11 +109,13 @@ void main(uint3 threadID : SV_DispatchThreadID)
 	float3 intersectionPoint;
 	Triangle tri;
 	bool hit = false;
+	float3 uvw;
 
-	BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit);
+	BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw);
 	
 	if (hit)
 	{
+
 		float4 e1 = tri.v1.pos - tri.v0.pos;
 		float4 e2 = tri.v2.pos - tri.v0.pos;
 
@@ -110,11 +123,14 @@ void main(uint3 threadID : SV_DispatchThreadID)
 		float4 newRay = float4(normalize(rayWorld.xyz - (2.0f * (normal * (dot(rayWorld.xyz, normal))))), 0.0f);
 		float4 newStartPos = float4(intersectionPoint, 1.0f);
 
-		BounceRay(newRay, newStartPos, intersectionPoint, tri, hit);
+		BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw);
 
 		if (hit)
 		{
-			outputTexture[pixelLocation] = float4(intersectionPoint ,1);
+			float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
+			float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
+			outputTexture[pixelLocation] = color;
+        
 		}
 
 	}

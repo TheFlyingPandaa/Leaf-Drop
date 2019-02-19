@@ -91,6 +91,11 @@ void PrePass::Draw()
 	}
 
 	ExecuteCommandList();
+
+	// Possible fence?? boobie fix
+
+	p_coreRender->GetGeometryPass()->SetDepthPreBuffer(&m_depthBuffer);
+
 }
 
 void PrePass::Release()

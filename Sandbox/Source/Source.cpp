@@ -20,6 +20,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 {
 
 	srand(static_cast<UINT>(time(0)));
+	srand(0);
 
 #if _DEBUG
 	_alocConsole();
@@ -62,8 +63,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 10;
-		const UINT NUMBER_OF_LIGHTS = 100;
+		const UINT NUMBER_OF_DRAWABLES = 50;
+		const UINT NUMBER_OF_LIGHTS = 10;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
@@ -87,6 +88,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		}
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
+		
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
 			d[i].SetTexture(&t[0]);

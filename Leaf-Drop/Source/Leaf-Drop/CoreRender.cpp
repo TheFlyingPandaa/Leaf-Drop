@@ -141,6 +141,11 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
+	if (FAILED(hr = TextureAtlas::GetInstance()->Init(L"Singelton", 4096, 4096, 4, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
+	{
+		return hr;
+	}
+
 	return hr;
 }
 
@@ -152,6 +157,8 @@ void CoreRender::Release()
 	m_deferredPass->Release();
 	m_computePass->Release();
 	m_prePass->Release();
+
+	TextureAtlas::GetInstance()->Release();
 
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);

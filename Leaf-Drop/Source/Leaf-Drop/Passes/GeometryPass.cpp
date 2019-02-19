@@ -93,11 +93,7 @@ HRESULT GeometryPass::Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_atlas.Init(L"Geometry", 4096, 4096, 4, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
-	{
-		
-		return hr;
-	}
+	m_ptrAtlas = TextureAtlas::GetInstance();
 
 	return hr;
 }
@@ -131,7 +127,7 @@ void GeometryPass::Update()
 
 	}
 
-	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_depthBuffer.GetHandle());
+	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_ptrDepthPreBuffer->GetHandle());
 	
 	m_depthBuffer.Clear(commandList);
 	
@@ -143,7 +139,7 @@ void GeometryPass::Update()
 
 	int counter = 0;
 	UINT textureCounter = 0;
-	m_atlas.Begin(commandList);
+	m_ptrAtlas->Begin(commandList);
 	UINT4 textureOffset{ 0,0,0,0 };
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
@@ -152,14 +148,14 @@ void GeometryPass::Update()
 			auto world = p_drawQueue[i].ObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
-		m_atlas.CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
-		m_atlas.CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
-		m_atlas.CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 		textureOffset.x = i * 3;
 		textureOffset.y = 3;
 		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * i);
 	}
-	m_atlas.End(commandList);
+	m_ptrAtlas->End(commandList);
 
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
@@ -184,7 +180,7 @@ void GeometryPass::Draw()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 
-	m_atlas.SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
+	m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
@@ -235,11 +231,14 @@ void GeometryPass::Release()
 	
 	m_depthBuffer.Release();
 
-	m_atlas.Release();
-
 	m_camBuffer.Release();
 	m_worldMatrices.Release();
 	m_textureIndex.Release();
+}
+
+void GeometryPass::SetDepthPreBuffer(DepthBuffer * depthBuffer)
+{
+	m_ptrDepthPreBuffer = depthBuffer;
 }
 
 UAV * GeometryPass::GetUAV()
@@ -257,7 +256,6 @@ HRESULT GeometryPass::_InitRootSignature()
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 	{
 		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-		rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 		rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 	}
 
@@ -382,8 +380,8 @@ HRESULT GeometryPass::_InitPipelineState()
 
 	D3D12_DEPTH_STENCIL_DESC depthDesc{};
 	depthDesc.DepthEnable = TRUE;
-	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 	depthDesc.StencilEnable = FALSE;
 	depthDesc.StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
 	depthDesc.StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;

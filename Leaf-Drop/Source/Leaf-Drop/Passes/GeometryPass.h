@@ -23,6 +23,8 @@ public:
 	void Draw() override;
 	void Release() override;
 
+	void SetDepthPreBuffer(DepthBuffer * depthBuffer);
+
 	UAV * GetUAV();
 
 private:
@@ -40,6 +42,7 @@ private:
 	D3D12_RECT m_scissorRect{};
 
 	DepthBuffer m_depthBuffer;
+	DepthBuffer * m_ptrDepthPreBuffer = nullptr;
 
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;
@@ -50,7 +53,7 @@ private:
 
 	GpuTimer m_timer;
 
-	TextureAtlas m_atlas;
+	TextureAtlas * m_ptrAtlas;
 
 	Fence m_fence;
 
