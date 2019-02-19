@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Passes\PrePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\Fence.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\GpuTimer.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Lights\DirectionalLight.h" />
@@ -355,6 +356,7 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\TextureAtlas.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Passes\PrePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\Fence.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\GpuTimer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Lights\DirectionalLight.cpp" />
@@ -807,6 +809,12 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIDTH;HEIGHT;WIDTH_DIV;HEIGHT_DIV</PreprocessorDefinitions>
     </FxCompile>
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryVertex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Source\Leaf-Drop\Shaders\PrePass\PrePassVertex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

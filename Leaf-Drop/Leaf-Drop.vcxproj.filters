@@ -765,6 +765,9 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\TextureAtlas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Passes\PrePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -960,6 +963,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\TextureAtlas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Passes\PrePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1405,5 +1411,6 @@
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\DefaultComputeShader.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\ComputePass\ClearComputeShader.hlsl" />
+    <FxCompile Include="Source\Leaf-Drop\Shaders\PrePass\PrePassVertex.hlsl" />
   </ItemGroup>
 </Project>
