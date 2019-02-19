@@ -1,3 +1,5 @@
+#include "../LightCalculations.hlsli"
+
 cbuffer RAY_BOX : register(b0)
 {
     float4 ViewerPosition; // World space
@@ -38,6 +40,12 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 
 SamplerState	defaultTextureAtlasSampler : register(s0);
 Texture2DArray	TextureAtlas : register(t2);
+
+StructuredBuffer<LIGHT> Lights : register(t0, space1);
+cbuffer LightSize : register (b0, space1)
+{
+	uint4 LightValues;
+}
 
 void BounceRay2(in float4 rayDirection, in float4 startPos, inout RayPayload rayload, out float4 newDirectiom, out float4 newStartPos)
 {
@@ -104,8 +112,7 @@ void BounceRay2(in float4 rayDirection, in float4 startPos, inout RayPayload ray
         float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
 
 
-        rayload.color = albedo * rayload.strength;
-        rayload.strength -= length(metall) / 4.0f;
+        rayload.strength -= 1.0f - metall.r;
 
         float4 e1 = tri.v1.pos - tri.v0.pos;
         float4 e2 = tri.v2.pos - tri.v0.pos;
@@ -113,7 +120,14 @@ void BounceRay2(in float4 rayDirection, in float4 startPos, inout RayPayload ray
         float3 normal = normalize(cross(e1.xyz, e2.xyz));
         newDirectiom = float4(normalize(rayDirection.xyz - (2.0f * (normal * (dot(rayDirection.xyz, normal))))), 0.0f);
         newStartPos = float4(intersectionPoint, 1.0f);
-
+        
+		float4 specular;
+        float4 finalColor = float4(0, 0, 0, 0);
+        for (uint i = 0; i < LightValues.x; i++)
+        {
+            finalColor += LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal, 0), metall, specular);
+        }
+        rayload.color = finalColor * rayload.strength;
 
     }
 }
@@ -194,8 +208,19 @@ void main(uint3 threadID : SV_DispatchThreadID)
     float4 startPosWorld = ViewerPosition;
 
     RayPayload rayLoad = (RayPayload)0;
-    rayLoad.strength = 1.0f;
-    
+
+	/*
+	Test
+	*/
+    //rayLoad.strength = 1.0f;
+	//BounceRay2(rayWorld, startPosWorld, rayLoad, rayWorld, startPosWorld);
+	//rayLoad.color = float4(0, 0, 0, 0);
+	/*
+	End Test
+	*/
+
+
+	rayLoad.strength = 1.0f;
     for (uint i = 0; i < 3; i++)
     {
         if (rayLoad.strength > 0)

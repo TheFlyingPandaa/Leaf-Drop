@@ -63,6 +63,6 @@ float4 main(PS_INPUT input) : SV_TARGET
 
 	//return float4(rays.a, 0.0f, 0.0f, 1.0f);
 
-    return saturate(finalColor + ambient) + float4(rays.rgb, 1.0f);
+    return saturate(finalColor + ambient + float4(rays.rgb, 1.0f));
 	//return saturate(float4(rays.rgb, 1.0f));
 }

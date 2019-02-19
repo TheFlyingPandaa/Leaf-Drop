@@ -5,12 +5,16 @@
 #include "../Objects/StaticMesh.h"
 
 #include <iostream>
+#include "Source/Leaf-Drop/Objects/Lights/PointLight.h"
+#include "Source/Leaf-Drop/Objects/Lights/DirectionalLight.h"
 
-#define RAY_SQUARE_INDEX 0
-#define RAY_TEXTURE 1
-#define RAY_INDICES 2
-#define TRIANGLES	3
-#define TEXTURE_ATLAS	4
+#define RAY_SQUARE_INDEX	0
+#define RAY_TEXTURE			1
+#define RAY_INDICES			2
+#define TRIANGLES			3
+#define TEXTURE_ATLAS		4
+#define LIGHT_TABLE			5
+#define LIGHT_BUFFER		6
 
 struct Vertex
 {
@@ -50,7 +54,6 @@ HRESULT ComputePass::Init()
 
 void ComputePass::Update()
 {
-	
 }
 
 
@@ -143,12 +146,16 @@ void ComputePass::Draw()
 	if (rayCounter)
 		c = rayCounter[0];
 	OpenCommandList(m_pipelineState);
+	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
+	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
+
+	_SetLightData();
+	m_lightUav.BindComputeSrv(LIGHT_TABLE, p_commandList[frameIndex]);
+	m_lightsBuffer.BindComputeShader(LIGHT_BUFFER, p_commandList[frameIndex]);
 
 	m_rayTexture.Clear(p_commandList[frameIndex]);
 
 
-	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
-	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
 	m_squareIndex.SetData(&data, sizeof(data));
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
@@ -182,10 +189,13 @@ void ComputePass::Release()
 	m_squareIndex.Release();
 	m_meshTriangles.Release();
 	m_rayTexture.Release();
+	m_lightUav.Release();
+	m_lightsBuffer.Release();
 }
 
 void ComputePass::Clear()
 {
+	IRender::Clear();
 }
 
 void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UINT & size)
@@ -235,6 +245,19 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
+	const UINT bufferSize = 1024 * 64;
+	const UINT elementSize = sizeof(LIGHT_VALUES);
+	if (FAILED(hr = m_lightUav.Init(L"Ray Lights", bufferSize, bufferSize / elementSize, elementSize)))
+	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_lightsBuffer.Init(256, L"Ray Light", ConstantBuffer::CBV_TYPE::CONSTANT_BUFFER)))
+	{
+		return hr;
+	}
+
+	m_lightUav.ConstantMap();
 
 	if (FAILED(hr = OpenCommandList()))
 	{
@@ -289,13 +312,15 @@ HRESULT ComputePass::_InitRootSignature()
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[7];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
 
+	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 1);
+	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 1);
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -372,4 +397,42 @@ HRESULT ComputePass::_ExecuteCommandList()
 		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	}
 	return hr;
+}
+
+void ComputePass::_SetLightData()
+{
+	LIGHT_VALUES values;
+
+	PointLight * pl;
+	DirectionalLight * dl;
+
+	struct
+	{
+		UINT a, b, c, d;
+	} uint4;
+
+	uint4.a = static_cast<UINT>(p_lightQueue.size());
+	m_lightsBuffer.SetData(&uint4, sizeof(UINT) * 4);
+
+
+	for (UINT i = 0; i < p_lightQueue.size(); i++)
+	{
+		values.Position = p_lightQueue[i]->GetPosition();
+		values.Color = p_lightQueue[i]->GetColor();
+
+		values.Type.x = p_lightQueue[i]->GetType();
+		values.Type.y = p_lightQueue[i]->GetType();
+		values.Type.z = p_lightQueue[i]->GetType();
+		values.Type.w = p_lightQueue[i]->GetType();
+
+		if (pl = dynamic_cast<PointLight*>(p_lightQueue[i]))
+		{
+			values.Point = DirectX::XMFLOAT4(pl->GetIntensity(), pl->GetDropOff(), pl->GetPow(), pl->GetRadius());
+		}
+		if (dl = dynamic_cast<DirectionalLight*>(p_lightQueue[i]))
+		{
+			values.Direction = DirectX::XMFLOAT4(dl->GetDirection().x, dl->GetDirection().y, dl->GetDirection().z, dl->GetIntensity());
+		}
+		m_lightUav.CopyData(&values, sizeof(LIGHT_VALUES), i * sizeof(LIGHT_VALUES));
+	}
 }

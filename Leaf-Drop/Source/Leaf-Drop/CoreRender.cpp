@@ -647,7 +647,7 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 void CoreRender::_Clear()
 {
 	m_geometryPass->Clear();
-	//m_computePass->ClearDraw();
+	m_computePass->Clear();
 	//Sleep(10);
 	m_deferredPass->Clear();
 }

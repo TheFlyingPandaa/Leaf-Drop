@@ -64,7 +64,6 @@ private:
 	D3D12_RECT m_scissorRect{};
 	
 	ConstantBuffer m_camBuffer;
-	ConstantBuffer m_lightsBuffer;
 
 	ScreenQuad m_screenQuad;
 
@@ -85,6 +84,7 @@ private:
 	};
 
 	UAV m_lightUav;
+	ConstantBuffer m_lightsBuffer;
 	
 	GpuTimer timer;
 
