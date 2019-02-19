@@ -4,6 +4,7 @@
 #include "../Wrappers/ConstantBuffer.h"
 #include "../Wrappers/DepthBuffer.h"
 #include "../Wrappers/UAV.h"
+#include "../Wrappers/Fence.h"
 
 class GeometryPass : public IRender
 {
@@ -43,6 +44,8 @@ private:
 
 	UAV * m_rayStencil;
 	UAV * m_counterStencil;
+
+	Fence m_fence;
 
 private:
 	HRESULT _Init();

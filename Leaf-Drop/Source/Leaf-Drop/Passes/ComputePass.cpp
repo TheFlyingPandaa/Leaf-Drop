@@ -125,7 +125,10 @@ void ComputePass::Draw()
 	data.info.z = triangles.size();
 	
 	// TODO :: FENCE
-	Sleep(200);
+	//Sleep(200);
+
+	
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	UINT c = 0;
 	if (rayCounter)
@@ -133,7 +136,6 @@ void ComputePass::Draw()
 	if (c == 0)
 		return;
 	OpenCommandList(m_pipelineState);
-	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
@@ -151,8 +153,8 @@ void ComputePass::Draw()
 	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
-
-	Sleep(200);
+	
+	m_fence.WaitForFinnishExecution();
 
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
 
@@ -163,6 +165,7 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
+	m_fence.Release();
 }
 
 void ComputePass::ClearDraw()
@@ -225,7 +228,7 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = _CreateFenceAndFenceEvent()))
+	if (FAILED(hr = m_fence.CreateFence(m_commandQueue)))
 	{
 		return hr;
 	}
@@ -430,28 +433,6 @@ HRESULT ComputePass::_InitClearPipelineState()
 
 }
 
-HRESULT ComputePass::_CreateFenceAndFenceEvent()
-{
-	HRESULT hr = 0;
-
-	ID3D12Device * device = CoreRender::GetInstance()->GetDevice();
-
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		if (FAILED(hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence[i]))))
-		{
-			break;
-		}
-		m_fenceValue[i] = 0;
-	}
-
-	m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-	if (nullptr == m_fenceEvent)
-		return E_FAIL;
-
-	return hr;
-}
-
 HRESULT ComputePass::_ExecuteCommandList()
 {
 	HRESULT hr = 0;
@@ -461,11 +442,6 @@ HRESULT ComputePass::_ExecuteCommandList()
 	{
 		ID3D12CommandList* ppCommandLists[] = { p_commandList[frameIndex] };
 		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
-		if (FAILED(hr = m_commandQueue->Signal(m_fence[frameIndex], m_fenceValue[frameIndex])))
-		{
-			return hr;
-		}
 	}
 	return hr;
 }

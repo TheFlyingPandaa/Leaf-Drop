@@ -105,7 +105,7 @@ void UAV::Unmap()
 {
 	D3D12_RANGE range{ 0, m_bufferSize };
 
-	m_resource[prevFrame]->Unmap(0, &range);
+	m_resource[prevFrame]->Unmap(0, &range);	
 }
 
 

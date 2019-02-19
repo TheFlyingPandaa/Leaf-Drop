@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\Fence.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\ComputePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\DeferredPass.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\Camera.h" />
@@ -349,6 +350,7 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\UAV.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\Fence.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\ComputePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\DeferredPass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\Camera.cpp" />

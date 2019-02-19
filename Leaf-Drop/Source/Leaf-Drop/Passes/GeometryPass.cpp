@@ -180,6 +180,8 @@ void GeometryPass::Draw()
 
 	ExecuteCommandList();
 	
+	m_fence.WaitForFinnishExecution();
+
 	m_rayStencil->prevFrame = frameIndex;
 	m_counterStencil->prevFrame = frameIndex;
 
@@ -203,6 +205,8 @@ void GeometryPass::Release()
 
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
+
+	m_fence.Release();
 	
 	m_depthBuffer.Release();
 }
@@ -409,6 +413,8 @@ void GeometryPass::_CreateViewPort()
 	m_scissorRect.bottom = wndSize.y;
 }
 
+
+
 HRESULT GeometryPass::_Init()
 {
 	HRESULT hr = 0;
@@ -422,6 +428,10 @@ HRESULT GeometryPass::_Init()
 		return hr;
 	}
 	if (FAILED(hr = _InitPipelineState()))
+	{
+		return hr;
+	}
+	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCommandQueue())))
 	{
 		return hr;
 	}

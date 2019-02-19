@@ -1,6 +1,7 @@
 #pragma once
 #include "Template/IRender.h"
 #include "../Wrappers/ShaderResource.h"
+#include "../Wrappers/Fence.h"
 
 class ComputePass : public IRender
 {
@@ -30,9 +31,10 @@ private:
 	HRESULT _InitPipelineState();
 	HRESULT _InitClearPipelineState();
 
-	HRESULT _CreateFenceAndFenceEvent();
+
 
 	HRESULT _ExecuteCommandList();
+
 private:
 	struct RAY_BOX
 	{
@@ -61,9 +63,7 @@ private:
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
-	ID3D12Fence *			m_fence[FRAME_BUFFER_COUNT]{ nullptr };
-	HANDLE					m_fenceEvent = nullptr;
-	UINT64 					m_fenceValue[FRAME_BUFFER_COUNT]{ 0 };
+	Fence m_fence;
 
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;

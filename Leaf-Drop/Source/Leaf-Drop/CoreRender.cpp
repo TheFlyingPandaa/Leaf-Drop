@@ -383,9 +383,6 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
 
-	//Sleep(100);
-	//m_computePass->Update();
-	//m_computePass->Draw();
 
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
@@ -420,6 +417,7 @@ HRESULT CoreRender::_waitForPreviousFrame()
 			return hr;
 		}
 		WaitForSingleObject(m_fenceEvent, INFINITE);
+		
 	}
 
 	m_fenceValue[m_frameIndex]++;
@@ -627,6 +625,6 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 void CoreRender::_Clear()
 {
 	m_geometryPass->Clear();
-	m_computePass->ClearDraw();
-	Sleep(10);
+	//m_computePass->ClearDraw();
+	//Sleep(10);
 }
