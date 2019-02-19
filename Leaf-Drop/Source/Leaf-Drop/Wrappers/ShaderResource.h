@@ -27,6 +27,7 @@ private:
 	UINT m_arraySize = 1;
 
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
+	ID3D12Resource * m_clearResource = nullptr;
 
 	SIZE_T m_descriptorHeapOffset[FRAME_BUFFER_COUNT] = {0};
 private:

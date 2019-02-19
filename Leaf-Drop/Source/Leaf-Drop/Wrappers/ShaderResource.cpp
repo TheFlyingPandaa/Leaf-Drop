@@ -78,7 +78,43 @@ HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, cons
 			cr->IterateResourceIndex();
 		}
 	}
+	if (SUCCEEDED(hr = cr->GetDevice()->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resourceDesc,
+		D3D12_RESOURCE_STATE_COPY_SOURCE,
+		nullptr,
+		IID_PPV_ARGS(&m_clearResource))))
+	{
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = format;
+		srvDesc.ViewDimension = arraySize - 1 ? D3D12_SRV_DIMENSION_TEXTURE2DARRAY : D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		if (srvDesc.ViewDimension == D3D12_SRV_DIMENSION_TEXTURE2D)
+		{
+			srvDesc.Texture2D.MipLevels = 1;
+		}
+		else
+		{
+			srvDesc.Texture2DArray.ArraySize = arraySize;
+			srvDesc.Texture2DArray.FirstArraySlice = 0;
+			srvDesc.Texture2DArray.MipLevels = 1;
+			srvDesc.Texture2DArray.MostDetailedMip = 0;
+		}
 
+		SIZE_T offset = cr->GetCurrentResourceIndex() * cr->GetResourceDescriptorHeapSize();
+		const D3D12_CPU_DESCRIPTOR_HANDLE handle =
+		{ cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset };
+
+		cr->GetDevice()->CreateShaderResourceView(
+			m_clearResource,
+			&srvDesc,
+			handle);
+
+		SET_NAME(m_clearResource, std::wstring(name + std::wstring(L" shaderResource Clear Resource ")).c_str());
+
+		cr->IterateResourceIndex();
+	}
 
 	return hr;
 }
@@ -115,20 +151,11 @@ void ShaderResource::Clear(ID3D12GraphicsCommandList * commandList)
 	POINT wndSize = wnd->GetWindowSize();
 
 	const UINT frameIndex = cr->GetFrameIndex();
-	UINT8 * data = nullptr;
-	D3D12_RANGE range{ 0,0 };
 
-	//if (SUCCEEDED(m_resource[frameIndex]->Map(0, &range, reinterpret_cast<void**>(&data))))
-	//{
-	//	DXGI_FORMAT format = m_resource[frameIndex]->GetDesc().Format;
-	//	
-	//	ZeroMemory(data, m_width * m_height * _GetDXGIFormatBitsPerPixel(format));
-	//	m_resource[frameIndex]->Unmap(0, &range);
-	//}
-	D3D12_GPU_DESCRIPTOR_HANDLE h = {cr->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[frameIndex] };
-	D3D12_CPU_DESCRIPTOR_HANDLE c = {cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[frameIndex] };
-	float lol[4]{0,0,0,0};
-	commandList->ClearUnorderedAccessViewFloat(h, c, m_resource[frameIndex], lol, 1, NULL);
+	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_resource[frameIndex], D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
+	commandList->CopyResource(m_resource[frameIndex], m_clearResource);
+	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_resource[frameIndex], D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+
 }
 
 ID3D12Resource * ShaderResource::GetResource() const
@@ -140,6 +167,7 @@ void ShaderResource::Release()
 {
 	for (int i = 0; i < FRAME_BUFFER_COUNT; i++)
 		SAFE_RELEASE(m_resource[i]);
+	SAFE_RELEASE(m_clearResource);
 }
 
 int ShaderResource::_GetDXGIFormatBitsPerPixel(DXGI_FORMAT & dxgiFormat)

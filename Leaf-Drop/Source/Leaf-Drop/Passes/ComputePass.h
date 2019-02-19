@@ -16,6 +16,8 @@ public:
 	virtual void Draw() override;
 	virtual void Release() override;
 
+	void Clear();
+
 	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
 	void SetRayData(UAV * rayStencil, UAV * counterStencil);
 

@@ -133,6 +133,9 @@ void ComputePass::Draw()
 		return;
 	OpenCommandList(m_pipelineState);
 
+	m_rayTexture.Clear(p_commandList[frameIndex]);
+
+
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
@@ -166,6 +169,10 @@ void ComputePass::Release()
 	m_squareIndex.Release();
 	m_meshTriangles.Release();
 	m_rayTexture.Release();
+}
+
+void ComputePass::Clear()
+{
 }
 
 void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UINT & size)

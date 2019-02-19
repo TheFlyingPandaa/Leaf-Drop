@@ -62,7 +62,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 100;
+		const UINT NUMBER_OF_DRAWABLES = 1000;
 		const UINT NUMBER_OF_LIGHTS = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
@@ -249,7 +249,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 void printFrameTime(double dt)
 {
 	static int			counter = 0;
-	static const int	MAX_DATA = 100;
+	static const int	MAX_DATA = 10;
 	static double		allTime = 0.0;
 
 	allTime += dt * 1000.0;
