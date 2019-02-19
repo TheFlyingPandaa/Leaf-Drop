@@ -2,6 +2,7 @@
 #include "Template/IRender.h"
 #include "../Wrappers/ShaderResource.h"
 #include "../Wrappers/Fence.h"
+#include "../Objects/OcTree.h"
 
 class ComputePass : public IRender
 {
@@ -59,6 +60,8 @@ private:
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
 	Fence m_fence;
+
+	OcTree m_ocTree;
 
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;

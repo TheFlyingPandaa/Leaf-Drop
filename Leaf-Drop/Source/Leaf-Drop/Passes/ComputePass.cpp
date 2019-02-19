@@ -12,18 +12,6 @@
 #define TRIANGLES	3
 #define TEXTURE_ATLAS	4
 
-struct Vertex
-{
-	DirectX::XMFLOAT4 pos;
-	DirectX::XMFLOAT4 normal;
-	DirectX::XMFLOAT2 uv;
-};
-
-struct Triangle
-{
-	Vertex v1, v2, v3;
-};
-
 ComputePass::ComputePass()
 {
 }
@@ -54,7 +42,7 @@ void ComputePass::Update()
 void ComputePass::Draw()
 {
 	static bool first = true;
-	static std::vector<Triangle> triangles;
+	static std::vector<STRUCTS::Triangle> triangles;
 
 	if (first)
 	{
@@ -64,7 +52,7 @@ void ComputePass::Draw()
 			for (int m = 0; m < p_drawQueue[dq].ObjectData.size(); m++)
 			{
 				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
-				Triangle t;
+				STRUCTS::Triangle t;
 				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
 				{
 					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].ObjectData[m].WorldMatrix;
@@ -99,6 +87,7 @@ void ComputePass::Draw()
 				}
 			}
 		}
+		m_ocTree.BuildTree(triangles);
 	}
 
 	p_drawQueue.clear();
@@ -144,7 +133,7 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(Triangle));
+	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(STRUCTS::Triangle));
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
@@ -219,7 +208,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshTriangles.Init(sizeof(Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(Triangle))))
+	if (FAILED(hr = m_meshTriangles.Init(sizeof(STRUCTS::Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::Triangle))))
 	{
 		return hr;
 	}
