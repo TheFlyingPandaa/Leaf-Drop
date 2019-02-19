@@ -144,7 +144,7 @@ void CoreRender::Release()
 
 	m_geometryPass->Release();
 	m_deferredPass->Release();
-	//m_computePass->Release();
+	m_computePass->Release();
 
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
@@ -627,4 +627,5 @@ void CoreRender::_Clear()
 	m_geometryPass->Clear();
 	//m_computePass->ClearDraw();
 	//Sleep(10);
+	m_deferredPass->Clear();
 }

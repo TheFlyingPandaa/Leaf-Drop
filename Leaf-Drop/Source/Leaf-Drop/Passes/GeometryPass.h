@@ -5,6 +5,8 @@
 #include "../Wrappers/DepthBuffer.h"
 #include "../Wrappers/UAV.h"
 #include "../Wrappers/Fence.h"
+#include "../Wrappers/GpuTimer.h"
+#include "../Wrappers/TextureAtlas.h"
 
 class GeometryPass : public IRender
 {
@@ -41,9 +43,14 @@ private:
 
 	ConstantBuffer m_camBuffer;
 	ConstantBuffer m_worldMatrices;
+	ConstantBuffer m_textureIndex;
 
 	UAV * m_rayStencil;
 	UAV * m_counterStencil;
+
+	GpuTimer m_timer;
+
+	TextureAtlas m_atlas;
 
 	Fence m_fence;
 

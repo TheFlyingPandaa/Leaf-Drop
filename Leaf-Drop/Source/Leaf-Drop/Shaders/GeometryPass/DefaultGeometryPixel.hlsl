@@ -1,8 +1,11 @@
 SamplerState defaultSampler : register(s0);
-Texture2D albedo : register(t0);
-Texture2D normal : register(t1);
-Texture2D metallic : register(t2);
 
+
+Texture2DArray textureAtlas : register(t0);
+cbuffer TextureIndex : register(b0)
+{
+	uint4 index;
+}
 
 struct VS_OUTPUT
 {
@@ -38,9 +41,11 @@ PS_OUTPUT main(VS_OUTPUT input)
 {
 	PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
-	output.normal = float4(normalize(input.normal.xyz + mul((2.0f * normal.Sample(defaultSampler, input.uv).xyz - 1.0f), input.TBN)), 0);
-	output.albedo = albedo.Sample(defaultSampler, input.uv);
-	output.metallic = metallic.Sample(defaultSampler, input.uv);
+	output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x));
+
+	output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 1)).xyz - 1.0f), input.TBN)), 0);
+
+	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
     bool CastRay = output.metallic.r > 0.5;
 	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);

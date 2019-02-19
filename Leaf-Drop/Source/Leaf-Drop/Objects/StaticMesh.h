@@ -16,6 +16,8 @@ public:
 
 	const D3D12_VERTEX_BUFFER_VIEW & GetVBV() const;
 
+	void Release();
+
 private:
 	UINT m_vertexBufferSize = 0;
 	ID3D12Resource * m_vertexBuffer = nullptr;

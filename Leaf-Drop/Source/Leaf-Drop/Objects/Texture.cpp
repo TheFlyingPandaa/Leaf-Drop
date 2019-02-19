@@ -10,7 +10,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-	SAFE_RELEASE(m_texture);
+	Release();
 }
 
 HRESULT Texture::LoadTexture(const std::wstring & path)
@@ -78,4 +78,14 @@ void Texture::Map(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandLi
 	commandList->SetDescriptorHeaps(1, heaps);
 	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, 
 		{ CoreRender::GetInstance()->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset });
+}
+
+void Texture::Release()
+{
+	SAFE_RELEASE(m_texture);
+}
+
+ID3D12Resource* Texture::GetResource() const
+{
+	return this->m_texture;
 }

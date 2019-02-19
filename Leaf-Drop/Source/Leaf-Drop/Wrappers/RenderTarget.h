@@ -1,6 +1,7 @@
 #pragma once
+#include "Template/LeafObject.h"
 
-class RenderTarget
+class RenderTarget : public LeafObject
 {
 public:
 	RenderTarget();
@@ -23,6 +24,8 @@ public:
 
 	void SwitchToRTV(ID3D12GraphicsCommandList * commandList);
 	void SwitchToSRV(ID3D12GraphicsCommandList * commandList);
+
+	void Release() override;
 
 private:
 	D3D12_RESOURCE_STATES m_renderTargetCurrentResourceState[FRAME_BUFFER_COUNT] = { D3D12_RESOURCE_STATE_RENDER_TARGET };

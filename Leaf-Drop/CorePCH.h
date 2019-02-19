@@ -25,6 +25,7 @@ inline void* __cdecl operator new[](size_t size, size_t alignment, size_t alignm
 	return new uint8_t[size];
 }
 
+#define MAX_OBJECTS 16384
 
 #include <Windows.h>
 

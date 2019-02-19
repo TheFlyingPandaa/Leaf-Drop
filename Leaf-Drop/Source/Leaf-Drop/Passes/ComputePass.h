@@ -16,8 +16,6 @@ public:
 	virtual void Draw() override;
 	virtual void Release() override;
 
-	void ClearDraw();
-
 	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
 	void SetRayData(UAV * rayStencil, UAV * counterStencil);
 
@@ -26,12 +24,8 @@ private:
 	HRESULT _InitShaders();
 
 	HRESULT _InitRootSignature();
-	HRESULT _InitClearRootSignature();
 
 	HRESULT _InitPipelineState();
-	HRESULT _InitClearPipelineState();
-
-
 
 	HRESULT _ExecuteCommandList();
 
@@ -47,8 +41,7 @@ private:
 	D3D12_SHADER_BYTECODE m_clearComputeShader{};
 
 	ID3D12PipelineState * m_pipelineState = nullptr;
-	ID3D12PipelineState * m_clearPipelineState = nullptr;
-
+	
 	ID3D12RootSignature * m_rootSignature = nullptr;
 	//ID3D12RootSignature * m_clearRootSignature = nullptr;
 

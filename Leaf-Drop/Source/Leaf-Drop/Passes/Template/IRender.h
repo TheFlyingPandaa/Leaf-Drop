@@ -6,7 +6,7 @@
 class CoreRender;
 class Window;
 class Drawable;
-class Light;
+class ILight;
 class Texture;
 class StaticMesh;
 
@@ -16,7 +16,7 @@ public:
 	virtual ~IRender();
 	
 	void Submit(Drawable * drawable);
-	void SubmitLight(Light * light);
+	void SubmitLight(ILight * light);
 		
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0; 
@@ -50,6 +50,7 @@ protected:
 	};
 
 	std::vector<InstanceGroup> p_drawQueue;
+	std::vector<ILight*> p_lightQueue;
 	CoreRender * p_coreRender = nullptr;
 	Window * p_window = nullptr;
 

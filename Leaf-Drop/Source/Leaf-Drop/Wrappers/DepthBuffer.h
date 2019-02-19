@@ -1,6 +1,6 @@
 #pragma once
 
-class DepthBuffer
+class DepthBuffer : public LeafObject
 {
 public:
 	DepthBuffer();
@@ -16,7 +16,7 @@ public:
 	void SwapToDSV(ID3D12GraphicsCommandList * commandList = nullptr);
 	void SwapToSRV(ID3D12GraphicsCommandList * commandList = nullptr);
 
-	void Release();
+	void Release() override;
 
 private:
 	UINT m_width = 0;

@@ -124,10 +124,6 @@ void ComputePass::Draw()
 	data.info.y = windowSize.y;
 	data.info.z = triangles.size();
 	
-	// TODO :: FENCE
-	//Sleep(200);
-
-	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
 	UINT c = 0;
@@ -166,38 +162,10 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
 	m_fence.Release();
-}
-
-void ComputePass::ClearDraw()
-{
-	const UINT frameIndex = p_coreRender->GetFrameIndex();
-	OpenCommandList(m_clearPipelineState);
-
-	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
-	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
-
-	POINT windowSize = p_window->GetWindowSize();
-	RAY_BOX data;
-	data.viewerPos.x = (float)windowSize.x * 0.5f;
-	data.viewerPos.y = (float)windowSize.y * 0.5f;
-	data.viewerPos.z = -(data.viewerPos.x / tan(Camera::GetActiveCamera()->GetFOV()));
-	data.viewerPos.w = 1.0f;
-	data.info.x = windowSize.x;
-	data.info.y = windowSize.y;
-
-	m_squareIndex.SetData(&data, sizeof(data));
-	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
-	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
-
-	POINT wndSize = Window::GetInstance()->GetWindowSize();
-
-	p_commandList[frameIndex]->Dispatch(
-		UINT((wndSize.x / 32.0f) + 0.5f),	// We need equal or more threads then we have pixels
-		UINT((wndSize.y / 32.0f) + 0.5f),	// We need equal or more threads then we have pixels
-		1);
-	
-
-	_ExecuteCommandList();
+	p_ReleaseCommandList();
+	m_squareIndex.Release();
+	m_meshTriangles.Release();
+	m_rayTexture.Release();
 }
 
 void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UINT & size)
@@ -243,7 +211,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshTriangles.Init(sizeof(Triangle) * 1024 * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(Triangle))))
+	if (FAILED(hr = m_meshTriangles.Init(sizeof(Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(Triangle))))
 	{
 		return hr;
 	}
@@ -345,48 +313,6 @@ HRESULT ComputePass::_InitRootSignature()
 	return hr;
 }
 
-HRESULT ComputePass::_InitClearRootSignature()
-{
-	HRESULT hr = 0;
-	//
-	//CD3DX12_ROOT_PARAMETER1 rootParameters[1];
-	//
-	//rootParameters[0].InitAsUnorderedAccessView(0);
-	//
-	//
-	//CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	//
-	//rootSignatureDesc.Init_1_1(
-	//	_countof(rootParameters),
-	//	rootParameters,
-	//	0,
-	//	nullptr,
-	//	D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
-	//	D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
-	//	D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
-	//	D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
-	//	D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS
-	//);
-	//
-	//ID3DBlob * signature = nullptr;
-	//if (SUCCEEDED(hr = D3D12SerializeRootSignature(&rootSignatureDesc.Desc_1_0,
-	//	D3D_ROOT_SIGNATURE_VERSION_1,
-	//	&signature,
-	//	nullptr)))
-	//{
-	//	if (FAILED(hr = p_coreRender->GetDevice()->CreateRootSignature(
-	//		0,
-	//		signature->GetBufferPointer(),
-	//		signature->GetBufferSize(),
-	//		IID_PPV_ARGS(&m_clearRootSignature))))
-	//	{
-	//		SAFE_RELEASE(m_clearRootSignature);
-	//	}
-	//}
-	//
-	return hr;
-}
-
 HRESULT ComputePass::_InitPipelineState()
 {
 	HRESULT hr = 0;
@@ -403,34 +329,7 @@ HRESULT ComputePass::_InitPipelineState()
 		return hr;
 	}
 
-
-	//Create pipeline state
-	if (FAILED(hr = _InitClearPipelineState()))
-	{
-		return hr;
-	}
-
 	return hr;
-}
-
-HRESULT ComputePass::_InitClearPipelineState()
-{
-	HRESULT hr = 0;
-
-	D3D12_COMPUTE_PIPELINE_STATE_DESC computePipeDesc = {};
-
-	computePipeDesc.pRootSignature = m_rootSignature;
-	computePipeDesc.CS = m_clearComputeShader;
-
-	if (FAILED(hr = p_coreRender->GetDevice()->CreateComputePipelineState(
-		&computePipeDesc,
-		IID_PPV_ARGS(&m_clearPipelineState))))
-	{
-		return hr;
-	}
-
-	return hr;
-
 }
 
 HRESULT ComputePass::_ExecuteCommandList()

@@ -10,6 +10,7 @@ UAV::UAV()
 
 UAV::~UAV()
 {
+	Release();
 }
 
 HRESULT UAV::Init(const std::wstring & name, const UINT & bufferSize, const UINT & maxElements, const UINT & elementSize)
@@ -89,6 +90,12 @@ void UAV::Bind(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * com
 	commandList->SetGraphicsRootUnorderedAccessView(rootParamtererIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
 }
 
+void UAV::SetGraphicsRootShaderResourceView(const UINT& rootParameterIndex, ID3D12GraphicsCommandList* commandList)
+{
+	const UINT frameIndex = m_coreRender->GetFrameIndex();
+	commandList->SetGraphicsRootShaderResourceView(rootParameterIndex, m_resource[frameIndex]->GetGPUVirtualAddress());
+}
+
 void UAV::BindCompute(const UINT & rootParamtererIndex, ID3D12GraphicsCommandList * commandList)
 {
 	const UINT frameIndex = m_coreRender->GetFrameIndex();
@@ -105,7 +112,47 @@ void UAV::Unmap()
 {
 	D3D12_RANGE range{ 0, m_bufferSize };
 
-	m_resource[prevFrame]->Unmap(0, &range);	
+	m_resource[prevFrame]->Unmap(0, &range);
+
+
+	m_gpuAddress[prevFrame] = { nullptr };
+	
+}
+
+
+HRESULT UAV::ConstantMap()
+{
+	HRESULT hr = 0;
+	
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		D3D12_RANGE range{ 0,0 };
+		if (SUCCEEDED(hr = m_resource[i]->Map(0, &range, reinterpret_cast<void**>(&m_gpuAddress[i]))))
+		{
+			
+		}
+	}
+	return hr;
+}
+
+void UAV::UnmapAll()
+{
+	D3D12_RANGE range{ 0, m_bufferSize };
+
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		m_resource[i]->Unmap(0, &range);
+
+
+		m_gpuAddress[i] = { nullptr };
+
+	}
+
+}
+
+void UAV::CopyData(void* data, const UINT& size, const UINT& offset)
+{
+	memcpy(m_gpuAddress[m_coreRender->GetFrameIndex()] + offset, data, size);
 }
 
 

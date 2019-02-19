@@ -8,11 +8,7 @@ ConstantBuffer::ConstantBuffer()
 
 ConstantBuffer::~ConstantBuffer()
 {
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		SAFE_RELEASE(m_resource[i]);
-	}
-	m_data = nullptr;
+	Release();
 }
 
 HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const CBV_TYPE & type, UINT sizeOfElement)
@@ -140,4 +136,13 @@ void ConstantBuffer::SetData(void * data, UINT size, UINT offset)
 {
 	const UINT currentFrame = m_coreRender->GetFrameIndex();
 	memcpy(m_resource_GPU_Location[currentFrame] + offset, data, size);
+}
+
+void ConstantBuffer::Release()
+{
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		SAFE_RELEASE(m_resource[i]);
+	}
+	m_data = nullptr;
 }
