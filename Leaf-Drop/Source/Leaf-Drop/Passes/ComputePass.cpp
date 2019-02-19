@@ -142,7 +142,7 @@ void ComputePass::Draw()
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
 	m_rayTexture.BindComputeShader(RAY_TEXTURE, p_commandList[frameIndex]);
 
-	m_rayStencil->BindCompute(RAY_INDICES, p_commandList[frameIndex]);
+	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
 	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(Triangle));
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
@@ -300,7 +300,7 @@ HRESULT ComputePass::_InitRootSignature()
 	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
-	rootParameters[RAY_INDICES].InitAsUnorderedAccessView(1);
+	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 
 

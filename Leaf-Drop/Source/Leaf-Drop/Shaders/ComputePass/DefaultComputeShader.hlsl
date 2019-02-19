@@ -23,7 +23,7 @@ struct RAY_STRUCT
 	float4	worldPos;
 	uint2	pixelCoord;
 };
-RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u1);
+StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 
 
