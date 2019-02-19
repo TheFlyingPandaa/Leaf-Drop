@@ -8,7 +8,8 @@ struct AABB
 	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	UINT				level = 0;
 	UINT				nrOfSubAABB = 0;
-	UINT				subAABBIndexArr[8];
+	UINT				subAABBIndexStart = 0;
+	UINT				subAABBIndexEnd = 0;
 	UINT				triangleStartIndex = 0;
 	UINT				numberOfTriangles = 0;
 
@@ -22,8 +23,8 @@ struct AABB
 			nrOfSubAABB = other.nrOfSubAABB;
 			triangleStartIndex = other.triangleStartIndex;
 			numberOfTriangles = other.numberOfTriangles;
-			for (UINT i = 0; i < nrOfSubAABB; i++)
-				subAABBIndexArr[i] = other.subAABBIndexArr[i];
+			subAABBIndexStart = other.subAABBIndexStart;
+			subAABBIndexEnd = other.subAABBIndexEnd;
 		}
 		return *this;
 	}
@@ -32,15 +33,13 @@ struct AABB
 	{
 		std::string str = "";
 		str += "Position: " + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z) + "\n";
-		str += "axis: " + std::to_string(axis.x) + ", " + std::to_string(axis.y) + ", " + std::to_string(axis.z) + "\n";
-		str += "level: " + std::to_string(level) + "\n";
-		str += "nrOfSubAABB: " + std::to_string(nrOfSubAABB) + "\n";
-		str += "triangleStartIndex: " + std::to_string(triangleStartIndex) + "\n";
-		str += "numberOfTriangles: " + std::to_string(numberOfTriangles) + "\n";
-		str += "SubAABBIndex: ";
-		for (UINT i = 0; i < nrOfSubAABB; i++)
-			str += std::to_string(subAABBIndexArr[i]) += ", ";
-		str += "\n";
+		str += "Axis: " + std::to_string(axis.x) + ", " + std::to_string(axis.y) + ", " + std::to_string(axis.z) + "\n";
+		str += "Level: " + std::to_string(level) + "\n";
+		str += "NrOfSubAABB: " + std::to_string(nrOfSubAABB) + "\n";
+		str += "TriangleStartIndex: " + std::to_string(triangleStartIndex) + "\n";
+		str += "NumberOfTriangles: " + std::to_string(numberOfTriangles) + "\n";
+		str += "SubAABBIndexStart: " + std::to_string(subAABBIndexStart)+ "\n";
+		str += "SubAABBIndexEnd: " + std::to_string(subAABBIndexEnd)+ "\n";
 
 		return str;
 	}

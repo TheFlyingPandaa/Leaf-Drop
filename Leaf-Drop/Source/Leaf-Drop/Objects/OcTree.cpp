@@ -13,8 +13,8 @@ OcTree::~OcTree()
 
 void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel, UINT worldSize)
 {
-	static const UINT REC_SIZE = 8;
-	static const DirectX::XMFLOAT3 dir[] = {
+	static const UINT INCREMENT_LEVEL = 8; // DONT YOU DARE CHANGE THIS
+	static const DirectX::XMFLOAT3 DIR[] = {
 		{ 1.0f, 1.0f, 1.0f },
 		{ 3.0f, 1.0f, 1.0f },
 		{ 1.0f, 1.0f, 3.0f },
@@ -22,60 +22,66 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 		{ 1.0f, 3.0f, 1.0f },
 		{ 3.0f, 3.0f, 1.0f },
 		{ 1.0f, 3.0f, 3.0f },
-		{ 3.0f, 3.0f, 3.0f },
+		{ 3.0f, 3.0f, 3.0f }
 	};
+	DirectX::XMVECTOR vecDir[8];
+	for (UINT i = 0; i < INCREMENT_LEVEL; i++)
+	{
+		vecDir[i] = DirectX::XMLoadFloat3(&DIR[i]);
+	}
 
 	m_ocTree.clear();
-	UINT totalSize = 0;
-	for (UINT i = 0; i < treeLevel; i++)
-		totalSize += std::pow(REC_SIZE, i + 1);
-
-	m_ocTree = std::vector<AABB>(totalSize);
-	UINT counter = 0;
-
-	DirectX::XMFLOAT3 startPos;
-	startPos.x = -(int)worldSize / 2;
-	startPos.y = -(int)worldSize / 2;
-	startPos.z = -(int)worldSize / 2;
-
-	DirectX::XMVECTOR vecStartPos = DirectX::XMLoadFloat3(&startPos);
-
+	UINT totalAABB = 0;
 	for (UINT level = 0; level < treeLevel; level++)
 	{
-		DirectX::XMFLOAT3 currentSize;
-		currentSize.x = worldSize / (std::pow(REC_SIZE / 2, level + 1));
-		currentSize.y = currentSize.x;
-		currentSize.z = currentSize.x;
-		DirectX::XMVECTOR vecCurrentSize = DirectX::XMLoadFloat3(&currentSize);
+		totalAABB += std::pow(INCREMENT_LEVEL, level + 1);
+	}
+	m_ocTree = std::vector<AABB>(totalAABB);
 
-		UINT increment = 0;
-		for (UINT nrOfAABB = 0; nrOfAABB < std::pow(REC_SIZE, (level + 1)); nrOfAABB++)
+	float pos = -(int)worldSize / 2;
+	DirectX::XMFLOAT3 startPos(pos, pos, pos);
+
+	UINT counter = 0;
+	UINT futureAABB = 0;
+	for (UINT level = 0; level < treeLevel; level++)
+	{
+		float size = (worldSize / std::pow(2, level + 1)) / 2;
+
+		DirectX::XMFLOAT3 axisSize(size, size, size);
+
+		DirectX::XMVECTOR vecAxisSize = DirectX::XMLoadFloat3(&axisSize);
+		DirectX::XMVECTOR vecStartPos = DirectX::XMLoadFloat3(&startPos);
+
+		UINT targetDir = 0;
+		UINT nrOfAABB = std::pow(INCREMENT_LEVEL, level + 1);
+		UINT inc = 0;
+		futureAABB += nrOfAABB;
+		for (UINT i = 0; i < nrOfAABB; i++)
 		{
-			AABB currentAABB;
-			UINT dirIndex = nrOfAABB % 8;
-			DirectX::XMVECTOR vecDir = DirectX::XMLoadFloat3(&dir[dirIndex]);
-			
-			if (dirIndex == 0)
-				increment++;
+			AABB aabb;
+			aabb.axis = axisSize;
+			aabb.level = level;
+			aabb.nrOfSubAABB = INCREMENT_LEVEL;
+			aabb.numberOfTriangles = 0;
+			/*aabb.subAABBIndexStart = futureAABB;
+			aabb.subAABBIndexEnd = futureAABB + INCREMENT_LEVEL;*/
 
-			vecDir = DirectX::XMVectorScale(vecDir, increment);
+			DirectX::XMStoreFloat3(&aabb.position,
+				DirectX::XMVectorAdd(vecStartPos,
+					DirectX::XMVectorMultiply(vecAxisSize,vecDir[targetDir++])));
 
-			currentAABB.nrOfSubAABB = REC_SIZE;
-			currentAABB.level = level;
-			currentAABB.numberOfTriangles = 0;
-			currentAABB.axis = currentSize;
-
-			DirectX::XMStoreFloat3(&currentAABB.position, DirectX::XMVectorAdd(vecStartPos, DirectX::XMVectorMultiply(vecCurrentSize, vecDir)));
-
-			for (UINT subAABB = 0; subAABB < REC_SIZE; subAABB++)
+			if (targetDir % 8 == 0 && i != 0)
 			{
-				currentAABB.subAABBIndexArr[subAABB] = (level + 1) * std::pow(REC_SIZE, (level + 1)) * (nrOfAABB + 1) + subAABB;
+				targetDir = 0;
+				vecStartPos = DirectX::XMVectorAdd(vecStartPos,
+					DirectX::XMVectorMultiply(vecAxisSize, vecDir[inc++]));
+				inc = inc % 8;
 			}
 
-			m_ocTree[counter++] = currentAABB;
-
+			m_ocTree[counter++] = aabb;
 		}
 	}
+
 	
 	std::ofstream stream;
 	stream.open("OctTree test.txt");
