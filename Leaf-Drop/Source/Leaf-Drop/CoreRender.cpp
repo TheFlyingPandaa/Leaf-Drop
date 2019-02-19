@@ -41,6 +41,7 @@ CoreRender::~CoreRender()
 	delete m_geometryPass;
 	delete m_deferredPass;
 	delete m_computePass;
+	delete m_prePass;
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -116,7 +117,12 @@ HRESULT CoreRender::Init()
 	{
 		return DEBUG::CreateError(hr);
 	}
-	
+
+	m_prePass = new PrePass();
+	if (FAILED(hr = m_prePass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}
 	m_geometryPass = new GeometryPass();
 	if (FAILED(hr = m_geometryPass->Init()))
 	{
@@ -230,6 +236,11 @@ const SIZE_T & CoreRender::GetResourceDescriptorHeapSize() const
 void CoreRender::IterateResourceIndex()
 {
 	m_currentResourceIndex++;
+}
+
+PrePass * CoreRender::GetPrePass() const
+{
+	return m_prePass;
 }
 
 GeometryPass * CoreRender::GetGeometryPass() const
@@ -373,6 +384,9 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_commandList[m_frameIndex]->OMSetRenderTargets(1, &rtvHandle, NULL, nullptr);
 	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
 	m_commandList[m_frameIndex]->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);*/
+
+	m_prePass->Update();
+	m_prePass->Draw();
 
 	m_geometryPass->Update();
 	m_geometryPass->Draw();

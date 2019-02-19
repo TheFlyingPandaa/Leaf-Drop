@@ -9,6 +9,7 @@
 #include "../Leaf-Drop/Passes/GeometryPass.h"
 #include "../Leaf-Drop/Passes/DeferredPass.h"
 #include "../Leaf-Drop/Passes/ComputePass.h"
+#include "../Leaf-Drop/Passes/PrePass.h"
 
 class Window;
 
@@ -39,6 +40,7 @@ public:
 	const SIZE_T &			GetResourceDescriptorHeapSize() const;
 	void					IterateResourceIndex();
 
+	PrePass		 * GetPrePass() const;
 	GeometryPass * GetGeometryPass() const;
 	DeferredPass * GetDeferredPass() const;
 	ComputePass	 * GetComputePass() const;
@@ -76,6 +78,7 @@ private:
 
 	Window * m_windowPtr = nullptr;
 
+	PrePass * m_prePass = nullptr;
 	GeometryPass * m_geometryPass = nullptr;
 	DeferredPass * m_deferredPass = nullptr;
 	ComputePass * m_computePass = nullptr;
