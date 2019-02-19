@@ -4,7 +4,6 @@
 #include "../Objects/Camera.h"
 #include "../Objects/StaticMesh.h"
 
-#include <iostream>
 #include "Source/Leaf-Drop/Objects/Lights/PointLight.h"
 #include "Source/Leaf-Drop/Objects/Lights/DirectionalLight.h"
 
@@ -170,6 +169,8 @@ void ComputePass::Draw()
 
 
 	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
+
+	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 
 	_ExecuteCommandList();
 	

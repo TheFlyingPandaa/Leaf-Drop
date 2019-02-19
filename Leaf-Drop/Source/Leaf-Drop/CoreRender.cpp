@@ -152,11 +152,14 @@ HRESULT CoreRender::Init()
 void CoreRender::Release()
 {
 
+	m_prePass->KillThread();
+	m_geometryPass->KillThread();
+	m_computePass->KillThread();
 
+	m_prePass->Release();
 	m_geometryPass->Release();
 	m_deferredPass->Release();
 	m_computePass->Release();
-	m_prePass->Release();
 
 	TextureAtlas::GetInstance()->Release();
 
@@ -326,7 +329,7 @@ void CoreRender::ClearGPU()
 	}
 }
 
-void CoreRender::SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList)
+void CoreRender::SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const
 {
 	ID3D12DescriptorHeap * heaps[]{ m_resourceDescriptorHeap };
 	commandList->SetDescriptorHeaps(_countof(heaps), heaps);
@@ -393,14 +396,23 @@ HRESULT CoreRender::_UpdatePipeline()
 	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
 	m_commandList[m_frameIndex]->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);*/
 
-	m_prePass->Update();
-	m_prePass->Draw();
+	//m_prePass->Update();
+	//m_prePass->Draw();
 
-	m_geometryPass->Update();
-	m_geometryPass->Draw();
-	
-	m_computePass->Update();
-	m_computePass->Draw();
+	m_prePass->UpdateThread();
+	m_prePass->ThreadJoin();
+
+	//m_geometryPass->Update();
+	//m_geometryPass->Draw();
+
+	m_geometryPass->UpdateThread();
+	m_geometryPass->ThreadJoin();
+
+	//m_computePass->Update();
+	//m_computePass->Draw();
+
+	m_computePass->UpdateThread();
+	m_computePass->ThreadJoin();
 
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
