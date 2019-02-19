@@ -8,12 +8,16 @@ struct Vertex
 {
 	float4 pos;
 	float4 normal;
+    float4 tangent;
+    float4 bitangent;
 	float2 uv;
 };
 
 struct Triangle
 {
 	Vertex v0, v1, v2;
+    uint textureIndexStart;
+    
 };
 
 struct RAY_STRUCT
@@ -22,7 +26,11 @@ struct RAY_STRUCT
 	uint2	pixelCoord;
 };
 
-
+struct RayPayload
+{
+    float strength;
+    float4 color;
+};
 
 RWTexture2D<float4> outputTexture : register(u0);
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
@@ -30,6 +38,86 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 
 SamplerState	defaultTextureAtlasSampler : register(s0);
 Texture2DArray	TextureAtlas : register(t2);
+
+void BounceRay2(in float4 rayDirection, in float4 startPos, inout RayPayload rayload, out float4 newDirectiom, out float4 newStartPos)
+{
+    const float EPSILON = 0.000001f;
+    float minT = 9999.0f;
+    int index = -1;
+    float3 barycentrics = float3(-1, -1, -1);
+
+    float3 intersectionPoint = float3(0, 0, 0);
+    Triangle tri = (Triangle) 0;
+
+
+    for (uint i = 0; i < Info.z; i++)
+    {
+        Triangle tri = TriangleBuffer[i];
+
+        float4 e1 = tri.v1.pos - tri.v0.pos;
+        float4 e2 = tri.v2.pos - tri.v0.pos;
+
+        float3 normal = cross(e1.xyz, e2.xyz);
+
+        float3 h = cross(rayDirection.xyz, e2.xyz);
+        float a = dot(e1.xyz, h);
+
+        if (a > -EPSILON && a < EPSILON) // If parallel with triangle
+            continue;
+
+        float f = 1.0f / a;
+        float3 s = startPos.xyz - tri.v0.pos.xyz;
+        float u = f * (dot(s, h));
+
+        if (u < 0.0f || u > 1.0f)
+            continue;
+
+        float3 q = cross(s, e1.xyz);
+        float v = f * dot(rayDirection.xyz, q);
+
+        if (v < 0.0 || u + v > 1.0f)
+            continue;
+
+        float t = f * dot(e2.xyz, q);
+
+        if (t > 0.1f && t < minT)
+        {
+            minT = t;
+            index = i;
+            barycentrics.x = 1.0f - u - v;
+            barycentrics.y = u;
+            barycentrics.z = v;
+        }
+
+    }
+
+    if (index != -1)
+    {
+        intersectionPoint = startPos.xyz + rayDirection.xyz * minT;
+        tri = TriangleBuffer[index];
+
+        float2 uv = tri.v0.uv * barycentrics.x + tri.v1.uv * barycentrics.y + tri.v2.uv * barycentrics.z;
+
+        //TODO fence bobby fix
+
+        float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
+        //float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), 0);
+        float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
+
+
+        rayload.color = albedo * rayload.strength;
+        rayload.strength -= length(metall) / 4.0f;
+
+        float4 e1 = tri.v1.pos - tri.v0.pos;
+        float4 e2 = tri.v2.pos - tri.v0.pos;
+
+        float3 normal = normalize(cross(e1.xyz, e2.xyz));
+        newDirectiom = float4(normalize(rayDirection.xyz - (2.0f * (normal * (dot(rayDirection.xyz, normal))))), 0.0f);
+        newStartPos = float4(intersectionPoint, 1.0f);
+
+
+    }
+}
 
 void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit, out float3 uvw, out uint index)
 {
@@ -79,9 +167,9 @@ void BounceRay(in float4 ray, in float4 startPos, out float3 intersectionPoint, 
 		{
 			minT = t;
 			index = i;
-			uvw.x = u;
-			uvw.y = v;
-			uvw.z = 1.0f - u - v;
+			uvw.x = 1.0f - u - v;
+			uvw.y = u;
+			uvw.z = v;
 		}
 
 	}
@@ -106,44 +194,47 @@ void main(uint3 threadID : SV_DispatchThreadID)
 
     float4 startPosWorld = ViewerPosition;
 
-	float3 intersectionPoint;
-	Triangle tri;
-	bool hit = false;
-	float3 uvw;
-    uint index;
+    RayPayload rayLoad = (RayPayload)0;
+    rayLoad.strength = 1.0f;
 
-    BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw, index);
+    
+
+
+    for (uint i = 0; i < 3; i++)
+    {
+        if (rayLoad.strength > 0)
+            BounceRay2(rayWorld, startPosWorld, rayLoad, rayWorld, startPosWorld);
+    }
+    
+    
+    outputTexture[pixelLocation] = rayLoad.color;
+
+   //BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw, index);
 	
-	if (hit)
-	{
-		float4 e1 = tri.v1.pos - tri.v0.pos;
-		float4 e2 = tri.v2.pos - tri.v0.pos;
+	//if (hit)
+	//{
+	//	float4 e1 = tri.v1.pos - tri.v0.pos;
+	//	float4 e2 = tri.v2.pos - tri.v0.pos;
 
-		float3 normal = normalize(cross(e1.xyz, e2.xyz));
-		float4 newRay = float4(normalize(rayWorld.xyz - (2.0f * (normal * (dot(rayWorld.xyz, normal))))), 0.0f);
-		float4 newStartPos = float4(intersectionPoint, 1.0f);
+	//	float3 normal = normalize(cross(e1.xyz, e2.xyz));
+	//	float4 newRay = float4(normalize(rayWorld.xyz - (2.0f * (normal * (dot(rayWorld.xyz, normal))))), 0.0f);
+	//	float4 newStartPos = float4(intersectionPoint, 1.0f);
 
-        float2 uv;
+ //       float2 uv;
         
-        if (index % 2 == 0)
-            uv = tri.v0.uv * uvw.z + tri.v1.uv * uvw.y + tri.v2.uv * uvw.x;
-		else
-            uv = tri.v0.uv * uvw.z + tri.v1.uv * uvw.x + tri.v2.uv * uvw.y;
-	   //
-       //float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
-       //outputTexture[pixelLocation] = color;
-	   //
-       //return;
+   
+ //       uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;       	   
 
-        BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw, index);
 
-		if (hit)
-		{
-			float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
-			float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
-			outputTexture[pixelLocation] = color;
+ //       BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw, index);
+
+	//	if (hit)
+	//	{
+	//		float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
+	//		float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
+	//		outputTexture[pixelLocation] = color;
         
-		}
+	//	}
 
-	}
+	//}
 }

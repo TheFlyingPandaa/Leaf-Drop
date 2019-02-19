@@ -16,12 +16,16 @@ struct Vertex
 {
 	DirectX::XMFLOAT4 pos;
 	DirectX::XMFLOAT4 normal;
+	DirectX::XMFLOAT4 tangent;
+	DirectX::XMFLOAT4 bitangent;
 	DirectX::XMFLOAT2 uv;
 };
 
 struct Triangle
 {
 	Vertex v1, v2, v3;
+	UINT textureIndexStart = 0;
+	
 };
 
 ComputePass::ComputePass()
@@ -73,6 +77,8 @@ void ComputePass::Draw()
 
 					t.v1.pos = mesh->GetRawVertices()->at(v).Position;
 					t.v1.normal = mesh->GetRawVertices()->at(v).Normal;
+					t.v1.tangent = mesh->GetRawVertices()->at(v).Tangent;
+					t.v1.bitangent = mesh->GetRawVertices()->at(v).biTangent;
 					t.v1.uv = mesh->GetRawVertices()->at(v).UV;
 
 
@@ -81,6 +87,8 @@ void ComputePass::Draw()
 
 					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
 					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
+					t.v2.tangent = mesh->GetRawVertices()->at(v + 1).Tangent;
+					t.v2.bitangent = mesh->GetRawVertices()->at(v + 1).biTangent;
 					t.v2.uv = mesh->GetRawVertices()->at(v + 1).UV;
 
 
@@ -89,11 +97,15 @@ void ComputePass::Draw()
 
 					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
 					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
+					t.v3.tangent = mesh->GetRawVertices()->at(v + 2).Tangent;
+					t.v3.bitangent = mesh->GetRawVertices()->at(v + 2).biTangent;
 					t.v3.uv = mesh->GetRawVertices()->at(v + 2).UV;
 
 
 					DirectX::XMStoreFloat4(&t.v3.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix));
 					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix)));
+
+					t.textureIndexStart = 0;
 
 					triangles.push_back(t);
 				}
