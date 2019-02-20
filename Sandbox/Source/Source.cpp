@@ -87,44 +87,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			pointLight[i].SetIntensity(scl);
 
 		}
-		OcTree ocTree;
-		std::vector<STRUCTS::Triangle> lol;
-
-		ocTree.BuildTree(lol, 3, 512);
-
-		auto tree = ocTree.GetTree();
-
-		size_t sizeOfTree = tree.size();
-
-		Drawable * d = new Drawable[sizeOfTree];
-
-		UINT drawLevel = 0;
-
-		for (int i = 0; i < sizeOfTree; i++)
-		{
-			d[i].SetTexture(&t[0]);
-			d[i].SetNormal(&t[1]);
-			d[i].SetMetallic(&t[2]);
-			d[i].SetMesh(m);
-
-			d[i].SetPosition(tree[i].position.x, tree[i].position.y, tree[i].position.z);
-
-			d[i].SetScale(tree[i].axis.x * 2.0f, tree[i].axis.y* 2.0f, tree[i].axis.z* 2.0f);
-			switch (tree[i].level)
-			{
-			case 0:
-				d[i].SetColor(1, 0, 0);
-				break;
-			case 1:
-				d[i].SetColor(0, 1, 0);
-				break;
-			case 2:
-				d[i].SetColor(0, 0, 1);
-				break;
-			}
-		}
-
-		/*Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
+		
+		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
 		
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
@@ -142,7 +106,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetPosition(x, y, z);
 			d[i].SetScale(scl, scl, scl);
 			d[i].SetScale(10,10,10);
-		}*/
+		}
 		
 		float rot = 0;
 		timer.Start();
@@ -222,42 +186,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
 
-			if (wnd->IsKeyPressed(Input::KEY_0))
-				drawLevel = 0;
-			else if (wnd->IsKeyPressed(Input::KEY_1))
-				drawLevel = 1;
-			else if (wnd->IsKeyPressed(Input::KEY_2))
-				drawLevel = 2;
-			else if (wnd->IsKeyPressed(Input::KEY_3))
-				drawLevel = 3;
-			else if (wnd->IsKeyPressed(Input::KEY_4))
-				camArr[4].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_5))
-				camArr[5].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_6))
-				camArr[6].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_7))
-				camArr[7].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_8))
-				camArr[8].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_9))
-				camArr[9].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::BACKSPACE))
-				cam.SetAsActiveCamera();
 
 			light.Queue();
 		
 			rot += 1.0f * (FLOAT)dt;
 
-			for (int i = 0; i < sizeOfTree; i++)
+			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
-				//d[i].SetRotation(0, rot, -rot);
-				if (tree[i].level == drawLevel)
-				{
-					d[i].Update();
-					d[i].Draw();
-				}
-
+				d[i].Update();
+				d[i].Draw();
 			}
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{

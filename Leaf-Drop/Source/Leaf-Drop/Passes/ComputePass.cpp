@@ -87,7 +87,7 @@ void ComputePass::Draw()
 				}
 			}
 		}
-		m_ocTree.BuildTree(triangles);
+		m_ocTree.BuildTree(triangles, 3, 256);
 	}
 
 	p_drawQueue.clear();

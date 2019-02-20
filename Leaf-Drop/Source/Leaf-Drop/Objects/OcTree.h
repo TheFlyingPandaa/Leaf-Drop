@@ -12,26 +12,14 @@ struct AABB
 		axis = other.axis;
 		level = other.level;
 		nrOfChildren = other.nrOfChildren;
-		nrOfTriangles = other.nrOfTriangles;
 		byteSize = other.byteSize;
 
-		if (nrOfTriangles)
-		{
-			triangleIndices = new UINT[nrOfTriangles];
-			for (UINT i = 0; i < nrOfTriangles; i++)
-				triangleIndices[i] = other.triangleIndices[i];
-
-		}
+		triangleIndices = other.triangleIndices;
 
 		for (UINT i = 0; i < nrOfChildren; i++)
 			childrenIndices[i] = other.childrenIndices[i];
 	}
-	~AABB()
-	{
-		if (triangleIndices)
-			delete[] triangleIndices;
-		triangleIndices = nullptr;
-	}
+	
 	AABB & operator=(const AABB & other)
 	{
 		if (this != &other)
@@ -40,16 +28,9 @@ struct AABB
 			axis = other.axis;
 			level = other.level;
 			nrOfChildren = other.nrOfChildren;
-			nrOfTriangles = other.nrOfTriangles;
 			byteSize = other.byteSize;
 
-			if (nrOfTriangles)
-			{
-				triangleIndices = new UINT[nrOfTriangles];
-				for (UINT i = 0; i < nrOfTriangles; i++)
-					triangleIndices[i] = other.triangleIndices[i];
-
-			}
+			triangleIndices = other.triangleIndices;
 
 			for (UINT i = 0; i < nrOfChildren; i++)
 				childrenIndices[i] = other.childrenIndices[i];
@@ -68,9 +49,9 @@ struct AABB
 		for (UINT i = 0; i < nrOfChildren; i++)
 			str += std::to_string(childrenIndices[i]) + ", ";
 		str += "\n";
-		str += "nrOfTriangles: " + std::to_string(nrOfTriangles) + "\n";
+		str += "nrOfTriangles: " + std::to_string(triangleIndices.size()) + "\n";
 		str += "triangleIndices: ";
-		for (UINT i = 0; i < nrOfTriangles; i++)
+		for (UINT i = 0; i < triangleIndices.size(); i++)
 			str += std::to_string(triangleIndices[i]) + ", ";
 		str += "\n";
 		str += "ByteSize: " + std::to_string(byteSize) + "\n";
@@ -82,25 +63,24 @@ struct AABB
 	void CalcSize()
 	{
 		byteSize = sizeof(*this);
-		byteSize -= sizeof(UINT*);
+		byteSize -= sizeof(std::vector<UINT>);
 
-		if (triangleIndices)
+		if (!triangleIndices.empty())
 		{
-			byteSize += sizeof(UINT) * nrOfTriangles;
+			byteSize += triangleIndices.size() * sizeof(UINT);
 		}
-
+		
 	}
 
 	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	UINT				level = 0;
 	
-	UINT				nrOfChildren = 8;
+	UINT				nrOfChildren = 0;
 	UINT				childrenIndices[8] = {0};
 	UINT				byteSize = 0;
-	UINT				nrOfTriangles = 0;
-
-	UINT *				triangleIndices = nullptr;
+	
+	std::vector<UINT>	triangleIndices;
 };
 
 class OcTree
@@ -115,7 +95,13 @@ public:
 
 private:
 	std::vector<AABB>	m_ocTree;
+	std::vector<size_t>	m_leafIndex;
+
 	UINT				m_totalTreeByteSize = 0;
 	void _BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, const UINT & maxLevel, const UINT & worldSize, const size_t & parentIndex);
+
+	bool _inside(const AABB & aabb, const STRUCTS::Triangle & tri);
+	bool _pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point);
+
 };
 
