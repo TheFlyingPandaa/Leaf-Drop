@@ -55,6 +55,7 @@ private:
 	UAV * m_counterStencil = nullptr;
 
 	ConstantBuffer m_meshTriangles;
+	ConstantBuffer m_ocTreeBuffer;
 
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;

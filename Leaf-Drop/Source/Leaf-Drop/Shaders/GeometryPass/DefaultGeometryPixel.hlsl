@@ -57,9 +57,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 	{
 		uint accessIndex = 0;
 		//CounterStencil[0] += 1;
-		//InterlockedAdd(CounterStencil[0], 1u, accessIndex);
-		RayStencil[0].pixelCoord = uint2(index);
-		RayStencil[0].worldPos = input.worldPosition;
+		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
+		RayStencil[accessIndex].pixelCoord = uint2(index);
+		RayStencil[accessIndex].worldPos = input.worldPosition;
     }
 
 

@@ -50,6 +50,7 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 				m_ocTree[index].triangleIndices.push_back(i);
 			}
 		}
+		m_ocTree[index].nrOfTriangles = m_ocTree[index].triangleIndices.size();
 		m_ocTree[index].CalcSize();
 	}
 

@@ -25,7 +25,10 @@ struct RAY_STRUCT
 
 
 RWTexture2D<float4> outputTexture : register(u0);
+
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
+ByteAddressBuffer OcTreeBuffer : register(t0, space1);
+
 StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 
 SamplerState	defaultTextureAtlasSampler : register(s0);

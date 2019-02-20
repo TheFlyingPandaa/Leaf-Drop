@@ -11,6 +11,7 @@
 #define RAY_INDICES 2
 #define TRIANGLES	3
 #define TEXTURE_ATLAS	4
+#define OCTREE		5
 
 ComputePass::ComputePass()
 {
@@ -36,8 +37,6 @@ void ComputePass::Update()
 {
 	
 }
-
-
 
 void ComputePass::Draw()
 {
@@ -88,6 +87,19 @@ void ComputePass::Draw()
 			}
 		}
 		m_ocTree.BuildTree(triangles, 3, 256);
+
+		auto tree = m_ocTree.GetTree();
+		size_t size = tree.size();
+		UINT currentOffset = 0;
+		for (size_t i = 0; i < size; i++)
+		{
+			UINT sizeofTriInd = tree[i].triangleIndices.size() * sizeof(UINT);
+			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset);
+			currentOffset += tree[i].byteSize - sizeofTriInd;
+			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset);
+			currentOffset += sizeofTriInd;
+		}
+
 	}
 
 	p_drawQueue.clear();
@@ -135,11 +147,11 @@ void ComputePass::Draw()
 
 	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(STRUCTS::Triangle));
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
-
+	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
 
-	//p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
+	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
 	
@@ -212,6 +224,12 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
+	if (FAILED(hr = m_ocTreeBuffer.Init(1024 * 64, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
+	{
+		return hr;
+	}
+
+
 
 	if (FAILED(hr = OpenCommandList()))
 	{
@@ -266,12 +284,13 @@ HRESULT ComputePass::_InitRootSignature()
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
+	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
 
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;

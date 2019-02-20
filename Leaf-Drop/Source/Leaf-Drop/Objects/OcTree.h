@@ -17,6 +17,7 @@ struct AABB
 		byteSize = other.byteSize;
 
 		triangleIndices = other.triangleIndices;
+		nrOfTriangles = other.nrOfTriangles;
 
 		for (UINT i = 0; i < nrOfChildren; i++)
 			childrenIndices[i] = other.childrenIndices[i];
@@ -33,6 +34,7 @@ struct AABB
 			byteSize = other.byteSize;
 
 			triangleIndices = other.triangleIndices;
+			nrOfTriangles = other.nrOfTriangles;
 
 			for (UINT i = 0; i < nrOfChildren; i++)
 				childrenIndices[i] = other.childrenIndices[i];
@@ -51,7 +53,7 @@ struct AABB
 		for (UINT i = 0; i < nrOfChildren; i++)
 			str += std::to_string(childrenIndices[i]) + ", ";
 		str += "\n";
-		str += "nrOfTriangles: " + std::to_string(triangleIndices.size()) + "\n";
+		str += "nrOfTriangles: " + std::to_string(nrOfTriangles) + "\n";
 		str += "triangleIndices: ";
 		for (UINT i = 0; i < triangleIndices.size(); i++)
 			str += std::to_string(triangleIndices[i]) + ", ";
@@ -83,6 +85,7 @@ struct AABB
 	UINT				nrOfChildren = 0;
 	UINT				childrenIndices[8] = {0};
 
+	UINT				nrOfTriangles = 0;
 	std::vector<UINT>	triangleIndices;
 };
 
