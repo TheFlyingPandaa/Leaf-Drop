@@ -2,6 +2,8 @@
 #include <vector>
 #include <sal.h>
 
+#define INCREMENT_LEVEL 8
+
 struct AABB
 {
 #pragma region stuff
@@ -72,14 +74,15 @@ struct AABB
 		
 	}
 
-	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
-	UINT				level = 0;
-	
-	UINT				nrOfChildren = 0;
-	UINT				childrenIndices[8] = {0};
 	UINT				byteSize = 0;
 	
+	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
+	
+	UINT				level = 0;
+	UINT				nrOfChildren = 0;
+	UINT				childrenIndices[8] = {0};
+
 	std::vector<UINT>	triangleIndices;
 };
 

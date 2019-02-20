@@ -1,7 +1,6 @@
 #include "CorePCH.h"
 #include "OcTree.h"
 
-#define INCREMENT_LEVEL 8
 
 
 OcTree::OcTree()
@@ -21,6 +20,7 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 		totalAABB += std::pow(INCREMENT_LEVEL, level + 1);
 	}
 	totalAABB++;
+	m_totalTreeByteSize = 0;
 	m_leafIndex.clear();
 	m_ocTree.clear();
 	//m_ocTree = std::vector<AABB>(totalAABB);
@@ -53,8 +53,13 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 		m_ocTree[index].CalcSize();
 	}
 
+	size_t nrOf = m_ocTree.size();
+	for (size_t i = 0; i < nrOf; i++)
+	{
+		m_totalTreeByteSize += m_ocTree[i].byteSize;
+	}
 
-	std::ofstream stream;
+	/*std::ofstream stream;
 	stream.open("OcTree test.txt");
 
 	UINT c = 0;
@@ -65,7 +70,7 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 
 	}
 
-	stream.close();
+	stream.close();*/
 
 	int breakMe = 0;
 }
