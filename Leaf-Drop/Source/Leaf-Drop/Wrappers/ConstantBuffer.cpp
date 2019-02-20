@@ -144,5 +144,4 @@ void ConstantBuffer::Release()
 	{
 		SAFE_RELEASE(m_resource[i]);
 	}
-	m_data = nullptr;
 }

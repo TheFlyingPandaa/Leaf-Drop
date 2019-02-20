@@ -49,7 +49,9 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(DirectX::XMFLOAT4X4), L"Geometry Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
+
+
+	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(InstanceGroup::ObjectDataStruct), L"Geometry Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(InstanceGroup::ObjectDataStruct))))
 	{
 		return hr;
 	}
@@ -143,9 +145,9 @@ void GeometryPass::Update()
 	UINT4 textureOffset{ 0,0,0,0 };
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		for (size_t k = 0; k < p_drawQueue[i].ObjectData.size(); k++)
+		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
 		{
-			auto world = p_drawQueue[i].ObjectData[k];
+			auto world = p_drawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 		m_ptrAtlas->CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
@@ -188,7 +190,7 @@ void GeometryPass::Draw()
 
 		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].DrawableObjectData.size(), 0, 0);
 	}
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
@@ -364,7 +366,7 @@ HRESULT GeometryPass::_InitPipelineState()
 
 	D3D12_RASTERIZER_DESC rastDesc{};
 	rastDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	rastDesc.CullMode = D3D12_CULL_MODE_BACK;
+	rastDesc.CullMode = D3D12_CULL_MODE_NONE;
 	rastDesc.FrontCounterClockwise = FALSE;
 	rastDesc.DepthBias = 0;
 	rastDesc.DepthBiasClamp = 0.0f;

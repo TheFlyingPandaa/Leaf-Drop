@@ -64,7 +64,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 50;
-		const UINT NUMBER_OF_LIGHTS = 10;
+		const UINT NUMBER_OF_LIGHTS = 10000;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
@@ -78,16 +78,53 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			pointLight[i].SetDropOff(1.1f);
 			pointLight[i].SetPow(1.5f);
 
-			float x = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float y = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float z = static_cast<float>(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float x = static_cast<float>(rand() % 1598 + 2) * (rand() % 2 ? 1 : -1);
+			float y = static_cast<float>(rand() % 1598 + 2) * (rand() % 2 ? 1 : -1);
+			float z = static_cast<float>(rand() % 1598 + 2) * (rand() % 2 ? 1 : -1);
 
 			float scl = static_cast<float>(rand() % 50 );
 			pointLight[i].SetPosition(x, y, z);
 			pointLight[i].SetIntensity(scl);
 
 		}
-		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
+		OcTree ocTree;
+		std::vector<STRUCTS::Triangle> lol;
+
+		ocTree.BuildTree(lol, 3, 512);
+
+		auto tree = ocTree.GetTree();
+
+		size_t sizeOfTree = tree.size();
+
+		Drawable * d = new Drawable[sizeOfTree];
+
+		UINT drawLevel = 0;
+
+		for (int i = 0; i < sizeOfTree; i++)
+		{
+			d[i].SetTexture(&t[0]);
+			d[i].SetNormal(&t[1]);
+			d[i].SetMetallic(&t[2]);
+			d[i].SetMesh(m);
+
+			d[i].SetPosition(tree[i].position.x, tree[i].position.y, tree[i].position.z);
+
+			d[i].SetScale(tree[i].axis.x * 2.0f, tree[i].axis.y* 2.0f, tree[i].axis.z* 2.0f);
+			switch (tree[i].level)
+			{
+			case 0:
+				d[i].SetColor(1, 0, 0);
+				break;
+			case 1:
+				d[i].SetColor(0, 1, 0);
+				break;
+			case 2:
+				d[i].SetColor(0, 0, 1);
+				break;
+			}
+		}
+
+		/*Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
 		
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
@@ -105,7 +142,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetPosition(x, y, z);
 			d[i].SetScale(scl, scl, scl);
 			d[i].SetScale(10,10,10);
-		}
+		}*/
 		
 		float rot = 0;
 		timer.Start();
@@ -128,7 +165,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		{
 			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
-			static const float MOVE_SPEED = 10.0f;
+			static const float MOVE_SPEED = 50.0f;
 			static const float SPRINT_SPEED = 20.0f;
 			static const float MOUSE_SENSITIVITY = 0.05f;
 
@@ -186,13 +223,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				wnd->Close();
 
 			if (wnd->IsKeyPressed(Input::KEY_0))
-				camArr[0].SetAsActiveCamera();
+				drawLevel = 0;
 			else if (wnd->IsKeyPressed(Input::KEY_1))
-				camArr[1].SetAsActiveCamera();
+				drawLevel = 1;
 			else if (wnd->IsKeyPressed(Input::KEY_2))
-				camArr[2].SetAsActiveCamera();
+				drawLevel = 2;
 			else if (wnd->IsKeyPressed(Input::KEY_3))
-				camArr[3].SetAsActiveCamera();
+				drawLevel = 3;
 			else if (wnd->IsKeyPressed(Input::KEY_4))
 				camArr[4].SetAsActiveCamera();
 			else if (wnd->IsKeyPressed(Input::KEY_5))
@@ -212,11 +249,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 			rot += 1.0f * (FLOAT)dt;
 
-			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
+			for (int i = 0; i < sizeOfTree; i++)
 			{
 				//d[i].SetRotation(0, rot, -rot);
-				d[i].Update();
-				d[i].Draw();
+				if (tree[i].level == drawLevel)
+				{
+					d[i].Update();
+					d[i].Draw();
+				}
 
 			}
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)

@@ -49,13 +49,13 @@ void ComputePass::Draw()
 		first = false;
 		for (int dq = 0; dq < p_drawQueue.size(); dq++)
 		{
-			for (int m = 0; m < p_drawQueue[dq].ObjectData.size(); m++)
+			for (int m = 0; m < p_drawQueue[dq].DrawableObjectData.size(); m++)
 			{
 				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
 				STRUCTS::Triangle t;
 				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
 				{
-					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].ObjectData[m].WorldMatrix;
+					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
 					
 					DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&world));
 
@@ -139,7 +139,7 @@ void ComputePass::Draw()
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
 
-	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
+	//p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
 
 	_ExecuteCommandList();
 	

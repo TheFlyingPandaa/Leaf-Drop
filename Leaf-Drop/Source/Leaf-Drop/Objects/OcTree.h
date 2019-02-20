@@ -4,14 +4,23 @@
 
 struct AABB
 {
+	~AABB()
+	{
+		if (triangleIndices)
+			delete[] triangleIndices;
+		triangleIndices = nullptr;
+	}
+
+
 	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	UINT				level = 0;
-	UINT				nrOfSubAABB = 0;
-	UINT				subAABBIndexStart = 0;
-	UINT				subAABBIndexEnd = 0;
-	UINT				triangleStartIndex = 0;
-	UINT				numberOfTriangles = 0;
+	
+	UINT				nrOfChildren = 8;
+	UINT				childrenIndices[8];
+
+	UINT *				triangleIndices = nullptr;
+	UINT				nrOfTriangles = 0;
 
 	AABB & operator=(const AABB & other)
 	{
@@ -20,11 +29,19 @@ struct AABB
 			position = other.position;
 			axis = other.axis;
 			level = other.level;
-			nrOfSubAABB = other.nrOfSubAABB;
-			triangleStartIndex = other.triangleStartIndex;
-			numberOfTriangles = other.numberOfTriangles;
-			subAABBIndexStart = other.subAABBIndexStart;
-			subAABBIndexEnd = other.subAABBIndexEnd;
+			nrOfChildren = other.nrOfChildren;
+			nrOfTriangles = other.nrOfTriangles;
+
+			if (nrOfTriangles)
+			{
+				triangleIndices = new UINT[nrOfTriangles];
+				for (UINT i = 0; i < nrOfTriangles; i++)
+					triangleIndices[i] = other.triangleIndices[i];
+
+			}
+
+			for (UINT i = 0; i < nrOfChildren; i++)
+				childrenIndices[i] = other.childrenIndices[i];
 		}
 		return *this;
 	}
@@ -38,8 +55,8 @@ struct AABB
 		str += "NrOfSubAABB: " + std::to_string(nrOfSubAABB) + "\n";
 		str += "TriangleStartIndex: " + std::to_string(triangleStartIndex) + "\n";
 		str += "NumberOfTriangles: " + std::to_string(numberOfTriangles) + "\n";
-		str += "SubAABBIndexStart: " + std::to_string(subAABBIndexStart)+ "\n";
-		str += "SubAABBIndexEnd: " + std::to_string(subAABBIndexEnd)+ "\n";
+		str += "ChildrenIndexStart: " + std::to_string(childrenIndexStart)+ "\n";
+		str += "ChildrenIndexEnd: " + std::to_string(childrenIndexEnd)+ "\n";
 
 		return str;
 	}
@@ -57,5 +74,6 @@ public:
 
 private:
 	std::vector<AABB> m_ocTree;
+	void _BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, const UINT & maxLevel, const UINT & worldSize, const UINT & currentStartIndex);
 };
 

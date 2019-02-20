@@ -22,6 +22,11 @@ public:
 	void SetNormal(Texture * texture);
 	Texture * GetNormal() const;
 	
+	void SetColor(const DirectX::XMFLOAT4A &color);
+	void SetColor(const float & r, const float & g, const float & b, const float & a = 1.0f);
+	const DirectX::XMFLOAT4A & GetColor() const;
+
+
 	void Draw();
 
 private:
@@ -30,6 +35,6 @@ private:
 	Texture	* m_texture = nullptr;
 	Texture	* m_metallic = nullptr;
 	Texture	* m_normal = nullptr;
-
+	DirectX::XMFLOAT4A m_color = {1.0f, 1.0f, 1.0f, 1.0f};
 };
 

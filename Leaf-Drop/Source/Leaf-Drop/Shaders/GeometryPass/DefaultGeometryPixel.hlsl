@@ -17,6 +17,7 @@ struct VS_OUTPUT
 	float3x3 TBN : TBN;
 	float2 uv : TEXCOORD;
     float2 ndc : NDCCOORD;
+	float4 color : COLOR;
 };
 
 struct PS_OUTPUT
@@ -41,7 +42,7 @@ PS_OUTPUT main(VS_OUTPUT input)
 {
 	PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
-	output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x));
+	output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x)) * input.color;
 
 	output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 1)).xyz - 1.0f), input.TBN)), 0);
 
@@ -56,9 +57,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 	{
 		uint accessIndex = 0;
 		//CounterStencil[0] += 1;
-		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
-		RayStencil[accessIndex].pixelCoord = uint2(index);
-		RayStencil[accessIndex].worldPos = input.worldPosition;
+		//InterlockedAdd(CounterStencil[0], 1u, accessIndex);
+		RayStencil[0].pixelCoord = uint2(index);
+		RayStencil[0].worldPos = input.worldPosition;
     }
 
 

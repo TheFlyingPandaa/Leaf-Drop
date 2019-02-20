@@ -31,15 +31,18 @@ protected:
 
 	struct InstanceGroup
 	{
-
-		struct ObjectData
+	public:
+		struct ObjectDataStruct
 		{
-			ObjectData(Drawable * drawable);
+		public:
+			ObjectDataStruct(Drawable * drawable);
 
-			DirectX::XMFLOAT4X4 WorldMatrix;
+			DirectX::XMFLOAT4X4A WorldMatrix;
+			DirectX::XMFLOAT4A	Color;
+
 		};
 		
-		std::vector<ObjectData> ObjectData;
+		std::vector<ObjectDataStruct> DrawableObjectData;
 		Texture * DiffuseTexture;
 		Texture * NormalTexture;
 		Texture * MetallicTexture;

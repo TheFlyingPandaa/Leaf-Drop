@@ -93,7 +93,7 @@ void IRender::Submit(Drawable * drawable)
 	}
 	else
 	{
-		it._Ptr->ObjectData.push_back(drawable);
+		it._Ptr->DrawableObjectData.push_back(drawable);
 	}
 }
 
@@ -104,7 +104,7 @@ void IRender::SubmitLight(ILight * light)
 
 IRender::InstanceGroup::InstanceGroup(Drawable * drawable)
 {
-	ObjectData.push_back(drawable);
+	DrawableObjectData.push_back(drawable);
 	DiffuseTexture = drawable->GetTexture();
 	NormalTexture = drawable->GetNormal();
 	MetallicTexture = drawable->GetMetallic();
@@ -119,7 +119,8 @@ bool IRender::InstanceGroup::operator==(Drawable * drawable)
 			MeshPtr == drawable->GetMesh();
 }
 
-IRender::InstanceGroup::ObjectData::ObjectData(Drawable * drawable)
+IRender::InstanceGroup::ObjectDataStruct::ObjectDataStruct(Drawable * drawable)
 {
 	WorldMatrix = drawable->GetWorldMatrix();
+	Color = drawable->GetColor();
 }
