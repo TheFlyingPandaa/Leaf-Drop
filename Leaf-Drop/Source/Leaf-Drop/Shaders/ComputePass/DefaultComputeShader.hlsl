@@ -55,26 +55,39 @@ Texture2DArray TextureAtlas : register(t2);
 TreeNode GetNode(in uint address, out uint tringlesAddress)
 {
     TreeNode node = (TreeNode)0;
-    node.byteSize = OcTreeBuffer.Load(address += 4);
-    node.byteStart = OcTreeBuffer.Load(address += 4);
+    node.byteSize = OcTreeBuffer.Load(address);
+    address += 4;
+    node.byteStart = OcTreeBuffer.Load(address);
+    address += 4;
 
-    node.position = asfloat(OcTreeBuffer.Load3(address += 12));
-    node.axis = asfloat(OcTreeBuffer.Load3(address += 12));
 
-    node.level = OcTreeBuffer.Load(address += 4);
-    node.nrOfChildren = OcTreeBuffer.Load(address += 4);
+    node.position = asfloat(OcTreeBuffer.Load3(address));
+    address += 12;
+    node.axis = asfloat(OcTreeBuffer.Load3(address));
+    address += 12;
+
+    node.level = OcTreeBuffer.Load(address);
+    address += 4;
+
+    node.nrOfChildren = OcTreeBuffer.Load(address);
+    address += 4;
 
 	[unroll]
     for (uint i = 0; i < 8; i++)
     {
-        node.ChildrenIndex[i] = OcTreeBuffer.Load(address += 4);
+        node.ChildrenIndex[i] = OcTreeBuffer.Load(address);
+        address += 4;
     }
+
     [unroll]
     for (uint j = 0; j < 8; j++)
     {
-        node.ChildrenByteAddress[j] = OcTreeBuffer.Load(address += 4);
+        node.ChildrenByteAddress[j] = OcTreeBuffer.Load(address);
+        address += 4;
     }
-    node.nrOfTris = OcTreeBuffer.Load(address += 4);
+    node.nrOfTris = OcTreeBuffer.Load(address);
+    address += 4;
+
     tringlesAddress = address;
 
     node.min = node.position - node.axis;
@@ -87,6 +100,7 @@ struct Stack
 {
     uint address;
     int parentIndex;
+    bool traversed;
 };
 
 void swap(inout float a, inout float b)
@@ -102,24 +116,27 @@ Triangle GetTriangle(in uint address, in uint index)
     return TriangleBuffer[triIndex];
 }
 
-//bool RayAABBFinalImprovement(in float3 ray, in float3 origin, in float3 min, in float3 max, out float tmin, out float tmax)
-//{
-//    float3 invD = rcp(ray); // == 1.0f / ray
-//    float3 t0s = (min - origin) * invD;
-//    float3 t1s = (max - origin) * invD;
-    
-//    float3 tsmaller = min(t0s, t1s);
-//    float3 tbigger = max(t0s, t1s);
-    
-//    tmin = max(tmin, max(tsmaller[0], max(tsmaller[1], tsmaller[2])));
-//    tmax = min(tmax, min(tbigger[0], min(tbigger[1], tbigger[2])));
+bool RayAABBFinalImprovement(in float3 bmin, in float3 bmax, in float3 ray, in float3 rayOrigin, inout float tmin)
+{
+    float tmax = -1;
 
-//    return (tmin < tmax);
-//}
+    float3 invD = rcp(ray); // == 1.0f / ray
+    float3 t0s = (bmin - rayOrigin) * invD;
+    float3 t1s = (bmax - rayOrigin) * invD;
+  
+    float3 tsmaller = min(t0s, t1s);
+    float3 tbigger = max(t0s, t1s);
+  
+    tmin = max(tmin, max(tsmaller[0], max(tsmaller[1], tsmaller[2])));
+    tmax = min(tmax, min(tbigger[0], min(tbigger[1], tbigger[2])));
+
+    return (tmin < tmax);
+}
 
 bool RayIntersectAABB(in float3 min, in float3 max, in float3 ray, in float3 rayOrigin, out float t)
 {
     t = -1.0f;
+    bool hit = true;
 
     float tmin = (min.x - rayOrigin.x) / ray.x;
     float tmax = (max.x - rayOrigin.x) / ray.x;
@@ -134,34 +151,38 @@ bool RayIntersectAABB(in float3 min, in float3 max, in float3 ray, in float3 ray
         swap(tymin, tymax);
  
 
-    
     if ((tmin > tymax) || (tymin > tmax)) 
-        return false;
+        hit = false;
  
-    if (tymin > tmin) 
-        tmin = tymin;
+    if (hit)
+    {
+        if (tymin > tmin) 
+            tmin = tymin;
  
-    if (tymax < tmax) 
-        tmax = tymax;
+        if (tymax < tmax) 
+            tmax = tymax;
  
-    float tzmin = (min.z - rayOrigin.z) / ray.z;
-    float tzmax = (max.z - rayOrigin.z) / ray.z;
+        float tzmin = (min.z - rayOrigin.z) / ray.z;
+        float tzmax = (max.z - rayOrigin.z) / ray.z;
  
-    if (tzmin > tzmax)
-        swap(tzmin, tzmax);
- 
-    if ((tmin > tzmax) || (tzmin > tmax)) 
-        return false;
- 
-    if (tzmin > tmin) 
-        tmin = tzmin;
- 
-    if (tzmax < tmax) 
-        tmax = tzmax;
- 
-    t = tmin;
+        if (tzmin > tzmax)
+            swap(tzmin, tzmax);
 
-    return true;
+        if ((tmin > tzmax) || (tzmin > tmax)) 
+            hit = false;
+        if (hit)
+        {
+            if (tzmin > tmin) 
+                tmin = tzmin;
+ 
+            if (tzmax < tmax) 
+                tmax = tzmax;
+ 
+            t = tmin;
+        }
+    }
+ 
+    return hit;
 }
 bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord)
 {
@@ -172,6 +193,8 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
     biCoord.y = -1.0f;
     biCoord.z = -1.0f;
 
+    bool hit = true;
+
     float4 e1 = tri.v1.pos - tri.v0.pos;
     float4 e2 = tri.v2.pos - tri.v0.pos;
 
@@ -181,32 +204,46 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
     float a = dot(e1.xyz, h);
 
     if (a > -EPSILON && a < EPSILON) // If parallel with triangle
-        return false;
+        hit = false;
 
-    float f = 1.0f / a;
-    float3 s = rayOrigin.xyz - tri.v0.pos.xyz;
-    float u = f * (dot(s, h));
-
-    if (u < 0.0f || u > 1.0f)
-        return false;
-
-    float3 q = cross(s, e1.xyz);
-    float v = f * dot(ray.xyz, q);
-
-    if (v < 0.0 || u + v > 1.0f)
-        return false;
-
-    t = f * dot(e2.xyz, q);
-
-    if (t > 0.1f && t < minT)
+    if (hit)
     {
-        t = minT;
-        biCoord.x = 1.0f - u - v;
-        biCoord.y = u;
-        biCoord.z = v;
-        return true;
+        float f = 1.0f / a;
+        float3 s = rayOrigin.xyz - tri.v0.pos.xyz;
+        float u = f * (dot(s, h));
+
+        if (u < 0.0f || u > 1.0f)
+            hit = false;
+
+        if (hit)
+        {
+            float3 q = cross(s, e1.xyz);
+            float v = f * dot(ray.xyz, q);
+
+            if (v < 0.0 || u + v > 1.0f)
+                hit = false;
+
+            if (hit)
+            {
+                t = f * dot(e2.xyz, q);
+
+                if (t > 0.1f && t < minT)
+                {
+                    t = minT;
+                    biCoord.x = 1.0f - u - v;
+                    biCoord.y = u;
+                    biCoord.z = v;
+                
+                }
+                else
+                {
+                    hit = false;
+                }
+            }  
+        }
     }
-    return false;
+
+    return hit;
 }
 
 void BounceRay (in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit, out float3 uvw, out uint index)
@@ -279,7 +316,8 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
 
 
     tri = TriangleBuffer[0];
-    biCoord = float3(0, 0, 0);
+    biCoord = float3(1, 0, 0);
+
     
     TreeNode node;
     uint triangleAddress; //lol
@@ -288,37 +326,42 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
 
     int stackSize = 0;
     
-    Stack addressStack[1024];
+    Stack addressStack[1024] = (Stack[1024])0;
     addressStack[stackSize].address = nodeAddress;
-    addressStack[stackSize++].parentIndex = -999;
+    addressStack[stackSize].parentIndex = -999;
+    stackSize++;
 
-
+    uint counter = 0;
     float t = -1;
-    while (stackSize > 0)
+    while (stackSize > 0 && counter < 256)
     {
-
+        counter++;
         uint currentNode = stackSize - 1;
         node = GetNode(addressStack[currentNode].address, triangleAddress);
-        if (RayIntersectAABB(node.min, node.max, ray, origin, t))
+
+        if (!addressStack[currentNode].traversed && RayIntersectAABB(node.min, node.max, ray, origin, t))
         {
             bool hit = false;
             if (node.nrOfChildren > 0)
             {
-                //Add HitChildren
-                for (uint i = 0; i < node.nrOfChildren; i++)
+                //Hit Children
+                [unroll]
+                for (uint b = 0; b < 8; b++)
                 {
                     uint dummy;
-                    TreeNode child = GetNode(node.ChildrenByteAddress[i], dummy);
+                    TreeNode child = GetNode(node.ChildrenByteAddress[b], dummy);
                     if (RayIntersectAABB(child.min, child.max, ray, origin, t))
                     {
-                        addressStack[stackSize].address = node.ChildrenByteAddress[i];
-                        addressStack[stackSize++].parentIndex = currentNode;
+                        addressStack[stackSize].address = node.ChildrenByteAddress[b];
+                        addressStack[stackSize].parentIndex = currentNode;
+                        stackSize++;
                         hit = true;
                     }
                 }
             }
             else if (node.nrOfTris > 0)
             {
+                addressStack[stackSize].traversed = true;
                 for (uint i = 0; i < node.nrOfTris; i++)
                 {
                     Triangle current = GetTriangle(triangleAddress, i);
@@ -330,19 +373,23 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
                         triHit = true;
                     }
                 }
-            }
+                biCoord = float3(0, 1, 0);
+            }     
             if (!hit)
             {
-                stackSize = addressStack[currentNode].parentIndex - 1;
+                //stackSize = addressStack[currentNode].parentIndex - 1;
+                addressStack[stackSize].traversed = true;
+                stackSize--;
             }
         }
         else
         {        
+            addressStack[stackSize].traversed = true;
             stackSize--;
         }
     }
 
-    return triHit;
+    return true;
 }
 
 [numthreads(1, 1, 1)]
@@ -367,7 +414,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
     {
         float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
         float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
-        outputTexture[pixelLocation] = color;
+        outputTexture[pixelLocation] = float4(uvw,1);
     }
 
 

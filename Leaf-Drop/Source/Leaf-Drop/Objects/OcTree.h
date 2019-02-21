@@ -4,6 +4,8 @@
 
 #define INCREMENT_LEVEL 8
 
+#define VECTOR_TYPE UINT
+
 struct AABB
 {
 #pragma region stuff
@@ -79,11 +81,11 @@ struct AABB
 	void CalcSize()
 	{
 		byteSize = sizeof(*this);
-		byteSize -= sizeof(std::vector<UINT>);
+		byteSize -= sizeof(triangleIndices) + sizeof(VECTOR_TYPE);
 
 		if (!triangleIndices.empty())
 		{
-			byteSize += triangleIndices.size() * sizeof(UINT);
+			byteSize += triangleIndices.size() * sizeof(VECTOR_TYPE);
 		}
 		
 	}
@@ -100,7 +102,7 @@ struct AABB
 	UINT				childrenByteAddress[8] = {0};
 
 	UINT				nrOfTriangles = 0;
-	std::vector<UINT>	triangleIndices;
+	std::vector<VECTOR_TYPE>	triangleIndices;
 };
 
 class OcTree

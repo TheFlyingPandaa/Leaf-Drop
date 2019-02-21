@@ -89,19 +89,22 @@ void ComputePass::Draw()
 		m_ocTree.BuildTree(triangles, 3u, 256u);
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
+
 		auto tree = m_ocTree.GetTree();
 		size_t size = tree.size();
 		UINT currentOffset = 0;
+		
 		for (size_t i = 0; i < size; i++)
 		{
 			UINT sizeofTriInd = tree[i].triangleIndices.size() * sizeof(UINT);
-			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset);
+			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset, true);
 			currentOffset += tree[i].byteSize - sizeofTriInd;
-			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset);
+			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset, true);
 			currentOffset += sizeofTriInd;
 		}
-
 	}
+
+
 
 	p_drawQueue.clear();
 
@@ -225,7 +228,7 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_ocTreeBuffer.Init(1024 * 64, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
+	if (FAILED(hr = m_ocTreeBuffer.Init(1024 * 256, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
 	{
 		return hr;
 	}

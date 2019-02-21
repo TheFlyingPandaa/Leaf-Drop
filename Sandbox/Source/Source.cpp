@@ -16,6 +16,8 @@ void _alocConsole() {
 
 void printFrameTime(double dt);
 
+
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 
