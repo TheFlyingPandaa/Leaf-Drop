@@ -17,6 +17,7 @@ struct AABB
 		level = other.level;
 		nrOfChildren = other.nrOfChildren;
 		byteSize = other.byteSize;
+		byteStart = other.byteStart;
 
 		triangleIndices = other.triangleIndices;
 		nrOfTriangles = other.nrOfTriangles;
@@ -38,6 +39,7 @@ struct AABB
 			level = other.level;
 			nrOfChildren = other.nrOfChildren;
 			byteSize = other.byteSize;
+			byteStart = other.byteStart;
 
 			triangleIndices = other.triangleIndices;
 			nrOfTriangles = other.nrOfTriangles;

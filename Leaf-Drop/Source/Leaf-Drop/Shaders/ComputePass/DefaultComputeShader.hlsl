@@ -14,7 +14,6 @@ struct Vertex
 struct Triangle
 {
 	Vertex v0, v1, v2;
-
 };
 
 struct RAY_STRUCT
@@ -52,8 +51,9 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 SamplerState defaultTextureAtlasSampler : register(s0);
 Texture2DArray TextureAtlas : register(t2);
 
-TreeNode GetNode(in uint address, out uint tringlesAddress)
+TreeNode GetNode(in uint adhd, out uint tringlesAddress)
 {
+    uint address = adhd;
     TreeNode node = (TreeNode)0;
     node.byteSize = OcTreeBuffer.Load(address);
     address += 4;
@@ -100,7 +100,6 @@ struct Stack
 {
     uint address;
     int parentIndex;
-    bool traversed;
 };
 
 void swap(inout float a, inout float b)
@@ -311,87 +310,158 @@ void BounceRay (in float4 ray, in float4 startPos, out float3 intersectionPoint,
 
 bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, inout float3 biCoord)
 {
-    float tClosest = 9999.0f;
-    bool triHit = false;
+    tri = (Triangle) 0;
+    biCoord = float3(1, 1, 1);
 
-
-    tri = TriangleBuffer[0];
-    biCoord = float3(1, 0, 0);
-
-    
-    TreeNode node;
-    uint triangleAddress; //lol
-    uint nodeAddress = 0;
-    node = GetNode(nodeAddress, triangleAddress);
+    float triDist = 9999.0f;
+    float boxDist = 9999.0f;
 
     int stackSize = 0;
-    
-    Stack addressStack[1024] = (Stack[1024])0;
-    addressStack[stackSize].address = nodeAddress;
-    addressStack[stackSize].parentIndex = -999;
+    Stack addressStack[1024];
+
+    uint triangleAddress = 0;
+
+    TreeNode node = GetNode(0, triangleAddress);
+
+    addressStack[stackSize].address = node.byteStart;
+    addressStack[stackSize].parentIndex = 0;
     stackSize++;
 
-    uint counter = 0;
-    float t = -1;
-    while (stackSize > 0 && counter < 256)
-    {
-        counter++;
-        uint currentNode = stackSize - 1;
-        node = GetNode(addressStack[currentNode].address, triangleAddress);
+    uint c = 0;
 
-        if (!addressStack[currentNode].traversed && RayIntersectAABB(node.min, node.max, ray, origin, t))
+	while (stackSize > 0 && c++ < 256)
+    {
+        uint stackIndex = stackSize - 1;
+        node = GetNode(addressStack[stackIndex].address, triangleAddress);
+        uint currentLevel = node.level;
+
+        if (RayIntersectAABB(node.min, node.max, ray, origin, boxDist))
         {
-            bool hit = false;
-            if (node.nrOfChildren > 0)
+            if (node.nrOfChildren)
             {
-                //Hit Children
-                [unroll]
-                for (uint b = 0; b < 8; b++)
+                for (uint i = 0; i < node.nrOfChildren; i++)
                 {
-                    uint dummy;
-                    TreeNode child = GetNode(node.ChildrenByteAddress[b], dummy);
-                    if (RayIntersectAABB(child.min, child.max, ray, origin, t))
-                    {
-                        addressStack[stackSize].address = node.ChildrenByteAddress[b];
-                        addressStack[stackSize].parentIndex = currentNode;
-                        stackSize++;
-                        hit = true;
-                    }
+                    addressStack[stackSize].address = node.ChildrenByteAddress[i];
+                    addressStack[stackSize].parentIndex = stackIndex;
+                    stackSize++;
                 }
             }
-            else if (node.nrOfTris > 0)
+            else // IS LEAF
             {
-                addressStack[stackSize].traversed = true;
                 for (uint i = 0; i < node.nrOfTris; i++)
                 {
-                    Triangle current = GetTriangle(triangleAddress, i);
-                    float t;
-                    if (RayIntersectTriangle(current, ray, origin, t, biCoord) && t < tClosest)
+                    Triangle temp = GetTriangle(triangleAddress, i);
+                    float tTemp;
+                    float3 biTemp;
+                    if (RayIntersectTriangle(temp, ray, origin, tTemp, biTemp))
                     {
-                        tri = current;
-                        tClosest = t;
-                        triHit = true;
+                        biCoord = float3(0, 1, 0);
                     }
+
                 }
-                biCoord = float3(0, 1, 0);
-            }     
-            if (!hit)
-            {
-                //stackSize = addressStack[currentNode].parentIndex - 1;
-                addressStack[stackSize].traversed = true;
                 stackSize--;
             }
+			
         }
-        else
-        {        
-            addressStack[stackSize].traversed = true;
+		else
+        {
             stackSize--;
         }
+
+		if (stackSize > 0)
+        {
+            uint backLevel = GetNode(addressStack[stackSize - 1].address, triangleAddress).level;
+            if (backLevel != currentLevel)
+            {
+                stackSize = addressStack[stackSize - 1].parentIndex - 1;
+            }
+        }
     }
+	
 
     return true;
 }
 
+bool GetClosestTriangle2(in float3 ray, in float3 origin, inout Triangle tri, inout float3 biCoord)
+{
+    tri = TriangleBuffer[0];
+    biCoord = float3(1, 0, 0);
+	
+    Stack addressStack[1024];
+    int stackSize = 0;
+    uint nodeAddress = 0;
+    uint triangleAddress = 0;
+
+    float t = 9999.0f;
+    float triT = 9999.0f;
+
+    bool triFound = false;
+
+    TreeNode node = GetNode(nodeAddress, triangleAddress);
+
+    addressStack[stackSize].address = nodeAddress;
+    addressStack[stackSize].parentIndex = 0;
+    stackSize++;
+
+    uint counter = 0;
+	
+    while (stackSize > 0 && counter < 256 && !triFound)
+    {
+        counter++;
+        uint currentStackIndex = stackSize - 1;
+        node = GetNode(addressStack[currentStackIndex].address, triangleAddress);
+
+        if (RayIntersectAABB(node.min, node.max, ray, origin, t))
+        {
+            if (node.nrOfChildren > 0)
+            {
+                for (uint i = 0; i < node.nrOfChildren; i++)
+                {
+                    uint dummy;
+                    TreeNode child = GetNode(node.ChildrenByteAddress[i], dummy);
+                    addressStack[stackSize].address = child.byteStart;
+                    addressStack[stackSize].parentIndex = currentStackIndex;
+                    stackSize++;
+                }
+            }
+            else if (node.nrOfTris > 0)
+            {
+                
+				biCoord = float3(0, 1, 0);
+                for (uint i = 0; i < node.nrOfTris; i++)
+                {
+                    Triangle triTemp = GetTriangle(triangleAddress, i);
+                    float tTemp;
+                    float3 biCoordTemp;
+                    if (RayIntersectTriangle(triTemp, ray, origin, tTemp, biCoordTemp) && tTemp < triT)
+                    {
+                        tri = triTemp;
+                        biCoord = biCoordTemp;
+                        triT = tTemp;
+                        triFound = true;
+                    }
+
+                }
+            }
+        }
+		else
+        {
+            uint currentLevel = node.level;
+            stackSize--;
+            if (stackSize > 0)
+            {
+                uint dummy;
+                uint backLevel = GetNode(addressStack[stackSize - 1].address, dummy).level;
+
+                if (currentLevel != backLevel)
+                {
+                    stackSize--;
+                }
+            }
+        }
+    }
+    return true;
+}
 [numthreads(1, 1, 1)]
 
 void main (uint3 threadID : SV_DispatchThreadID)
@@ -409,6 +479,22 @@ void main (uint3 threadID : SV_DispatchThreadID)
     Triangle tri;
     bool hit = false;
     float3 uvw;
+
+    uint dummy;
+    uint address = 0;
+
+    //TreeNode ass;
+    //ass = GetNode(address, dummy);
+
+    //ass = GetNode(ass.ChildrenByteAddress[0], dummy);
+
+    //ass = GetNode(ass.ChildrenByteAddress[0], dummy);
+
+    //ass = GetNode(ass.ChildrenByteAddress[1], dummy);
+
+    //outputTexture[pixelLocation] = float4(ass.byteSize, ass.byteStart, ass.level, ass.nrOfTris);
+
+    //return;
 
     if (GetClosestTriangle(rayWorld.xyz, startPosWorld.xyz, tri, uvw))
     {

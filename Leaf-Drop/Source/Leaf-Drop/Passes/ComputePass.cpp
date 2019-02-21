@@ -86,7 +86,7 @@ void ComputePass::Draw()
 				}
 			}
 		}
-		m_ocTree.BuildTree(triangles, 3u, 256u);
+		m_ocTree.BuildTree(triangles, 1u, 512u);
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 
@@ -228,7 +228,7 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_ocTreeBuffer.Init(1024 * 256, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
+	if (FAILED(hr = m_ocTreeBuffer.Init(4096 * 1024, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
 	{
 		return hr;
 	}
