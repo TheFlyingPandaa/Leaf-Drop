@@ -86,8 +86,7 @@ TreeNode GetNode(in uint address, out uint tringlesAddress)
 struct Stack
 {
     uint address;
-    uint parentIndex;
-    uint currentChild;
+    int parentIndex;
 };
 
 void swap(inout float a, inout float b)
@@ -278,23 +277,28 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
     float tClosest = 9999.0f;
     bool triHit = false;
 
+
+    tri = TriangleBuffer[0];
+    biCoord = float3(0, 0, 0);
+    
     TreeNode node;
     uint triangleAddress; //lol
     uint nodeAddress = 0;
     node = GetNode(nodeAddress, triangleAddress);
 
-    uint stackSize = 0;
+    int stackSize = 0;
     
-    Stack addressStack[256];
+    Stack addressStack[1024];
     addressStack[stackSize].address = nodeAddress;
-    addressStack[stackSize].currentChild = 0;
-    addressStack[stackSize++].parentIndex = 0;
+    addressStack[stackSize++].parentIndex = -999;
+
 
     float t = -1;
     while (stackSize > 0)
     {
-        uint currentParent = stackSize - 1;
-        node = GetNode(addressStack[stackSize - 1].address, triangleAddress);
+
+        uint currentNode = stackSize - 1;
+        node = GetNode(addressStack[currentNode].address, triangleAddress);
         if (RayIntersectAABB(node.min, node.max, ray, origin, t))
         {
             bool hit = false;
@@ -308,14 +312,13 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
                     if (RayIntersectAABB(child.min, child.max, ray, origin, t))
                     {
                         addressStack[stackSize].address = node.ChildrenByteAddress[i];
-                        addressStack[stackSize++].parentIndex = currentParent;
+                        addressStack[stackSize++].parentIndex = currentNode;
                         hit = true;
                     }
                 }
             }
             else if (node.nrOfTris > 0)
             {
-                
                 for (uint i = 0; i < node.nrOfTris; i++)
                 {
                     Triangle current = GetTriangle(triangleAddress, i);
@@ -325,14 +328,17 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
                         tri = current;
                         tClosest = t;
                         triHit = true;
-
                     }
                 }
             }
             if (!hit)
             {
-                stackSize = addressStack[stackSize - 1].parentIndex - 1;
+                stackSize = addressStack[currentNode].parentIndex - 1;
             }
+        }
+        else
+        {        
+            stackSize--;
         }
     }
 
