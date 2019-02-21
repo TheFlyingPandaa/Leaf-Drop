@@ -57,10 +57,21 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 	size_t nrOf = m_ocTree.size();
 	for (size_t i = 0; i < nrOf; i++)
 	{
+		if (i > 0)
+			m_ocTree[i].byteStart = m_ocTree[i - 1].byteStart + m_ocTree[i - 1].byteSize;
+		for (size_t j = 0; j < m_ocTree[i].nrOfChildren; j++)
+		{
+			UINT offset = 0;
+			for (size_t k = m_ocTree[i].childrenIndices[j] - 1; k > i; k--)
+			{
+				offset += m_ocTree[k].byteSize;
+			}
+			m_ocTree[i].childrenByteAddress[j] = offset + m_ocTree[i].byteStart + m_ocTree[i].byteSize;
+		}
 		m_totalTreeByteSize += m_ocTree[i].byteSize;
 	}
 
-	/*std::ofstream stream;
+	std::ofstream stream;
 	stream.open("OcTree test.txt");
 
 	UINT c = 0;
@@ -71,7 +82,7 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 
 	}
 
-	stream.close();*/
+	stream.close();
 
 	int breakMe = 0;
 }

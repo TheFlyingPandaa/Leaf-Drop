@@ -1,7 +1,7 @@
 SamplerState defaultSampler : register(s0);
 
-
 Texture2DArray textureAtlas : register(t0);
+
 cbuffer TextureIndex : register(b0)
 {
 	uint4 index;

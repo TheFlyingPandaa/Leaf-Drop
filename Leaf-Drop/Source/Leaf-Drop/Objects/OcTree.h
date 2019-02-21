@@ -20,13 +20,17 @@ struct AABB
 		nrOfTriangles = other.nrOfTriangles;
 
 		for (UINT i = 0; i < nrOfChildren; i++)
+		{
 			childrenIndices[i] = other.childrenIndices[i];
+			childrenByteAddress[i] = other.childrenByteAddress[i];
+		}
 	}
 	
 	AABB & operator=(const AABB & other)
 	{
 		if (this != &other)
 		{
+			
 			position = other.position;
 			axis = other.axis;
 			level = other.level;
@@ -37,7 +41,10 @@ struct AABB
 			nrOfTriangles = other.nrOfTriangles;
 
 			for (UINT i = 0; i < nrOfChildren; i++)
+			{
 				childrenIndices[i] = other.childrenIndices[i];
+				childrenByteAddress[i] = other.childrenByteAddress[i];
+			}
 		}
 		return *this;
 	}
@@ -53,12 +60,17 @@ struct AABB
 		for (UINT i = 0; i < nrOfChildren; i++)
 			str += std::to_string(childrenIndices[i]) + ", ";
 		str += "\n";
+		str += "ChildrenByteAddress: ";
+		for (UINT i = 0; i < nrOfChildren; i++)
+			str += std::to_string(childrenByteAddress[i]) + ", ";
+		str += "\n";
 		str += "nrOfTriangles: " + std::to_string(nrOfTriangles) + "\n";
 		str += "triangleIndices: ";
 		for (UINT i = 0; i < triangleIndices.size(); i++)
 			str += std::to_string(triangleIndices[i]) + ", ";
 		str += "\n";
 		str += "ByteSize: " + std::to_string(byteSize) + "\n";
+		str += "ByteStart: " + std::to_string(byteStart) + "\n";
 		return str;
 	}
 
@@ -77,13 +89,15 @@ struct AABB
 	}
 
 	UINT				byteSize = 0;
-	
+	UINT				byteStart = 0;
+
 	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	
 	UINT				level = 0;
 	UINT				nrOfChildren = 0;
-	UINT				childrenIndices[8] = {0};
+	UINT				childrenIndices[8] = { 0 };
+	UINT				childrenByteAddress[8] = {0};
 
 	UINT				nrOfTriangles = 0;
 	std::vector<UINT>	triangleIndices;
