@@ -51,9 +51,8 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 SamplerState defaultTextureAtlasSampler : register(s0);
 Texture2DArray TextureAtlas : register(t2);
 
-TreeNode GetNode(in uint adhd, out uint tringlesAddress)
+TreeNode GetNode(in uint address, out uint tringlesAddress)
 {
-    uint address = adhd;
     TreeNode node = (TreeNode)0;
     node.byteSize = OcTreeBuffer.Load(address);
     address += 4;
@@ -183,6 +182,7 @@ bool RayIntersectAABB(in float3 min, in float3 max, in float3 ray, in float3 ray
  
     return hit;
 }
+
 bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord)
 {
     const float EPSILON = 0.000001f;
@@ -373,7 +373,7 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
             uint backLevel = GetNode(addressStack[stackSize - 1].address, triangleAddress).level;
             if (backLevel != currentLevel)
             {
-                stackSize = addressStack[stackSize - 1].parentIndex - 1;
+                stackSize = 0;
             }
         }
     }
