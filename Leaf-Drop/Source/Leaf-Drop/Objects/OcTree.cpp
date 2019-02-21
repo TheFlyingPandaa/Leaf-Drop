@@ -17,14 +17,14 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 	UINT totalAABB = 0;
 	for (UINT level = 0; level < treeLevel; level++)
 	{
-		totalAABB += std::pow(INCREMENT_LEVEL, level + 1);
+		totalAABB += (UINT)std::pow(INCREMENT_LEVEL, level + 1);
 	}
 	totalAABB++;
 	m_totalTreeByteSize = 0;
 	m_leafIndex.clear();
 	m_ocTree.clear();
 	//m_ocTree = std::vector<AABB>(totalAABB);
-	float size = worldSize / 2;
+	float size = (float)(worldSize / 2);
 	DirectX::XMFLOAT3 startPos(0, 0, 0);
 	DirectX::XMFLOAT3 axis(size, size, size);
 
@@ -47,10 +47,10 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 		{
 			if (_inside(m_ocTree[index], triangles[i]))
 			{
-				m_ocTree[index].triangleIndices.push_back(i);
+				m_ocTree[index].triangleIndices.push_back((UINT)i);
 			}
 		}
-		m_ocTree[index].nrOfTriangles = m_ocTree[index].triangleIndices.size();
+		m_ocTree[index].nrOfTriangles = (UINT)m_ocTree[index].triangleIndices.size();
 		m_ocTree[index].CalcSize();
 	}
 
@@ -116,11 +116,11 @@ void OcTree::_BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, 
 	UINT counter = 0;
 	UINT futureAABB = 0;
 
-	float size = (worldSize / std::pow(2, level + 1)) / 2;
+	float size = (worldSize / (float)std::pow(2, level + 1)) / 2;
 	XMFLOAT3 axisSize(size, size, size);
 
 
-	UINT nrOfAABB = std::pow(INCREMENT_LEVEL, level + 1);
+	UINT nrOfAABB = (UINT)std::pow(INCREMENT_LEVEL, level + 1);
 
 	for (UINT i = 0; i < INCREMENT_LEVEL; i++)
 	{
@@ -136,7 +136,7 @@ void OcTree::_BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, 
 
 		XMStoreFloat3(&aabb.position, XMVectorAdd(moveMe, (XMVectorScale(vecDir, size))));
 		
-		m_ocTree[parentIndex].childrenIndices[i] = m_ocTree.size();
+		m_ocTree[parentIndex].childrenIndices[i] = (UINT)m_ocTree.size();
 
 		aabb.CalcSize();
 

@@ -311,7 +311,7 @@ void BounceRay (in float4 ray, in float4 startPos, out float3 intersectionPoint,
 bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, inout float3 biCoord)
 {
     tri = (Triangle) 0;
-    biCoord = float3(1, 1, 1);
+    biCoord = float3(1, 0, 0);
 
     float triDist = 9999.0f;
     float boxDist = 9999.0f;
@@ -323,17 +323,25 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
 
     TreeNode node = GetNode(0, triangleAddress);
 
-    addressStack[stackSize].address = node.byteStart;
-    addressStack[stackSize].parentIndex = 0;
-    stackSize++;
+    for (uint s = 0; s < node.nrOfChildren; s++)
+    {
+        addressStack[stackSize].address = node.ChildrenByteAddress[s];
+        addressStack[stackSize].parentIndex = -1;
+        stackSize++;
+    }
 
     uint c = 0;
 
-	while (stackSize > 0 && c++ < 256)
+    uint totalMax = 0;
+
+	while (stackSize > 0 && c++ < 512)
     {
         uint stackIndex = stackSize - 1;
         node = GetNode(addressStack[stackIndex].address, triangleAddress);
         uint currentLevel = node.level;
+
+        if (currentLevel > totalMax)
+            totalMax = currentLevel;
 
         if (RayIntersectAABB(node.min, node.max, ray, origin, boxDist))
         {
@@ -348,17 +356,17 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
             }
             else // IS LEAF
             {
-                for (uint i = 0; i < node.nrOfTris; i++)
-                {
-                    Triangle temp = GetTriangle(triangleAddress, i);
-                    float tTemp;
-                    float3 biTemp;
-                    if (RayIntersectTriangle(temp, ray, origin, tTemp, biTemp))
-                    {
-                        biCoord = float3(0, 1, 0);
-                    }
-
-                }
+                //for (uint i = 0; i < node.nrOfTris; i++)
+                //{
+                //    Triangle temp = GetTriangle(triangleAddress, i);
+                //    float tTemp;
+                //    float3 biTemp;
+                //    if (RayIntersectTriangle(temp, ray, origin, tTemp, biTemp))
+                //    {
+                //        biCoord = float3(0, 1, 0);
+                //    }
+                //}
+                biCoord = float3(0, 1, 0);
                 stackSize--;
             }
 			
@@ -373,12 +381,12 @@ bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, ino
             uint backLevel = GetNode(addressStack[stackSize - 1].address, triangleAddress).level;
             if (backLevel != currentLevel)
             {
-                stackSize = 0;
+                stackSize--;
             }
         }
+
     }
 	
-
     return true;
 }
 

@@ -87,7 +87,7 @@ struct AABB
 
 		if (!triangleIndices.empty())
 		{
-			byteSize += triangleIndices.size() * sizeof(VECTOR_TYPE);
+			byteSize += (UINT)triangleIndices.size() * sizeof(VECTOR_TYPE);
 		}
 		
 	}

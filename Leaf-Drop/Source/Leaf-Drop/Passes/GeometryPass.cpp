@@ -153,9 +153,9 @@ void GeometryPass::Update()
 		m_ptrAtlas->CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
 		m_ptrAtlas->CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
 		m_ptrAtlas->CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
-		textureOffset.x = i * 3;
+		textureOffset.x = (UINT)i * 3;
 		textureOffset.y = 3;
-		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * i);
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * (UINT)i);
 	}
 	m_ptrAtlas->End(commandList);
 
@@ -186,7 +186,7 @@ void GeometryPass::Draw()
 
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		m_textureIndex.Bind(TEXTURE_INDEX, commandList, i * sizeof(UINT4));
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, (UINT)i * sizeof(UINT4));
 
 		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());

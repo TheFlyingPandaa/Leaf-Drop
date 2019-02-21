@@ -86,7 +86,7 @@ void ComputePass::Draw()
 				}
 			}
 		}
-		m_ocTree.BuildTree(triangles, 1u, 512u);
+		m_ocTree.BuildTree(triangles, 3u, 512u);
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 
@@ -96,7 +96,7 @@ void ComputePass::Draw()
 		
 		for (size_t i = 0; i < size; i++)
 		{
-			UINT sizeofTriInd = tree[i].triangleIndices.size() * sizeof(UINT);
+			UINT sizeofTriInd = (UINT)tree[i].triangleIndices.size() * sizeof(UINT);
 			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset, true);
 			currentOffset += tree[i].byteSize - sizeofTriInd;
 			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset, true);
@@ -128,7 +128,7 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x;
 	data.info.y = windowSize.y;
-	data.info.z = triangles.size();
+	data.info.z = (UINT)triangles.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
@@ -149,7 +149,7 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(STRUCTS::Triangle));
+	m_meshTriangles.SetData(triangles.data(), (UINT)triangles.size() * sizeof(STRUCTS::Triangle));
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);

@@ -3,8 +3,8 @@ Position: 0.000000, 0.000000, 0.000000
 Axis: 256.000000, 256.000000, 256.000000
 Level: 0
 nrOfChildren: 8
-ChildrenIndices: 1, 2, 3, 4, 5, 6, 7, 8, 
-ChildrenByteAddress: 108, 408, 796, 1280, 1668, 2112, 2452, 2656, 
+ChildrenIndices: 1, 74, 147, 220, 293, 366, 439, 512, 
+ChildrenByteAddress: 108, 8228, 16456, 24836, 33064, 41380, 49528, 57516, 
 nrOfTriangles: 0
 triangleIndices: 
 ByteSize: 108
@@ -14,95 +14,7007 @@ ByteStart: 0
 Position: -128.000000, -128.000000, -128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
-nrOfChildren: 0
-ChildrenIndices: 
-ChildrenByteAddress: 
-nrOfTriangles: 48
-triangleIndices: 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 
-ByteSize: 300
+nrOfChildren: 8
+ChildrenIndices: 2, 11, 20, 29, 38, 47, 56, 65, 
+ChildrenByteAddress: 216, 1188, 2160, 3132, 4104, 5076, 6048, 7256, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
 ByteStart: 108
 
 [2]
+Position: -192.000000, -192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 3, 4, 5, 6, 7, 8, 9, 10, 
+ChildrenByteAddress: 324, 432, 540, 648, 756, 864, 972, 1080, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 216
+
+[3]
+Position: -224.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 324
+
+[4]
+Position: -224.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 432
+
+[5]
+Position: -160.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 540
+
+[6]
+Position: -160.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 648
+
+[7]
+Position: -224.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 756
+
+[8]
+Position: -224.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 864
+
+[9]
+Position: -160.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 972
+
+[10]
+Position: -160.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1080
+
+[11]
+Position: -192.000000, -192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 12, 13, 14, 15, 16, 17, 18, 19, 
+ChildrenByteAddress: 1296, 1404, 1512, 1620, 1728, 1836, 1944, 2052, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1188
+
+[12]
+Position: -224.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1296
+
+[13]
+Position: -224.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1404
+
+[14]
+Position: -160.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1512
+
+[15]
+Position: -160.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1620
+
+[16]
+Position: -224.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1728
+
+[17]
+Position: -224.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1836
+
+[18]
+Position: -160.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 1944
+
+[19]
+Position: -160.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2052
+
+[20]
+Position: -64.000000, -192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 21, 22, 23, 24, 25, 26, 27, 28, 
+ChildrenByteAddress: 2268, 2376, 2484, 2592, 2700, 2808, 2916, 3024, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2160
+
+[21]
+Position: -96.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2268
+
+[22]
+Position: -96.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2376
+
+[23]
+Position: -32.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2484
+
+[24]
+Position: -32.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2592
+
+[25]
+Position: -96.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2700
+
+[26]
+Position: -96.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2808
+
+[27]
+Position: -32.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 2916
+
+[28]
+Position: -32.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3024
+
+[29]
+Position: -64.000000, -192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 30, 31, 32, 33, 34, 35, 36, 37, 
+ChildrenByteAddress: 3240, 3348, 3456, 3564, 3672, 3780, 3888, 3996, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3132
+
+[30]
+Position: -96.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3240
+
+[31]
+Position: -96.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3348
+
+[32]
+Position: -32.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3456
+
+[33]
+Position: -32.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3564
+
+[34]
+Position: -96.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3672
+
+[35]
+Position: -96.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3780
+
+[36]
+Position: -32.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3888
+
+[37]
+Position: -32.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 3996
+
+[38]
+Position: -192.000000, -64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 39, 40, 41, 42, 43, 44, 45, 46, 
+ChildrenByteAddress: 4212, 4320, 4428, 4536, 4644, 4752, 4860, 4968, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4104
+
+[39]
+Position: -224.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4212
+
+[40]
+Position: -224.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4320
+
+[41]
+Position: -160.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4428
+
+[42]
+Position: -160.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4536
+
+[43]
+Position: -224.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4644
+
+[44]
+Position: -224.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4752
+
+[45]
+Position: -160.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4860
+
+[46]
+Position: -160.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 4968
+
+[47]
+Position: -192.000000, -64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 48, 49, 50, 51, 52, 53, 54, 55, 
+ChildrenByteAddress: 5184, 5292, 5400, 5508, 5616, 5724, 5832, 5940, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5076
+
+[48]
+Position: -224.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5184
+
+[49]
+Position: -224.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5292
+
+[50]
+Position: -160.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5400
+
+[51]
+Position: -160.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5508
+
+[52]
+Position: -224.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5616
+
+[53]
+Position: -224.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5724
+
+[54]
+Position: -160.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5832
+
+[55]
+Position: -160.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 5940
+
+[56]
+Position: -64.000000, -64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 57, 58, 59, 60, 61, 62, 63, 64, 
+ChildrenByteAddress: 6156, 6264, 6372, 6480, 6588, 6736, 6884, 7080, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 6048
+
+[57]
+Position: -96.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 6156
+
+[58]
+Position: -96.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 6264
+
+[59]
+Position: -32.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 6372
+
+[60]
+Position: -32.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 6480
+
+[61]
+Position: -96.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 240, 241, 242, 243, 244, 245, 246, 247, 250, 251, 
+ByteSize: 148
+ByteStart: 6588
+
+[62]
+Position: -96.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 552, 553, 554, 555, 556, 557, 558, 559, 562, 563, 
+ByteSize: 148
+ByteStart: 6736
+
+[63]
+Position: -32.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 22
+triangleIndices: 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 
+ByteSize: 196
+ByteStart: 6884
+
+[64]
+Position: -32.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 17
+triangleIndices: 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 363, 364, 365, 366, 367, 368, 369, 
+ByteSize: 176
+ByteStart: 7080
+
+[65]
+Position: -64.000000, -64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 66, 67, 68, 69, 70, 71, 72, 73, 
+ChildrenByteAddress: 7364, 7472, 7580, 7688, 7796, 7904, 8012, 8120, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7256
+
+[66]
+Position: -96.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7364
+
+[67]
+Position: -96.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7472
+
+[68]
+Position: -32.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7580
+
+[69]
+Position: -32.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7688
+
+[70]
+Position: -96.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7796
+
+[71]
+Position: -96.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 7904
+
+[72]
+Position: -32.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8012
+
+[73]
+Position: -32.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8120
+
+[74]
 Position: -128.000000, -128.000000, 128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 75, 84, 93, 102, 111, 120, 129, 138, 
+ChildrenByteAddress: 8336, 9308, 10280, 11252, 12224, 13196, 14168, 15140, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8228
+
+[75]
+Position: -192.000000, -192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 76, 77, 78, 79, 80, 81, 82, 83, 
+ChildrenByteAddress: 8444, 8552, 8660, 8768, 8876, 8984, 9092, 9200, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8336
+
+[76]
+Position: -224.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 70
-triangleIndices: 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 180, 181, 182, 183, 184, 185, 186, 187, 190, 191, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 540, 541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 
-ByteSize: 388
-ByteStart: 408
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8444
 
-[3]
+[77]
+Position: -224.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8552
+
+[78]
+Position: -160.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8660
+
+[79]
+Position: -160.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8768
+
+[80]
+Position: -224.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8876
+
+[81]
+Position: -224.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 8984
+
+[82]
+Position: -160.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9092
+
+[83]
+Position: -160.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9200
+
+[84]
+Position: -192.000000, -192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 85, 86, 87, 88, 89, 90, 91, 92, 
+ChildrenByteAddress: 9416, 9524, 9632, 9740, 9848, 9956, 10064, 10172, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9308
+
+[85]
+Position: -224.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9416
+
+[86]
+Position: -224.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9524
+
+[87]
+Position: -160.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9632
+
+[88]
+Position: -160.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9740
+
+[89]
+Position: -224.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9848
+
+[90]
+Position: -224.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 9956
+
+[91]
+Position: -160.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10064
+
+[92]
+Position: -160.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10172
+
+[93]
+Position: -64.000000, -192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 94, 95, 96, 97, 98, 99, 100, 101, 
+ChildrenByteAddress: 10388, 10496, 10604, 10712, 10820, 10928, 11036, 11144, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10280
+
+[94]
+Position: -96.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10388
+
+[95]
+Position: -96.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10496
+
+[96]
+Position: -32.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10604
+
+[97]
+Position: -32.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10712
+
+[98]
+Position: -96.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10820
+
+[99]
+Position: -96.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 10928
+
+[100]
+Position: -32.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11036
+
+[101]
+Position: -32.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11144
+
+[102]
+Position: -64.000000, -192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 103, 104, 105, 106, 107, 108, 109, 110, 
+ChildrenByteAddress: 11360, 11468, 11576, 11684, 11792, 11900, 12008, 12116, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11252
+
+[103]
+Position: -96.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11360
+
+[104]
+Position: -96.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11468
+
+[105]
+Position: -32.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11576
+
+[106]
+Position: -32.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11684
+
+[107]
+Position: -96.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11792
+
+[108]
+Position: -96.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 11900
+
+[109]
+Position: -32.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12008
+
+[110]
+Position: -32.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12116
+
+[111]
+Position: -192.000000, -64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 112, 113, 114, 115, 116, 117, 118, 119, 
+ChildrenByteAddress: 12332, 12440, 12548, 12656, 12764, 12872, 12980, 13088, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12224
+
+[112]
+Position: -224.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12332
+
+[113]
+Position: -224.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12440
+
+[114]
+Position: -160.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12548
+
+[115]
+Position: -160.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12656
+
+[116]
+Position: -224.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12764
+
+[117]
+Position: -224.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12872
+
+[118]
+Position: -160.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 12980
+
+[119]
+Position: -160.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13088
+
+[120]
+Position: -192.000000, -64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 121, 122, 123, 124, 125, 126, 127, 128, 
+ChildrenByteAddress: 13304, 13412, 13520, 13628, 13736, 13844, 13952, 14060, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13196
+
+[121]
+Position: -224.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13304
+
+[122]
+Position: -224.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13412
+
+[123]
+Position: -160.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13520
+
+[124]
+Position: -160.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13628
+
+[125]
+Position: -224.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13736
+
+[126]
+Position: -224.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13844
+
+[127]
+Position: -160.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 13952
+
+[128]
+Position: -160.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14060
+
+[129]
+Position: -64.000000, -64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 130, 131, 132, 133, 134, 135, 136, 137, 
+ChildrenByteAddress: 14276, 14384, 14492, 14600, 14708, 14816, 14924, 15032, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14168
+
+[130]
+Position: -96.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14276
+
+[131]
+Position: -96.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14384
+
+[132]
+Position: -32.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14492
+
+[133]
+Position: -32.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14600
+
+[134]
+Position: -96.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14708
+
+[135]
+Position: -96.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14816
+
+[136]
+Position: -32.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 14924
+
+[137]
+Position: -32.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 15032
+
+[138]
+Position: -64.000000, -64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 139, 140, 141, 142, 143, 144, 145, 146, 
+ChildrenByteAddress: 15248, 15396, 15544, 15700, 15856, 16004, 16160, 16268, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 15140
+
+[139]
+Position: -96.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 
+ByteSize: 148
+ByteStart: 15248
+
+[140]
+Position: -96.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 540, 541, 542, 543, 546, 547, 548, 549, 550, 551, 
+ByteSize: 148
+ByteStart: 15396
+
+[141]
+Position: -32.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 
+ByteSize: 156
+ByteStart: 15544
+
+[142]
+Position: -32.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 
+ByteSize: 156
+ByteStart: 15700
+
+[143]
+Position: -96.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 444, 445, 446, 447, 448, 449, 450, 451, 454, 455, 
+ByteSize: 148
+ByteStart: 15856
+
+[144]
+Position: -96.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 
+ByteSize: 156
+ByteStart: 16004
+
+[145]
+Position: -32.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16160
+
+[146]
+Position: -32.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 20
+triangleIndices: 180, 181, 182, 183, 184, 185, 186, 187, 190, 191, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 
+ByteSize: 188
+ByteStart: 16268
+
+[147]
 Position: 128.000000, -128.000000, 128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 148, 157, 166, 175, 184, 193, 202, 211, 
+ChildrenByteAddress: 16564, 17536, 18508, 19480, 20452, 21920, 22892, 23864, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16456
+
+[148]
+Position: 64.000000, -192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 149, 150, 151, 152, 153, 154, 155, 156, 
+ChildrenByteAddress: 16672, 16780, 16888, 16996, 17104, 17212, 17320, 17428, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16564
+
+[149]
+Position: 32.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 94
-triangleIndices: 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 
-ByteSize: 484
-ByteStart: 796
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16672
 
-[4]
+[150]
+Position: 32.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16780
+
+[151]
+Position: 96.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16888
+
+[152]
+Position: 96.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 16996
+
+[153]
+Position: 32.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17104
+
+[154]
+Position: 32.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17212
+
+[155]
+Position: 96.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17320
+
+[156]
+Position: 96.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17428
+
+[157]
+Position: 64.000000, -192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 158, 159, 160, 161, 162, 163, 164, 165, 
+ChildrenByteAddress: 17644, 17752, 17860, 17968, 18076, 18184, 18292, 18400, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17536
+
+[158]
+Position: 32.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17644
+
+[159]
+Position: 32.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17752
+
+[160]
+Position: 96.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17860
+
+[161]
+Position: 96.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 17968
+
+[162]
+Position: 32.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18076
+
+[163]
+Position: 32.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18184
+
+[164]
+Position: 96.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18292
+
+[165]
+Position: 96.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18400
+
+[166]
+Position: 192.000000, -192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 167, 168, 169, 170, 171, 172, 173, 174, 
+ChildrenByteAddress: 18616, 18724, 18832, 18940, 19048, 19156, 19264, 19372, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18508
+
+[167]
+Position: 160.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18616
+
+[168]
+Position: 160.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18724
+
+[169]
+Position: 224.000000, -224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18832
+
+[170]
+Position: 224.000000, -224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 18940
+
+[171]
+Position: 160.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19048
+
+[172]
+Position: 160.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19156
+
+[173]
+Position: 224.000000, -160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19264
+
+[174]
+Position: 224.000000, -160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19372
+
+[175]
+Position: 192.000000, -192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 176, 177, 178, 179, 180, 181, 182, 183, 
+ChildrenByteAddress: 19588, 19696, 19804, 19912, 20020, 20128, 20236, 20344, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19480
+
+[176]
+Position: 160.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19588
+
+[177]
+Position: 160.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19696
+
+[178]
+Position: 224.000000, -224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19804
+
+[179]
+Position: 224.000000, -224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 19912
+
+[180]
+Position: 160.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 20020
+
+[181]
+Position: 160.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 20128
+
+[182]
+Position: 224.000000, -160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 20236
+
+[183]
+Position: 224.000000, -160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 20344
+
+[184]
+Position: 64.000000, -64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 185, 186, 187, 188, 189, 190, 191, 192, 
+ChildrenByteAddress: 20560, 20716, 20852, 21036, 21144, 21380, 21556, 21772, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 20452
+
+[185]
+Position: 32.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 
+ByteSize: 156
+ByteStart: 20560
+
+[186]
+Position: 32.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 7
+triangleIndices: 192, 196, 197, 198, 199, 202, 203, 
+ByteSize: 136
+ByteStart: 20716
+
+[187]
+Position: 96.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 19
+triangleIndices: 192, 193, 197, 198, 199, 200, 201, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 
+ByteSize: 184
+ByteStart: 20852
+
+[188]
+Position: 96.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 21036
+
+[189]
+Position: 32.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 32
+triangleIndices: 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 504, 505, 506, 507, 508, 509, 510, 511, 514, 515, 
+ByteSize: 236
+ByteStart: 21144
+
+[190]
+Position: 32.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 17
+triangleIndices: 120, 121, 122, 123, 124, 125, 126, 127, 130, 131, 192, 193, 194, 195, 196, 202, 203, 
+ByteSize: 176
+ByteStart: 21380
+
+[191]
+Position: 96.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 27
+triangleIndices: 24, 25, 26, 27, 28, 29, 32, 33, 34, 35, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 193, 194, 195, 196, 197, 200, 201, 
+ByteSize: 216
+ByteStart: 21556
+
+[192]
+Position: 96.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 
+ByteSize: 148
+ByteStart: 21772
+
+[193]
+Position: 64.000000, -64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 194, 195, 196, 197, 198, 199, 200, 201, 
+ChildrenByteAddress: 22028, 22136, 22244, 22352, 22460, 22568, 22676, 22784, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 21920
+
+[194]
+Position: 32.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22028
+
+[195]
+Position: 32.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22136
+
+[196]
+Position: 96.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22244
+
+[197]
+Position: 96.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22352
+
+[198]
+Position: 32.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22460
+
+[199]
+Position: 32.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22568
+
+[200]
+Position: 96.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22676
+
+[201]
+Position: 96.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22784
+
+[202]
+Position: 192.000000, -64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 203, 204, 205, 206, 207, 208, 209, 210, 
+ChildrenByteAddress: 23000, 23108, 23216, 23324, 23432, 23540, 23648, 23756, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 22892
+
+[203]
+Position: 160.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23000
+
+[204]
+Position: 160.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23108
+
+[205]
+Position: 224.000000, -96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23216
+
+[206]
+Position: 224.000000, -96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23324
+
+[207]
+Position: 160.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23432
+
+[208]
+Position: 160.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23540
+
+[209]
+Position: 224.000000, -32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23648
+
+[210]
+Position: 224.000000, -32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23756
+
+[211]
+Position: 192.000000, -64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 212, 213, 214, 215, 216, 217, 218, 219, 
+ChildrenByteAddress: 23972, 24080, 24188, 24296, 24404, 24512, 24620, 24728, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23864
+
+[212]
+Position: 160.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 23972
+
+[213]
+Position: 160.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24080
+
+[214]
+Position: 224.000000, -96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24188
+
+[215]
+Position: 224.000000, -96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24296
+
+[216]
+Position: 160.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24404
+
+[217]
+Position: 160.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24512
+
+[218]
+Position: 224.000000, -32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24620
+
+[219]
+Position: 224.000000, -32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24728
+
+[220]
 Position: 128.000000, -128.000000, -128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 221, 230, 239, 248, 257, 266, 275, 284, 
+ChildrenByteAddress: 24944, 25916, 26888, 27860, 28832, 29804, 31120, 32092, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24836
+
+[221]
+Position: 64.000000, -192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 222, 223, 224, 225, 226, 227, 228, 229, 
+ChildrenByteAddress: 25052, 25160, 25268, 25376, 25484, 25592, 25700, 25808, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 24944
+
+[222]
+Position: 32.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 70
-triangleIndices: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 276, 277, 280, 281, 282, 283, 284, 285, 286, 287, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 
-ByteSize: 388
-ByteStart: 1280
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25052
 
-[5]
+[223]
+Position: 32.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25160
+
+[224]
+Position: 96.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25268
+
+[225]
+Position: 96.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25376
+
+[226]
+Position: 32.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25484
+
+[227]
+Position: 32.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25592
+
+[228]
+Position: 96.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25700
+
+[229]
+Position: 96.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25808
+
+[230]
+Position: 64.000000, -192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 231, 232, 233, 234, 235, 236, 237, 238, 
+ChildrenByteAddress: 26024, 26132, 26240, 26348, 26456, 26564, 26672, 26780, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 25916
+
+[231]
+Position: 32.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26024
+
+[232]
+Position: 32.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26132
+
+[233]
+Position: 96.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26240
+
+[234]
+Position: 96.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26348
+
+[235]
+Position: 32.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26456
+
+[236]
+Position: 32.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26564
+
+[237]
+Position: 96.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26672
+
+[238]
+Position: 96.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26780
+
+[239]
+Position: 192.000000, -192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 240, 241, 242, 243, 244, 245, 246, 247, 
+ChildrenByteAddress: 26996, 27104, 27212, 27320, 27428, 27536, 27644, 27752, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26888
+
+[240]
+Position: 160.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 26996
+
+[241]
+Position: 160.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27104
+
+[242]
+Position: 224.000000, -224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27212
+
+[243]
+Position: 224.000000, -224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27320
+
+[244]
+Position: 160.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27428
+
+[245]
+Position: 160.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27536
+
+[246]
+Position: 224.000000, -160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27644
+
+[247]
+Position: 224.000000, -160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27752
+
+[248]
+Position: 192.000000, -192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 249, 250, 251, 252, 253, 254, 255, 256, 
+ChildrenByteAddress: 27968, 28076, 28184, 28292, 28400, 28508, 28616, 28724, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27860
+
+[249]
+Position: 160.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 27968
+
+[250]
+Position: 160.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28076
+
+[251]
+Position: 224.000000, -224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28184
+
+[252]
+Position: 224.000000, -224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28292
+
+[253]
+Position: 160.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28400
+
+[254]
+Position: 160.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28508
+
+[255]
+Position: 224.000000, -160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28616
+
+[256]
+Position: 224.000000, -160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28724
+
+[257]
+Position: 64.000000, -64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 258, 259, 260, 261, 262, 263, 264, 265, 
+ChildrenByteAddress: 28940, 29048, 29156, 29264, 29372, 29480, 29588, 29696, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28832
+
+[258]
+Position: 32.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 28940
+
+[259]
+Position: 32.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29048
+
+[260]
+Position: 96.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29156
+
+[261]
+Position: 96.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29264
+
+[262]
+Position: 32.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29372
+
+[263]
+Position: 32.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29480
+
+[264]
+Position: 96.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29588
+
+[265]
+Position: 96.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29696
+
+[266]
+Position: 64.000000, -64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 267, 268, 269, 270, 271, 272, 273, 274, 
+ChildrenByteAddress: 29912, 30020, 30128, 30316, 30464, 30620, 30816, 31012, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29804
+
+[267]
+Position: 32.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 29912
+
+[268]
+Position: 32.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 30020
+
+[269]
+Position: 96.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 20
+triangleIndices: 96, 97, 100, 101, 102, 103, 104, 105, 106, 107, 468, 469, 470, 471, 474, 475, 476, 477, 478, 479, 
+ByteSize: 188
+ByteStart: 30128
+
+[270]
+Position: 96.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 
+ByteSize: 148
+ByteStart: 30316
+
+[271]
+Position: 32.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 
+ByteSize: 156
+ByteStart: 30464
+
+[272]
+Position: 32.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 22
+triangleIndices: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 276, 277, 280, 281, 282, 283, 284, 285, 286, 287, 
+ByteSize: 196
+ByteStart: 30620
+
+[273]
+Position: 96.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 22
+triangleIndices: 96, 97, 98, 99, 100, 101, 104, 105, 106, 107, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 
+ByteSize: 196
+ByteStart: 30816
+
+[274]
+Position: 96.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31012
+
+[275]
+Position: 192.000000, -64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 276, 277, 278, 279, 280, 281, 282, 283, 
+ChildrenByteAddress: 31228, 31336, 31444, 31552, 31660, 31768, 31876, 31984, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31120
+
+[276]
+Position: 160.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31228
+
+[277]
+Position: 160.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31336
+
+[278]
+Position: 224.000000, -96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31444
+
+[279]
+Position: 224.000000, -96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31552
+
+[280]
+Position: 160.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31660
+
+[281]
+Position: 160.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31768
+
+[282]
+Position: 224.000000, -32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31876
+
+[283]
+Position: 224.000000, -32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 31984
+
+[284]
+Position: 192.000000, -64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 285, 286, 287, 288, 289, 290, 291, 292, 
+ChildrenByteAddress: 32200, 32308, 32416, 32524, 32632, 32740, 32848, 32956, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32092
+
+[285]
+Position: 160.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32200
+
+[286]
+Position: 160.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32308
+
+[287]
+Position: 224.000000, -96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32416
+
+[288]
+Position: 224.000000, -96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32524
+
+[289]
+Position: 160.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32632
+
+[290]
+Position: 160.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32740
+
+[291]
+Position: 224.000000, -32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32848
+
+[292]
+Position: 224.000000, -32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 32956
+
+[293]
 Position: -128.000000, 128.000000, -128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 294, 303, 312, 321, 330, 339, 348, 357, 
+ChildrenByteAddress: 33172, 34144, 35116, 36520, 37492, 38464, 39436, 40408, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33064
+
+[294]
+Position: -192.000000, 64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 295, 296, 297, 298, 299, 300, 301, 302, 
+ChildrenByteAddress: 33280, 33388, 33496, 33604, 33712, 33820, 33928, 34036, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33172
+
+[295]
+Position: -224.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 84
-triangleIndices: 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598, 599, 
-ByteSize: 444
-ByteStart: 1668
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33280
 
-[6]
+[296]
+Position: -224.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33388
+
+[297]
+Position: -160.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33496
+
+[298]
+Position: -160.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33604
+
+[299]
+Position: -224.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33712
+
+[300]
+Position: -224.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33820
+
+[301]
+Position: -160.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 33928
+
+[302]
+Position: -160.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34036
+
+[303]
+Position: -192.000000, 64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 304, 305, 306, 307, 308, 309, 310, 311, 
+ChildrenByteAddress: 34252, 34360, 34468, 34576, 34684, 34792, 34900, 35008, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34144
+
+[304]
+Position: -224.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34252
+
+[305]
+Position: -224.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34360
+
+[306]
+Position: -160.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34468
+
+[307]
+Position: -160.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34576
+
+[308]
+Position: -224.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34684
+
+[309]
+Position: -224.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34792
+
+[310]
+Position: -160.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 34900
+
+[311]
+Position: -160.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 35008
+
+[312]
+Position: -64.000000, 64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 313, 314, 315, 316, 317, 318, 319, 320, 
+ChildrenByteAddress: 35224, 35400, 35672, 35780, 35936, 36072, 36256, 36412, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 35116
+
+[313]
+Position: -96.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 17
+triangleIndices: 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 136, 137, 138, 139, 140, 141, 142, 
+ByteSize: 176
+ByteStart: 35224
+
+[314]
+Position: -96.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 41
+triangleIndices: 48, 49, 50, 51, 54, 55, 56, 57, 58, 59, 132, 133, 138, 139, 140, 142, 143, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 
+ByteSize: 272
+ByteStart: 35400
+
+[315]
+Position: -32.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 35672
+
+[316]
+Position: -32.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 
+ByteSize: 156
+ByteStart: 35780
+
+[317]
+Position: -96.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 7
+triangleIndices: 134, 135, 136, 137, 141, 142, 143, 
+ByteSize: 136
+ByteStart: 35936
+
+[318]
+Position: -96.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 19
+triangleIndices: 132, 133, 134, 135, 140, 141, 143, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 
+ByteSize: 184
+ByteStart: 36072
+
+[319]
+Position: -32.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598, 599, 
+ByteSize: 156
+ByteStart: 36256
+
+[320]
+Position: -32.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 36412
+
+[321]
+Position: -64.000000, 64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 322, 323, 324, 325, 326, 327, 328, 329, 
+ChildrenByteAddress: 36628, 36736, 36844, 36952, 37060, 37168, 37276, 37384, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 36520
+
+[322]
+Position: -96.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 36628
+
+[323]
+Position: -96.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 36736
+
+[324]
+Position: -32.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 36844
+
+[325]
+Position: -32.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 36952
+
+[326]
+Position: -96.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37060
+
+[327]
+Position: -96.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37168
+
+[328]
+Position: -32.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37276
+
+[329]
+Position: -32.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37384
+
+[330]
+Position: -192.000000, 192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 331, 332, 333, 334, 335, 336, 337, 338, 
+ChildrenByteAddress: 37600, 37708, 37816, 37924, 38032, 38140, 38248, 38356, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37492
+
+[331]
+Position: -224.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37600
+
+[332]
+Position: -224.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37708
+
+[333]
+Position: -160.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37816
+
+[334]
+Position: -160.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 37924
+
+[335]
+Position: -224.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38032
+
+[336]
+Position: -224.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38140
+
+[337]
+Position: -160.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38248
+
+[338]
+Position: -160.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38356
+
+[339]
+Position: -192.000000, 192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 340, 341, 342, 343, 344, 345, 346, 347, 
+ChildrenByteAddress: 38572, 38680, 38788, 38896, 39004, 39112, 39220, 39328, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38464
+
+[340]
+Position: -224.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38572
+
+[341]
+Position: -224.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38680
+
+[342]
+Position: -160.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38788
+
+[343]
+Position: -160.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 38896
+
+[344]
+Position: -224.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39004
+
+[345]
+Position: -224.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39112
+
+[346]
+Position: -160.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39220
+
+[347]
+Position: -160.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39328
+
+[348]
+Position: -64.000000, 192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 349, 350, 351, 352, 353, 354, 355, 356, 
+ChildrenByteAddress: 39544, 39652, 39760, 39868, 39976, 40084, 40192, 40300, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39436
+
+[349]
+Position: -96.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39544
+
+[350]
+Position: -96.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39652
+
+[351]
+Position: -32.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39760
+
+[352]
+Position: -32.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39868
+
+[353]
+Position: -96.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 39976
+
+[354]
+Position: -96.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40084
+
+[355]
+Position: -32.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40192
+
+[356]
+Position: -32.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40300
+
+[357]
+Position: -64.000000, 192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 358, 359, 360, 361, 362, 363, 364, 365, 
+ChildrenByteAddress: 40516, 40624, 40732, 40840, 40948, 41056, 41164, 41272, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40408
+
+[358]
+Position: -96.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40516
+
+[359]
+Position: -96.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40624
+
+[360]
+Position: -32.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40732
+
+[361]
+Position: -32.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40840
+
+[362]
+Position: -96.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 40948
+
+[363]
+Position: -96.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41056
+
+[364]
+Position: -32.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41164
+
+[365]
+Position: -32.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41272
+
+[366]
 Position: -128.000000, 128.000000, 128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 367, 376, 385, 394, 403, 412, 421, 430, 
+ChildrenByteAddress: 41488, 42460, 43432, 44404, 45640, 46612, 47584, 48556, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41380
+
+[367]
+Position: -192.000000, 64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 368, 369, 370, 371, 372, 373, 374, 375, 
+ChildrenByteAddress: 41596, 41704, 41812, 41920, 42028, 42136, 42244, 42352, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41488
+
+[368]
+Position: -224.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 58
-triangleIndices: 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 372, 373, 374, 375, 376, 377, 378, 379, 382, 383, 420, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 492, 493, 494, 495, 496, 497, 498, 499, 500, 501, 502, 503, 
-ByteSize: 340
-ByteStart: 2112
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41596
 
-[7]
+[369]
+Position: -224.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41704
+
+[370]
+Position: -160.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41812
+
+[371]
+Position: -160.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 41920
+
+[372]
+Position: -224.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42028
+
+[373]
+Position: -224.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42136
+
+[374]
+Position: -160.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42244
+
+[375]
+Position: -160.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42352
+
+[376]
+Position: -192.000000, 64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 377, 378, 379, 380, 381, 382, 383, 384, 
+ChildrenByteAddress: 42568, 42676, 42784, 42892, 43000, 43108, 43216, 43324, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42460
+
+[377]
+Position: -224.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42568
+
+[378]
+Position: -224.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42676
+
+[379]
+Position: -160.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42784
+
+[380]
+Position: -160.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 42892
+
+[381]
+Position: -224.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43000
+
+[382]
+Position: -224.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43108
+
+[383]
+Position: -160.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43216
+
+[384]
+Position: -160.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43324
+
+[385]
+Position: -64.000000, 64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 386, 387, 388, 389, 390, 391, 392, 393, 
+ChildrenByteAddress: 43540, 43648, 43756, 43864, 43972, 44080, 44188, 44296, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43432
+
+[386]
+Position: -96.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43540
+
+[387]
+Position: -96.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43648
+
+[388]
+Position: -32.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43756
+
+[389]
+Position: -32.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43864
+
+[390]
+Position: -96.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 43972
+
+[391]
+Position: -96.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 44080
+
+[392]
+Position: -32.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 44188
+
+[393]
+Position: -32.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 44296
+
+[394]
+Position: -64.000000, 64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 395, 396, 397, 398, 399, 400, 401, 402, 
+ChildrenByteAddress: 44512, 44756, 44864, 45012, 45120, 45268, 45376, 45532, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 44404
+
+[395]
+Position: -96.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 34
+triangleIndices: 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 420, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 492, 493, 496, 497, 498, 499, 500, 501, 502, 503, 
+ByteSize: 244
+ByteStart: 44512
+
+[396]
+Position: -96.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 44756
+
+[397]
+Position: -32.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 372, 373, 374, 375, 376, 377, 378, 379, 382, 383, 
+ByteSize: 148
+ByteStart: 44864
+
+[398]
+Position: -32.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45012
+
+[399]
+Position: -96.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 10
+triangleIndices: 492, 493, 494, 495, 496, 497, 500, 501, 502, 503, 
+ByteSize: 148
+ByteStart: 45120
+
+[400]
+Position: -96.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45268
+
+[401]
+Position: -32.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 
+ByteSize: 156
+ByteStart: 45376
+
+[402]
+Position: -32.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45532
+
+[403]
+Position: -192.000000, 192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 404, 405, 406, 407, 408, 409, 410, 411, 
+ChildrenByteAddress: 45748, 45856, 45964, 46072, 46180, 46288, 46396, 46504, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45640
+
+[404]
+Position: -224.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45748
+
+[405]
+Position: -224.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45856
+
+[406]
+Position: -160.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 45964
+
+[407]
+Position: -160.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46072
+
+[408]
+Position: -224.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46180
+
+[409]
+Position: -224.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46288
+
+[410]
+Position: -160.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46396
+
+[411]
+Position: -160.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46504
+
+[412]
+Position: -192.000000, 192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 413, 414, 415, 416, 417, 418, 419, 420, 
+ChildrenByteAddress: 46720, 46828, 46936, 47044, 47152, 47260, 47368, 47476, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46612
+
+[413]
+Position: -224.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46720
+
+[414]
+Position: -224.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46828
+
+[415]
+Position: -160.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 46936
+
+[416]
+Position: -160.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47044
+
+[417]
+Position: -224.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47152
+
+[418]
+Position: -224.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47260
+
+[419]
+Position: -160.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47368
+
+[420]
+Position: -160.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47476
+
+[421]
+Position: -64.000000, 192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 422, 423, 424, 425, 426, 427, 428, 429, 
+ChildrenByteAddress: 47692, 47800, 47908, 48016, 48124, 48232, 48340, 48448, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47584
+
+[422]
+Position: -96.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47692
+
+[423]
+Position: -96.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47800
+
+[424]
+Position: -32.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 47908
+
+[425]
+Position: -32.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48016
+
+[426]
+Position: -96.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48124
+
+[427]
+Position: -96.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48232
+
+[428]
+Position: -32.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48340
+
+[429]
+Position: -32.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48448
+
+[430]
+Position: -64.000000, 192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 431, 432, 433, 434, 435, 436, 437, 438, 
+ChildrenByteAddress: 48664, 48772, 48880, 48988, 49096, 49204, 49312, 49420, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48556
+
+[431]
+Position: -96.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48664
+
+[432]
+Position: -96.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48772
+
+[433]
+Position: -32.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48880
+
+[434]
+Position: -32.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 48988
+
+[435]
+Position: -96.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49096
+
+[436]
+Position: -96.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49204
+
+[437]
+Position: -32.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49312
+
+[438]
+Position: -32.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49420
+
+[439]
 Position: 128.000000, 128.000000, 128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 440, 449, 458, 467, 476, 485, 494, 503, 
+ChildrenByteAddress: 49636, 50712, 51684, 52656, 53628, 54600, 55572, 56544, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49528
+
+[440]
+Position: 64.000000, 64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 441, 442, 443, 444, 445, 446, 447, 448, 
+ChildrenByteAddress: 49744, 49852, 49960, 50096, 50232, 50340, 50448, 50556, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49636
+
+[441]
+Position: 32.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 24
-triangleIndices: 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 
-ByteSize: 204
-ByteStart: 2452
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49744
 
-[8]
+[442]
+Position: 32.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 49852
+
+[443]
+Position: 96.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 7
+triangleIndices: 60, 61, 62, 63, 67, 68, 69, 
+ByteSize: 136
+ByteStart: 49960
+
+[444]
+Position: 96.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 7
+triangleIndices: 63, 64, 65, 66, 67, 68, 69, 
+ByteSize: 136
+ByteStart: 50096
+
+[445]
+Position: 32.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 50232
+
+[446]
+Position: 32.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 50340
+
+[447]
+Position: 96.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 50448
+
+[448]
+Position: 96.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 12
+triangleIndices: 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 
+ByteSize: 156
+ByteStart: 50556
+
+[449]
+Position: 64.000000, 64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 450, 451, 452, 453, 454, 455, 456, 457, 
+ChildrenByteAddress: 50820, 50928, 51036, 51144, 51252, 51360, 51468, 51576, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 50712
+
+[450]
+Position: 32.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 50820
+
+[451]
+Position: 32.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 50928
+
+[452]
+Position: 96.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51036
+
+[453]
+Position: 96.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51144
+
+[454]
+Position: 32.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51252
+
+[455]
+Position: 32.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51360
+
+[456]
+Position: 96.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51468
+
+[457]
+Position: 96.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51576
+
+[458]
+Position: 192.000000, 64.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 459, 460, 461, 462, 463, 464, 465, 466, 
+ChildrenByteAddress: 51792, 51900, 52008, 52116, 52224, 52332, 52440, 52548, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51684
+
+[459]
+Position: 160.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51792
+
+[460]
+Position: 160.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 51900
+
+[461]
+Position: 224.000000, 32.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52008
+
+[462]
+Position: 224.000000, 32.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52116
+
+[463]
+Position: 160.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52224
+
+[464]
+Position: 160.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52332
+
+[465]
+Position: 224.000000, 96.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52440
+
+[466]
+Position: 224.000000, 96.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52548
+
+[467]
+Position: 192.000000, 64.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 468, 469, 470, 471, 472, 473, 474, 475, 
+ChildrenByteAddress: 52764, 52872, 52980, 53088, 53196, 53304, 53412, 53520, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52656
+
+[468]
+Position: 160.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52764
+
+[469]
+Position: 160.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52872
+
+[470]
+Position: 224.000000, 32.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 52980
+
+[471]
+Position: 224.000000, 32.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53088
+
+[472]
+Position: 160.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53196
+
+[473]
+Position: 160.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53304
+
+[474]
+Position: 224.000000, 96.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53412
+
+[475]
+Position: 224.000000, 96.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53520
+
+[476]
+Position: 64.000000, 192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 477, 478, 479, 480, 481, 482, 483, 484, 
+ChildrenByteAddress: 53736, 53844, 53952, 54060, 54168, 54276, 54384, 54492, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53628
+
+[477]
+Position: 32.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53736
+
+[478]
+Position: 32.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53844
+
+[479]
+Position: 96.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 53952
+
+[480]
+Position: 96.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54060
+
+[481]
+Position: 32.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54168
+
+[482]
+Position: 32.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54276
+
+[483]
+Position: 96.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54384
+
+[484]
+Position: 96.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54492
+
+[485]
+Position: 64.000000, 192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 486, 487, 488, 489, 490, 491, 492, 493, 
+ChildrenByteAddress: 54708, 54816, 54924, 55032, 55140, 55248, 55356, 55464, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54600
+
+[486]
+Position: 32.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54708
+
+[487]
+Position: 32.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54816
+
+[488]
+Position: 96.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 54924
+
+[489]
+Position: 96.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55032
+
+[490]
+Position: 32.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55140
+
+[491]
+Position: 32.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55248
+
+[492]
+Position: 96.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55356
+
+[493]
+Position: 96.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55464
+
+[494]
+Position: 192.000000, 192.000000, 192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 495, 496, 497, 498, 499, 500, 501, 502, 
+ChildrenByteAddress: 55680, 55788, 55896, 56004, 56112, 56220, 56328, 56436, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55572
+
+[495]
+Position: 160.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55680
+
+[496]
+Position: 160.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55788
+
+[497]
+Position: 224.000000, 160.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 55896
+
+[498]
+Position: 224.000000, 160.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56004
+
+[499]
+Position: 160.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56112
+
+[500]
+Position: 160.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56220
+
+[501]
+Position: 224.000000, 224.000000, 224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56328
+
+[502]
+Position: 224.000000, 224.000000, 160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56436
+
+[503]
+Position: 192.000000, 192.000000, 64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 504, 505, 506, 507, 508, 509, 510, 511, 
+ChildrenByteAddress: 56652, 56760, 56868, 56976, 57084, 57192, 57300, 57408, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56544
+
+[504]
+Position: 160.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56652
+
+[505]
+Position: 160.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56760
+
+[506]
+Position: 224.000000, 160.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56868
+
+[507]
+Position: 224.000000, 160.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 56976
+
+[508]
+Position: 160.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57084
+
+[509]
+Position: 160.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57192
+
+[510]
+Position: 224.000000, 224.000000, 96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57300
+
+[511]
+Position: 224.000000, 224.000000, 32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57408
+
+[512]
 Position: 128.000000, 128.000000, -128.000000
 Axis: 128.000000, 128.000000, 128.000000
 Level: 0
+nrOfChildren: 8
+ChildrenIndices: 513, 522, 531, 540, 549, 558, 567, 576, 
+ChildrenByteAddress: 57624, 58596, 60272, 61244, 62216, 63188, 64160, 65132, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57516
+
+[513]
+Position: 64.000000, 64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 514, 515, 516, 517, 518, 519, 520, 521, 
+ChildrenByteAddress: 57732, 57840, 57948, 58056, 58164, 58272, 58380, 58488, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57624
+
+[514]
+Position: 32.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
 nrOfChildren: 0
 ChildrenIndices: 
 ChildrenByteAddress: 
-nrOfTriangles: 152
-triangleIndices: 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 236, 237, 238, 239, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 
-ByteSize: 716
-ByteStart: 2656
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57732
+
+[515]
+Position: 32.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57840
+
+[516]
+Position: 96.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 57948
+
+[517]
+Position: 96.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 58056
+
+[518]
+Position: 32.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 58164
+
+[519]
+Position: 32.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 58272
+
+[520]
+Position: 96.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 58380
+
+[521]
+Position: 96.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 58488
+
+[522]
+Position: 64.000000, 64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 523, 524, 525, 526, 527, 528, 529, 530, 
+ChildrenByteAddress: 58704, 58900, 59212, 59396, 59504, 59700, 59932, 60164, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 58596
+
+[523]
+Position: 32.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 22
+triangleIndices: 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 
+ByteSize: 196
+ByteStart: 58704
+
+[524]
+Position: 32.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 51
+triangleIndices: 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 228, 229, 230, 231, 232, 233, 236, 237, 238, 239, 312, 313, 314, 315, 318, 319, 320, 321, 322, 323, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 528, 532, 533, 534, 535, 538, 539, 
+ByteSize: 312
+ByteStart: 58900
+
+[525]
+Position: 96.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 19
+triangleIndices: 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 528, 529, 533, 534, 535, 536, 537, 
+ByteSize: 184
+ByteStart: 59212
+
+[526]
+Position: 96.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 59396
+
+[527]
+Position: 32.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 22
+triangleIndices: 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 
+ByteSize: 196
+ByteStart: 59504
+
+[528]
+Position: 32.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 31
+triangleIndices: 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467, 528, 529, 530, 531, 532, 538, 539, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 
+ByteSize: 232
+ByteStart: 59700
+
+[529]
+Position: 96.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 31
+triangleIndices: 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 529, 530, 531, 532, 533, 536, 537, 
+ByteSize: 232
+ByteStart: 59932
+
+[530]
+Position: 96.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60164
+
+[531]
+Position: 192.000000, 64.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 532, 533, 534, 535, 536, 537, 538, 539, 
+ChildrenByteAddress: 60380, 60488, 60596, 60704, 60812, 60920, 61028, 61136, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60272
+
+[532]
+Position: 160.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60380
+
+[533]
+Position: 160.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60488
+
+[534]
+Position: 224.000000, 32.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60596
+
+[535]
+Position: 224.000000, 32.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60704
+
+[536]
+Position: 160.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60812
+
+[537]
+Position: 160.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 60920
+
+[538]
+Position: 224.000000, 96.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61028
+
+[539]
+Position: 224.000000, 96.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61136
+
+[540]
+Position: 192.000000, 64.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 541, 542, 543, 544, 545, 546, 547, 548, 
+ChildrenByteAddress: 61352, 61460, 61568, 61676, 61784, 61892, 62000, 62108, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61244
+
+[541]
+Position: 160.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61352
+
+[542]
+Position: 160.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61460
+
+[543]
+Position: 224.000000, 32.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61568
+
+[544]
+Position: 224.000000, 32.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61676
+
+[545]
+Position: 160.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61784
+
+[546]
+Position: 160.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 61892
+
+[547]
+Position: 224.000000, 96.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62000
+
+[548]
+Position: 224.000000, 96.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62108
+
+[549]
+Position: 64.000000, 192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 550, 551, 552, 553, 554, 555, 556, 557, 
+ChildrenByteAddress: 62324, 62432, 62540, 62648, 62756, 62864, 62972, 63080, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62216
+
+[550]
+Position: 32.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62324
+
+[551]
+Position: 32.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62432
+
+[552]
+Position: 96.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62540
+
+[553]
+Position: 96.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62648
+
+[554]
+Position: 32.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62756
+
+[555]
+Position: 32.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62864
+
+[556]
+Position: 96.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 62972
+
+[557]
+Position: 96.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63080
+
+[558]
+Position: 64.000000, 192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 559, 560, 561, 562, 563, 564, 565, 566, 
+ChildrenByteAddress: 63296, 63404, 63512, 63620, 63728, 63836, 63944, 64052, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63188
+
+[559]
+Position: 32.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63296
+
+[560]
+Position: 32.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63404
+
+[561]
+Position: 96.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63512
+
+[562]
+Position: 96.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63620
+
+[563]
+Position: 32.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63728
+
+[564]
+Position: 32.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63836
+
+[565]
+Position: 96.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 63944
+
+[566]
+Position: 96.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64052
+
+[567]
+Position: 192.000000, 192.000000, -64.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 568, 569, 570, 571, 572, 573, 574, 575, 
+ChildrenByteAddress: 64268, 64376, 64484, 64592, 64700, 64808, 64916, 65024, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64160
+
+[568]
+Position: 160.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64268
+
+[569]
+Position: 160.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64376
+
+[570]
+Position: 224.000000, 160.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64484
+
+[571]
+Position: 224.000000, 160.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64592
+
+[572]
+Position: 160.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64700
+
+[573]
+Position: 160.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64808
+
+[574]
+Position: 224.000000, 224.000000, -32.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 64916
+
+[575]
+Position: 224.000000, 224.000000, -96.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65024
+
+[576]
+Position: 192.000000, 192.000000, -192.000000
+Axis: 64.000000, 64.000000, 64.000000
+Level: 1
+nrOfChildren: 8
+ChildrenIndices: 577, 578, 579, 580, 581, 582, 583, 584, 
+ChildrenByteAddress: 65240, 65348, 65456, 65564, 65672, 65780, 65888, 65996, 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65132
+
+[577]
+Position: 160.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65240
+
+[578]
+Position: 160.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65348
+
+[579]
+Position: 224.000000, 160.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65456
+
+[580]
+Position: 224.000000, 160.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65564
+
+[581]
+Position: 160.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65672
+
+[582]
+Position: 160.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65780
+
+[583]
+Position: 224.000000, 224.000000, -160.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65888
+
+[584]
+Position: 224.000000, 224.000000, -224.000000
+Axis: 32.000000, 32.000000, 32.000000
+Level: 2
+nrOfChildren: 0
+ChildrenIndices: 
+ChildrenByteAddress: 
+nrOfTriangles: 0
+triangleIndices: 
+ByteSize: 108
+ByteStart: 65996
 
