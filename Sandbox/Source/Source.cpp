@@ -65,8 +65,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 50;
-		const UINT NUMBER_OF_LIGHTS = 10000;
+		const UINT NUMBER_OF_DRAWABLES = 10;
+		const UINT NUMBER_OF_LIGHTS = 25;
+		const UINT MAX_DISTANCE = 10;
+		const UINT MAX_LIGHT_DISTANCE = 25;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
@@ -80,9 +82,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			pointLight[i].SetDropOff(1.1f);
 			pointLight[i].SetPow(1.5f);
 
-			float x = static_cast<float>(rand() % 1598 + 2) * (rand() % 2 ? 1 : -1);
-			float y = static_cast<float>(rand() % 1598 + 2) * (rand() % 2 ? 1 : -1);
-			float z = static_cast<float>(rand() % 1598 + 2) * (rand() % 2 ? 1 : -1);
+			float x = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
+			float y = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
+			float z = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 
 			float scl = static_cast<float>(rand() % 50 );
 			pointLight[i].SetPosition(x, y, z);
@@ -98,18 +100,23 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetNormal(&t[1]);
 			d[i].SetMetallic(&t[2]);
 			d[i].SetMesh(m);
-
+		
 			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
 			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-
+		
 			float scl = (FLOAT)(rand() % 3 + 1);
-
+		
 			d[i].SetPosition(x, y, z);
 			d[i].SetScale(scl, scl, scl);
 			d[i].SetScale(10,10,10);
 		}
-		
+
+		d[0].SetPosition(5, 0, 0);
+		d[1].SetPosition(-5, 0, 0);
+		d[0].SetScale(2, 2, 2);
+		d[1].SetScale(2, 2, 2);
+
 		float rot = 0;
 		timer.Start();
 
