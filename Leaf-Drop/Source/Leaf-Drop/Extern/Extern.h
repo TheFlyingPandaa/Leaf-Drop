@@ -26,4 +26,18 @@ namespace STRUCTS
 		DirectX::XMFLOAT4 biTangent;
 		DirectX::XMFLOAT2 UV;
 	};
+	struct Vertex
+	{
+		DirectX::XMFLOAT4 pos;
+		DirectX::XMFLOAT4 normal;
+		DirectX::XMFLOAT4 tangent;
+		DirectX::XMFLOAT4 bitangent;
+		DirectX::XMFLOAT2 uv;
+	};
+
+	struct Triangle
+	{
+		Vertex v1, v2, v3;
+		UINT textureIndexStart;
+	};
 }

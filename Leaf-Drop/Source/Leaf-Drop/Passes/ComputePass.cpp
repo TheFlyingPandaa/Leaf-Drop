@@ -14,6 +14,7 @@
 #define TEXTURE_ATLAS		4
 #define LIGHT_TABLE			5
 #define LIGHT_BUFFER		6
+#define OCTREE				7
 
 struct Vertex
 {
@@ -55,25 +56,23 @@ void ComputePass::Update()
 {
 }
 
-
-
 void ComputePass::Draw()
 {
 	static bool first = true;
-	static std::vector<Triangle> triangles;
+	static std::vector<STRUCTS::Triangle> triangles;
 
 	if (first)
 	{
 		first = false;
 		for (int dq = 0; dq < p_drawQueue.size(); dq++)
 		{
-			for (int m = 0; m < p_drawQueue[dq].ObjectData.size(); m++)
+			for (int m = 0; m < p_drawQueue[dq].DrawableObjectData.size(); m++)
 			{
 				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
-				Triangle t;
+				STRUCTS::Triangle t;
 				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
 				{
-					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].ObjectData[m].WorldMatrix;
+					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
 					
 					DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&world));
 
@@ -113,7 +112,25 @@ void ComputePass::Draw()
 				}
 			}
 		}
+		m_ocTree.BuildTree(triangles, 4u, 256u);
+		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
+		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
+
+		auto tree = m_ocTree.GetTree();
+		size_t size = tree.size();
+		UINT currentOffset = 0;
+		
+		for (size_t i = 0; i < size; i++)
+		{
+			UINT sizeofTriInd = (UINT)tree[i].triangleIndices.size() * sizeof(UINT);
+			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset, true);
+			currentOffset += tree[i].byteSize - sizeofTriInd;
+			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset, true);
+			currentOffset += sizeofTriInd;
+		}
 	}
+
+
 
 	p_drawQueue.clear();
 
@@ -137,7 +154,7 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x;
 	data.info.y = windowSize.y;
-	data.info.z = triangles.size();
+	data.info.z = (UINT)triangles.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
@@ -162,9 +179,9 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshTriangles.SetData(triangles.data(), triangles.size() * sizeof(Triangle));
+	m_meshTriangles.SetData(triangles.data(), (UINT)triangles.size() * sizeof(STRUCTS::Triangle));
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
-
+	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
 
@@ -192,6 +209,7 @@ void ComputePass::Release()
 	m_rayTexture.Release();
 	m_lightUav.Release();
 	m_lightsBuffer.Release();
+	m_ocTreeBuffer.Release();
 }
 
 void ComputePass::Clear()
@@ -242,7 +260,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshTriangles.Init(sizeof(Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(Triangle))))
+	if (FAILED(hr = m_meshTriangles.Init(sizeof(STRUCTS::Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::Triangle))))
+	{
+		return hr;
+	}
+	if (FAILED(hr = m_ocTreeBuffer.Init(4096 * 1024, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
 	{
 		return hr;
 	}
@@ -313,15 +335,16 @@ HRESULT ComputePass::_InitRootSignature()
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[7];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[8];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
+	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
 
-	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 1);
-	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 1);
+	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 2);
+	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 2);
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);

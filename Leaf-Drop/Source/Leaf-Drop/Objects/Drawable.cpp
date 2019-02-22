@@ -52,6 +52,21 @@ Texture* Drawable::GetNormal() const
 	return this->m_normal;
 }
 
+void Drawable::SetColor(const DirectX::XMFLOAT4A & color)
+{
+	m_color = color;
+}
+
+void Drawable::SetColor(const float & r, const float & g, const float & b, const float & a)
+{
+	SetColor({ r, g, b, a });
+}
+
+const DirectX::XMFLOAT4A & Drawable::GetColor() const
+{
+	return m_color;
+}
+
 void Drawable::Draw()
 {
 	m_coreRenderer->GetGeometryPass()->Submit(this);

@@ -16,6 +16,8 @@ void _alocConsole() {
 
 void printFrameTime(double dt);
 
+
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 
@@ -89,6 +91,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			pointLight[i].SetIntensity(scl);
 
 		}
+		
 		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
 		
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
@@ -135,7 +138,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		{
 			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
-			static const float MOVE_SPEED = 10.0f;
+			static const float MOVE_SPEED = 50.0f;
 			static const float SPRINT_SPEED = 20.0f;
 			static const float MOUSE_SENSITIVITY = 0.05f;
 
@@ -192,28 +195,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
 
-			if (wnd->IsKeyPressed(Input::KEY_0))
-				camArr[0].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_1))
-				camArr[1].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_2))
-				camArr[2].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_3))
-				camArr[3].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_4))
-				camArr[4].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_5))
-				camArr[5].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_6))
-				camArr[6].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_7))
-				camArr[7].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_8))
-				camArr[8].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::KEY_9))
-				camArr[9].SetAsActiveCamera();
-			else if (wnd->IsKeyPressed(Input::BACKSPACE))
-				cam.SetAsActiveCamera();
 
 			light.Queue();
 		
@@ -221,10 +202,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
-				//d[i].SetRotation(0, rot, -rot);
 				d[i].Update();
 				d[i].Draw();
-
 			}
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{
