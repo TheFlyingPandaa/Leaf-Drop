@@ -34,8 +34,8 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
 	float4 rays		= RayTracing.Sample(defaultSampler, input.uv);
-    return rays;
-	float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
+	
+    float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
 	uint numStructs;
 	uint stride;
@@ -63,6 +63,6 @@ float4 main(PS_INPUT input) : SV_TARGET
 
 	//return float4(rays.a, 0.0f, 0.0f, 1.0f);
 
-    return saturate(finalColor + ambient + float4(rays.rgb, 1.0f));
+    return saturate((finalColor * rays) + ambient);
 	//return saturate(float4(rays.rgb, 1.0f));
 }

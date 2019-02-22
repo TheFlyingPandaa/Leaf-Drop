@@ -18,8 +18,9 @@ struct Triangle
 
 struct RAY_STRUCT
 {
-	float4	worldPos;
-	uint2	pixelCoord;
+    float3 startPos;
+    float3 normal;
+    uint2 pixelCoord;
 };
 
 
@@ -31,22 +32,15 @@ struct RayPayload
 
 struct TreeNode
 {
-	uint byteSize;
     uint byteStart;
-	
-	float3 position;
-	float3 axis;
 
     float3 min;
     float3 max;
 
-	uint level;
 	uint nrOfChildren;
-	uint ChildrenIndex[8];
     uint ChildrenByteAddress[8];
 
 	uint nrOfTris;
-
 };
 
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
@@ -76,29 +70,18 @@ Texture2DArray TextureAtlas : register(t2);
 TreeNode GetNode(in uint address, out uint tringlesAddress)
 {
     TreeNode node = (TreeNode)0;
-    node.byteSize = OcTreeBuffer.Load(address);
     address += 4;
     node.byteStart = OcTreeBuffer.Load(address);
     address += 4;
-
-
-    node.position = asfloat(OcTreeBuffer.Load3(address));
+    
+    float3 position = asfloat(OcTreeBuffer.Load3(address));
     address += 12;
-    node.axis = asfloat(OcTreeBuffer.Load3(address));
-    address += 12;
-
-    node.level = OcTreeBuffer.Load(address);
-    address += 4;
+    float3 axis = asfloat(OcTreeBuffer.Load3(address));
+    address += 12 + 4;
 
     node.nrOfChildren = OcTreeBuffer.Load(address);
-    address += 4;
-
-	[unroll]
-    for (uint i = 0; i < 8; i++)
-    {
-        node.ChildrenIndex[i] = OcTreeBuffer.Load(address);
-        address += 4;
-    }
+    
+    address += 4 + 4 * 8;
 
     [unroll]
     for (uint j = 0; j < 8; j++)
@@ -111,8 +94,8 @@ TreeNode GetNode(in uint address, out uint tringlesAddress)
 
     tringlesAddress = address;
 
-    node.min = node.position - node.axis;
-    node.max = node.position + node.axis;
+    node.min = position - axis;
+    node.max = position + axis;
 
     return node;
 }
@@ -323,7 +306,7 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
 
     float tTemp = f * dot(e2.xyz, q);
 
-    if (tTemp > EPSILON)
+    if (tTemp > 0.1f)
     {
         t = tTemp;
         biCoord.y = u;
@@ -413,9 +396,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
         }
     }
 
-    
-    //SortLeafStack(leafStackSize, leafStack);
-
     float triangleT = 9999.0f;
     float tempTriangleT = 9999.0f;
     float3 tempBi = float3(0, 0, 0);
@@ -447,26 +427,34 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float4 finalColor = float4(0, 0, 0, 1);
 	
     uint2 pixelLocation = RayStencil[threadID.x].pixelCoord;
-    float4 fragmentWorld = RayStencil[threadID.x].worldPos;
+    float3 fragmentWorld = RayStencil[threadID.x].startPos;
+    float3 fragmentNormal = RayStencil[threadID.x].normal;
 
-    float4 rayWorld = float4(normalize(fragmentWorld - ViewerPosition).xyz, 0.0f);
-
-    float4 startPosWorld = ViewerPosition;
-
-
+    float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
+    
+    ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
+    
     float3 intersectionPoint;
     Triangle tri;
-    bool hit = false;
     float3 uvw;
 
-    uint dummy;
-    uint address = 0;
-    
-    if (TraceTriangle(rayWorld.xyz, startPosWorld.xyz, tri, uvw, intersectionPoint))
+    float4 specular;
+
+    if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
     {
         float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
-        float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
-        outputTexture[pixelLocation] = float4(uvw,1);
+     
+        float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
+        float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), 0);
+        float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
+        
+        float4 finalColor = float4(0, 0, 0, 0);
+        for (uint i = 0; i < LightValues.x; i++)
+        {
+            finalColor += LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal.xyz, 0), metall, specular);
+        }       
+
+        outputTexture[pixelLocation] = saturate(finalColor);
     }
 
 }

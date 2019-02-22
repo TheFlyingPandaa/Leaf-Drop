@@ -32,9 +32,11 @@ struct PS_OUTPUT
 
 struct RAY_STRUCT
 {
-	float4	worldPos;
+	float3	startPos;
+    float3  normal;
 	uint2	pixelCoord;
 };
+
 RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
 RWStructuredBuffer<uint> CounterStencil : register(u1);
 
@@ -48,10 +50,9 @@ PS_OUTPUT main(VS_OUTPUT input)
 
 	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
-    bool CastRay = output.metallic.r > 0.9;
-	//CastRay = true;
-	//CastRay = true;
-    //CastRay = true;
+    bool CastRay = output.metallic.r > 0.999;
+
+   
 	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
 	int2 index = int2((int)(fIndex.x * (float)WIDTH), (int)(fIndex.y * (float)HEIGHT));
 
@@ -60,8 +61,10 @@ PS_OUTPUT main(VS_OUTPUT input)
 		uint accessIndex = 0;
 		//CounterStencil[0] += 1;
 		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
-		RayStencil[accessIndex].pixelCoord = uint2(index);
-		RayStencil[accessIndex].worldPos = input.worldPosition;
+		RayStencil[accessIndex].pixelCoord =    uint2(index);
+		RayStencil[accessIndex].startPos =      input.worldPosition.xyz;
+        RayStencil[accessIndex].normal =        output.normal.xyz;
+
     }
 
 

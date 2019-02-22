@@ -80,7 +80,8 @@ HRESULT GeometryPass::Init()
 
 	struct RAY_STRUCT
 	{
-		DirectX::XMFLOAT4 ray;
+		DirectX::XMFLOAT3 startPos;
+		DirectX::XMFLOAT3 normal;
 		DirectX::XMUINT2 pixelPos;
 	};
 
@@ -366,7 +367,7 @@ HRESULT GeometryPass::_InitPipelineState()
 
 	D3D12_RASTERIZER_DESC rastDesc{};
 	rastDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	rastDesc.CullMode = D3D12_CULL_MODE_NONE;
+	rastDesc.CullMode = D3D12_CULL_MODE_BACK;
 	rastDesc.FrontCounterClockwise = FALSE;
 	rastDesc.DepthBias = 0;
 	rastDesc.DepthBiasClamp = 0.0f;

@@ -59,9 +59,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		StaticMesh * m = new StaticMesh();
 		Texture * t = new Texture[3];
-		t[0].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_diffuse.bmp");
-		t[1].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_normal.bmp");
-		t[2].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_metallic.bmp");
+		t[0].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_diffuse.bmp");
+		t[1].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_normal.bmp");
+		t[2].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_metallic.bmp");
+
+		//t[0].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_diffuse.bmp");
+		//t[1].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_normal.bmp");
+		//t[2].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_metallic.bmp");
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
