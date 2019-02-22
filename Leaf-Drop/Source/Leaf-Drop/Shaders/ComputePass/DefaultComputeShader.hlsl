@@ -308,6 +308,19 @@ void BounceRay (in float4 ray, in float4 startPos, out float3 intersectionPoint,
     }
 }
 
+struct AddressStack
+{
+    uint address;
+    uint targetChildren;
+};
+
+struct LeafStack
+{
+    float t;
+    uint triangleAddress;
+    uint nrOfTriangles;
+};
+
 bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, inout float3 biCoord)
 {
     tri = (Triangle) 0;
@@ -470,8 +483,71 @@ bool GetClosestTriangle2(in float3 ray, in float3 origin, inout Triangle tri, in
     }
     return true;
 }
-[numthreads(1, 1, 1)]
 
+bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out float3 biCoord, out float3 intersectionPoint)
+{
+    intersectionPoint = float3(0, 0, 0);
+    biCoord = float3(0, 0, 0);
+    tri = (Triangle)0;
+
+    AddressStack    nodeStack[1024];
+    uint            nodeStackSize = 0;
+
+    LeafStack       leafStack[1024];
+    uint            leafStackSize = 0;
+
+    uint            triangleAddress = 0;
+
+    TreeNode        node = GetNode(0, triangleAddress);
+
+    bool triangleHit = false;
+    float aabbT = 9999.0f;
+
+    uint counter = 0;
+
+    if (RayIntersectAABB(node.min, node.max, ray, origin, aabbT))
+    {
+        nodeStack[nodeStackSize].address = node.byteStart;
+        nodeStack[nodeStackSize].targetChildren = 0;
+        nodeStackSize++;
+        while (nodeStackSize > 0)
+        {
+            biCoord = float3(0, 1, 0);
+            uint currentNode = nodeStackSize - 1;
+            node = GetNode(nodeStack[currentNode].address, triangleAddress);
+            if (nodeStack[currentNode].targetChildren < node.nrOfChildren)
+            {
+                TreeNode child = GetNode(node.ChildrenByteAddress[nodeStack[currentNode].targetChildren++], triangleAddress);
+                if (RayIntersectAABB(child.min, child.max, ray, origin, aabbT))
+                {
+                    if (child.nrOfTris > 0)
+                    {
+                        leafStack[leafStackSize].t = aabbT;
+                        leafStack[leafStackSize].nrOfTriangles = child.nrOfTris;
+                        leafStack[leafStackSize].triangleAddress = triangleAddress;
+                        leafStackSize++;
+                    }
+                    else
+                    {
+                        nodeStack[nodeStackSize].address = child.byteStart;
+                        nodeStack[nodeStackSize].targetChildren = 0;
+                        nodeStackSize++;
+                    }
+                }
+            }
+            else
+            {
+                nodeStackSize--;
+            }
+        }
+    }
+
+    return true;
+    //return triangleHit;
+}
+
+
+[numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
 {
     float4 finalColor = float4(0, 0, 0, 1);
@@ -504,7 +580,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     //return;
 
-    if (GetClosestTriangle(rayWorld.xyz, startPosWorld.xyz, tri, uvw))
+    if (TraceTriangle(rayWorld.xyz, startPosWorld.xyz, tri, uvw, intersectionPoint))
     {
         float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
         float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
