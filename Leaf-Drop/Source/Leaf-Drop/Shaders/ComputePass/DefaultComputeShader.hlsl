@@ -95,12 +95,6 @@ TreeNode GetNode(in uint address, out uint tringlesAddress)
     return node;
 }
 
-struct Stack
-{
-    uint address;
-    int parentIndex;
-};
-
 void swap(inout float a, inout float b)
 {
     float tmp = a;
@@ -183,129 +177,52 @@ bool RayIntersectAABB(in float3 min, in float3 max, in float3 ray, in float3 ray
     return hit;
 }
 
-bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord)
+bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord, out float3 intersectionPoint)
 {
     const float EPSILON = 0.000001f;
-    float minT = 9999.0f;
-    t = -1.0f;
+    t = 9999.0f;
     biCoord.x = -1.0f;
     biCoord.y = -1.0f;
     biCoord.z = -1.0f;
 
-    bool hit = true;
+    intersectionPoint = float3(0, 0, 0);
 
     float4 e1 = tri.v1.pos - tri.v0.pos;
     float4 e2 = tri.v2.pos - tri.v0.pos;
 
     float3 normal = cross(e1.xyz, e2.xyz);
 
-    float3 h = cross(ray.xyz, e2.xyz);
+    float3 h = cross(ray, e2.xyz);
     float a = dot(e1.xyz, h);
 
     if (a > -EPSILON && a < EPSILON) // If parallel with triangle
-        hit = false;
+        return false;
 
-    if (hit)
+    float f = 1.0f / a;
+    float3 s = rayOrigin - tri.v0.pos.xyz;
+    float u = f * (dot(s, h));
+
+    if (u < 0.0f || u > 1.0f)
+        return false;
+
+    float3 q = cross(s, e1.xyz);
+    float v = f * dot(ray.xyz, q);
+
+    if (v < 0.0 || u + v > 1.0f)
+        return false;
+
+    float tTemp = f * dot(e2.xyz, q);
+
+    if (tTemp > EPSILON)
     {
-        float f = 1.0f / a;
-        float3 s = rayOrigin.xyz - tri.v0.pos.xyz;
-        float u = f * (dot(s, h));
-
-        if (u < 0.0f || u > 1.0f)
-            hit = false;
-
-        if (hit)
-        {
-            float3 q = cross(s, e1.xyz);
-            float v = f * dot(ray.xyz, q);
-
-            if (v < 0.0 || u + v > 1.0f)
-                hit = false;
-
-            if (hit)
-            {
-                t = f * dot(e2.xyz, q);
-
-                if (t > 0.1f && t < minT)
-                {
-                    t = minT;
-                    biCoord.x = 1.0f - u - v;
-                    biCoord.y = u;
-                    biCoord.z = v;
-                
-                }
-                else
-                {
-                    hit = false;
-                }
-            }  
-        }
+        t = tTemp;
+        biCoord.y = u;
+        biCoord.z = v;
+        biCoord.x = 1.0f - u - v;
+        intersectionPoint = rayOrigin + ray * t;
+        return true;
     }
-
-    return hit;
-}
-
-void BounceRay (in float4 ray, in float4 startPos, out float3 intersectionPoint, out Triangle tri, out bool hit, out float3 uvw, out uint index)
-{
-    const float EPSILON = 0.000001f;
-    float minT = 9999.0f;
-    index = -1;
-    uvw.x = -1.0f;
-    uvw.y = -1.0f;
-    uvw.z = -1.0f;
-
-    intersectionPoint = float3(0, 0, 0);
-    tri = (Triangle) 0;
-
-    hit = false;
-
-    for (uint i = 0; i < Info.z; i++)
-    {
-        Triangle tri = TriangleBuffer[i];
-
-        float4 e1 = tri.v1.pos - tri.v0.pos;
-        float4 e2 = tri.v2.pos - tri.v0.pos;
-
-        float3 normal = cross(e1.xyz, e2.xyz);
-
-        float3 h = cross(ray.xyz, e2.xyz);
-        float a = dot(e1.xyz, h);
-
-        if (a > -EPSILON && a < EPSILON) // If parallel with triangle
-            continue;
-
-        float f = 1.0f / a;
-        float3 s = startPos.xyz - tri.v0.pos.xyz;
-        float u = f * (dot(s, h));
-
-        if (u < 0.0f || u > 1.0f)
-            continue;
-
-        float3 q = cross(s, e1.xyz);
-        float v = f * dot(ray.xyz, q);
-
-        if (v < 0.0 || u + v > 1.0f)
-            continue;
-
-        float t = f * dot(e2.xyz, q);
-
-        if (t > 0.1f && t < minT)
-        {
-            minT = t;
-            index = i;
-            uvw.y = u;
-            uvw.z = v;
-            uvw.x = 1.0f - u - v;
-        }
-
-    }
-
-    if (index != -1)
-    {
-        intersectionPoint = startPos.xyz + ray.xyz * minT;
-        tri = TriangleBuffer[index];
-        hit = true;
-    }
+    return false;
 }
 
 struct AddressStack
@@ -319,169 +236,33 @@ struct LeafStack
     float t;
     uint triangleAddress;
     uint nrOfTriangles;
+    uint address;
 };
 
-bool GetClosestTriangle(in float3 ray, in float3 origin, inout Triangle tri, inout float3 biCoord)
+void SwapLeafStackElement(inout LeafStack e1, inout LeafStack e2)
 {
-    tri = (Triangle) 0;
-    biCoord = float3(1, 0, 0);
-
-    float triDist = 9999.0f;
-    float boxDist = 9999.0f;
-
-    int stackSize = 0;
-    Stack addressStack[1024];
-
-    uint triangleAddress = 0;
-
-    TreeNode node = GetNode(0, triangleAddress);
-
-    for (uint s = 0; s < node.nrOfChildren; s++)
-    {
-        addressStack[stackSize].address = node.ChildrenByteAddress[s];
-        addressStack[stackSize].parentIndex = -1;
-        stackSize++;
-    }
-
-    uint c = 0;
-
-    uint totalMax = 0;
-
-	while (stackSize > 0 && c++ < 512)
-    {
-        uint stackIndex = stackSize - 1;
-        node = GetNode(addressStack[stackIndex].address, triangleAddress);
-        uint currentLevel = node.level;
-
-        if (currentLevel > totalMax)
-            totalMax = currentLevel;
-
-        if (RayIntersectAABB(node.min, node.max, ray, origin, boxDist))
-        {
-            if (node.nrOfChildren)
-            {
-                for (uint i = 0; i < node.nrOfChildren; i++)
-                {
-                    addressStack[stackSize].address = node.ChildrenByteAddress[i];
-                    addressStack[stackSize].parentIndex = stackIndex;
-                    stackSize++;
-                }
-            }
-            else // IS LEAF
-            {
-                //for (uint i = 0; i < node.nrOfTris; i++)
-                //{
-                //    Triangle temp = GetTriangle(triangleAddress, i);
-                //    float tTemp;
-                //    float3 biTemp;
-                //    if (RayIntersectTriangle(temp, ray, origin, tTemp, biTemp))
-                //    {
-                //        biCoord = float3(0, 1, 0);
-                //    }
-                //}
-                biCoord = float3(0, 1, 0);
-                stackSize--;
-            }
-			
-        }
-		else
-        {
-            stackSize--;
-        }
-
-		if (stackSize > 0)
-        {
-            uint backLevel = GetNode(addressStack[stackSize - 1].address, triangleAddress).level;
-            if (backLevel != currentLevel)
-            {
-                stackSize--;
-            }
-        }
-
-    }
-	
-    return true;
+    LeafStack tmp = e1;
+    e1 = e2;
+    e2 = tmp;
 }
 
-bool GetClosestTriangle2(in float3 ray, in float3 origin, inout Triangle tri, inout float3 biCoord)
+void SortLeafStack(in uint stackSize, inout LeafStack ls[256])
 {
-    tri = TriangleBuffer[0];
-    biCoord = float3(1, 0, 0);
-	
-    Stack addressStack[1024];
-    int stackSize = 0;
-    uint nodeAddress = 0;
-    uint triangleAddress = 0;
+    bool swapped = true;
 
-    float t = 9999.0f;
-    float triT = 9999.0f;
-
-    bool triFound = false;
-
-    TreeNode node = GetNode(nodeAddress, triangleAddress);
-
-    addressStack[stackSize].address = nodeAddress;
-    addressStack[stackSize].parentIndex = 0;
-    stackSize++;
-
-    uint counter = 0;
-	
-    while (stackSize > 0 && counter < 256 && !triFound)
+    for (uint i = 0; i < stackSize - 1 && swapped; i++)
     {
-        counter++;
-        uint currentStackIndex = stackSize - 1;
-        node = GetNode(addressStack[currentStackIndex].address, triangleAddress);
+        swapped = false;
 
-        if (RayIntersectAABB(node.min, node.max, ray, origin, t))
+        for (uint j = 0; j < stackSize - i - 1; j++)
         {
-            if (node.nrOfChildren > 0)
+            if (ls[j].t > ls[j + 1].t)
             {
-                for (uint i = 0; i < node.nrOfChildren; i++)
-                {
-                    uint dummy;
-                    TreeNode child = GetNode(node.ChildrenByteAddress[i], dummy);
-                    addressStack[stackSize].address = child.byteStart;
-                    addressStack[stackSize].parentIndex = currentStackIndex;
-                    stackSize++;
-                }
-            }
-            else if (node.nrOfTris > 0)
-            {
-                
-				biCoord = float3(0, 1, 0);
-                for (uint i = 0; i < node.nrOfTris; i++)
-                {
-                    Triangle triTemp = GetTriangle(triangleAddress, i);
-                    float tTemp;
-                    float3 biCoordTemp;
-                    if (RayIntersectTriangle(triTemp, ray, origin, tTemp, biCoordTemp) && tTemp < triT)
-                    {
-                        tri = triTemp;
-                        biCoord = biCoordTemp;
-                        triT = tTemp;
-                        triFound = true;
-                    }
-
-                }
-            }
-        }
-		else
-        {
-            uint currentLevel = node.level;
-            stackSize--;
-            if (stackSize > 0)
-            {
-                uint dummy;
-                uint backLevel = GetNode(addressStack[stackSize - 1].address, dummy).level;
-
-                if (currentLevel != backLevel)
-                {
-                    stackSize--;
-                }
+                SwapLeafStackElement(ls[j], ls[j + 1]);
+                swapped = true;
             }
         }
     }
-    return true;
 }
 
 bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out float3 biCoord, out float3 intersectionPoint)
@@ -490,10 +271,10 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
     biCoord = float3(0, 0, 0);
     tri = (Triangle)0;
 
-    AddressStack    nodeStack[1024];
+    AddressStack    nodeStack[256];
     uint            nodeStackSize = 0;
 
-    LeafStack       leafStack[1024];
+    LeafStack       leafStack[256];
     uint            leafStackSize = 0;
 
     uint            triangleAddress = 0;
@@ -512,7 +293,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
         nodeStackSize++;
         while (nodeStackSize > 0)
         {
-            biCoord = float3(0, 1, 0);
             uint currentNode = nodeStackSize - 1;
             node = GetNode(nodeStack[currentNode].address, triangleAddress);
             if (nodeStack[currentNode].targetChildren < node.nrOfChildren)
@@ -525,6 +305,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
                         leafStack[leafStackSize].t = aabbT;
                         leafStack[leafStackSize].nrOfTriangles = child.nrOfTris;
                         leafStack[leafStackSize].triangleAddress = triangleAddress;
+                        leafStack[leafStackSize].address = child.byteStart;
                         leafStackSize++;
                     }
                     else
@@ -542,8 +323,31 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
         }
     }
 
-    return true;
-    //return triangleHit;
+    
+    //SortLeafStack(leafStackSize, leafStack);
+
+    float triangleT = 9999.0f;
+    float tempTriangleT = 9999.0f;
+    float3 tempBi = float3(0, 0, 0);
+
+
+    for (uint stackIterator = 0; stackIterator < leafStackSize; stackIterator++)
+    {
+        for (uint triIterator = 0; triIterator < leafStack[stackIterator].nrOfTriangles; triIterator++)
+        {
+            Triangle currentTri = GetTriangle(leafStack[stackIterator].triangleAddress, triIterator);
+            if (RayIntersectTriangle(currentTri, ray, origin, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
+            {
+                tri = currentTri;
+                biCoord = tempBi;
+                triangleT = tempTriangleT;
+                triangleHit = true;
+            }
+
+        }
+    }
+
+    return triangleHit;
 }
 
 
@@ -566,60 +370,11 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     uint dummy;
     uint address = 0;
-
-    //TreeNode ass;
-    //ass = GetNode(address, dummy);
-
-    //ass = GetNode(ass.ChildrenByteAddress[0], dummy);
-
-    //ass = GetNode(ass.ChildrenByteAddress[0], dummy);
-
-    //ass = GetNode(ass.ChildrenByteAddress[1], dummy);
-
-    //outputTexture[pixelLocation] = float4(ass.byteSize, ass.byteStart, ass.level, ass.nrOfTris);
-
-    //return;
-
+    
     if (TraceTriangle(rayWorld.xyz, startPosWorld.xyz, tri, uvw, intersectionPoint))
     {
         float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
         float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
         outputTexture[pixelLocation] = float4(uvw,1);
     }
-
-
- //   BounceRay(rayWorld, startPosWorld, intersectionPoint, tri, hit, uvw, index);
-	
- //   if (hit)
- //   {
- //       float4 e1 = tri.v1.pos - tri.v0.pos;
- //       float4 e2 = tri.v2.pos - tri.v0.pos;
-
- //       float3 normal = normalize(cross(e1.xyz, e2.xyz));
- //       float4 newRay = float4(normalize(rayWorld.xyz - (2.0f * (normal * (dot(rayWorld.xyz, normal))))), 0.0f);
- //       float4 newStartPos = float4(intersectionPoint, 1.0f);
-
- //       float2 uv;
-        
- //       if (index % 2 == 0)
- //           uv = tri.v0.uv * uvw.z + tri.v1.uv * uvw.y + tri.v2.uv * uvw.x;
- //       else
- //           uv = tri.v0.uv * uvw.z + tri.v1.uv * uvw.x + tri.v2.uv * uvw.y;
-	////
- //   //float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
- //   //outputTexture[pixelLocation] = color;
-	////
- //   //return;
-
- //       BounceRay(newRay, newStartPos, intersectionPoint, tri, hit, uvw, index);
-
- //       if (hit)
- //       {
- //           float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
- //           float4 color = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), 0);
- //           outputTexture[pixelLocation] = color;
-        
- //       }
-
- //   }
 }
