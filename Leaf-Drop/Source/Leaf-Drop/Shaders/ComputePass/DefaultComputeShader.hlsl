@@ -306,7 +306,7 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
 
     float tTemp = f * dot(e2.xyz, q);
 
-    if (tTemp > 0.1f)
+    if (tTemp > EPSILON)
     {
         t = tTemp;
         biCoord.y = u;
@@ -424,7 +424,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
 [numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
 {
-    float4 finalColor = float4(0, 0, 0, 1);
+    float4 finalColor = float4(1, 1, 1, 1);
 	
     uint2 pixelLocation = RayStencil[threadID.x].pixelCoord;
     float3 fragmentWorld = RayStencil[threadID.x].startPos;
@@ -442,11 +442,12 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float strenght = 1.0f;
 
-    
+    bool hit = false;
     for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
+            hit = true;
             float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
      
             float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
@@ -455,7 +456,6 @@ void main (uint3 threadID : SV_DispatchThreadID)
             strenght -= 1.0f - metall.r;
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
-            
 
             for (uint i = 0; i < LightValues.x; i++)
             {
@@ -466,5 +466,5 @@ void main (uint3 threadID : SV_DispatchThreadID)
             ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
         }
     }
-    outputTexture[pixelLocation] = saturate(finalColor);
+        outputTexture[pixelLocation] = saturate(finalColor);
 }
