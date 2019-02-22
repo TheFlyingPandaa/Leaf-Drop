@@ -768,6 +768,9 @@
     <ClInclude Include="Source\Leaf-Drop\Passes\PrePass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Objects\OcTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -966,6 +969,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Passes\PrePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Objects\OcTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

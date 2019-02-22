@@ -662,4 +662,5 @@ void CoreRender::_Clear()
 	m_computePass->Clear();
 	//Sleep(10);
 	m_deferredPass->Clear();
+	m_prePass->Clear();
 }

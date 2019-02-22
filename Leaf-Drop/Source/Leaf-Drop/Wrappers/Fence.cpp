@@ -38,6 +38,8 @@ HRESULT Fence::WaitForFinnishExecution()
 
 	HRESULT hr = 0;
 
+
+	// TODO :: wait for queue (->wait());
 	if (SUCCEEDED(hr = m_ptrCommandQueue->Signal(m_fence[frameIndex], m_fenceValue[frameIndex])))
 	{
 		if (m_fence[frameIndex]->GetCompletedValue() < m_fenceValue[frameIndex])

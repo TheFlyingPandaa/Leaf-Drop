@@ -18,12 +18,12 @@ public:
 	void Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
 	void BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
 	
-	void SetData(void * data, UINT size, UINT offset = 0);
+	void SetData(void * data, UINT size, UINT offset = 0, const BOOL & forceAllBuffers = false);
 
 	void Release() override;
 private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
-	void * m_data = nullptr;
+	//void * m_data = nullptr;
 	UINT m_size = NULL;
 	SIZE_T m_descriptorHeapOffset = 0;
 	CBV_TYPE m_type;

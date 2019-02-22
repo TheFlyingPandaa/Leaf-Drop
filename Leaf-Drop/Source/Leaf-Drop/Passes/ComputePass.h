@@ -2,6 +2,7 @@
 #include "Template/IRender.h"
 #include "../Wrappers/ShaderResource.h"
 #include "../Wrappers/Fence.h"
+#include "../Objects/OcTree.h"
 
 class ComputePass : public IRender
 {
@@ -56,6 +57,7 @@ private:
 	UAV * m_counterStencil = nullptr;
 
 	ConstantBuffer m_meshTriangles;
+	ConstantBuffer m_ocTreeBuffer;
 
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
@@ -75,6 +77,7 @@ private:
 
 	};
 
+	OcTree m_ocTree;
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
 

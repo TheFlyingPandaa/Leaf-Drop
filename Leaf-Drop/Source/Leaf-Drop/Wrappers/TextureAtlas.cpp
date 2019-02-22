@@ -60,7 +60,7 @@ HRESULT TextureAtlas::Init(const std::wstring & name, const UINT& width, const U
 			srvDesc.Texture2DArray.MostDetailedMip = 0;
 		}
 
-		m_descriptorHeapOffset = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
+		m_descriptorHeapOffset = (UINT)m_coreRender->GetCurrentResourceIndex() * (UINT)m_coreRender->GetResourceDescriptorHeapSize();
 		const D3D12_CPU_DESCRIPTOR_HANDLE handle =
 		{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
 

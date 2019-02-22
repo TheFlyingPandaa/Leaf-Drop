@@ -132,10 +132,18 @@ void ConstantBuffer::BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCo
 	}
 }
 
-void ConstantBuffer::SetData(void * data, UINT size, UINT offset)
+void ConstantBuffer::SetData(void * data, UINT size, UINT offset, const BOOL & forceAllBuffers)
 {
 	const UINT currentFrame = m_coreRender->GetFrameIndex();
-	memcpy(m_resource_GPU_Location[currentFrame] + offset, data, size);
+	if (forceAllBuffers)
+	{
+		for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+		{
+			memcpy(m_resource_GPU_Location[i] + offset, data, size);
+		}
+	}
+	else
+		memcpy(m_resource_GPU_Location[currentFrame] + offset, data, size);
 }
 
 void ConstantBuffer::Release()
@@ -144,5 +152,4 @@ void ConstantBuffer::Release()
 	{
 		SAFE_RELEASE(m_resource[i]);
 	}
-	m_data = nullptr;
 }

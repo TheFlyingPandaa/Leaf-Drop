@@ -44,9 +44,9 @@ void PrePass::Update()
 	int counter = 0;
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
 	{
-		for (size_t k = 0; k < p_drawQueue[i].ObjectData.size(); k++)
+		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
 		{
-			auto world = p_drawQueue[i].ObjectData[k];
+			auto world = p_drawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 	}
@@ -87,7 +87,7 @@ void PrePass::Draw()
 	{
 		StaticMesh * m = p_drawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].ObjectData.size(), 0, 0);
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].DrawableObjectData.size(), 0, 0);
 	}
 
 	ExecuteCommandList();
@@ -136,7 +136,7 @@ HRESULT PrePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(DirectX::XMFLOAT4X4), L"PrePass Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(DirectX::XMFLOAT4X4))))
+	if (FAILED(hr = m_worldMatrices.Init(MAX_OBJECTS * sizeof(IRender::InstanceGroup::ObjectDataStruct), L"PrePass Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(IRender::InstanceGroup::ObjectDataStruct))))
 	{
 		return hr;
 	}
