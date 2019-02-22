@@ -24,6 +24,10 @@ public:
 	virtual void Release() = 0;
 	void Clear();
 
+	void UpdateThread();
+	void ThreadJoin();
+	void KillThread();
+
 	HRESULT OpenCommandList(ID3D12PipelineState * pipelineSate = nullptr);
 	HRESULT ExecuteCommandList();
 protected:
@@ -63,6 +67,12 @@ protected:
 	
 	HRESULT p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LIST_TYPE listType = D3D12_COMMAND_LIST_TYPE_DIRECT);
 	void p_ReleaseCommandList();
-	
+private:
+	bool m_threadRunning;
+	bool m_threadDone;
+	std::thread m_thread;
+private:
+	void _UpdateThread();
+
 };
 

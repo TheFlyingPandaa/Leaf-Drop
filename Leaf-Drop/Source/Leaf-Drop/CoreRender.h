@@ -52,7 +52,7 @@ public:
 
 	void ClearGPU();
 
-	void SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList);
+	void SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const;
 
 private:
 

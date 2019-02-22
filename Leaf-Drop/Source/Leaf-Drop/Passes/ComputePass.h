@@ -32,6 +32,8 @@ private:
 
 	HRESULT _ExecuteCommandList();
 
+	void _SetLightData();
+
 private:
 	struct RAY_BOX
 	{
@@ -62,8 +64,23 @@ private:
 
 	Fence m_fence;
 
-	OcTree m_ocTree;
+	struct LIGHT_VALUES
+	{
+		DirectX::XMUINT4 Type;
+		DirectX::XMFLOAT4 Position;
+		DirectX::XMFLOAT4 Color;
+		union
+		{
+			DirectX::XMFLOAT4 Direction;
+			DirectX::XMFLOAT4 Point;
+		};
 
+	};
+
+	OcTree m_ocTree;
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
+
+	UAV m_lightUav;
+	ConstantBuffer m_lightsBuffer;
 };

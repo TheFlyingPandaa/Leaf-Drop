@@ -8,6 +8,39 @@ void IRender::Clear()
 	p_lightQueue.clear();
 }
 
+void IRender::UpdateThread()
+{
+	if (m_threadDone && m_threadRunning && m_thread.get_id() != std::thread::id())
+	{
+		m_threadDone = false;
+	}
+	else
+	{
+		if (m_thread.get_id() == std::thread::id())
+		{
+			m_threadRunning = true;
+			m_thread = std::thread(&IRender::_UpdateThread, this);
+		}
+		m_threadDone = false;
+	}
+}
+
+#pragma optimize( "", off )
+void IRender::ThreadJoin()
+{
+	while (!m_threadDone);
+}
+#pragma optimize( "", on )
+
+void IRender::KillThread()
+{
+	m_threadRunning = false;
+	if (m_thread.get_id() != std::thread::id())
+	{
+		m_thread.join();
+	}
+}
+
 HRESULT IRender::OpenCommandList(ID3D12PipelineState * pipelineSate)
 {
 	HRESULT hr = 0;	
@@ -40,6 +73,9 @@ IRender::IRender()
 {
 	p_coreRender = CoreRender::GetInstance();
 	p_window = Window::GetInstance();
+
+	m_threadDone = false;
+	m_threadRunning = false;
 }
 
 void IRender::p_ReleaseCommandList()
@@ -49,6 +85,24 @@ void IRender::p_ReleaseCommandList()
 		SAFE_RELEASE(p_commandList[i]);
 		SAFE_RELEASE(p_commandAllocator[i]);
 	}
+}
+
+void IRender::_UpdateThread()
+{
+	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL))
+	{
+		PRINT("FAILED TO SET PRIORITY LEVEL OF THREAD \n");
+	}
+	while (m_threadRunning)
+	{
+		if (!m_threadDone)
+		{
+			this->Update();
+			this->Draw();
+			m_threadDone = true;
+		}
+	}
+	m_threadRunning = false;
 }
 
 HRESULT IRender::p_CreateCommandList(const std::wstring & name, D3D12_COMMAND_LIST_TYPE listType)
