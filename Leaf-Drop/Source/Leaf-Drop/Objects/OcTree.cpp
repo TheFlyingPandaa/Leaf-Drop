@@ -71,7 +71,7 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 		m_totalTreeByteSize += m_ocTree[i].byteSize;
 	}
 
-	std::ofstream stream;
+	/*std::ofstream stream;
 	stream.open("OcTree test.txt");
 
 	UINT c = 0;
@@ -82,7 +82,7 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 
 	}
 
-	stream.close();
+	stream.close();*/
 
 	int breakMe = 0;
 }

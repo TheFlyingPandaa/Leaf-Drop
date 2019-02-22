@@ -236,7 +236,6 @@ struct LeafStack
     float t;
     uint triangleAddress;
     uint nrOfTriangles;
-    uint address;
 };
 
 void SwapLeafStackElement(inout LeafStack e1, inout LeafStack e2)
@@ -305,7 +304,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
                         leafStack[leafStackSize].t = aabbT;
                         leafStack[leafStackSize].nrOfTriangles = child.nrOfTris;
                         leafStack[leafStackSize].triangleAddress = triangleAddress;
-                        leafStack[leafStackSize].address = child.byteStart;
                         leafStackSize++;
                     }
                     else
