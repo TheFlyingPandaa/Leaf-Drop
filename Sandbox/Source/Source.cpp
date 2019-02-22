@@ -63,9 +63,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		t[1].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_normal.bmp");
 		t[2].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_metallic.bmp");
 
-		//t[0].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_diffuse.bmp");
-		//t[1].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_normal.bmp");
-		//t[2].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_metallic.bmp");
+		Texture * t2 = new Texture[3];
+		t2[0].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_diffuseOriginal.bmp");
+		t2[1].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_normal.bmp");
+		t2[2].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_metallic.bmp");
+
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
@@ -100,9 +102,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
-			d[i].SetTexture(&t[0]);
-			d[i].SetNormal(&t[1]);
-			d[i].SetMetallic(&t[2]);
+			d[i].SetTexture(&t2[0]);
+			d[i].SetNormal(&t2[1]);
+			d[i].SetMetallic(&t2[2]);
+
 			d[i].SetMesh(m);
 		
 			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
@@ -116,9 +119,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetScale(10,10,10);
 		}
 
-		d[0].SetPosition(5, 0, 0);
-		d[1].SetPosition(-5, 0, 0);
-		d[0].SetScale(2, 2, 2);
+		d[0].SetPosition(10, 0, 0);
+		d[1].SetPosition(-10, 0, 0);
+		d[0].SetScale(10, 10, 10);
 		d[1].SetScale(2, 2, 2);
 
 		float rot = 0;
@@ -137,7 +140,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		DirectionalLight light;
 		light.SetDirection(1, -1, 0);
-		light.SetIntensity(0.2f);
+		light.SetIntensity(0.5f);
 		while (core->Running())
 		{
 			POINT mp = wnd->GetMousePosition();
@@ -228,8 +231,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		for (UINT i = 0; i < 3; i++)
 		{
 			t->Release();
+			t2->Release();
 		}
 		delete[] t;
+		delete[] t2;
 		delete[] d;
 		delete[] pointLight;
 	}

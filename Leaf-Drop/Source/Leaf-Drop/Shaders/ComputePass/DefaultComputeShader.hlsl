@@ -440,21 +440,31 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float4 specular;
 
-    if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
+    float strenght = 1.0f;
+
+    
+    for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
-        float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
-     
-        float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
-        float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), 0);
-        float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
-        
-        float4 finalColor = float4(0, 0, 0, 0);
-        for (uint i = 0; i < LightValues.x; i++)
+        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
-            finalColor += LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal.xyz, 0), metall, specular);
-        }       
+            float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
+     
+            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
+            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), 0);
+            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
+            strenght -= 1.0f - metall.r;
+        
+            float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
+            
 
-        outputTexture[pixelLocation] = saturate(finalColor);
+            for (uint i = 0; i < LightValues.x; i++)
+            {
+                finalColor *= LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal.xyz, 0), metall, specular) * strenght;
+            }
+            finalColor += ambient;
+            fragmentWorld = intersectionPoint;
+            ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
+        }
     }
-
+    outputTexture[pixelLocation] = saturate(finalColor);
 }

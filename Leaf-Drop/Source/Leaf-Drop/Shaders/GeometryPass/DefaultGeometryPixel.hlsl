@@ -50,7 +50,7 @@ PS_OUTPUT main(VS_OUTPUT input)
 
 	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
-    bool CastRay = output.metallic.r > 0.999;
+    bool CastRay = output.metallic.r > 0.15;
 
    
 	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);

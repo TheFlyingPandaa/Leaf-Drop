@@ -112,7 +112,7 @@ void ComputePass::Draw()
 				}
 			}
 		}
-		m_ocTree.BuildTree(triangles, 4u, 256u);
+		m_ocTree.BuildTree(triangles, 3u, 256u);
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 
