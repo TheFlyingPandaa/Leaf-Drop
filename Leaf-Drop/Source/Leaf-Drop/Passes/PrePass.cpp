@@ -40,6 +40,10 @@ void PrePass::Update()
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = p_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+
+	const SIZE_T resourceSize = p_coreRender->GetResourceDescriptorHeapSize();
+
 	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
@@ -51,6 +55,12 @@ void PrePass::Update()
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 	}
+
+	p_coreRender->GetDevice()->CopyDescriptorsSimple(1, 
+		{handle.ptr + resourceSize},
+		m_worldMatrices.GetHandle(), 
+		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
 	Camera * cam = Camera::GetActiveCamera();

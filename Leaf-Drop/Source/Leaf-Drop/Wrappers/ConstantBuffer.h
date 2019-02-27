@@ -21,6 +21,8 @@ public:
 	void SetData(void * data, UINT size, UINT offset = 0, const BOOL & forceAllBuffers = false);
 
 	void Release() override;
+
+	const D3D12_CPU_DESCRIPTOR_HANDLE GetHandle () const;
 private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
 	//void * m_data = nullptr;

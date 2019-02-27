@@ -34,7 +34,6 @@ public:
 	ID3D12DescriptorHeap * GetCPUDescriptorHeap() const;
 	ID3D12CommandQueue * GetCopyQueue() const;
 	
-	
 	const UINT & GetRTVDescriptorHeapSize() const;
 
 	const UINT & GetFrameIndex() const;

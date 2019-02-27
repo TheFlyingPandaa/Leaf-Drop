@@ -153,3 +153,8 @@ void ConstantBuffer::Release()
 		SAFE_RELEASE(m_resource[i]);
 	}
 }
+
+const D3D12_CPU_DESCRIPTOR_HANDLE ConstantBuffer::GetHandle() const
+{
+	return {m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset};
+}
