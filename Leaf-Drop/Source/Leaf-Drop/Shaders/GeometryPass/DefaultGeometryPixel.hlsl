@@ -48,10 +48,11 @@ PS_OUTPUT main(VS_OUTPUT input)
 	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
     bool CastRay = output.metallic.r > 0.15;
-    
-    uint2 rayStencilIndex = uint2(input.position.xy);
 
-    uint accessIndex = rayStencilIndex.x + rayStencilIndex.y * WIDTH;
+    
+    uint2 rayStencilIndex = uint2(input.position.xy / RAY_DIV);
+
+    uint accessIndex = rayStencilIndex.x + rayStencilIndex.y * RAY_WIDTH;
 
     RayStencil[accessIndex].startPos =  input.worldPosition.xyz;
     RayStencil[accessIndex].normal =    input.normal.xyz;

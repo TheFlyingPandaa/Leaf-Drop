@@ -1,7 +1,5 @@
 #pragma once
-//#include <EASTL/vector.h>
 #include <vector>
-
 
 class CoreRender;
 class Window;

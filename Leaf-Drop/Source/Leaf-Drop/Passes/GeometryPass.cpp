@@ -76,7 +76,7 @@ HRESULT GeometryPass::Init()
 
 	Window * wnd = Window::GetInstance();
 	POINT p = wnd->GetWindowSize();
-	UINT elements = (p.x * p.y);
+	UINT elements = ((p.x / SCREEN_DIV) * (p.y / SCREEN_DIV));
 
 	struct RAY_STRUCT
 	{
@@ -90,12 +90,7 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
-	m_counterStencil = new UAV();
-	if (FAILED(hr = m_counterStencil->Init(L"Counter", sizeof(UINT), 1, sizeof(UINT))))
-	{
-		return hr;
-	}
-
+	
 	m_ptrAtlas = TextureAtlas::GetInstance();
 
 	return hr;
@@ -171,7 +166,6 @@ void GeometryPass::Update()
 
 
 	m_rayStencil->Clear(commandList);
-	m_counterStencil->Clear(commandList);
 
 	m_rayStencil->Bind(RAY_STENCIL, commandList);
 }
@@ -204,9 +198,8 @@ void GeometryPass::Draw()
 	m_fence.WaitForFinnishExecution();
 
 	m_rayStencil->prevFrame = frameIndex;
-	m_counterStencil->prevFrame = frameIndex;
-
-	p_coreRender->GetComputePass()->SetRayData(m_rayStencil, m_counterStencil);
+	
+	p_coreRender->GetComputePass()->SetRayData(m_rayStencil);
 
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 	p_coreRender->GetComputePass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
@@ -217,8 +210,6 @@ void GeometryPass::Release()
 	p_ReleaseCommandList();
 	m_rayStencil->Release();
 	SAFE_DELETE(m_rayStencil);
-	m_counterStencil->Release();
-	SAFE_DELETE(m_counterStencil);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
 		m_renderTarget[i]->Release();
@@ -322,12 +313,12 @@ HRESULT GeometryPass::_InitShader()
 	m_vertexShader.pShaderBytecode = blob->GetBufferPointer();
 	m_vertexShader.BytecodeLength = blob->GetBufferSize();
 
-	std::string Wid(std::to_string(p_window->GetWindowSize().x));
-	std::string Hei(std::to_string(p_window->GetWindowSize().y));
+	std::string Wid(std::to_string(p_window->GetWindowSize().x / SCREEN_DIV));
+	std::string DIV(std::to_string(SCREEN_DIV));
 
 	D3D_SHADER_MACRO def[] = {
-		"WIDTH",		Wid.c_str(),
-		"HEIGHT",		Hei.c_str(),
+		"RAY_WIDTH",	Wid.c_str(),
+		"RAY_DIV",		DIV.c_str(),
 		NULL,NULL};
 
 	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1", def)))

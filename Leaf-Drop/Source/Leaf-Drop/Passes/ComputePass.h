@@ -20,7 +20,7 @@ public:
 	void Clear();
 
 	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
-	void SetRayData(UAV * rayStencil, UAV * counterStencil);
+	void SetRayData(UAV * rayStencil);
 
 private:
 	HRESULT _Init();
@@ -54,7 +54,6 @@ private:
 
 	UINT8 m_computeIndex = 0;
 	UAV * m_rayStencil = nullptr;
-	UAV * m_counterStencil = nullptr;
 
 	ConstantBuffer m_meshTriangles;
 	ConstantBuffer m_ocTreeBuffer;

@@ -130,17 +130,8 @@ void ComputePass::Draw()
 		}
 	}
 
-
-
 	p_drawQueue.clear();
-
-	UINT * rayCounter = nullptr;
-
-	if (FAILED(m_counterStencil->Read(rayCounter)))
-		return;
-	m_counterStencil->Unmap();
-
-
+	
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
 
@@ -153,16 +144,11 @@ void ComputePass::Draw()
 	data.viewerPos.z = camPos.z;
 	data.viewerPos.w = 1.0f;
 
-	data.info.x = windowSize.x;
-	data.info.y = windowSize.y;
+	data.info.x = windowSize.x / SCREEN_DIV;
+	data.info.y = windowSize.y / SCREEN_DIV;
 	data.info.z = (UINT)triangles.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
-
-	/*UINT c = 0;
-	if (rayCounter)
-		c = rayCounter[0];
-*/
 
 	OpenCommandList(m_pipelineState);
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
@@ -185,7 +171,7 @@ void ComputePass::Draw()
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
-	p_commandList[frameIndex]->Dispatch(windowSize.x, windowSize.y, 1);
+	p_commandList[frameIndex]->Dispatch(data.info.x, data.info.y, 1);
 
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 
@@ -223,10 +209,9 @@ void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UI
 	m_geometryRenderTargets = renderTargets;
 }
 
-void ComputePass::SetRayData(UAV * rayStencil, UAV * counterStencil)
+void ComputePass::SetRayData(UAV * rayStencil)
 {
 	m_rayStencil = rayStencil;
-	m_counterStencil = counterStencil;
 }
 
 HRESULT ComputePass::_Init()
@@ -255,7 +240,9 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 	
-	if (FAILED(hr = m_rayTexture.Init(L"RayTexture", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT)))
+	auto size = p_window->GetWindowSize();
+
+	if (FAILED(hr = m_rayTexture.Init(L"RayTexture", size.x / SCREEN_DIV, size.y / SCREEN_DIV, 1, DXGI_FORMAT_R32G32B32A32_FLOAT)))
 	{
 		return hr;
 	}

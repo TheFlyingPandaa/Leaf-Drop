@@ -58,4 +58,4 @@ inline void* __cdecl operator new[](size_t size, size_t alignment, size_t alignm
 
 
 
-	
+	#define SCREEN_DIV 4

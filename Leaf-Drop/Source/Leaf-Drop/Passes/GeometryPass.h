@@ -49,7 +49,6 @@ private:
 	ConstantBuffer m_textureIndex;
 
 	UAV * m_rayStencil;
-	UAV * m_counterStencil;
 
 	GpuTimer m_timer;
 

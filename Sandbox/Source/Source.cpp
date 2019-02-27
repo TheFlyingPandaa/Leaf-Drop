@@ -2,6 +2,8 @@
 #include <Core.h>
 #include "Leaf-Drop/Objects/Lights/DirectionalLight.h"
 #include "Leaf-Drop/Objects/Lights/PointLight.h"
+#include <algorithm>
+
 
 #if _DEBUG
 
@@ -34,25 +36,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
 		Camera cam;
-		Camera camArr[10];
-
-		for (int i = 0; i < 10; i++)
-		{
-			camArr[i].CreateProjectionMatrix(0.01f, 1000.0f);
-			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-
-			camArr[i].SetPosition(x, y, z);
-
-			x = (FLOAT)(rand() % 500) * (rand() % 2 ? 1 : -1);
-			y = (FLOAT)(rand() % 500) * (rand() % 2 ? 1 : -1);
-			z = (FLOAT)(rand() % 500) * (rand() % 2 ? 1 : -1);
-
-			camArr[i].SetDirection(x, y, z);
-
-		}
-
+		
 		cam.CreateProjectionMatrix(0.01f, 1000.0f);
 		cam.SetPosition(0, 0, 0);
 		cam.SetAsActiveCamera();
@@ -71,10 +55,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 10;
-		const UINT NUMBER_OF_LIGHTS = 25;
+		const UINT NUMBER_OF_DRAWABLES = 100;
+		const UINT NUMBER_OF_LIGHTS = 100;
 		const UINT MAX_DISTANCE = 10;
-		const UINT MAX_LIGHT_DISTANCE = 25;
+		const UINT MAX_LIGHT_DISTANCE = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
@@ -98,7 +82,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		}
 		
-		Drawable * d = new Drawable[NUMBER_OF_DRAWABLES];
+		std::vector<Drawable> d(NUMBER_OF_DRAWABLES);
 		
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
@@ -210,6 +194,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 			rot += 1.0f * (FLOAT)dt;
 
+			std::sort(d.begin(), d.end(), [](const Drawable & a, const Drawable & b) {
+				DirectX::XMFLOAT4 position = Camera::GetActiveCamera()->GetPosition();
+				DirectX::XMVECTOR camPos = DirectX::XMLoadFloat4(&position);
+
+
+				DirectX::XMFLOAT4 aPos = a.GetPosition();
+				DirectX::XMFLOAT4 bPos = b.GetPosition();
+
+				float aL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&aPos), camPos)));
+				float bL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&bPos), camPos)));
+
+				return aL > bL;
+			});
+
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
 				d[i].Update();
@@ -238,7 +236,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		}
 		delete[] t;
 		delete[] t2;
-		delete[] d;
 		delete[] pointLight;
 	}
 	core->Release();

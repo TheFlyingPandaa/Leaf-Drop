@@ -43,7 +43,9 @@ HRESULT DeferredPass::Init()
 	const UINT bufferSize = 1024 * 64;
 	const UINT elementSize = sizeof(LIGHT_VALUES);
 
-	if (FAILED(hr = m_rayTexture.Init(L"DeferredRay", 0, 0, 1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
+	auto size = p_window->GetWindowSize();
+
+	if (FAILED(hr = m_rayTexture.Init(L"DeferredRay", size.x / SCREEN_DIV, size.y / SCREEN_DIV, 1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
 	{
 		return hr;
 	}
