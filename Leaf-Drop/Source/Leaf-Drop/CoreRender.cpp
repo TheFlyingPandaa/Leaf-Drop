@@ -30,11 +30,11 @@ namespace DEBUG
 		return E_FAIL;
 	}
 }
+
 CoreRender::CoreRender()
 {
 
 }
-
 
 CoreRender::~CoreRender()
 {
@@ -118,6 +118,16 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
+	if (FAILED(hr = _CreateCPUDescriptorHeap()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
+	if (FAILED(hr = _CreateCopyQueue()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
 	m_prePass = new PrePass();
 	if (FAILED(hr = m_prePass->Init()))
 	{
@@ -167,10 +177,11 @@ void CoreRender::Release()
 	SAFE_RELEASE(m_commandQueue);
 	SAFE_RELEASE(m_rtvDescriptorHeap);
 	SAFE_RELEASE(m_resourceDescriptorHeap);
-	
+	SAFE_RELEASE(m_copyQueue);
 	
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
+		SAFE_RELEASE(m_cpuDescriptorHeap[i]);
 		SAFE_RELEASE(m_commandAllocator[i]);
 		SAFE_RELEASE(m_renderTargets[i]);
 		SAFE_RELEASE(m_fence[i]);
@@ -217,6 +228,16 @@ IDXGISwapChain3 * CoreRender::GetSwapChain() const
 ID3D12DescriptorHeap * CoreRender::GetRTVDescriptorHeap() const
 {
 	return m_rtvDescriptorHeap;
+}
+
+ID3D12DescriptorHeap * CoreRender::GetCPUDescriptorHeap() const
+{
+	return m_cpuDescriptorHeap[m_frameIndex];
+}
+
+ID3D12CommandQueue * CoreRender::GetCopyQueue() const
+{
+	return m_copyQueue;
 }
 
 const UINT & CoreRender::GetRTVDescriptorHeapSize() const
@@ -385,38 +406,17 @@ HRESULT CoreRender::_UpdatePipeline()
 
 		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
-
-
-	/*const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = 
-		{ m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart().ptr + 
-		m_frameIndex * 
-		m_rtvDescriptorSize };
-
-	m_commandList[m_frameIndex]->OMSetRenderTargets(1, &rtvHandle, NULL, nullptr);
-	static float clearColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
-	m_commandList[m_frameIndex]->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);*/
-
-	//m_prePass->Update();
-	//m_prePass->Draw();
-
 	m_prePass->UpdateThread();
 	m_prePass->ThreadJoin();
 
-	//m_geometryPass->Update();
-	//m_geometryPass->Draw();
-
 	m_geometryPass->UpdateThread();
 	m_geometryPass->ThreadJoin();
-
-	//m_computePass->Update();
-	//m_computePass->Draw();
 
 	m_computePass->UpdateThread();
 	m_computePass->ThreadJoin();
 
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
-
 
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
@@ -654,6 +654,37 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 
 
 	return hr;
+}
+
+HRESULT CoreRender::_CreateCPUDescriptorHeap()
+{
+	HRESULT hr = 0;
+
+	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	heapDesc.NumDescriptors = MAX_DESCRIPTOR_HEAP_SIZE;
+
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_cpuDescriptorHeap[i]))))
+			return hr;
+	}
+
+	
+
+	return hr;
+}
+
+HRESULT CoreRender::_CreateCopyQueue()
+{
+	D3D12_COMMAND_QUEUE_DESC desc {};
+	desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+	desc.NodeMask = 0;
+	desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+	desc.Type = D3D12_COMMAND_LIST_TYPE_COPY;
+
+	return m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_copyQueue));
 }
 
 void CoreRender::_Clear()

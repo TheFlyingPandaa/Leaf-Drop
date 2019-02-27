@@ -31,6 +31,10 @@ public:
 	ID3D12GraphicsCommandList *const* GetCommandList() const;
 	IDXGISwapChain3 * GetSwapChain() const;
 	ID3D12DescriptorHeap * GetRTVDescriptorHeap() const;
+	ID3D12DescriptorHeap * GetCPUDescriptorHeap() const;
+	ID3D12CommandQueue * GetCopyQueue() const;
+	
+	
 	const UINT & GetRTVDescriptorHeapSize() const;
 
 	const UINT & GetFrameIndex() const;
@@ -60,6 +64,9 @@ private:
 	IDXGISwapChain3 *			m_swapChain = nullptr;
 	ID3D12CommandQueue *		m_commandQueue = nullptr;
 	ID3D12DescriptorHeap *		m_rtvDescriptorHeap = nullptr;
+
+	ID3D12DescriptorHeap *		m_cpuDescriptorHeap[FRAME_BUFFER_COUNT] = { nullptr };
+	ID3D12CommandQueue	*		m_copyQueue = nullptr;
 
 	ID3D12DescriptorHeap *		m_resourceDescriptorHeap = nullptr;
 	SIZE_T						m_currentResourceIndex = 0;
@@ -96,6 +103,8 @@ private:
 	HRESULT _CreateCommandList();
 	HRESULT _CreateFenceAndFenceEvent();
 	HRESULT _CreateResourceDescriptorHeap();
+	HRESULT _CreateCPUDescriptorHeap();
+	HRESULT _CreateCopyQueue();
 
 	void _Clear();
 

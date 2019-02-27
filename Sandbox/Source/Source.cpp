@@ -182,8 +182,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				moveDir.z *= (FLOAT)dt;
 
 				cam.Translate(moveDir, false);
-
-
 			}
 
 			if (wnd->IsKeyPressed(Input::ESCAPE))
@@ -193,20 +191,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			light.Queue();
 		
 			rot += 1.0f * (FLOAT)dt;
-
-			/*std::sort(d.begin(), d.end(), [](const Drawable & a, const Drawable & b) {
-				DirectX::XMFLOAT4 position = Camera::GetActiveCamera()->GetPosition();
-				DirectX::XMVECTOR camPos = DirectX::XMLoadFloat4(&position);
-
-
-				DirectX::XMFLOAT4 aPos = a.GetPosition();
-				DirectX::XMFLOAT4 bPos = b.GetPosition();
-
-				float aL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&aPos), camPos)));
-				float bL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&bPos), camPos)));
-
-				return aL < bL;
-			});*/
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
