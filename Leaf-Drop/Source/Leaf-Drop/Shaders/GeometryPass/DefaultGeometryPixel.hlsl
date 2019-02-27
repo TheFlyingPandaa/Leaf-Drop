@@ -1,12 +1,20 @@
+struct RAY_STRUCT
+{
+    float3 startPos;
+    float3 normal;
+    bool dispatch;
+};
+
 SamplerState defaultSampler : register(s0);
-SamplerComparisonState depthSampler : register(s1);
 
-Texture2DArray textureAtlas : register(t0);
+Texture2DArray textureAtlas : register(t0, space1);
 
-cbuffer TextureIndex : register(b0)
+cbuffer TextureIndex : register(b1)
 {
 	uint4 index;
 }
+
+RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
 
 struct VS_OUTPUT
 {
@@ -29,21 +37,6 @@ struct PS_OUTPUT
 	float4 metallic	: SV_TARGET3;
 };
 
-//RWStructuredBuffer<int> RayStencil : register(u0);
-
-struct RAY_STRUCT
-{
-	float3	startPos;
-    float3  normal;
-	//uint2	pixelCoord;
-    bool    dispatch;
-};
-
-RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
-RWStructuredBuffer<uint> CounterStencil : register(u1);
-
-Texture2D depthBuffer : register(t0, space1);
-
 PS_OUTPUT main(VS_OUTPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT)0;
@@ -61,7 +54,7 @@ PS_OUTPUT main(VS_OUTPUT input)
     uint accessIndex = rayStencilIndex.x + rayStencilIndex.y * WIDTH;
 
     RayStencil[accessIndex].startPos =  input.worldPosition.xyz;
-    RayStencil[accessIndex].normal =    output.normal.xyz;
+    RayStencil[accessIndex].normal =    input.normal.xyz;
     RayStencil[accessIndex].dispatch =  CastRay;
     
 	return output;

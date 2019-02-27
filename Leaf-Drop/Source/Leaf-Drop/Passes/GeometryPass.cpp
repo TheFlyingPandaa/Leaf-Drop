@@ -14,8 +14,7 @@
 #define RAY_STENCIL		2
 #define TEXTURE_TABLE	3
 #define TEXTURE_INDEX	4
-#define COUNTER_STENCIL	5
-#define DEPTH			6
+
 
 struct UINT4
 {
@@ -134,9 +133,6 @@ void GeometryPass::Update()
 	//m_depthBuffer.Clear(commandList);
 	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_ptrDepthPreBuffer->GetHandle());
 	
-	
-
-	
 	commandList->SetPipelineState(m_pipelineState);
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 	commandList->RSSetViewports(1, &m_viewport);
@@ -178,9 +174,6 @@ void GeometryPass::Update()
 	m_counterStencil->Clear(commandList);
 
 	m_rayStencil->Bind(RAY_STENCIL, commandList);
-	m_counterStencil->Bind(COUNTER_STENCIL, commandList);
-
-	m_ptrDepthPreBuffer->Bind(DEPTH, commandList);
 }
 
 void GeometryPass::Draw()
@@ -254,44 +247,36 @@ UAV * GeometryPass::GetUAV()
 	return nullptr;
 }
 
-HRESULT GeometryPass::_InitRootSignature()
+_declspec(noinline) HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[7];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
 
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
-	{
-		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-		rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
-	}
+	
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
+	rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 
 	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
-	rootParameters[COUNTER_STENCIL].InitAsUnorderedAccessView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
-
-	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
-
-	{
-		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
-		rootParameters[DEPTH].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
-	}
+	
+	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
-	CD3DX12_STATIC_SAMPLER_DESC depthSampler = CD3DX12_STATIC_SAMPLER_DESC(1, D3D12_FILTER_COMPARISON_ANISOTROPIC, D3D12_TEXTURE_ADDRESS_MODE_BORDER, D3D12_TEXTURE_ADDRESS_MODE_BORDER, D3D12_TEXTURE_ADDRESS_MODE_BORDER);
 
-
-	D3D12_STATIC_SAMPLER_DESC samplers [] = { samplerDesc  , depthSampler};
+	D3D12_STATIC_SAMPLER_DESC samplers [] = { samplerDesc};
 
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
 		rootParameters,
-		2,
+		_countof(samplers),
 		samplers,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
 		//D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
@@ -302,10 +287,11 @@ HRESULT GeometryPass::_InitRootSignature()
 	);
 
 	ID3DBlob * signature = nullptr;
+	ID3DBlob * error = nullptr;
 	if (SUCCEEDED(hr = D3D12SerializeRootSignature(&rootSignatureDesc.Desc_1_0,
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		&signature,
-		nullptr)))
+		&error)))
 	{
 		if (FAILED(hr = p_coreRender->GetDevice()->CreateRootSignature(
 			0,
@@ -316,7 +302,11 @@ HRESULT GeometryPass::_InitRootSignature()
 			SAFE_RELEASE(m_rootSignature);
 		}
 	}
-
+	if (error)
+	{
+		OutputDebugStringA(static_cast<char*>(error->GetBufferPointer()));
+		SAFE_RELEASE(error);
+	}
 	return hr;
 }
 
@@ -334,14 +324,10 @@ HRESULT GeometryPass::_InitShader()
 
 	std::string Wid(std::to_string(p_window->GetWindowSize().x));
 	std::string Hei(std::to_string(p_window->GetWindowSize().y));
-	std::string Wid_div(std::to_string(p_window->GetWindowSize().x / 32));
-	std::string Hei_div(std::to_string(p_window->GetWindowSize().y / 32));
 
 	D3D_SHADER_MACRO def[] = {
 		"WIDTH",		Wid.c_str(),
 		"HEIGHT",		Hei.c_str(),
-		"WIDTH_DIV",	Wid_div.c_str(),
-		"HEIGHT_DIV",	Hei_div.c_str(),
 		NULL,NULL};
 
 	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\GeometryPass\\DefaultGeometryPixel.hlsl", blob, "ps_5_1", def)))
@@ -353,7 +339,7 @@ HRESULT GeometryPass::_InitShader()
 	return hr;
 }
 
-HRESULT GeometryPass::_InitPipelineState()
+_declspec(noinline) HRESULT GeometryPass::_InitPipelineState()
 {
 	HRESULT hr = 0;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =

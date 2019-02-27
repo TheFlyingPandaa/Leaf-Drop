@@ -124,6 +124,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		d[0].SetScale(10, 10, 10);
 		d[1].SetScale(2, 2, 2);
 
+		d[2].SetPosition(0,-6,0);
+		d[2].SetScale(100,1,100);
+
 		float rot = 0;
 		timer.Start();
 

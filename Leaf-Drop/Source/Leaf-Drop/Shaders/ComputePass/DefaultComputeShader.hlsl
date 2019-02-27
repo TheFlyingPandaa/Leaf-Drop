@@ -219,7 +219,7 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
 
     float tTemp = f * dot(e2.xyz, q);
 
-    if (tTemp > EPSILON)
+    if (tTemp > 0.02f)
     {
         t = tTemp;
         biCoord.y = u;
@@ -313,7 +313,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
     float tempTriangleT = 9999.0f;
     float3 tempBi = float3(0, 0, 0);
 
-
     for (uint stackIterator = 0; stackIterator < leafStackSize; stackIterator++)
     {
         for (uint triIterator = 0; triIterator < leafStack[stackIterator].nrOfTriangles; triIterator++)
@@ -326,13 +325,16 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
                 triangleT = tempTriangleT;
                 triangleHit = true;
             }
-
         }
     }
 
     return triangleHit;
 }
 
+#define MAX_MIP 13
+#define MIN_MIP 0
+#define MIN_MIP_DIST 25
+#define MAX_MIP_DIST 500
 
 [numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
@@ -359,15 +361,23 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float strenght = 1.0f;
 
+    float distToCamera = length(fragmentWorld - ViewerPosition.xyz);
+
     for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
+
+            distToCamera += length(fragmentWorld - intersectionPoint);
+            float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));
+
+            float finalMip = mip * (MAX_MIP - MIN_MIP);
+
             float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
      
-            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), 0);
-            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), 0);
-            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), 0);
+            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), finalMip);
+            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), finalMip);
+            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), finalMip);
             strenght -= 1.0f - metall.r;
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;

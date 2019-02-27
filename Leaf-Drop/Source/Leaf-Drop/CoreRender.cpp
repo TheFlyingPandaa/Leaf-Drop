@@ -64,12 +64,12 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 #ifdef _DEBUG
+#endif
 	if (FAILED(hr = D3D12GetDebugInterface(IID_PPV_ARGS(&m_debugLayer))))
 	{		
 		return DEBUG::CreateError(hr);
 	}
 	m_debugLayer->EnableDebugLayer();
-#endif
 
 	if (FAILED(hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&m_device))))
 	{
