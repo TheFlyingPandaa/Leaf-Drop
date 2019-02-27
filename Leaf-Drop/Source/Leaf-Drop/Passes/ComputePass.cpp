@@ -159,9 +159,11 @@ void ComputePass::Draw()
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
-	UINT c = 0;
+	/*UINT c = 0;
 	if (rayCounter)
 		c = rayCounter[0];
+*/
+
 	OpenCommandList(m_pipelineState);
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
@@ -171,8 +173,6 @@ void ComputePass::Draw()
 	m_lightsBuffer.BindComputeShader(LIGHT_BUFFER, p_commandList[frameIndex]);
 
 	m_rayTexture.Clear(p_commandList[frameIndex]);
-
-
 
 	m_squareIndex.SetData(&data, sizeof(data));
 	m_squareIndex.BindComputeShader(RAY_SQUARE_INDEX, p_commandList[frameIndex]);
@@ -185,8 +185,7 @@ void ComputePass::Draw()
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
-
-	p_commandList[frameIndex]->Dispatch(*rayCounter, 1, 1);
+	p_commandList[frameIndex]->Dispatch(windowSize.x, windowSize.y, 1);
 
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 

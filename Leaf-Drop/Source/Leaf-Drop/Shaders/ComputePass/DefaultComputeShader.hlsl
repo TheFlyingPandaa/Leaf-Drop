@@ -20,7 +20,8 @@ struct RAY_STRUCT
 {
     float3 startPos;
     float3 normal;
-    uint2 pixelCoord;
+    //uint2 pixelCoord;
+    bool dispatch;
 };
 
 
@@ -338,9 +339,14 @@ void main (uint3 threadID : SV_DispatchThreadID)
 {
     float4 finalColor = float4(0, 0, 0, 1);
 	
-    uint2 pixelLocation = RayStencil[threadID.x].pixelCoord;
-    float3 fragmentWorld = RayStencil[threadID.x].startPos;
-    float3 fragmentNormal = RayStencil[threadID.x].normal;
+    uint rayStencilIndex = threadID.x + threadID.y * Info.x;
+    
+    uint2 pixelLocation =   uint2(threadID.xy);
+    
+    if (!RayStencil[rayStencilIndex].dispatch) return; // Can this be improved?
+
+    float3 fragmentWorld =  RayStencil[rayStencilIndex].startPos;
+    float3 fragmentNormal = RayStencil[rayStencilIndex].normal;
 
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
     ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));

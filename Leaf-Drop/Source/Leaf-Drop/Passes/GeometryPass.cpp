@@ -81,9 +81,9 @@ HRESULT GeometryPass::Init()
 
 	struct RAY_STRUCT
 	{
-		DirectX::XMFLOAT3 startPos;
-		DirectX::XMFLOAT3 normal;
-		DirectX::XMUINT2 pixelPos;
+		DirectX::XMFLOAT3	startPos;
+		DirectX::XMFLOAT3	normal;
+		bool				dispatch;
 	};
 
 	m_rayStencil = new UAV();
