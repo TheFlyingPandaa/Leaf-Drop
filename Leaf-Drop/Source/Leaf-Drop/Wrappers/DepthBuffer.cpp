@@ -70,6 +70,8 @@ HRESULT DepthBuffer::Init(const std::wstring & name, const UINT & width, const U
 				&depthOptimizedClearValue,
 				IID_PPV_ARGS(&m_depthBuffer[i]))))
 			{
+				m_states[i] = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+
 				if (asTexture)
 				{
 
@@ -95,15 +97,16 @@ HRESULT DepthBuffer::Init(const std::wstring & name, const UINT & width, const U
 						srvDesc.Texture2DArray.MostDetailedMip = 0;
 					}
 
-					m_offset = coreRender->GetCurrentResourceIndex() * coreRender->GetResourceDescriptorHeapSize();
+					m_offset[i] = coreRender->GetCurrentResourceIndex() * coreRender->GetResourceDescriptorHeapSize();
 
-					const D3D12_CPU_DESCRIPTOR_HANDLE handle = { coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_offset };
+					const D3D12_CPU_DESCRIPTOR_HANDLE handle = { coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_offset[i] };
 
 
 					coreRender->GetDevice()->CreateShaderResourceView(
 						m_depthBuffer[i],
 						&srvDesc,
 						handle);
+					coreRender->IterateResourceIndex();
 
 				}
 
@@ -126,7 +129,11 @@ void DepthBuffer::Clear(ID3D12GraphicsCommandList * commandList)
 
 void DepthBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList)
 {
+	const CoreRender * cr = CoreRender::GetInstance();
+	const UINT frameIndex = cr->GetFrameIndex();
 
+
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, { cr->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_offset[frameIndex] });
 }
 
 const D3D12_CPU_DESCRIPTOR_HANDLE DepthBuffer::GetHandle() const
@@ -141,12 +148,18 @@ const UINT & DepthBuffer::GetArraySize() const
 
 void DepthBuffer::SwapToDSV(ID3D12GraphicsCommandList * commandList)
 {
-
+	const UINT frameIndex = CoreRender::GetInstance()->GetFrameIndex();
+	if (m_states[frameIndex] == D3D12_RESOURCE_STATE_DEPTH_READ)
+		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_depthBuffer[frameIndex], D3D12_RESOURCE_STATE_DEPTH_READ, D3D12_RESOURCE_STATE_DEPTH_WRITE));
+	m_states[frameIndex] = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 }
 
 void DepthBuffer::SwapToSRV(ID3D12GraphicsCommandList * commandList)
 {
-
+	const UINT frameIndex = CoreRender::GetInstance()->GetFrameIndex();
+	if (m_states[frameIndex] == D3D12_RESOURCE_STATE_DEPTH_WRITE)
+		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_depthBuffer[frameIndex], D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_DEPTH_READ));
+	m_states[frameIndex] = D3D12_RESOURCE_STATE_DEPTH_READ;
 }
 
 void DepthBuffer::Release()

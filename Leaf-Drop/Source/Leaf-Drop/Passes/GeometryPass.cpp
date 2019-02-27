@@ -15,6 +15,7 @@
 #define TEXTURE_TABLE	3
 #define TEXTURE_INDEX	4
 #define COUNTER_STENCIL	5
+#define DEPTH			6
 
 struct UINT4
 {
@@ -130,9 +131,11 @@ void GeometryPass::Update()
 
 	}
 
+	//m_depthBuffer.Clear(commandList);
 	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_ptrDepthPreBuffer->GetHandle());
 	
-	m_depthBuffer.Clear(commandList);
+	
+
 	
 	commandList->SetPipelineState(m_pipelineState);
 	commandList->SetGraphicsRootSignature(m_rootSignature);
@@ -176,6 +179,8 @@ void GeometryPass::Update()
 
 	m_rayStencil->Bind(RAY_STENCIL, commandList);
 	m_counterStencil->Bind(COUNTER_STENCIL, commandList);
+
+	m_ptrDepthPreBuffer->Bind(DEPTH, commandList);
 }
 
 void GeometryPass::Draw()
@@ -253,8 +258,7 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
-	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0);
+	CD3DX12_ROOT_PARAMETER1 rootParameters[7];
 
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 	{
@@ -269,16 +273,26 @@ HRESULT GeometryPass::_InitRootSignature()
 	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[COUNTER_STENCIL].InitAsUnorderedAccessView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
-	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(0,0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+
+	{
+		D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
+		rootParameters[DEPTH].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	}
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+
+	CD3DX12_STATIC_SAMPLER_DESC depthSampler = CD3DX12_STATIC_SAMPLER_DESC(1, D3D12_FILTER_COMPARISON_ANISOTROPIC, D3D12_TEXTURE_ADDRESS_MODE_BORDER, D3D12_TEXTURE_ADDRESS_MODE_BORDER, D3D12_TEXTURE_ADDRESS_MODE_BORDER);
+
+
+	D3D12_STATIC_SAMPLER_DESC samplers [] = { samplerDesc  , depthSampler};
 
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
 		rootParameters,
-		1,
-		&samplerDesc,
+		2,
+		samplers,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
 		//D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
@@ -389,8 +403,8 @@ HRESULT GeometryPass::_InitPipelineState()
 	depthDesc.StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
 	depthDesc.StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;
 
-	depthDesc.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_ALWAYS;
-	depthDesc.BackFace.StencilFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	depthDesc.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_LESS;
+	depthDesc.BackFace.StencilFunc = D3D12_COMPARISON_FUNC_LESS;
 
 	depthDesc.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
 	depthDesc.BackFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
@@ -404,6 +418,7 @@ HRESULT GeometryPass::_InitPipelineState()
 	graphicsPipelineStateDesc.DepthStencilState = depthDesc;
 	
 	graphicsPipelineStateDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+	
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
 	DXGI_SWAP_CHAIN_DESC desc;

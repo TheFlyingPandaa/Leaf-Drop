@@ -40,7 +40,7 @@ VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	output.worldPosition =	mul(input.position, ObjectBuffer[instanceID].WorldMatrix);
 	output.position =		mul(output.worldPosition, ViewProj);
-
+       
 	output.normal =			normalize(mul(input.normal, ObjectBuffer[instanceID].WorldMatrix));
 	output.tangent =		input.tangent;
 	output.biTangent =		input.biTangent;

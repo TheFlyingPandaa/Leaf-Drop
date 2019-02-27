@@ -40,6 +40,7 @@ void PrePass::Update()
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 
+	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
 	for (size_t i = 0; i < p_drawQueue.size(); i++)
@@ -89,6 +90,9 @@ void PrePass::Draw()
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].DrawableObjectData.size(), 0, 0);
 	}
+
+	m_depthBuffer.SwapToSRV(commandList);
+
 
 	ExecuteCommandList();
 
@@ -144,7 +148,7 @@ HRESULT PrePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_depthBuffer.Init(L"PrePass")))
+	if (FAILED(hr = m_depthBuffer.Init(L"PrePass",0,0,1,TRUE)))
 	{
 		return hr;
 	}

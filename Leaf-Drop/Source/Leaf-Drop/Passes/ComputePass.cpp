@@ -84,7 +84,7 @@ void ComputePass::Draw()
 
 
 					DirectX::XMStoreFloat4(&t.v1.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v1.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix)));
+					DirectX::XMStoreFloat4(&t.v1.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v1.normal), worldMatrix)));
 
 					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
 					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
@@ -94,7 +94,7 @@ void ComputePass::Draw()
 
 
 					DirectX::XMStoreFloat4(&t.v2.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v2.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix)));
+					DirectX::XMStoreFloat4(&t.v2.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v2.normal), worldMatrix)));
 
 					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
 					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
@@ -104,7 +104,7 @@ void ComputePass::Draw()
 
 
 					DirectX::XMStoreFloat4(&t.v3.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix)));
+					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.normal), worldMatrix)));
 
 					t.textureIndexStart = 0;
 
@@ -139,6 +139,7 @@ void ComputePass::Draw()
 	if (FAILED(m_counterStencil->Read(rayCounter)))
 		return;
 	m_counterStencil->Unmap();
+
 
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
