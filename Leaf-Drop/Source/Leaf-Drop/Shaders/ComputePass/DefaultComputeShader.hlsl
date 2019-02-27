@@ -258,12 +258,8 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
     biCoord = float3(0, 0, 0);
     tri = (Triangle)0;
 
-    AddressStack    nodeStack[256];
+    AddressStack    nodeStack[8];
     uint            nodeStackSize = 0;
-
-    LeafStack       leafStack[256];
-    uint            leafStackSize = 0;
-
     uint            triangleAddress = 0;
 
     TreeNode        node = GetNode(0, triangleAddress);
@@ -271,7 +267,9 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
     bool triangleHit = false;
     float aabbT = 9999.0f;
 
-    uint counter = 0;
+    float triangleT = 9999.0f;
+    float tempTriangleT = 9999.0f;
+    float3 tempBi = float3(0, 0, 0);
 
     if (RayIntersectAABB(node.min, node.max, ray, origin, aabbT))
     {
@@ -289,10 +287,17 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
                 {
                     if (child.nrOfTris > 0)
                     {
-                        leafStack[leafStackSize].t = aabbT;
-                        leafStack[leafStackSize].nrOfTriangles = child.nrOfTris;
-                        leafStack[leafStackSize].triangleAddress = triangleAddress;
-                        leafStackSize++;
+                        for (uint triIterator = 0; triIterator < child.nrOfTris; triIterator++)
+                        {
+                            Triangle currentTri = GetTriangle(triangleAddress, triIterator);
+                            if (RayIntersectTriangle(currentTri, ray, origin, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
+                            {
+                                tri = currentTri;
+                                biCoord = tempBi;
+                                triangleT = tempTriangleT;
+                                triangleHit = true;
+                            }
+                        }
                     }
                     else
                     {
@@ -305,25 +310,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
             else
             {
                 nodeStackSize--;
-            }
-        }
-    }
-
-    float triangleT = 9999.0f;
-    float tempTriangleT = 9999.0f;
-    float3 tempBi = float3(0, 0, 0);
-
-    for (uint stackIterator = 0; stackIterator < leafStackSize; stackIterator++)
-    {
-        for (uint triIterator = 0; triIterator < leafStack[stackIterator].nrOfTriangles; triIterator++)
-        {
-            Triangle currentTri = GetTriangle(leafStack[stackIterator].triangleAddress, triIterator);
-            if (RayIntersectTriangle(currentTri, ray, origin, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
-            {
-                tri = currentTri;
-                biCoord = tempBi;
-                triangleT = tempTriangleT;
-                triangleHit = true;
             }
         }
     }
@@ -367,7 +353,6 @@ void main (uint3 threadID : SV_DispatchThreadID)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
-
             distToCamera += length(fragmentWorld - intersectionPoint);
             float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));
 

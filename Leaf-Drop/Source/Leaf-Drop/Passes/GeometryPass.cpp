@@ -127,6 +127,7 @@ void GeometryPass::Update()
 
 	//m_depthBuffer.Clear(commandList);
 	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_ptrDepthPreBuffer->GetHandle());
+	//commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, nullptr);
 	
 	commandList->SetPipelineState(m_pipelineState);
 	commandList->SetGraphicsRootSignature(m_rootSignature);
@@ -238,7 +239,7 @@ UAV * GeometryPass::GetUAV()
 	return nullptr;
 }
 
-_declspec(noinline) HRESULT GeometryPass::_InitRootSignature()
+HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
@@ -330,7 +331,7 @@ HRESULT GeometryPass::_InitShader()
 	return hr;
 }
 
-_declspec(noinline) HRESULT GeometryPass::_InitPipelineState()
+HRESULT GeometryPass::_InitPipelineState()
 {
 	HRESULT hr = 0;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =

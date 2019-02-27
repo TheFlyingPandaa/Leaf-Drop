@@ -42,14 +42,13 @@ PS_OUTPUT main(VS_OUTPUT input)
     PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
 	output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x)) * input.color;
-
+    
 	output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 1)).xyz - 1.0f), input.TBN)), 0);
 
 	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
     bool CastRay = output.metallic.r > 0.15;
 
-    
     uint2 rayStencilIndex = uint2(input.position.xy / RAY_DIV);
 
     uint accessIndex = rayStencilIndex.x + rayStencilIndex.y * RAY_WIDTH;

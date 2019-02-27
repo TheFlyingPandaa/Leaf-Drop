@@ -55,7 +55,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 100;
+		const UINT NUMBER_OF_DRAWABLES = 500;
 		const UINT NUMBER_OF_LIGHTS = 100;
 		const UINT MAX_DISTANCE = 10;
 		const UINT MAX_LIGHT_DISTANCE = 100;
@@ -194,7 +194,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 			rot += 1.0f * (FLOAT)dt;
 
-			std::sort(d.begin(), d.end(), [](const Drawable & a, const Drawable & b) {
+			/*std::sort(d.begin(), d.end(), [](const Drawable & a, const Drawable & b) {
 				DirectX::XMFLOAT4 position = Camera::GetActiveCamera()->GetPosition();
 				DirectX::XMVECTOR camPos = DirectX::XMLoadFloat4(&position);
 
@@ -205,8 +205,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				float aL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&aPos), camPos)));
 				float bL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&bPos), camPos)));
 
-				return aL > bL;
-			});
+				return aL < bL;
+			});*/
 
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{

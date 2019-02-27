@@ -1,0 +1,34 @@
+Done and Todo
+
+RayTracing:
+	Done:
+		Skapat Octree på CPU
+		Dunkat Octree upp på GPU (byteBuffer)
+		travarserar, fungerar c:a 25% snabbare
+		mip map på texturer
+	Todo:
+		Fixa ljuskalk
+		* Bindless Models
+		* Separera raytracing från geometry (stefan sa)
+		
+CopyQueue:
+	Done:
+		
+	Todo:
+		* CopyQueue för bindless meshes
+		* Updatera Octree
+		
+Engine
+	Done:
+	
+	Todo:
+		* Fixa fences (lära oss)
+		* Cpu ska ej vänta på Gpu (commandqueue->wait)
+		Tråda Prepass, updatering av bindless mesh och updatering av ocTree
+		Tråda Geometry pass och RayTracing
+		
+Scen
+	Done:
+
+	Todo:
+		En ok scen...
