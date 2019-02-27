@@ -1,4 +1,5 @@
 SamplerState defaultSampler : register(s0);
+SamplerComparisonState depthSampler : register(s1);
 
 Texture2DArray textureAtlas : register(t0);
 
@@ -32,15 +33,19 @@ struct PS_OUTPUT
 
 struct RAY_STRUCT
 {
-	float4	worldPos;
+	float3	startPos;
+    float3  normal;
 	uint2	pixelCoord;
 };
+
 RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
 RWStructuredBuffer<uint> CounterStencil : register(u1);
 
+Texture2D depthBuffer : register(t0, space1);
+
 PS_OUTPUT main(VS_OUTPUT input)
 {
-	PS_OUTPUT output = (PS_OUTPUT)0;
+    PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
 	output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x)) * input.color;
 
@@ -48,21 +53,20 @@ PS_OUTPUT main(VS_OUTPUT input)
 
 	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
 	
-    bool CastRay = output.metallic.r > 0.9;
-	//CastRay = true;
-	//CastRay = true;
-    //CastRay = true;
-	float2 fIndex = float2(0.5f * input.ndc.x + 0.5f, -0.5f * input.ndc.y + 0.5f);
-	int2 index = int2((int)(fIndex.x * (float)WIDTH), (int)(fIndex.y * (float)HEIGHT));
+    bool CastRay = output.metallic.r > 0.15;
 
-    if (CastRay && index.x > -1 && index.x < WIDTH && index.y > -1 && index.y < HEIGHT)
-	{
-		uint accessIndex = 0;
-		//CounterStencil[0] += 1;
-		InterlockedAdd(CounterStencil[0], 1u, accessIndex);
-		RayStencil[accessIndex].pixelCoord = uint2(index);
-		RayStencil[accessIndex].worldPos = input.worldPosition;
-    }
+	int2 index = int2(input.position.xy);
+
+    //bool lol = depthBuffer.SampleCmpLevelZero(depthSampler, input.uv, input.position.z).r > 0 ? true : false;
+    //if (lol)
+    //{
+        uint accessIndex = 0;
+        InterlockedAdd(CounterStencil[0], 1u, accessIndex);
+        RayStencil[accessIndex].pixelCoord = uint2(index);
+        RayStencil[accessIndex].startPos = input.worldPosition.xyz;
+        RayStencil[accessIndex].normal = output.normal.xyz;
+    //}
+    
 
 
  

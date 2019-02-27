@@ -22,11 +22,13 @@ private:
 	UINT m_width = 0;
 	UINT m_height = 0;
 	UINT m_arraySize = 1;
-	SIZE_T m_offset = 0;
+	SIZE_T m_offset[FRAME_BUFFER_COUNT] = { 0 };
 	SIZE_T m_incrementalSize = 0;
 
 
 	ID3D12Resource * m_depthBuffer[FRAME_BUFFER_COUNT] = { nullptr };
 	ID3D12DescriptorHeap * m_descriptorHeap = nullptr;
+
+	D3D12_RESOURCE_STATES m_states[FRAME_BUFFER_COUNT] = { 0 };
 
 };

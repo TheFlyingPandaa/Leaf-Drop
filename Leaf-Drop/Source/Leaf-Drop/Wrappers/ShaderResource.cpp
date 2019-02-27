@@ -113,6 +113,14 @@ HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, cons
 
 		SET_NAME(m_clearResource, std::wstring(name + std::wstring(L" shaderResource Clear Resource ")).c_str());
 
+		//D3D12_PLACED_SUBRESOURCE_FOOTPRINT psf;
+		//UINT64 size = 0;
+
+		////CoreRender::GetInstance()->GetDevice()->GetCopyableFootprints(&m_clearResource->GetDesc(), 0, 1, 0, &psf, nullptr, nullptr, &size);
+
+		////memcpy()
+
+
 		cr->IterateResourceIndex();
 	}
 

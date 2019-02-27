@@ -27,15 +27,43 @@ struct PS_INPUT
 	float2 uv : TEXCOORD;
 };
 
+float multiplier(int2 pos, int radius, float centerStregth = 4.0f)
+{
+    float l = length(float2(pos.x, pos.y));
+    return abs(radius - l) * centerStregth;
+}
+
 float4 main(PS_INPUT input) : SV_TARGET
 {
 	float4 worldPos = Position.Sample(defaultSampler, input.uv);
 	float4 normal	= Normal.Sample(defaultSampler, input.uv);
 	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
-	float4 rays		= RayTracing.Sample(defaultSampler, input.uv);
-    return rays;
-	float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
+	//float4 rays2		= RayTracing.Sample(defaultSampler, input.uv);
+    //return rays2;
+    float width, height, element;
+    RayTracing.GetDimensions(0, width, height, element);
+    
+
+    float2 texelSize = float2(1.0f / width, 1.0f / height);
+    int sampleRadius = 3;
+
+    float2 smTex;
+    
+    float4 rays = float4(0, 0, 0, 1);
+    float divider = 1.0f;
+    for (int x = -sampleRadius; x <= sampleRadius; ++x)
+    {
+        for (int y = -sampleRadius; y <= sampleRadius; ++y)
+        {
+            smTex = input.uv + (float2(x, y) * texelSize);
+            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, 0.5);
+            divider += 1.0f;
+        }
+    }
+    rays /= divider;
+    //return rays;
+    float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
 	uint numStructs;
 	uint stride;
@@ -63,6 +91,6 @@ float4 main(PS_INPUT input) : SV_TARGET
 
 	//return float4(rays.a, 0.0f, 0.0f, 1.0f);
 
-    return saturate(finalColor + ambient + float4(rays.rgb, 1.0f));
+    return saturate((finalColor + rays) + ambient);
 	//return saturate(float4(rays.rgb, 1.0f));
 }
