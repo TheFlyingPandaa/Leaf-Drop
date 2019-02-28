@@ -41,6 +41,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
 	//float4 rays2		= RayTracing.Sample(defaultSampler, input.uv);
     //return rays2;
+    //return float4(worldPos);
     float width, height, element;
     RayTracing.GetDimensions(0, width, height, element);
     

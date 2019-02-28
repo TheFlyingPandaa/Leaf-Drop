@@ -176,12 +176,12 @@ void CoreRender::Release()
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
 	SAFE_RELEASE(m_rtvDescriptorHeap);
-	SAFE_RELEASE(m_resourceDescriptorHeap);
+	SAFE_RELEASE(m_cpuDescriptorHeap);
 	SAFE_RELEASE(m_copyQueue);
 	
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
-		SAFE_RELEASE(m_cpuDescriptorHeap[i]);
+		SAFE_RELEASE(m_gpuDescriptorHeap[i]);
 		SAFE_RELEASE(m_commandAllocator[i]);
 		SAFE_RELEASE(m_renderTargets[i]);
 		SAFE_RELEASE(m_fence[i]);
@@ -230,9 +230,9 @@ ID3D12DescriptorHeap * CoreRender::GetRTVDescriptorHeap() const
 	return m_rtvDescriptorHeap;
 }
 
-ID3D12DescriptorHeap * CoreRender::GetCPUDescriptorHeap() const
+ID3D12DescriptorHeap * CoreRender::GetGPUDescriptorHeap() const
 {
-	return m_cpuDescriptorHeap[m_frameIndex];
+	return m_gpuDescriptorHeap[m_frameIndex];
 }
 
 ID3D12CommandQueue * CoreRender::GetCopyQueue() const
@@ -250,9 +250,9 @@ const UINT & CoreRender::GetFrameIndex() const
 	return this->m_frameIndex;
 }
 
-ID3D12DescriptorHeap * CoreRender::GetResourceDescriptorHeap() const
+ID3D12DescriptorHeap * CoreRender::GetCPUDescriptorHeap() const
 {
-	return m_resourceDescriptorHeap;
+	return m_cpuDescriptorHeap;
 }
 
 const SIZE_T & CoreRender::GetCurrentResourceIndex() const
@@ -265,9 +265,9 @@ const SIZE_T & CoreRender::GetResourceDescriptorHeapSize() const
 	return m_resourceDescriptorHeapSize;
 }
 
-void CoreRender::IterateResourceIndex()
+void CoreRender::IterateResourceIndex(const UINT & arraySize)
 {
-	m_currentResourceIndex++;
+	m_currentResourceIndex+= arraySize;
 }
 
 PrePass * CoreRender::GetPrePass() const
@@ -352,8 +352,25 @@ void CoreRender::ClearGPU()
 
 void CoreRender::SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const
 {
-	ID3D12DescriptorHeap * heaps[]{ m_resourceDescriptorHeap };
+	ID3D12DescriptorHeap * heaps[]{ m_gpuDescriptorHeap[m_frameIndex] };
 	commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+}
+
+const SIZE_T & CoreRender::CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HANDLE & handle, const UINT & numDescriptors)
+{
+	m_gpuOffset[m_frameIndex] += m_resourceDescriptorHeapSize * numDescriptors;
+	m_device->CopyDescriptorsSimple(numDescriptors,
+		{ m_gpuDescriptorHeap[m_frameIndex]->GetCPUDescriptorHandleForHeapStart().ptr + m_gpuOffset[m_frameIndex] },
+		handle,
+		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	{
+		if (i != m_frameIndex)
+			m_gpuOffset[i] = 0;
+	}
+	
+	return m_gpuOffset[m_frameIndex];
 }
 
 HRESULT CoreRender::_Flush()
@@ -642,14 +659,17 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 	HRESULT hr = 0;
 
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
-	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	heapDesc.NumDescriptors = MAX_DESCRIPTOR_HEAP_SIZE;
 
-	if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_resourceDescriptorHeap))))
+	if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_cpuDescriptorHeap))))
 		return hr;
 
+	SET_NAME(m_cpuDescriptorHeap, L"CPU DescriptorHeap");
+
 	m_resourceDescriptorHeapSize = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
 
 
 
@@ -661,14 +681,15 @@ HRESULT CoreRender::_CreateCPUDescriptorHeap()
 	HRESULT hr = 0;
 
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
-	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	heapDesc.NumDescriptors = MAX_DESCRIPTOR_HEAP_SIZE;
 
 	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
 	{
-		if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_cpuDescriptorHeap[i]))))
+		if (FAILED(hr = m_device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_gpuDescriptorHeap[i]))))
 			return hr;
+		SET_NAME(m_gpuDescriptorHeap[i], std::wstring(std::wstring(L"GPU DescriptorHeap ") + std::to_wstring(i)).c_str());
 	}
 
 	

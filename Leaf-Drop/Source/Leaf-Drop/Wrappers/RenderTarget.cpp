@@ -141,17 +141,17 @@ HRESULT RenderTarget::Init(const std::wstring & name, const UINT & width, const 
 							srvDesc.Texture2DArray.MostDetailedMip = 0;
 						}
 
-						m_textureDescriptorHeapOffset = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
+						m_textureDescriptorHeapOffset[i] = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
 						const D3D12_CPU_DESCRIPTOR_HANDLE handle = 
-						{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_textureDescriptorHeapOffset };
+						{ m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_textureDescriptorHeapOffset[i] };
 
 						m_coreRender->GetDevice()->CreateShaderResourceView(
 							m_renderTarget[i],
 							&srvDesc,
 							handle
 						);
-
-						m_coreRender->IterateResourceIndex();
+						
+						m_coreRender->IterateResourceIndex(arraySize);
 					}
 				}
 			}
@@ -174,8 +174,12 @@ const UINT & RenderTarget::GetRenderTargetDescriptorHeapSize() const
 
 void RenderTarget::SetGraphicsRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList)
 {
-	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex,
-		{ m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_textureDescriptorHeapOffset });
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	handle.ptr += m_textureDescriptorHeapOffset[m_coreRender->GetFrameIndex()];
+
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle = { m_coreRender->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_coreRender->CopyToGPUDescriptorHeap(handle, m_arraySize) };
+
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, gpuHandle);
 }
 
 ID3D12Resource * RenderTarget::GetResource()

@@ -66,7 +66,7 @@ HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, cons
 		
 			m_descriptorHeapOffset[i] = cr->GetCurrentResourceIndex() * cr->GetResourceDescriptorHeapSize();
 			const D3D12_CPU_DESCRIPTOR_HANDLE handle =
-			{ cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[i] };
+			{ cr->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[i] };
 
 			cr->GetDevice()->CreateShaderResourceView(
 				m_resource[i],
@@ -75,7 +75,7 @@ HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, cons
 
 			SET_NAME(m_resource[i], std::wstring(name + std::wstring(L" shaderResource ") + std::to_wstring(i)).c_str());
 
-			cr->IterateResourceIndex();
+			cr->IterateResourceIndex(arraySize);
 		}
 	}
 	if (SUCCEEDED(hr = cr->GetDevice()->CreateCommittedResource(
@@ -104,7 +104,7 @@ HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, cons
 
 		SIZE_T offset = cr->GetCurrentResourceIndex() * cr->GetResourceDescriptorHeapSize();
 		const D3D12_CPU_DESCRIPTOR_HANDLE handle =
-		{ cr->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset };
+		{ cr->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset };
 
 		cr->GetDevice()->CreateShaderResourceView(
 			m_clearResource,
@@ -121,7 +121,7 @@ HRESULT ShaderResource::Init(const std::wstring & name, const UINT & width, cons
 		////memcpy()
 
 
-		cr->IterateResourceIndex();
+		cr->IterateResourceIndex(arraySize);
 	}
 
 	return hr;
@@ -140,7 +140,12 @@ void ShaderResource::BindComputeShader(const UINT & rootParameterIndex, ID3D12Gr
 	static CoreRender * cr = CoreRender::GetInstance();
 	const UINT currentFrame = cr->GetFrameIndex();
 
-	commandList->SetComputeRootDescriptorTable(rootParameterIndex, {cr->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[currentFrame]});
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = cr->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	handle.ptr += m_descriptorHeapOffset[currentFrame];
+
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle = { cr->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + cr->CopyToGPUDescriptorHeap(handle, m_arraySize) };
+
+	commandList->SetComputeRootDescriptorTable(rootParameterIndex, gpuHandle);
 }
 
 void ShaderResource::BindComputeShaderUAV(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset)

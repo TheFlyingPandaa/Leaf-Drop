@@ -54,11 +54,11 @@ HRESULT UAV::Init(const std::wstring & name, const UINT & bufferSize, const UINT
 
 		m_resourceDescriptorHeapOffset = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
 
-		const D3D12_CPU_DESCRIPTOR_HANDLE handle = { m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_resourceDescriptorHeapOffset };
+		const D3D12_CPU_DESCRIPTOR_HANDLE handle = { m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_resourceDescriptorHeapOffset };
 
 		m_coreRender->GetDevice()->CreateUnorderedAccessView(m_resource[i], nullptr, &unorderedAccessViewDesc, handle);
 
-		m_coreRender->IterateResourceIndex();
+		m_coreRender->IterateResourceIndex(1);
 	}
 	return hr;
 }

@@ -61,7 +61,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 
 			m_descriptorHeapOffset = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
 			const D3D12_CPU_DESCRIPTOR_HANDLE handle =
-			{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
+			{ m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
 
 
 			m_coreRender->GetDevice()->CreateUnorderedAccessView(
@@ -80,7 +80,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 			cbvDesc.SizeInBytes = bufferSize;
 			m_descriptorHeapOffset = m_coreRender->GetCurrentResourceIndex() * m_coreRender->GetResourceDescriptorHeapSize();
 			const D3D12_CPU_DESCRIPTOR_HANDLE handle =
-			{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
+			{ m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
 
 			m_coreRender->GetDevice()->CreateConstantBufferView(
 				&cbvDesc,
@@ -95,7 +95,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 			return hr;
 		}
 
-		m_coreRender->IterateResourceIndex();
+		m_coreRender->IterateResourceIndex(1);
 	}
 
 	return hr;
@@ -156,5 +156,5 @@ void ConstantBuffer::Release()
 
 const D3D12_CPU_DESCRIPTOR_HANDLE ConstantBuffer::GetHandle() const
 {
-	return {m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset};
+	return {m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset};
 }

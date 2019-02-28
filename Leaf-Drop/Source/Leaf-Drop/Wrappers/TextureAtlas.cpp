@@ -62,14 +62,14 @@ HRESULT TextureAtlas::Init(const std::wstring & name, const UINT& width, const U
 
 		m_descriptorHeapOffset = (UINT)m_coreRender->GetCurrentResourceIndex() * (UINT)m_coreRender->GetResourceDescriptorHeapSize();
 		const D3D12_CPU_DESCRIPTOR_HANDLE handle =
-		{ m_coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
+		{ m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
 
 		m_coreRender->GetDevice()->CreateShaderResourceView(
 			m_textureAtlas,
 			&srvDesc,
 			handle);
 
-		m_coreRender->IterateResourceIndex();
+		m_coreRender->IterateResourceIndex(arraySize);
 
 	}
 
@@ -164,18 +164,22 @@ void TextureAtlas::CopySubresource(ID3D12Resource* const* resource, const UINT& 
 void TextureAtlas::SetGraphicsRootDescriptorTable(const UINT& rootParameterIndex,
 	ID3D12GraphicsCommandList* commandList) const
 {
-	D3D12_GPU_DESCRIPTOR_HANDLE handle = m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
-	handle.ptr += m_descriptorHeapOffset;
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	handle.ptr += m_descriptorHeapOffset;	
 
-	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, handle);
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle = { m_coreRender->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_coreRender->CopyToGPUDescriptorHeap(handle, m_arraySize) };
+
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, gpuHandle);
 }
 
 void TextureAtlas::SetMagnusRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList) const
 {
-	D3D12_GPU_DESCRIPTOR_HANDLE handle = m_coreRender->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	handle.ptr += m_descriptorHeapOffset;
 
-	commandList->SetComputeRootDescriptorTable(rootParameterIndex, handle);
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle = { m_coreRender->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_coreRender->CopyToGPUDescriptorHeap(handle, m_arraySize) };
+
+	commandList->SetComputeRootDescriptorTable(rootParameterIndex, gpuHandle);
 }
 
 ID3D12Resource* TextureAtlas::GetResource() const

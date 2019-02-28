@@ -99,14 +99,14 @@ HRESULT DepthBuffer::Init(const std::wstring & name, const UINT & width, const U
 
 					m_offset[i] = coreRender->GetCurrentResourceIndex() * coreRender->GetResourceDescriptorHeapSize();
 
-					const D3D12_CPU_DESCRIPTOR_HANDLE handle = { coreRender->GetResourceDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_offset[i] };
+					const D3D12_CPU_DESCRIPTOR_HANDLE handle = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_offset[i] };
 
 
 					coreRender->GetDevice()->CreateShaderResourceView(
 						m_depthBuffer[i],
 						&srvDesc,
 						handle);
-					coreRender->IterateResourceIndex();
+					coreRender->IterateResourceIndex(arraySize);
 
 				}
 
@@ -133,7 +133,7 @@ void DepthBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * comm
 	const UINT frameIndex = cr->GetFrameIndex();
 
 
-	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, { cr->GetResourceDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_offset[frameIndex] });
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, { cr->GetCPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_offset[frameIndex] });
 }
 
 const D3D12_CPU_DESCRIPTOR_HANDLE DepthBuffer::GetHandle() const

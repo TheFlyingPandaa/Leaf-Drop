@@ -38,7 +38,7 @@ private:
 
 	UINT m_renderTargetDescriptorHeapSize = 0;
 
-	SIZE_T m_textureDescriptorHeapOffset = 0;
+	SIZE_T m_textureDescriptorHeapOffset[FRAME_BUFFER_COUNT] = { 0 };
 
 	Window * m_window = nullptr;
 	CoreRender * m_coreRender = nullptr;
