@@ -12,8 +12,8 @@ struct AABB
 	AABB() {};
 	AABB(const AABB & other)
 	{
-		position = other.position;
-		axis = other.axis;
+		Min = other.Min;
+		Max = other.Max;
 		level = other.level;
 		nrOfChildren = other.nrOfChildren;
 		byteSize = other.byteSize;
@@ -34,8 +34,8 @@ struct AABB
 		if (this != &other)
 		{
 			
-			position = other.position;
-			axis = other.axis;
+			Min = other.Min;
+			Max = other.Max;
 			level = other.level;
 			nrOfChildren = other.nrOfChildren;
 			byteSize = other.byteSize;
@@ -56,8 +56,8 @@ struct AABB
 	std::string ToString()
 	{
 		std::string str = "";
-		str += "Position: " + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z) + "\n";
-		str += "Axis: " + std::to_string(axis.x) + ", " + std::to_string(axis.y) + ", " + std::to_string(axis.z) + "\n";
+		str += "Position: " + std::to_string(Min.x) + ", " + std::to_string(Min.y) + ", " + std::to_string(Min.z) + "\n";
+		str += "Axis: " + std::to_string(Max.x) + ", " + std::to_string(Max.y) + ", " + std::to_string(Max.z) + "\n";
 		str += "Level: " + std::to_string(level) + "\n";
 		str += "nrOfChildren: " + std::to_string(nrOfChildren) + "\n";
 		str += "ChildrenIndices: ";
@@ -95,8 +95,8 @@ struct AABB
 	UINT				byteSize = 0;
 	UINT				byteStart = 0;
 
-	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
+	DirectX::XMFLOAT3	Min = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3	Max = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	
 	UINT				level = 0;
 	UINT				nrOfChildren = 0;
@@ -121,7 +121,7 @@ public:
 
 private:
 	std::vector<AABB>	m_ocTree;
-	std::vector<size_t>	m_leafIndices;
+	std::vector<UINT>	m_leafIndices;
 	UINT				m_leafCounter = 0;
 
 	UINT				m_totalTreeByteSize = 0;
