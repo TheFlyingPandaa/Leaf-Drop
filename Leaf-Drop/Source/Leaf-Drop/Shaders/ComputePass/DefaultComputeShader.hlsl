@@ -257,7 +257,7 @@ bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, 
 bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out float3 biCoord, out float3 intersectionPoint)
 {
     intersectionPoint = float3(0, 0, 0);
-    biCoord = float3(0, 0, 0);
+    biCoord = float3(1, 0, 0);
     tri = (Triangle2)0;
 
     AddressStack    nodeStack[8];
@@ -299,6 +299,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                 uint nrOfTriangles;
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
+                                biCoord = float3(nrOfTriangles, 1, strides);
 
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
@@ -328,6 +329,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
         }
     }
 
+    return true;
     return triangleHit;
 }
 
@@ -346,7 +348,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float3 fragmentNormal = RayStencil[rayStencilIndex].normal;
 
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
-    ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
+    //ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
     float3 intersectionPoint;
     Triangle2 tri;
@@ -362,6 +364,9 @@ void main (uint3 threadID : SV_DispatchThreadID)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
+            outputTexture[pixelLocation] = float4(uvw, 1.0f);
+            return;
+
             distToCamera += length(fragmentWorld - intersectionPoint);
             float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));
 
