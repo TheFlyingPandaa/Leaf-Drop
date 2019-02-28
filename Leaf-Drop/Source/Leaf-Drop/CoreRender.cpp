@@ -364,12 +364,6 @@ const SIZE_T & CoreRender::CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HA
 		handle,
 		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		if (i != m_frameIndex)
-			m_gpuOffset[i] = 0;
-	}
-	
 	return m_gpuOffset[m_frameIndex];
 }
 
@@ -710,6 +704,8 @@ HRESULT CoreRender::_CreateCopyQueue()
 
 void CoreRender::_Clear()
 {
+	memset(m_gpuOffset, 0, FRAME_BUFFER_COUNT * sizeof(SIZE_T));
+
 	m_geometryPass->Clear();
 	m_computePass->Clear();
 	//Sleep(10);

@@ -41,7 +41,7 @@ public:
 	ID3D12DescriptorHeap *	GetCPUDescriptorHeap() const;
 	const SIZE_T &			GetCurrentResourceIndex() const;
 	const SIZE_T &			GetResourceDescriptorHeapSize() const;
-	void					IterateResourceIndex(const UINT & arraySize);
+	void					IterateResourceIndex(const UINT & arraySize = 1);
 
 	PrePass		 * GetPrePass() const;
 	GeometryPass * GetGeometryPass() const;

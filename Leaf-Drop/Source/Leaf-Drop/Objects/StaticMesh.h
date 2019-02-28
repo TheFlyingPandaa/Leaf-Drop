@@ -5,7 +5,9 @@
 #include "../Extern/Extern.h"
 class StaticMesh
 {
-
+public:
+	static const std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> & GetCpuHandles();
+	static void BindCompute(const UINT & rootSignatureIndex, ID3D12GraphicsCommandList * commandList);
 public:
 	StaticMesh();
 	~StaticMesh();
@@ -18,6 +20,8 @@ public:
 
 	void Release();
 
+	
+
 private:
 	UINT m_vertexBufferSize = 0;
 	ID3D12Resource * m_vertexBuffer = nullptr;
@@ -25,5 +29,8 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
 
 	std::vector<STRUCTS::StaticVertex> m_mesh;
+
+	static std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> s_cpuHandles;
+
 };
 

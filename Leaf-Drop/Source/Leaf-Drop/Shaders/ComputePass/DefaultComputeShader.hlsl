@@ -46,6 +46,16 @@ struct TreeNode
 
 StructuredBuffer<Triangle> TriangleBuffer : register(t0);
 StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
+//Plan A
+struct MeshData
+{
+    float4x4 InverseWorld;
+    float3 Min, Max; //Local space
+    uint MeshIndex; //Till Meshes[] 
+};
+
+StructuredBuffer<MeshData> MeshDataBuffer : register(t2);
+StructuredBuffer<Triangle> Meshes[] : register(t3);
 
 cbuffer RAY_BOX : register(b0)
 {

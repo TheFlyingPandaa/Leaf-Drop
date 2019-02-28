@@ -4,6 +4,40 @@
 #include <assimp/scene.h>          
 #include <assimp/postprocess.h>
 
+std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> StaticMesh::s_cpuHandles;
+
+const std::vector<D3D12_CPU_DESCRIPTOR_HANDLE>& StaticMesh::GetCpuHandles()
+{
+	return StaticMesh::s_cpuHandles;
+}
+
+void StaticMesh::BindCompute(const UINT & rootSignatureIndex, ID3D12GraphicsCommandList * commandList)
+{
+	if (s_cpuHandles.empty())
+		return;
+
+	CoreRender * coreRender = CoreRender::GetInstance();
+
+	D3D12_GPU_DESCRIPTOR_HANDLE startHandle;
+
+	for (D3D12_CPU_DESCRIPTOR_HANDLE * i = &s_cpuHandles.front(),
+		*end = &s_cpuHandles.back();
+		i < end; 
+		i++)
+	{
+		if (i == &s_cpuHandles.front())
+			startHandle = { coreRender->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + coreRender->CopyToGPUDescriptorHeap(*i, 1) };
+		else
+			coreRender->CopyToGPUDescriptorHeap(*i, 1);
+	}
+	commandList->SetComputeRootDescriptorTable(rootSignatureIndex, startHandle);
+}
+
+bool operator==(const D3D12_CPU_DESCRIPTOR_HANDLE & a, const D3D12_CPU_DESCRIPTOR_HANDLE & b)
+{
+	return a.ptr == b.ptr;
+}
+
 static DirectX::XMFLOAT4 Convert_Assimp_To_DirectX(const aiVector3D & vec, const float & w = 1.0f)
 {
 	return DirectX::XMFLOAT4(vec.x, vec.y, vec.z, w);
@@ -94,6 +128,22 @@ bool StaticMesh::LoadMesh(const std::string & path)
 				UpdateSubresources(commandList, m_vertexBuffer, m_vertexUploadBuffer, 0, 0, 1, &vertexData);
 
 				commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_vertexBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
+				
+				D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
+				desc.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
+				desc.SizeInBytes = AlignAs256(m_vertexBufferSize);
+
+				D3D12_CPU_DESCRIPTOR_HANDLE hnd;
+				
+				SIZE_T offset = coreRender->GetResourceDescriptorHeapSize() * coreRender->GetCurrentResourceIndex();
+				
+				coreRender->GetDevice()->CreateConstantBufferView(&desc, hnd = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset });
+				
+				if (std::find(s_cpuHandles.begin(), s_cpuHandles.end(), hnd) != s_cpuHandles.end())
+					s_cpuHandles.push_back(hnd);
+
+				coreRender->IterateResourceIndex();
+				
 				commandList->Close();
 				if (SUCCEEDED(coreRender->ExecuteCommandList()))
 				{
