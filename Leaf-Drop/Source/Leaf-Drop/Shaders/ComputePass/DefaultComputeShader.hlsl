@@ -62,8 +62,10 @@ struct AddressStack
 struct MeshData
 {
     float4x4 InverseWorld;
-    float3 Min, Max; //Local space
+    float3 Min; // Local space
+    float3 Max; //Local space
     uint MeshIndex; //Till Meshes[] 
+    uint PADDING; // shit
 };
 
 cbuffer RAY_BOX : register(b0)
@@ -292,8 +294,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                         for (uint objectIterator = 0; objectIterator < child.nrOfObjects; objectIterator++)
                         {
                             MeshData md = GetMeshData(meshIndexAdress, objectIterator);
-                            biCoord = float3(md.Min);
-                            return true;
                             float3 rayLocal = normalize(mul(float4(ray, 0.0f), md.InverseWorld)).xyz;
                             float3 originLocal = mul(float4(origin, 1.0f), md.InverseWorld).xyz;
 
@@ -302,6 +302,8 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                 uint nrOfTriangles;
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
+
+                                biCoord = float3(0, nrOfTriangles, 1);
 
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
@@ -330,7 +332,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
             }
         }
     }
-
     return true;
     return triangleHit;
 }
@@ -350,7 +351,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float3 fragmentNormal = RayStencil[rayStencilIndex].normal;
 
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
-    ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
+    //ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
     float3 intersectionPoint;
     Triangle2 tri;
@@ -362,9 +363,9 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float distToCamera = length(fragmentWorld - ViewerPosition.xyz);
 
-    for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
+    for (uint rayBounce = 0; rayBounce < 1 && strenght > 0.0f; rayBounce++)
     {
-        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
+        if (TraceTriangle(ray, ViewerPosition.xyz, tri, uvw, intersectionPoint))
         {
             outputTexture[pixelLocation] = float4(uvw, 1.0f);
             return;

@@ -114,13 +114,15 @@ public:
 	OcTree();
 	~OcTree();
 
-	void BuildTree(const std::vector<STRUCTS::OctreeValues> & ocVal, UINT treeLevel = 3, UINT worldSize = 1024);
+	void BuildTree(const std::vector<STRUCTS::OctreeValues> & ocVal, UINT treeLevel = 3, UINT worldSize = 1024, UINT startX = 0, UINT startY = 0, UINT startZ = 0);
+	void BuildTree2(const std::vector<STRUCTS::OctreeValues> & ocVal, UINT treeLevel = 3, UINT worldSize = 1024, UINT startX = 0, UINT startY = 0, UINT startZ = 0);
 	const UINT & GetTotalTreeByteSize() const;
 	const std::vector<AABB> & GetTree() const;
 
 private:
 	std::vector<AABB>	m_ocTree;
-	std::vector<size_t>	m_leafIndex;
+	std::vector<size_t>	m_leafIndices;
+	UINT				m_leafCounter = 0;
 
 	UINT				m_totalTreeByteSize = 0;
 	void _BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, const UINT & maxLevel, const UINT & worldSize, const size_t & parentIndex);
@@ -128,5 +130,7 @@ private:
 	bool _inside(const AABB & aabb, const STRUCTS::OctreeValues & colVal);
 	bool _pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point);
 
+	void _CreateAABB(const DirectX::XMFLOAT3 & position, const DirectX::XMFLOAT3 & size, UINT level, bool isLeaf, UINT index);
+	UINT _GetParentIndex(const DirectX::XMFLOAT3 & worldPos, UINT currentLevel, UINT maxLevel);
 };
 

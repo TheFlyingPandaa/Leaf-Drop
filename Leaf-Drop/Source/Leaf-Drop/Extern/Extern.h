@@ -44,8 +44,9 @@ namespace STRUCTS
 	struct OctreeValues
 	{
 		DirectX::XMFLOAT4X4A WorldInverse;
-		DirectX::XMFLOAT3 Min, Max;
-		UINT MeshIndex;
+		DirectX::XMFLOAT3 Min;
+		DirectX::XMFLOAT3 Max;
+		UINT MeshIndex = 0;
 	};
 
 }

@@ -67,23 +67,24 @@ void ComputePass::Draw()
 				octreeValues.push_back(ocv);
 			}
 		}
-		m_ocTree.BuildTree(octreeValues, 3u, 256u);
+		//m_ocTree.BuildTree(octreeValues, 3u, 512);
+		m_ocTree.BuildTree2(octreeValues);
 
 
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 
-		auto tree = m_ocTree.GetTree();
+ 		auto tree = m_ocTree.GetTree();
 		size_t size = tree.size();
 		UINT currentOffset = 0;
 		
 		for (size_t i = 0; i < size; i++)
 		{
-			UINT sizeofTriInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
-			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset, true);
-			currentOffset += tree[i].byteSize - sizeofTriInd;
-			m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofTriInd, currentOffset, true);
-			currentOffset += sizeofTriInd;
+			UINT sizeofMeshInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
+			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofMeshInd, currentOffset, true);
+			currentOffset += tree[i].byteSize - sizeofMeshInd;
+			m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset, true);
+			currentOffset += sizeofMeshInd;
 		}
 	}
 	/*else
@@ -138,6 +139,7 @@ void ComputePass::Draw()
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
 	m_meshData.SetData(octreeValues.data(), (UINT)octreeValues.size() * sizeof(STRUCTS::OctreeValues));
+
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
