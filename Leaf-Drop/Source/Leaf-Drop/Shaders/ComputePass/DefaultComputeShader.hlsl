@@ -292,14 +292,16 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                         for (uint objectIterator = 0; objectIterator < child.nrOfObjects; objectIterator++)
                         {
                             MeshData md = GetMeshData(meshIndexAdress, objectIterator);
+                            biCoord = float3(md.Min);
+                            return true;
                             float3 rayLocal = normalize(mul(float4(ray, 0.0f), md.InverseWorld)).xyz;
                             float3 originLocal = mul(float4(origin, 1.0f), md.InverseWorld).xyz;
+
                             if (RayIntersectAABB(md.Min, md.Max, rayLocal, originLocal, aabbT))
                             {
                                 uint nrOfTriangles;
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
-                                biCoord = float3(nrOfTriangles, 1, strides);
 
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
@@ -348,7 +350,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float3 fragmentNormal = RayStencil[rayStencilIndex].normal;
 
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
-    //ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
+    ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
     float3 intersectionPoint;
     Triangle2 tri;

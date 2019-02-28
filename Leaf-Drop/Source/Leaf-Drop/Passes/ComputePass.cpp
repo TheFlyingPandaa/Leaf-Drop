@@ -86,19 +86,21 @@ void ComputePass::Draw()
 			currentOffset += sizeofTriInd;
 		}
 	}
-
-	int counter = 0;
-	UINT textureCounter = 0;
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	/*else
 	{
-		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
+		int counter = 0;
+		UINT textureCounter = 0;
+		for (size_t i = 0; i < p_drawQueue.size(); i++)
 		{
-			DirectX::XMFLOAT4X4A worldMatrix = p_drawQueue[i].DrawableObjectData[k].WorldMatrix;
-			DirectX::XMStoreFloat4x4A(&worldMatrix, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&worldMatrix)))));
-			m_inverseWorldMatrix.SetData(&worldMatrix, sizeof(worldMatrix), sizeof(worldMatrix) * (counter++));
+			for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
+			{
+				DirectX::XMFLOAT4X4A worldMatrix = p_drawQueue[i].DrawableObjectData[k].WorldMatrix;
+				DirectX::XMStoreFloat4x4A(&worldMatrix, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&worldMatrix)))));
+				m_inverseWorldMatrix.SetData(&worldMatrix, sizeof(worldMatrix), sizeof(worldMatrix) * (counter++));
+			}
 		}
 	}
-
+*/
 
 	p_drawQueue.clear();
 	
