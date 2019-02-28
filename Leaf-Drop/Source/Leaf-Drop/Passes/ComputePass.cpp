@@ -15,6 +15,11 @@
 #define LIGHT_TABLE			5
 #define LIGHT_BUFFER		6
 #define OCTREE				7
+#define INVERSE_WORLD_MAT	8
+#define MESH_ARRAY			9
+
+
+#define MESH_ARRAY_SPACE	3
 
 struct Vertex
 {
@@ -130,6 +135,19 @@ void ComputePass::Draw()
 		}
 	}
 
+	int counter = 0;
+	UINT textureCounter = 0;
+	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	{
+		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
+		{
+			DirectX::XMFLOAT4X4A worldMatrix = p_drawQueue[i].DrawableObjectData[k].WorldMatrix;
+			DirectX::XMStoreFloat4x4A(&worldMatrix, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&worldMatrix)))));
+			m_inverseWorldMatrix.SetData(&worldMatrix, sizeof(worldMatrix), sizeof(worldMatrix) * (counter++));
+		}
+	}
+
+
 	p_drawQueue.clear();
 	
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
@@ -170,6 +188,10 @@ void ComputePass::Draw()
 	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
+
+	m_inverseWorldMatrix.BindComputeShader(INVERSE_WORLD_MAT, p_commandList[frameIndex]);
+
+	StaticMesh::BindCompute(MESH_ARRAY, p_commandList[frameIndex]);
 
 	p_commandList[frameIndex]->Dispatch(data.info.x, data.info.y, 1);
 
@@ -251,6 +273,10 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
+	if (FAILED(hr = m_inverseWorldMatrix.Init(MAX_OBJECTS * sizeof(InstanceGroup::ObjectDataStruct), L"Compute Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(InstanceGroup::ObjectDataStruct))))
+	{
+		return hr;
+	}
 	if (FAILED(hr = m_ocTreeBuffer.Init(4096 * 1024, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
 	{
 		return hr;
@@ -321,17 +347,19 @@ HRESULT ComputePass::_InitRootSignature()
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
+	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 1, MESH_ARRAY_SPACE);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[8];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[10];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
 	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
-
 	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 2);
 	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 2);
+	rootParameters[INVERSE_WORLD_MAT].InitAsShaderResourceView(0, MESH_ARRAY_SPACE);
+	rootParameters[MESH_ARRAY].InitAsDescriptorTable(1, &descRange2);
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);

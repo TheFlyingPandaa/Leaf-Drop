@@ -30,6 +30,8 @@ private:
 
 	std::vector<STRUCTS::StaticVertex> m_mesh;
 
+	ConstantBuffer m_meshBindlessBuffer;
+
 	static std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> s_cpuHandles;
 
 };

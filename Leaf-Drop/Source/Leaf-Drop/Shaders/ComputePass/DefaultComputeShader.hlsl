@@ -16,6 +16,11 @@ struct Triangle
     
 };
 
+struct Triangle2
+{
+    Vertex v[3];
+};
+
 struct RAY_STRUCT
 {
     float3 startPos;
@@ -50,12 +55,12 @@ StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 struct MeshData
 {
     float4x4 InverseWorld;
-    float3 Min, Max; //Local space
-    uint MeshIndex; //Till Meshes[] 
+    //float3 Min, Max; //Local space
+    //uint MeshIndex; //Till Meshes[] 
 };
 
-StructuredBuffer<MeshData> MeshDataBuffer : register(t2);
-StructuredBuffer<Triangle> Meshes[] : register(t3);
+StructuredBuffer<MeshData> MeshDataBuffer : register(t0, space3);
+StructuredBuffer<Triangle2> Meshes[] : register(t1, space3);
 
 cbuffer RAY_BOX : register(b0)
 {
@@ -254,7 +259,6 @@ struct LeafStack
     uint nrOfTriangles;
 };
 
-
 void SwapLeafStackElement(inout LeafStack e1, inout LeafStack e2)
 {
     LeafStack tmp = e1;
@@ -359,6 +363,18 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float distToCamera = length(fragmentWorld - ViewerPosition.xyz);
 
+    //outputTexture[pixelLocation] = float4(1, 1, 1, 1);
+    float4 lol = float4(0,0,0,0);
+    for (uint i = 0; i < 12; i++)
+    {
+        for (uint t = 0; t < 3; t++)
+            lol += abs(Meshes[0][i].v[t].pos) * 100;
+    }
+    outputTexture[pixelLocation] = lol;
+    return;
+
+    //outputTexture[pixelLocation] = abs(MeshDataBuffer[0].InverseWorld._11_12_13_14);
+
     for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
@@ -386,5 +402,8 @@ void main (uint3 threadID : SV_DispatchThreadID)
             ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
         }
     }
+
+
+
     outputTexture[pixelLocation] = saturate(finalColor);
 }

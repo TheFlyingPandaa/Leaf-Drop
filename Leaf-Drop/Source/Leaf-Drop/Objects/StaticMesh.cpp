@@ -22,7 +22,7 @@ void StaticMesh::BindCompute(const UINT & rootSignatureIndex, ID3D12GraphicsComm
 
 	for (D3D12_CPU_DESCRIPTOR_HANDLE * i = &s_cpuHandles.front(),
 		*end = &s_cpuHandles.back();
-		i < end; 
+		i <= end; 
 		i++)
 	{
 		if (i == &s_cpuHandles.front())
@@ -92,9 +92,11 @@ bool StaticMesh::LoadMesh(const std::string & path)
 	CoreRender * coreRender = CoreRender::GetInstance();
 	ID3D12GraphicsCommandList * commandList = coreRender->GetCommandList()[coreRender->GetFrameIndex()];
 	
+
+	
 	if (SUCCEEDED(coreRender->OpenCommandList()))
 	{
-		m_vertexBufferSize = static_cast<UINT>(sizeof(STRUCTS::StaticVertex) * this->m_mesh.size());
+		m_vertexBufferSize = AlignAs256(static_cast<UINT>(sizeof(STRUCTS::StaticVertex) * this->m_mesh.size()));
 
 		if (SUCCEEDED(coreRender->GetDevice()->CreateCommittedResource(
 			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
@@ -129,20 +131,23 @@ bool StaticMesh::LoadMesh(const std::string & path)
 
 				commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_vertexBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
 				
-				D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
+				if (FAILED(m_meshBindlessBuffer.Init(m_vertexBufferSize, std::wstring(std::wstring(L"StaticMesh :") + std::wstring(path.begin(), path.end())).c_str(), ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::StaticVertex))))
+					return false;
+				m_meshBindlessBuffer.SetData(reinterpret_cast<void*>(this->m_mesh.data()), m_vertexBufferSize, 0, true);
+
+				/*D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
 				desc.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
-				desc.SizeInBytes = AlignAs256(m_vertexBufferSize);
+				desc.SizeInBytes = m_vertexBufferSize;
 
 				D3D12_CPU_DESCRIPTOR_HANDLE hnd;
 				
 				SIZE_T offset = coreRender->GetResourceDescriptorHeapSize() * coreRender->GetCurrentResourceIndex();
 				
-				coreRender->GetDevice()->CreateConstantBufferView(&desc, hnd = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset });
+				coreRender->GetDevice()->CreateConstantBufferView(&desc, hnd = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset });*/
 				
-				if (std::find(s_cpuHandles.begin(), s_cpuHandles.end(), hnd) != s_cpuHandles.end())
+				D3D12_CPU_DESCRIPTOR_HANDLE hnd = m_meshBindlessBuffer.GetHandle();
+				if (std::find(s_cpuHandles.begin(), s_cpuHandles.end(), hnd) == s_cpuHandles.end())
 					s_cpuHandles.push_back(hnd);
-
-				coreRender->IterateResourceIndex();
 				
 				commandList->Close();
 				if (SUCCEEDED(coreRender->ExecuteCommandList()))
@@ -178,4 +183,5 @@ void StaticMesh::Release()
 {
 	SAFE_RELEASE(m_vertexBuffer);
 	SAFE_RELEASE(m_vertexUploadBuffer);
+	m_meshBindlessBuffer.Release();
 }

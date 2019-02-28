@@ -80,6 +80,8 @@ private:
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
 
+	ConstantBuffer m_inverseWorldMatrix;
+
 	UAV m_lightUav;
 	ConstantBuffer m_lightsBuffer;
 };
