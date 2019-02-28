@@ -2,7 +2,6 @@
 #include "OcTree.h"
 
 
-
 OcTree::OcTree()
 {
 }
@@ -12,7 +11,7 @@ OcTree::~OcTree()
 {
 }
 
-void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel, UINT worldSize)
+void OcTree::BuildTree(const std::vector<STRUCTS::OctreeValues>& ocVal, UINT treeLevel, UINT worldSize)
 {
 	UINT totalAABB = 0;
 	for (UINT level = 0; level < treeLevel; level++)
@@ -38,19 +37,19 @@ void OcTree::BuildTree(std::vector<STRUCTS::Triangle>& triangles, UINT treeLevel
 
 	_BuildTree(startPos, 0, treeLevel, worldSize, 0);
 
-	size_t triSize = triangles.size();
+	size_t triSize = ocVal.size();
 	size_t leafSize = m_leafIndex.size();
 	for (size_t j = 0; j < leafSize; j++)
 	{
 		size_t index = m_leafIndex[j];
 		for (size_t i = 0; i < triSize; i++)
 		{
-			if (_inside(m_ocTree[index], triangles[i]))
+			if (_inside(m_ocTree[index], ocVal[i]))
 			{
-				m_ocTree[index].triangleIndices.push_back((UINT)i);
+				m_ocTree[index].meshDataIndices.push_back((UINT)i);
 			}
 		}
-		m_ocTree[index].nrOfTriangles = (UINT)m_ocTree[index].triangleIndices.size();
+		m_ocTree[index].nrOfObjects = (UINT)m_ocTree[index].meshDataIndices.size();
 		m_ocTree[index].CalcSize();
 	}
 
@@ -146,7 +145,7 @@ void OcTree::_BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, 
 		{
 			AABB & target = m_ocTree.back();
 			target.nrOfChildren = INCREMENT_LEVEL;
-			
+
 			_BuildTree(aabb.position, level + 1, maxLevel, worldSize, m_ocTree.size() - 1);
 		}
 		else
@@ -154,35 +153,30 @@ void OcTree::_BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, 
 	}	
 }
 
-bool OcTree::_inside(const AABB & aabb, const STRUCTS::Triangle & tri)
+#include <DirectXCollision.h>
+
+bool OcTree::_inside(const AABB & aabb, const STRUCTS::OctreeValues & colVal)
 {
 	using namespace DirectX;
-	XMFLOAT3 min, max, aabbPos, axis;
-	XMFLOAT3 point[3];
-	const STRUCTS::Vertex * v[3] = { &tri.v1, &tri.v2, &tri.v3 };
-
-	for (UINT i = 0; i < 3; i++)
-		memcpy(&point[i], v[i], sizeof(float) * 3);
 	
-	aabbPos		= aabb.position;
-	axis		= aabb.axis;
+	XMVECTOR colMin, colMax;
 
-	min.x = aabbPos.x - axis.x;
-	min.y = aabbPos.y - axis.y;
-	min.z = aabbPos.z - axis.z;
+	colMin = XMLoadFloat3(&colVal.Min);
+	colMax = XMLoadFloat3(&colVal.Max);
 
-	max.x = aabbPos.x + axis.x;
-	max.y = aabbPos.y + axis.y;
-	max.z = aabbPos.z + axis.z;
+	// Turn aabb into localspace of Colval
+	XMMATRIX wInv = XMMatrixTranspose(XMLoadFloat4x4A(&colVal.WorldInverse));
+	XMVECTOR aabbPos = XMVector3TransformCoord(XMLoadFloat3(&aabb.position), wInv);
+	XMVECTOR aabbAxis = XMVector3TransformCoord(XMLoadFloat3(&aabb.axis), wInv);
+	
+	BoundingBox a1, a2;
+	
+	XMStoreFloat3(&a1.Center, aabbPos);
+	XMStoreFloat3(&a1.Extents, aabbAxis);
 
-	bool inside = false;
-	for (int i = 0; i < 3 && !inside; i++)
-	{
-		inside = _pointInside(min, max, point[i]);
-	}
+	BoundingBox::CreateFromPoints(a2, colMin, colMax);
 
-
-	return inside;
+	return a1.Intersects(a2);
 }
 
 bool OcTree::_pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point)

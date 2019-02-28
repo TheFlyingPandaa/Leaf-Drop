@@ -18,24 +18,7 @@
 #define INVERSE_WORLD_MAT	8
 #define MESH_ARRAY			9
 
-
 #define MESH_ARRAY_SPACE	3
-
-struct Vertex
-{
-	DirectX::XMFLOAT4 pos;
-	DirectX::XMFLOAT4 normal;
-	DirectX::XMFLOAT4 tangent;
-	DirectX::XMFLOAT4 bitangent;
-	DirectX::XMFLOAT2 uv;
-};
-
-struct Triangle
-{
-	Vertex v1, v2, v3;
-	UINT textureIndexStart = 0;
-	
-};
 
 ComputePass::ComputePass()
 {
@@ -64,7 +47,7 @@ void ComputePass::Update()
 void ComputePass::Draw()
 {
 	static bool first = true;
-	static std::vector<STRUCTS::Triangle> triangles;
+	static std::vector<STRUCTS::OctreeValues> octreeValues;
 
 	if (first)
 	{
@@ -73,51 +56,20 @@ void ComputePass::Draw()
 		{
 			for (int m = 0; m < p_drawQueue[dq].DrawableObjectData.size(); m++)
 			{
-				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
-				STRUCTS::Triangle t;
-				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
-				{
-					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
-					
-					DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&world));
-
-					t.v1.pos = mesh->GetRawVertices()->at(v).Position;
-					t.v1.normal = mesh->GetRawVertices()->at(v).Normal;
-					t.v1.tangent = mesh->GetRawVertices()->at(v).Tangent;
-					t.v1.bitangent = mesh->GetRawVertices()->at(v).biTangent;
-					t.v1.uv = mesh->GetRawVertices()->at(v).UV;
-
-
-					DirectX::XMStoreFloat4(&t.v1.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v1.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v1.normal), worldMatrix)));
-
-					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
-					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
-					t.v2.tangent = mesh->GetRawVertices()->at(v + 1).Tangent;
-					t.v2.bitangent = mesh->GetRawVertices()->at(v + 1).biTangent;
-					t.v2.uv = mesh->GetRawVertices()->at(v + 1).UV;
-
-
-					DirectX::XMStoreFloat4(&t.v2.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v2.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v2.normal), worldMatrix)));
-
-					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
-					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
-					t.v3.tangent = mesh->GetRawVertices()->at(v + 2).Tangent;
-					t.v3.bitangent = mesh->GetRawVertices()->at(v + 2).biTangent;
-					t.v3.uv = mesh->GetRawVertices()->at(v + 2).UV;
-
-
-					DirectX::XMStoreFloat4(&t.v3.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.normal), worldMatrix)));
-
-					t.textureIndexStart = 0;
-
-					triangles.push_back(t);
-				}
+				DirectX::XMFLOAT4X4A WorldInverse = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
+				DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
+				auto aabb = p_drawQueue[dq].MeshPtr->GetAABB();
+				STRUCTS::OctreeValues ocv;
+				ocv.WorldInverse = WorldInverse;
+				ocv.MeshIndex = aabb.meshIndex;
+				ocv.Min = aabb.min;
+				ocv.Max = aabb.max;
+				octreeValues.push_back(ocv);
 			}
 		}
-		m_ocTree.BuildTree(triangles, 3u, 256u);
+		m_ocTree.BuildTree(octreeValues, 3u, 256u);
+
+
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 
@@ -127,10 +79,10 @@ void ComputePass::Draw()
 		
 		for (size_t i = 0; i < size; i++)
 		{
-			UINT sizeofTriInd = (UINT)tree[i].triangleIndices.size() * sizeof(UINT);
+			UINT sizeofTriInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
 			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset, true);
 			currentOffset += tree[i].byteSize - sizeofTriInd;
-			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset, true);
+			m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofTriInd, currentOffset, true);
 			currentOffset += sizeofTriInd;
 		}
 	}
@@ -153,7 +105,6 @@ void ComputePass::Draw()
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
 
-
 	POINT windowSize = p_window->GetWindowSize();
 
 	RAY_BOX data;
@@ -164,7 +115,7 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x / SCREEN_DIV;
 	data.info.y = windowSize.y / SCREEN_DIV;
-	data.info.z = (UINT)triangles.size();
+	data.info.z = (UINT)octreeValues.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
@@ -184,8 +135,8 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshTriangles.SetData(triangles.data(), (UINT)triangles.size() * sizeof(STRUCTS::Triangle));
-	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
+	m_meshData.SetData(octreeValues.data(), (UINT)octreeValues.size() * sizeof(STRUCTS::OctreeValues));
+	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
@@ -213,7 +164,7 @@ void ComputePass::Release()
 	m_fence.Release();
 	p_ReleaseCommandList();
 	m_squareIndex.Release();
-	m_meshTriangles.Release();
+	m_meshData.Release();
 	m_rayTexture.Release();
 	m_lightUav.Release();
 	m_lightsBuffer.Release();
@@ -269,7 +220,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshTriangles.Init(sizeof(STRUCTS::Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::Triangle))))
+	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::OctreeValues) * MAX_OBJECTS, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::OctreeValues))))
 	{
 		return hr;
 	}

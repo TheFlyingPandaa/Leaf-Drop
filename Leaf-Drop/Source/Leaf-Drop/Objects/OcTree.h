@@ -19,8 +19,8 @@ struct AABB
 		byteSize = other.byteSize;
 		byteStart = other.byteStart;
 
-		triangleIndices = other.triangleIndices;
-		nrOfTriangles = other.nrOfTriangles;
+		meshDataIndices = other.meshDataIndices;
+		nrOfObjects = other.nrOfObjects;
 
 		for (UINT i = 0; i < nrOfChildren; i++)
 		{
@@ -41,8 +41,8 @@ struct AABB
 			byteSize = other.byteSize;
 			byteStart = other.byteStart;
 
-			triangleIndices = other.triangleIndices;
-			nrOfTriangles = other.nrOfTriangles;
+			meshDataIndices = other.meshDataIndices;
+			nrOfObjects = other.nrOfObjects;
 
 			for (UINT i = 0; i < nrOfChildren; i++)
 			{
@@ -68,10 +68,10 @@ struct AABB
 		for (UINT i = 0; i < nrOfChildren; i++)
 			str += std::to_string(childrenByteAddress[i]) + ", ";
 		str += "\n";
-		str += "nrOfTriangles: " + std::to_string(nrOfTriangles) + "\n";
+		str += "nrOfTriangles: " + std::to_string(nrOfObjects) + "\n";
 		str += "triangleIndices: ";
-		for (UINT i = 0; i < triangleIndices.size(); i++)
-			str += std::to_string(triangleIndices[i]) + ", ";
+		for (UINT i = 0; i < meshDataIndices.size(); i++)
+			str += std::to_string(meshDataIndices[i]) + ", ";
 		str += "\n";
 		str += "ByteSize: " + std::to_string(byteSize) + "\n";
 		str += "ByteStart: " + std::to_string(byteStart) + "\n";
@@ -83,11 +83,11 @@ struct AABB
 	void CalcSize()
 	{
 		byteSize = sizeof(*this);
-		byteSize -= sizeof(triangleIndices) + sizeof(VECTOR_TYPE);
+		byteSize -= sizeof(meshDataIndices) + sizeof(VECTOR_TYPE);
 
-		if (!triangleIndices.empty())
+		if (!meshDataIndices.empty())
 		{
-			byteSize += (UINT)triangleIndices.size() * sizeof(VECTOR_TYPE);
+			byteSize += (UINT)meshDataIndices.size() * sizeof(VECTOR_TYPE);
 		}
 		
 	}
@@ -103,8 +103,9 @@ struct AABB
 	UINT				childrenIndices[8] = { 0 };
 	UINT				childrenByteAddress[8] = {0};
 
-	UINT				nrOfTriangles = 0;
-	std::vector<VECTOR_TYPE>	triangleIndices;
+	UINT				nrOfObjects = 0;
+
+	std::vector<VECTOR_TYPE>	meshDataIndices;
 };
 
 class OcTree
@@ -113,7 +114,7 @@ public:
 	OcTree();
 	~OcTree();
 
-	void BuildTree(std::vector<STRUCTS::Triangle> & triangles, UINT treeLevel = 3, UINT worldSize = 1024);
+	void BuildTree(const std::vector<STRUCTS::OctreeValues> & ocVal, UINT treeLevel = 3, UINT worldSize = 1024);
 	const UINT & GetTotalTreeByteSize() const;
 	const std::vector<AABB> & GetTree() const;
 
@@ -124,7 +125,7 @@ private:
 	UINT				m_totalTreeByteSize = 0;
 	void _BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, const UINT & maxLevel, const UINT & worldSize, const size_t & parentIndex);
 
-	bool _inside(const AABB & aabb, const STRUCTS::Triangle & tri);
+	bool _inside(const AABB & aabb, const STRUCTS::OctreeValues & colVal);
 	bool _pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point);
 
 };

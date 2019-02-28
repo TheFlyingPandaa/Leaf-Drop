@@ -40,4 +40,12 @@ namespace STRUCTS
 		Vertex v1, v2, v3;
 		UINT textureIndexStart;
 	};
+
+	struct OctreeValues
+	{
+		DirectX::XMFLOAT4X4A WorldInverse;
+		DirectX::XMFLOAT3 Min, Max;
+		UINT MeshIndex;
+	};
+
 }

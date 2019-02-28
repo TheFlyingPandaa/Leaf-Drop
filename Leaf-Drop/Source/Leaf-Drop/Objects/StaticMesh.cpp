@@ -135,33 +135,34 @@ bool StaticMesh::LoadMesh(const std::string & path)
 					return false;
 				m_meshBindlessBuffer.SetData(reinterpret_cast<void*>(this->m_mesh.data()), m_vertexBufferSize, 0, true);
 
-				/*D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
-				desc.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
-				desc.SizeInBytes = m_vertexBufferSize;
-
-				D3D12_CPU_DESCRIPTOR_HANDLE hnd;
-				
-				SIZE_T offset = coreRender->GetResourceDescriptorHeapSize() * coreRender->GetCurrentResourceIndex();
-				
-				coreRender->GetDevice()->CreateConstantBufferView(&desc, hnd = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + offset });*/
-				
-				D3D12_CPU_DESCRIPTOR_HANDLE hnd = m_meshBindlessBuffer.GetHandle();
-				if (std::find(s_cpuHandles.begin(), s_cpuHandles.end(), hnd) == s_cpuHandles.end())
-					s_cpuHandles.push_back(hnd);
-				
 				commandList->Close();
 				if (SUCCEEDED(coreRender->ExecuteCommandList()))
 				{
 					m_vertexBufferView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
 					m_vertexBufferView.StrideInBytes = sizeof(STRUCTS::StaticVertex);
 					m_vertexBufferView.SizeInBytes = m_vertexBufferSize;
+
+					D3D12_CPU_DESCRIPTOR_HANDLE hnd = m_meshBindlessBuffer.GetHandle();
+					auto it = std::find(s_cpuHandles.begin(), s_cpuHandles.end(), hnd);
+					if (it == s_cpuHandles.end())
+					{
+						s_cpuHandles.push_back(hnd);
+						m_aabb.meshIndex = s_cpuHandles.size() - 1;
+					}
+					else
+					{
+						m_aabb.meshIndex = it - s_cpuHandles.begin();
+					}
+
+					_calcMinMax();	
 					return true;
 				}
 			}
 		}
 	}
 
-	return true;
+
+	return false;
 }
 
 std::vector<STRUCTS::StaticVertex>* StaticMesh::GetRawVertices()
@@ -174,6 +175,11 @@ UINT StaticMesh::GetNumberOfVertices() const
 	return (UINT)m_mesh.size();
 }
 
+const StaticMesh::MIN_MAX_AABB & StaticMesh::GetAABB() const
+{
+	return m_aabb;
+}
+
 const D3D12_VERTEX_BUFFER_VIEW & StaticMesh::GetVBV() const
 {
 	return this->m_vertexBufferView;
@@ -184,4 +190,32 @@ void StaticMesh::Release()
 	SAFE_RELEASE(m_vertexBuffer);
 	SAFE_RELEASE(m_vertexUploadBuffer);
 	m_meshBindlessBuffer.Release();
+}
+
+void StaticMesh::_calcMinMax()
+{
+	using namespace DirectX;
+
+	XMFLOAT3 min = {FLT_MAX, FLT_MAX , FLT_MAX};
+	XMFLOAT3 max  = {FLT_MIN, FLT_MIN , FLT_MIN};
+
+	size_t nrOfVertices = m_mesh.size();
+
+	for (size_t i = 0; i < nrOfVertices; i++)
+	{
+		float x = m_mesh[i].Position.x;
+		float y = m_mesh[i].Position.y;
+		float z = m_mesh[i].Position.z;
+
+		if (x < min.x) min.x = x;
+		if (y < min.y) min.y = y;
+		if (z < min.z) min.z = z;
+
+		if (x > min.x) max.x = x;
+		if (y > min.y) max.y = y;
+		if (z > min.z) max.z = z;
+	}
+
+	m_aabb.min = min;
+	m_aabb.max = max;
 }

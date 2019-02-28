@@ -55,7 +55,7 @@ private:
 	UINT8 m_computeIndex = 0;
 	UAV * m_rayStencil = nullptr;
 
-	ConstantBuffer m_meshTriangles;
+	ConstantBuffer m_meshData;
 	ConstantBuffer m_ocTreeBuffer;
 
 	UINT m_geometryRenderTargetsSize = 0;
