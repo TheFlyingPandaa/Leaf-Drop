@@ -286,6 +286,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                 TreeNode child = GetNode(node.ChildrenByteAddress[nodeStack[currentNode].targetChildren++], meshIndexAdress);
                 if (RayIntersectAABB(child.min, child.max, ray, origin, aabbT))
                 {
+
                     if (child.nrOfObjects > 0)
                     {
                         for (uint objectIterator = 0; objectIterator < child.nrOfObjects; objectIterator++)
@@ -293,13 +294,14 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                             MeshData md = GetMeshData(meshIndexAdress, objectIterator);
                             float3 rayLocal = normalize(mul(float4(ray, 0.0f), md.InverseWorld)).xyz;
                             float3 originLocal = mul(float4(origin, 1.0f), md.InverseWorld).xyz;
-
                             if (RayIntersectAABB(md.Min, md.Max, rayLocal, originLocal, aabbT))
                             {
                                 uint nrOfTriangles;
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
                                 
+                                biCoord = float3(0, 0, 1);
+                               
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
                                     if (RayIntersectTriangle(Meshes[md.MeshIndex][triangleIndex], rayLocal, originLocal, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
@@ -318,6 +320,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                         nodeStack[nodeStackSize].address = child.byteStart;
                         nodeStack[nodeStackSize].targetChildren = 0;
                         nodeStackSize++;
+                        //biCoord = float3(0, 1, 0);
                     }
                 }
             }
@@ -327,6 +330,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
             }
         }
     }
+    return true;
     return triangleHit;
 }
 

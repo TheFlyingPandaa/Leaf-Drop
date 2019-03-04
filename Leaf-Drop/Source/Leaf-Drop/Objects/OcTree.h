@@ -143,7 +143,7 @@ private:
 	bool _pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point);
 
 	void _CreateAABB(const DirectX::XMFLOAT3 & position, const DirectX::XMFLOAT3 & size, UINT level, bool isLeaf, UINT index);
-	UINT _GetParentIndex(const DirectX::XMFLOAT3 & worldPos, UINT currentLevel, UINT maxLevel);
+	UINT _GetAABBIndexByWorldPos(const DirectX::XMFLOAT3 & worldPos, UINT Level);
 
 	void _clearLeafs();
 	void _traverseAndPlace(const STRUCTS::MeshValues & meshVal, UINT meshIndex, UINT ocIndex);

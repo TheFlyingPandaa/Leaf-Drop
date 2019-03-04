@@ -55,7 +55,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 10;
+		const UINT NUMBER_OF_DRAWABLES = 100;
 		const UINT NUMBER_OF_LIGHTS = 100;
 		const UINT MAX_DISTANCE = 10;
 		const UINT MAX_LIGHT_DISTANCE = 100;

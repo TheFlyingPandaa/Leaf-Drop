@@ -54,7 +54,7 @@ void OcTree::BuildTree(INT startX, INT startY, INT startZ, UINT treeLevel, UINT 
 				{
 					currentPos.x = startPos.x + size.x * x;
 					_CreateAABB(currentPos, size, level, isLeaf, index);
-					UINT parentIndex = _GetParentIndex(currentPos, level - 1, treeLevel);
+					UINT parentIndex = _GetAABBIndexByWorldPos(currentPos, level - 1);
 					m_ocTree[index].byteStart = m_ocTree[index].byteSize * index;
 					m_ocTree[parentIndex].childrenIndices[m_ocTree[parentIndex].nrOfChildren] = index;
 					m_ocTree[parentIndex].childrenByteAddress[m_ocTree[parentIndex].nrOfChildren++] = sizeOfNonLeaf * index++;
@@ -91,7 +91,7 @@ void OcTree::PlaceObjects(const std::vector<STRUCTS::MeshValues>& MeshValues, bo
 			m_ocTree[index].CalcSize();
 			m_ocTree[index].byteStart = offset;
 
-			UINT parentIndex = _GetParentIndex(m_ocTree[index].Min, m_ocTree[index].level - 1, m_maxLevel);
+			UINT parentIndex = _GetAABBIndexByWorldPos(m_ocTree[index].Min, m_ocTree[index].level - 1);
 
 			if (m_ocTree[parentIndex].nrOfChildren == 8) m_ocTree[parentIndex].nrOfChildren = 0;
 
@@ -118,7 +118,7 @@ void OcTree::Merge(const OcTree & other)
 		m_ocTree[index].CalcSize();
 		m_ocTree[index].byteStart = offset;
 
-		UINT parentIndex = _GetParentIndex(m_ocTree[index].Min, m_ocTree[index].level - 1, m_maxLevel);
+		UINT parentIndex = _GetAABBIndexByWorldPos(m_ocTree[index].Min, m_ocTree[index].level - 1);
 		if (m_ocTree[parentIndex].nrOfChildren == 8) m_ocTree[parentIndex].nrOfChildren = 0;
 		m_ocTree[parentIndex].childrenByteAddress[m_ocTree[parentIndex].nrOfChildren++] = offset;
 
@@ -204,16 +204,16 @@ void OcTree::_CreateAABB(const DirectX::XMFLOAT3 & position, const DirectX::XMFL
 		m_leafIndices[m_leafCounter++] = index;
 }
 
-UINT OcTree::_GetParentIndex(const DirectX::XMFLOAT3 & worldPos, UINT currentLevel, UINT maxLevel)
+UINT OcTree::_GetAABBIndexByWorldPos(const DirectX::XMFLOAT3 & worldPos, UINT Level)
 {
 	using namespace DirectX;
 	size_t levelStartIndex = 0;
 	size_t levelEndIndex = 0;
 
-	for (UINT i = 0; i < currentLevel; i++)
+	for (UINT i = 0; i < Level; i++)
 		levelStartIndex += (UINT)std::pow(INCREMENT_LEVEL, i);
 
-	levelEndIndex = levelStartIndex + (UINT)std::pow(INCREMENT_LEVEL, currentLevel);
+	levelEndIndex = levelStartIndex + (UINT)std::pow(INCREMENT_LEVEL, Level);
 
 	XMFLOAT3 levelSize;
 
@@ -230,7 +230,7 @@ UINT OcTree::_GetParentIndex(const DirectX::XMFLOAT3 & worldPos, UINT currentLev
 	XMFLOAT3 index;
 	XMStoreFloat3(&index, XMVectorMultiply(searchPos, XMLoadFloat3(&levelSize)));
 
-	UINT XYZ = (int)std::pow(2, currentLevel);
+	UINT XYZ = (int)std::pow(2, Level);
 
 	return (UINT)levelStartIndex + (UINT)index.x + XYZ * ((UINT)index.y + XYZ * (UINT)index.z);
 }
