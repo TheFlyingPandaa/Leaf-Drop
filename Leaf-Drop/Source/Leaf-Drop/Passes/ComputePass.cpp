@@ -54,13 +54,13 @@ void ComputePass::Draw()
 	if (first)
 	{
 		first = false;
-		for (int dq = 0; dq < p_drawQueue.size(); dq++)
+		for (int dq = 0; dq < p_staticDrawQueue.size(); dq++)
 		{
-			for (int m = 0; m < p_drawQueue[dq].DrawableObjectData.size(); m++)
+			for (int m = 0; m < p_staticDrawQueue[dq].DrawableObjectData.size(); m++)
 			{
-				DirectX::XMFLOAT4X4A WorldInverse = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
+				DirectX::XMFLOAT4X4A WorldInverse = p_staticDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
 				DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
-				auto aabb = p_drawQueue[dq].MeshPtr->GetAABB();
+				auto aabb = p_staticDrawQueue[dq].MeshPtr->GetAABB();
 				STRUCTS::MeshValues ocv;
 				ocv.WorldInverse = WorldInverse;
 				ocv.MeshIndex = aabb.meshIndex;
@@ -85,6 +85,22 @@ void ComputePass::Draw()
 	Timer t;
 	t.Start();
 	std::vector<STRUCTS::MeshValues> dynamicValues;
+	for (int dq = 0; dq < p_dynamicDrawQueue.size(); dq++)
+	{
+		for (int m = 0; m < p_dynamicDrawQueue[dq].DrawableObjectData.size(); m++)
+		{
+			DirectX::XMFLOAT4X4A WorldInverse = p_dynamicDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
+			DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
+			auto aabb = p_dynamicDrawQueue[dq].MeshPtr->GetAABB();
+			STRUCTS::MeshValues ocv;
+			ocv.WorldInverse = WorldInverse;
+			ocv.MeshIndex = aabb.meshIndex;
+			ocv.Min = aabb.min;
+			ocv.Max = aabb.max;
+			dynamicValues.push_back(ocv);
+		}
+	}
+
 	m_dynamicOcTree.PlaceObjects(dynamicValues, true);
 	m_dynamicOcTree.Merge(m_staticOcTree);
 	mergeTime += t.Stop(Timer::MILLISECONDS);
@@ -127,7 +143,7 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x / SCREEN_DIV;
 	data.info.y = windowSize.y / SCREEN_DIV;
-	data.info.z = (UINT)octreeValues.size();
+	data.info.z = (UINT)octreeValues.size() + (UINT)dynamicValues.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
@@ -147,7 +163,9 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshData.SetData(octreeValues.data(), (UINT)octreeValues.size() * sizeof(STRUCTS::MeshValues));
+	UINT dataOffset = 0;
+	m_meshData.SetData(octreeValues.data(), dataOffset = (UINT)octreeValues.size() * sizeof(STRUCTS::MeshValues));
+	m_meshData.SetData(dynamicValues.data(), (UINT)dynamicValues.size() * sizeof(STRUCTS::MeshValues), dataOffset);
 
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);

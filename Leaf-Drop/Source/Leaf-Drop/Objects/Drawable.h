@@ -26,6 +26,9 @@ public:
 	void SetColor(const float & r, const float & g, const float & b, const float & a = 1.0f);
 	const DirectX::XMFLOAT4A & GetColor() const;
 
+	void SetAsStatic();
+
+	bool isStatic() const;
 
 	void Draw();
 
@@ -36,5 +39,6 @@ private:
 	Texture	* m_metallic = nullptr;
 	Texture	* m_normal = nullptr;
 	DirectX::XMFLOAT4A m_color = {1.0f, 1.0f, 1.0f, 1.0f};
+	bool m_isStatic = false;
 };
 

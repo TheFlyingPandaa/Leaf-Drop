@@ -135,6 +135,8 @@ private:
 	std::vector<UINT>	m_leafIndices;
 	UINT				m_leafCounter = 0;
 
+	UINT				m_numberOfObjectsInLeafs = 0;
+
 	UINT				m_maxLevel = 0;
 
 	UINT				m_totalTreeByteSize = 0;

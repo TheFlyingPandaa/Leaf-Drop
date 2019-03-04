@@ -46,14 +46,23 @@ void PrePass::Update()
 	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
-		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
+		for (size_t k = 0; k < p_staticDrawQueue[i].DrawableObjectData.size(); k++)
 		{
-			auto world = p_drawQueue[i].DrawableObjectData[k];
+			auto world = p_staticDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 	}
+	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
+	{
+		for (size_t k = 0; k < p_dynamicDrawQueue[i].DrawableObjectData.size(); k++)
+		{
+			auto world = p_dynamicDrawQueue[i].DrawableObjectData[k];
+			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
+		}
+	}
+
 
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
@@ -88,12 +97,20 @@ void PrePass::Draw()
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
-		StaticMesh * m = p_drawQueue[i].MeshPtr;
+		StaticMesh * m = p_staticDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].DrawableObjectData.size(), 0, 0);
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_staticDrawQueue[i].DrawableObjectData.size(), 0, 0);
 	}
+
+	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
+	{
+		StaticMesh * m = p_dynamicDrawQueue[i].MeshPtr;
+		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_dynamicDrawQueue[i].DrawableObjectData.size(), 0, 0);
+	}
+
 
 	m_depthBuffer.SwapToSRV(commandList);
 

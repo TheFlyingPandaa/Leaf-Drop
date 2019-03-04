@@ -84,12 +84,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		std::vector<Drawable> d(NUMBER_OF_DRAWABLES);
 		
+		Drawable dynamicDrawable;
+		dynamicDrawable.SetTexture(&t2[0]);
+		dynamicDrawable.SetNormal(&t2[1]);
+		dynamicDrawable.SetMetallic(&t2[2]);
+		dynamicDrawable.SetAsStatic();
+		dynamicDrawable.SetMesh(m);
+		dynamicDrawable.SetScale(10, 10, 10);
+
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
 			d[i].SetTexture(&t2[0]);
 			d[i].SetNormal(&t2[1]);
 			d[i].SetMetallic(&t2[2]);
-
+			d[i].SetAsStatic();
 			d[i].SetMesh(m);
 		
 			float x = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
@@ -198,13 +206,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			light.Queue();
 		
-			rot += 1.0f * (FLOAT)dt;
-
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
 				d[i].Update();
 				d[i].Draw();
 			}
+
+			rot += 1.0f * (FLOAT)dt;
+
+			static float mover = 0.0f;
+			static const float SPEED = 1.0f;
+
+			dynamicDrawable.SetPosition(0, 50.0f + sin(mover) * 10.0f, 0.0f);
+			dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_2PI, 0.0f);
+
+			mover += SPEED * dt;
+
+			dynamicDrawable.Update();
+			dynamicDrawable.Draw();
+
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{
 				pointLight[i].Queue();

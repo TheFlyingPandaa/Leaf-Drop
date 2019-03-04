@@ -73,6 +73,8 @@ void OcTree::PlaceObjects(const std::vector<STRUCTS::MeshValues>& MeshValues, bo
 {
 	_clearLeafs();
 
+	m_numberOfObjectsInLeafs = MeshValues.size();
+
 	size_t meshValSize = MeshValues.size();
 
 	for (UINT i = 0; i < meshValSize; i++)
@@ -111,11 +113,17 @@ void OcTree::Merge(const OcTree & other)
 
 	UINT offset = m_ocTree[m_leafIndices[0]].byteStart;
 
+	m_numberOfObjectsInLeafs += other.m_numberOfObjectsInLeafs;
+
 	for (size_t j = 0; j < leafSize; j++)
 	{
 		size_t index = m_leafIndices[j];
 		m_ocTree[index].meshDataIndices.insert(m_ocTree[index].meshDataIndices.end(), other.m_ocTree[index].meshDataIndices.begin(), other.m_ocTree[index].meshDataIndices.end());
-		m_ocTree[index].nrOfObjects = m_ocTree[index].meshDataIndices.size();
+
+		for (UINT i = 0; i < m_ocTree[index].nrOfObjects; i++)
+			m_ocTree[index].meshDataIndices[i] += other.m_numberOfObjectsInLeafs;
+
+		m_ocTree[index].nrOfObjects += m_ocTree[index].meshDataIndices.size();
 		m_ocTree[index].CalcSize();
 		m_ocTree[index].byteStart = offset;
 

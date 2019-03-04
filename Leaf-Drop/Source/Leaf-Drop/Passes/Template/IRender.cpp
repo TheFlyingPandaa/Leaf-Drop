@@ -3,13 +3,14 @@
 #include "Source/Leaf-Drop/Objects/Drawable.h"
 #include "../../Objects/Lights/Template/ILight.h"
 
-std::vector<IRender::InstanceGroup> IRender::p_drawQueue;
+std::vector<IRender::InstanceGroup> IRender::p_staticDrawQueue;
+std::vector<IRender::InstanceGroup> IRender::p_dynamicDrawQueue;
 std::vector<ILight*> IRender::p_lightQueue;
-
 
 void IRender::Clear()
 {
-	p_drawQueue.clear();
+	p_staticDrawQueue.clear();
+	p_dynamicDrawQueue.clear();
 	p_lightQueue.clear();
 }
 
@@ -144,15 +145,31 @@ IRender::~IRender()
 
 void IRender::Submit(Drawable * drawable)
 {
-	auto it = std::find(p_drawQueue.begin(), p_drawQueue.end(), drawable);
-
-	if (it == p_drawQueue.end())
+	if (drawable->isStatic())
 	{
-		p_drawQueue.push_back(drawable);
+		auto it = std::find(p_staticDrawQueue.begin(), p_staticDrawQueue.end(), drawable);
+
+		if (it == p_staticDrawQueue.end())
+		{
+			p_staticDrawQueue.push_back(drawable);
+		}
+		else
+		{
+			it._Ptr->DrawableObjectData.push_back(drawable);
+		}
 	}
 	else
 	{
-		it._Ptr->DrawableObjectData.push_back(drawable);
+		auto it = std::find(p_dynamicDrawQueue.begin(), p_dynamicDrawQueue.end(), drawable);
+
+		if (it == p_dynamicDrawQueue.end())
+		{
+			p_dynamicDrawQueue.push_back(drawable);
+		}
+		else
+		{
+			it._Ptr->DrawableObjectData.push_back(drawable);
+		}
 	}
 }
 

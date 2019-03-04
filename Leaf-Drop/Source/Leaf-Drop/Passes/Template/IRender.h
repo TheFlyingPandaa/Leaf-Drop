@@ -54,7 +54,9 @@ protected:
 		bool operator==(Drawable * drawable);
 	};
 
-	static std::vector<InstanceGroup> p_drawQueue;
+	static std::vector<InstanceGroup> p_staticDrawQueue;
+	static std::vector<InstanceGroup> p_dynamicDrawQueue;
+	
 	static std::vector<ILight*> p_lightQueue;
 
 	CoreRender * p_coreRender = nullptr;
