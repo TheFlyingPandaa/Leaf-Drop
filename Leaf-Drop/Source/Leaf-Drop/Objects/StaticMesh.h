@@ -40,8 +40,11 @@ private:
 
 	std::vector<STRUCTS::StaticVertex> m_mesh;
 
+
 	ConstantBuffer m_meshBindlessBuffer;
 
+	static ConstantBuffer	s_bindlessMeshes;
+	static UINT				s_offset;
 	static std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> s_cpuHandles;
 
 private:

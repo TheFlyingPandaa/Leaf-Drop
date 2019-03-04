@@ -96,27 +96,34 @@ Texture2DArray TextureAtlas : register(t2);
 TreeNode GetNode(in uint address, out uint meshIndexAdress)
 {
     TreeNode node = (TreeNode)0;
-    address += 4;
+    
+    address += 4; // byteSize
+
     node.byteStart = OcTreeBuffer.Load(address);
-    address += 4;
+    address += 4; // byteStart
     
     node.min = asfloat(OcTreeBuffer.Load3(address));
-    address += 12;
+    address += 12; // min
+
     node.max = asfloat(OcTreeBuffer.Load3(address));
-    address += 12 + 4;
+    address += 12; // max
+
+    address += 4; // Level
 
     node.nrOfChildren = OcTreeBuffer.Load(address);
-    
-    address += 4 + 4 * 8;
+    address += 4; // nrOfChildren
+
+    address += 4 * 8; // childrenIndices
 
     [unroll]
     for (uint j = 0; j < 8; j++)
     {
         node.ChildrenByteAddress[j] = OcTreeBuffer.Load(address);
-        address += 4;
+        address += 4; // childrenByteAdress[i]
     }
+
     node.nrOfObjects = OcTreeBuffer.Load(address);
-    address += 4;
+    address += 4; // numberOfObjects
 
     meshIndexAdress = address;
 
@@ -241,7 +248,7 @@ bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, 
 
     float tTemp = f * dot(e2.xyz, q);
 
-    if (tTemp > 0.02f)
+    if (tTemp > EPSILON)
     {
         t = tTemp;
         biCoord.y = u;
@@ -299,14 +306,14 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                 uint nrOfTriangles;
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
-                                
-                                biCoord = float3(0, 0, 1);
-                               
+
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
-                                    if (RayIntersectTriangle(Meshes[md.MeshIndex][triangleIndex], rayLocal, originLocal, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
+                                    Triangle2 boi = Meshes[md.MeshIndex][triangleIndex];
+                                    
+                                    if (RayIntersectTriangle(boi, rayLocal, originLocal, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
                                     {
-                                        tri = Meshes[md.MeshIndex][triangleIndex];
+                                        tri = boi;
                                         biCoord = tempBi;
                                         triangleT = tempTriangleT;
                                         triangleHit = true;
@@ -320,7 +327,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                         nodeStack[nodeStackSize].address = child.byteStart;
                         nodeStack[nodeStackSize].targetChildren = 0;
                         nodeStackSize++;
-                        //biCoord = float3(0, 1, 0);
                     }
                 }
             }
@@ -330,7 +336,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
             }
         }
     }
-    return true;
+    
     return triangleHit;
 }
 

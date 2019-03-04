@@ -5,6 +5,9 @@
 #include <assimp/postprocess.h>
 
 std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> StaticMesh::s_cpuHandles;
+ConstantBuffer StaticMesh::s_bindlessMeshes;
+UINT StaticMesh::s_offset = 0;
+
 
 const std::vector<D3D12_CPU_DESCRIPTOR_HANDLE>& StaticMesh::GetCpuHandles()
 {
@@ -13,7 +16,10 @@ const std::vector<D3D12_CPU_DESCRIPTOR_HANDLE>& StaticMesh::GetCpuHandles()
 
 void StaticMesh::BindCompute(const UINT & rootSignatureIndex, ID3D12GraphicsCommandList * commandList)
 {
-	if (s_cpuHandles.empty())
+
+	s_bindlessMeshes.BindComputeShader(rootSignatureIndex, commandList);
+
+	/*if (s_cpuHandles.empty())
 		return;
 
 	CoreRender * coreRender = CoreRender::GetInstance();
@@ -30,7 +36,8 @@ void StaticMesh::BindCompute(const UINT & rootSignatureIndex, ID3D12GraphicsComm
 		else
 			coreRender->CopyToGPUDescriptorHeap(*i, 1);
 	}
-	commandList->SetComputeRootDescriptorTable(rootSignatureIndex, startHandle);
+	*/
+	//commandList->SetComputeRootDescriptorTable(rootSignatureIndex, startHandle);
 }
 
 bool operator==(const D3D12_CPU_DESCRIPTOR_HANDLE & a, const D3D12_CPU_DESCRIPTOR_HANDLE & b)
@@ -60,6 +67,15 @@ StaticMesh::~StaticMesh()
 
 bool StaticMesh::LoadMesh(const std::string & path)
 {
+	static bool FirstTime = true;
+
+	if (FirstTime)
+	{
+		s_bindlessMeshes.Init(sizeof(STRUCTS::StaticVertex) * 3 * 12000, L"Bindless Mesh ", ConstantBuffer::BINDLESS_BUFFER, sizeof(STRUCTS::StaticVertex) * 3);
+		FirstTime = false;
+	}
+
+
 	Assimp::Importer importer;
 
 	const aiScene * scene = importer.ReadFile(path.c_str(),
@@ -131,9 +147,12 @@ bool StaticMesh::LoadMesh(const std::string & path)
 
 				commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_vertexBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
 				
-				if (FAILED(m_meshBindlessBuffer.Init(m_vertexBufferSize, std::wstring(std::wstring(L"StaticMesh :") + std::wstring(path.begin(), path.end())).c_str(), ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::StaticVertex))))
-					return false;
-				m_meshBindlessBuffer.SetData(reinterpret_cast<void*>(this->m_mesh.data()), m_vertexBufferSize, 0, true);
+				//if (FAILED(m_meshBindlessBuffer.Init(m_vertexBufferSize, std::wstring(std::wstring(L"StaticMesh :") + std::wstring(path.begin(), path.end())).c_str(), ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::StaticVertex))))
+					//return false;
+				//m_meshBindlessBuffer.SetData(reinterpret_cast<void*>(this->m_mesh.data()), m_vertexBufferSize, 0, true);
+
+				s_bindlessMeshes.SetData(m_mesh.data(), m_mesh.size() * sizeof(STRUCTS::StaticVertex), s_offset, TRUE);
+				s_offset += m_mesh.size() * sizeof(STRUCTS::StaticVertex);
 
 				commandList->Close();
 				if (SUCCEEDED(coreRender->ExecuteCommandList()))
@@ -189,6 +208,7 @@ void StaticMesh::Release()
 {
 	SAFE_RELEASE(m_vertexBuffer);
 	SAFE_RELEASE(m_vertexUploadBuffer);
+	s_bindlessMeshes.Release();
 	m_meshBindlessBuffer.Release();
 }
 

@@ -45,9 +45,19 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 
 		switch (type)
 		{
+		case BINDLESS_BUFFER:
 		case STRUCTURED_BUFFER:
 		{
-			SET_NAME(m_resource[i], std::wstring(name + L" StructuredBuffer" + std::to_wstring(i)).c_str());
+			if (type == STRUCTURED_BUFFER)
+			{
+				SET_NAME(m_resource[i], std::wstring(name + L" StructuredBuffer" + std::to_wstring(i)).c_str());
+			}
+			else
+			{
+				SET_NAME(m_resource[i], std::wstring(name + L" BindlessBuffer" + std::to_wstring(i)).c_str());
+			}
+
+
 			D3D12_BUFFER_UAV uav{};
 			uav.NumElements = 1;
 			uav.FirstElement = 0;
@@ -95,7 +105,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 			return hr;
 		}
 
-		m_coreRender->IterateResourceIndex(1);
+		m_coreRender->IterateResourceIndex();
 	}
 
 	return hr;
@@ -128,6 +138,12 @@ void ConstantBuffer::BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCo
 		break;
 	case ConstantBuffer::STRUCTURED_BUFFER:
 		commandList->SetComputeRootShaderResourceView(rootParameterIndex, m_resource[currentFrame]->GetGPUVirtualAddress() + offset);
+		break;
+	case ConstantBuffer::BINDLESS_BUFFER:
+
+		CoreRender * cr = CoreRender::GetInstance();
+
+		commandList->SetComputeRootDescriptorTable(rootParameterIndex, { cr->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + cr->CopyToGPUDescriptorHeap(GetHandle(), 1) });
 		break;
 	}
 }

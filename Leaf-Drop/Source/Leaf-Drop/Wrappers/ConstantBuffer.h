@@ -7,7 +7,8 @@ public:
 	enum CBV_TYPE
 	{
 		CONSTANT_BUFFER,
-		STRUCTURED_BUFFER
+		STRUCTURED_BUFFER,
+		BINDLESS_BUFFER
 	};
 
 public:

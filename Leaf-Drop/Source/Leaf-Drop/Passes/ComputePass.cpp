@@ -166,9 +166,9 @@ void ComputePass::Draw()
 	UINT dataOffset = 0;
 	m_meshData.SetData(octreeValues.data(), dataOffset = (UINT)octreeValues.size() * sizeof(STRUCTS::MeshValues));
 	m_meshData.SetData(dynamicValues.data(), (UINT)dynamicValues.size() * sizeof(STRUCTS::MeshValues), dataOffset);
-
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
+
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
 	m_inverseWorldMatrix.BindComputeShader(INVERSE_WORLD_MAT, p_commandList[frameIndex]);
