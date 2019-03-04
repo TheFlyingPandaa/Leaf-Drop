@@ -57,7 +57,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		const UINT NUMBER_OF_DRAWABLES = 100;
 		const UINT NUMBER_OF_LIGHTS = 100;
-		const UINT MAX_DISTANCE = 10;
+		const UINT MAX_DISTANCE = 300;
 		const UINT MAX_LIGHT_DISTANCE = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
@@ -92,9 +92,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			d[i].SetMesh(m);
 		
-			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float x = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
+			float y = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
+			float z = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
 		
 			float scl = (FLOAT)(rand() % 3 + 1);
 		
@@ -103,13 +103,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetScale(10,10,10);
 		}
 
-		d[0].SetPosition(10, 0, 0);
+		d[0].SetPosition(0, 0, 0);
+		d[0].SetScale(512.0f, 512.0f, 512.0f);
+
+		d[NUMBER_OF_DRAWABLES - 1].SetPosition(10, 0, 0);
+		d[NUMBER_OF_DRAWABLES - 1].SetScale(10, 10, 10);
+
 		d[1].SetPosition(-10, 0, 0);
-		d[0].SetScale(10, 10, 10);
 		d[1].SetScale(2, 2, 2);
 
 		d[2].SetPosition(0,-6,0);
 		d[2].SetScale(100,1,100);
+
+		d[3].SetPosition(0, 0, 1000);
+		d[3].SetScale(50, 50, 50);
+
 
 		float rot = 0;
 		timer.Start();
