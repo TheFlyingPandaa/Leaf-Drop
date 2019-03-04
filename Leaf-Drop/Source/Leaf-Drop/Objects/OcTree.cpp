@@ -115,6 +115,7 @@ void OcTree::Merge(const OcTree & other)
 	{
 		size_t index = m_leafIndices[j];
 		m_ocTree[index].meshDataIndices.insert(m_ocTree[index].meshDataIndices.end(), other.m_ocTree[index].meshDataIndices.begin(), other.m_ocTree[index].meshDataIndices.end());
+		m_ocTree[index].nrOfObjects = m_ocTree[index].meshDataIndices.size();
 		m_ocTree[index].CalcSize();
 		m_ocTree[index].byteStart = offset;
 

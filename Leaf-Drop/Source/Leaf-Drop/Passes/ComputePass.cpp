@@ -44,6 +44,8 @@ void ComputePass::Update()
 {
 }
 
+#include "../Utillity/Timer.h"
+
 void ComputePass::Draw()
 {
 	static bool first = true;
@@ -67,30 +69,51 @@ void ComputePass::Draw()
 				octreeValues.push_back(ocv);
 			}
 		}
+
 		//m_ocTree.BuildTree(octreeValues, 3u, 512);
 		m_staticOcTree.BuildTree(-256, -256, -256, 3u, 512u);
+		m_dynamicOcTree.BuildTree(-256, -256, -256, 3u, 512u);
 		m_staticOcTree.PlaceObjects(octreeValues);
-
-		
 
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
-
- 		auto tree = m_staticOcTree.GetTree();
-		size_t size = tree.size();
-
-		UINT currentOffset = 0;
-		
-		for (size_t i = 0; i < size; i++)
-		{
-			UINT sizeofMeshInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
-			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofMeshInd, currentOffset, true);
-			currentOffset += tree[i].byteSize - sizeofMeshInd;
-			m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset, true);
-			currentOffset += sizeofMeshInd;
-		}
 	}
 	
+	static double mergeTime = 0;
+	static double copyTime = 0;
+	static int timeCounter = 0;
+	Timer t;
+	t.Start();
+	std::vector<STRUCTS::MeshValues> dynamicValues;
+	m_dynamicOcTree.PlaceObjects(dynamicValues, true);
+	m_dynamicOcTree.Merge(m_staticOcTree);
+	mergeTime += t.Stop(Timer::MILLISECONDS);
+
+	auto tree = m_dynamicOcTree.GetTree();
+	size_t size = tree.size();
+
+	UINT currentOffset = 0;
+
+	for (size_t i = 0; i < size; i++)
+	{
+		UINT sizeofMeshInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
+		m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofMeshInd, currentOffset, true);
+		currentOffset += tree[i].byteSize - sizeofMeshInd;
+		m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset, true);
+		currentOffset += sizeofMeshInd;
+	}
+
+	copyTime += t.Stop(Timer::MILLISECONDS);
+
+	if (timeCounter++ == 1000)
+	{
+		std::ofstream lol;
+		lol.open("MergeTime.txt");
+		lol << "Average time to merge tree: " << mergeTime / 1000 << " ms\n";
+		lol << "Average time to copy tree: " << copyTime / 1000 << " ms\n";
+		lol.close();
+	}
+
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
 
