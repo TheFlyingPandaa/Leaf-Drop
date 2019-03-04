@@ -147,11 +147,11 @@ bool StaticMesh::LoadMesh(const std::string & path)
 					if (it == s_cpuHandles.end())
 					{
 						s_cpuHandles.push_back(hnd);
-						m_aabb.meshIndex = s_cpuHandles.size() - 1;
+						m_aabb.meshIndex = (UINT)(s_cpuHandles.size() - 1);
 					}
 					else
 					{
-						m_aabb.meshIndex = it - s_cpuHandles.begin();
+						m_aabb.meshIndex = (UINT)(it - s_cpuHandles.begin());
 					}
 
 					_calcMinMax();	

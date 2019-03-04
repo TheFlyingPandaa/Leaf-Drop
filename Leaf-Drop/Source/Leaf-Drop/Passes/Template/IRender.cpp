@@ -2,6 +2,11 @@
 #include "IRender.h"
 #include "Source/Leaf-Drop/Objects/Drawable.h"
 #include "../../Objects/Lights/Template/ILight.h"
+
+std::vector<IRender::InstanceGroup> IRender::p_drawQueue;
+std::vector<ILight*> IRender::p_lightQueue;
+
+
 void IRender::Clear()
 {
 	p_drawQueue.clear();

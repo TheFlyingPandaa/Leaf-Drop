@@ -100,9 +100,9 @@ TreeNode GetNode(in uint address, out uint meshIndexAdress)
     node.byteStart = OcTreeBuffer.Load(address);
     address += 4;
     
-    float3 position = asfloat(OcTreeBuffer.Load3(address));
+    node.min = asfloat(OcTreeBuffer.Load3(address));
     address += 12;
-    float3 axis = asfloat(OcTreeBuffer.Load3(address));
+    node.max = asfloat(OcTreeBuffer.Load3(address));
     address += 12 + 4;
 
     node.nrOfChildren = OcTreeBuffer.Load(address);
@@ -119,9 +119,6 @@ TreeNode GetNode(in uint address, out uint meshIndexAdress)
     address += 4;
 
     meshIndexAdress = address;
-
-    node.min = position - axis;
-    node.max = position + axis;
 
     return node;
 }
@@ -303,7 +300,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
 
-                                biCoord = float3(0, nrOfTriangles, 1);
+                                nrOfTriangles = 36;
 
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
@@ -332,7 +329,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
             }
         }
     }
-    return true;
     return triangleHit;
 }
 

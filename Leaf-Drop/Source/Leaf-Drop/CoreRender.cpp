@@ -706,9 +706,5 @@ void CoreRender::_Clear()
 {
 	memset(m_gpuOffset, 0, FRAME_BUFFER_COUNT * sizeof(SIZE_T));
 
-	m_geometryPass->Clear();
-	m_computePass->Clear();
-	//Sleep(10);
-	m_deferredPass->Clear();
-	m_prePass->Clear();
+	IRender::Clear();
 }

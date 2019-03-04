@@ -47,7 +47,7 @@ void ComputePass::Update()
 void ComputePass::Draw()
 {
 	static bool first = true;
-	static std::vector<STRUCTS::OctreeValues> octreeValues;
+	static std::vector<STRUCTS::MeshValues> octreeValues;
 
 	if (first)
 	{
@@ -59,7 +59,7 @@ void ComputePass::Draw()
 				DirectX::XMFLOAT4X4A WorldInverse = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
 				DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
 				auto aabb = p_drawQueue[dq].MeshPtr->GetAABB();
-				STRUCTS::OctreeValues ocv;
+				STRUCTS::MeshValues ocv;
 				ocv.WorldInverse = WorldInverse;
 				ocv.MeshIndex = aabb.meshIndex;
 				ocv.Min = aabb.min;
@@ -68,14 +68,17 @@ void ComputePass::Draw()
 			}
 		}
 		//m_ocTree.BuildTree(octreeValues, 3u, 512);
-		m_ocTree.BuildTree2(octreeValues);
+		m_staticOcTree.BuildTree(-256, -256, -256, 3u, 512u);
+		m_staticOcTree.PlaceObjects(octreeValues);
 
+		
 
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 
- 		auto tree = m_ocTree.GetTree();
+ 		auto tree = m_staticOcTree.GetTree();
 		size_t size = tree.size();
+
 		UINT currentOffset = 0;
 		
 		for (size_t i = 0; i < size; i++)
@@ -87,23 +90,6 @@ void ComputePass::Draw()
 			currentOffset += sizeofMeshInd;
 		}
 	}
-	/*else
-	{
-		int counter = 0;
-		UINT textureCounter = 0;
-		for (size_t i = 0; i < p_drawQueue.size(); i++)
-		{
-			for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
-			{
-				DirectX::XMFLOAT4X4A worldMatrix = p_drawQueue[i].DrawableObjectData[k].WorldMatrix;
-				DirectX::XMStoreFloat4x4A(&worldMatrix, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&worldMatrix)))));
-				m_inverseWorldMatrix.SetData(&worldMatrix, sizeof(worldMatrix), sizeof(worldMatrix) * (counter++));
-			}
-		}
-	}
-*/
-
-	p_drawQueue.clear();
 	
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
@@ -138,7 +124,7 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshData.SetData(octreeValues.data(), (UINT)octreeValues.size() * sizeof(STRUCTS::OctreeValues));
+	m_meshData.SetData(octreeValues.data(), (UINT)octreeValues.size() * sizeof(STRUCTS::MeshValues));
 
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
@@ -224,7 +210,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::OctreeValues) * MAX_OBJECTS, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::OctreeValues))))
+	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::MeshValues) * MAX_OBJECTS, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::MeshValues))))
 	{
 		return hr;
 	}

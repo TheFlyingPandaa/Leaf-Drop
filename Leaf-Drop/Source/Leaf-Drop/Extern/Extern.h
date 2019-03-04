@@ -41,7 +41,7 @@ namespace STRUCTS
 		UINT textureIndexStart;
 	};
 
-	struct OctreeValues
+	struct MeshValues
 	{
 		DirectX::XMFLOAT4X4A WorldInverse;
 		DirectX::XMFLOAT3 Min;

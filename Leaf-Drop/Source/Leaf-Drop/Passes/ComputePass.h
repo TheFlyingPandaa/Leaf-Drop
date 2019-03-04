@@ -76,7 +76,9 @@ private:
 
 	};
 
-	OcTree m_ocTree;
+	OcTree m_staticOcTree;
+	OcTree m_dynamicOcTree;
+
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
 
