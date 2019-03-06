@@ -57,5 +57,6 @@ PS_OUTPUT main(VS_OUTPUT input)
     RayStencil[accessIndex].normal =    input.normal.xyz;
     RayStencil[accessIndex].dispatch =  CastRay;
     
+
 	return output;
 }
