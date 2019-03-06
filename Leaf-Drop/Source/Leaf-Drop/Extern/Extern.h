@@ -43,7 +43,7 @@ namespace STRUCTS
 
 	struct MeshValues
 	{
-		DirectX::XMFLOAT4X4A World;
+		DirectX::XMFLOAT4X4A World; //might need fence bobby please fix
 		DirectX::XMFLOAT4X4A WorldInverse;
 		DirectX::XMFLOAT3 Min;
 		DirectX::XMFLOAT3 Max;

@@ -97,8 +97,14 @@ void PrePass::Draw()
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	UINT offset = 0;
+
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
+		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
+
+		offset += p_staticDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
 		StaticMesh * m = p_staticDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_staticDrawQueue[i].DrawableObjectData.size(), 0, 0);
@@ -106,6 +112,10 @@ void PrePass::Draw()
 
 	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
 	{
+		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
+
+		offset += p_dynamicDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
 		StaticMesh * m = p_dynamicDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
 		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_dynamicDrawQueue[i].DrawableObjectData.size(), 0, 0);

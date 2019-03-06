@@ -118,7 +118,9 @@ void OcTree::Merge(const OcTree & other)
 	for (size_t j = 0; j < leafSize; j++)
 	{
 		size_t index = m_leafIndices[j];
+
 		m_ocTree[index].meshDataIndices.insert(m_ocTree[index].meshDataIndices.end(), other.m_ocTree[index].meshDataIndices.begin(), other.m_ocTree[index].meshDataIndices.end());
+		//m_ocTree[index].meshDataIndices.insert(m_ocTree[index].meshDataIndices.end(), other.m_ocTree[index].meshDataIndices.begin(), other.m_ocTree[index].meshDataIndices.end());
 
 		for (UINT i = 0; i < m_ocTree[index].nrOfObjects; i++)
 			m_ocTree[index].meshDataIndices[i] += other.m_numberOfObjectsInLeafs;

@@ -88,7 +88,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		dynamicDrawable.SetTexture(&t2[0]);
 		dynamicDrawable.SetNormal(&t2[1]);
 		dynamicDrawable.SetMetallic(&t2[2]);
-		dynamicDrawable.SetAsStatic();
+		//dynamicDrawable.SetAsStatic();
 		dynamicDrawable.SetMesh(m);
 		dynamicDrawable.SetScale(10, 10, 10);
 
@@ -223,7 +223,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			mover += SPEED * dt;
 
 			dynamicDrawable.Update();
-			//dynamicDrawable.Draw();
+			dynamicDrawable.Draw();
 
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{

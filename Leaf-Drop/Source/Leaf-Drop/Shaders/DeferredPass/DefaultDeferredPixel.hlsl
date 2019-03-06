@@ -39,8 +39,8 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 normal	= Normal.Sample(defaultSampler, input.uv);
 	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
-	float4 rays2		= RayTracing.Sample(defaultSampler, input.uv);
-    return rays2;
+	//float4 rays2		= RayTracing.Sample(defaultSampler, input.uv);
+    //return rays2;
     //return float4(worldPos);
     float width, height, element;
     RayTracing.GetDimensions(0, width, height, element);
@@ -58,12 +58,12 @@ float4 main(PS_INPUT input) : SV_TARGET
         for (int y = -sampleRadius; y <= sampleRadius; ++y)
         {
             smTex = input.uv + (float2(x, y) * texelSize);
-            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, metallic.r);
+            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, 2 * metallic.r);
             divider += 1.0f;
         }
     }
     rays /= divider;
-    return rays;
+    //return rays;
     float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
 	uint numStructs;
