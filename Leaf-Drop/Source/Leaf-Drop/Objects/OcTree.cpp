@@ -4,11 +4,13 @@
 
 OcTree::OcTree()
 {
+	
 }
 
 
 OcTree::~OcTree()
 {
+	
 }
 
 void OcTree::BuildTree(INT startX, INT startY, INT startZ, UINT treeLevel, UINT worldSize)
@@ -67,6 +69,11 @@ void OcTree::BuildTree(INT startX, INT startY, INT startZ, UINT treeLevel, UINT 
 void OcTree::BuildTree(const DirectX::XMINT3 & startPos, UINT treeLevel, UINT worldSize)
 {
 	BuildTree(treeLevel, worldSize, startPos.x, startPos.y, startPos.z);
+}
+
+void OcTree::CreateBuffer(const std::wstring & name)
+{
+	m_buffer.Init(name, 65536);
 }
 
 void OcTree::PlaceObjects(const std::vector<STRUCTS::MeshValues>& MeshValues, bool willRecieveAMerge)
@@ -147,6 +154,30 @@ const UINT & OcTree::GetTotalTreeByteSize() const
 const std::vector<AABB>& OcTree::GetTree() const
 {
 	return m_ocTree;
+}
+
+void OcTree::WriteToBuffer(ID3D12GraphicsCommandList * commandList)
+{
+	int size = m_ocTree.size();
+
+	UINT currentOffset = 0;
+
+	m_buffer.BeginCopy(commandList);
+
+	for (size_t i = 0; i < size; i++)
+	{
+		UINT sizeofMeshInd = (UINT)m_ocTree[i].meshDataIndices.size() * sizeof(UINT);
+		m_buffer.SetData(commandList, &m_ocTree[i], m_ocTree[i].byteSize - sizeofMeshInd, currentOffset);
+		currentOffset += m_ocTree[i].byteSize - sizeofMeshInd;
+		m_buffer.SetData(commandList, m_ocTree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset);
+		currentOffset += sizeofMeshInd;
+	}
+	m_buffer.EndCopy(commandList);
+}
+
+void OcTree::Release()
+{
+	m_buffer.Release();
 }
 
 std::string OcTree::ToString() const

@@ -86,4 +86,9 @@ private:
 
 	UAV m_lightUav;
 	ConstantBuffer m_lightsBuffer;
+
+	std::vector<STRUCTS::MeshValues> m_staticOctreeValues;
+	std::vector<STRUCTS::MeshValues> m_dynamicOctreeValues;
+
+
 };

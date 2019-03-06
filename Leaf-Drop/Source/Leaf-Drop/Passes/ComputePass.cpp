@@ -7,6 +7,9 @@
 #include "Source/Leaf-Drop/Objects/Lights/PointLight.h"
 #include "Source/Leaf-Drop/Objects/Lights/DirectionalLight.h"
 
+#include "../Utillity/Timer.h"
+
+
 #define RAY_SQUARE_INDEX	0
 #define RAY_TEXTURE			1
 #define RAY_INDICES			2
@@ -39,16 +42,10 @@ HRESULT ComputePass::Init()
 	return hr;
 }
 
+
 void ComputePass::Update()
 {
-}
-
-#include "../Utillity/Timer.h"
-
-void ComputePass::Draw()
-{
 	static bool first = true;
-	static std::vector<STRUCTS::MeshValues> octreeValues;
 
 	if (first)
 	{
@@ -66,25 +63,28 @@ void ComputePass::Draw()
 				ocv.MeshIndex = aabb.meshIndex;
 				ocv.Min = aabb.min;
 				ocv.Max = aabb.max;
-				octreeValues.push_back(ocv);
+				m_staticOctreeValues.push_back(ocv);
 			}
 		}
 
 		//m_ocTree.BuildTree(octreeValues, 3u, 512);
 		m_staticOcTree.BuildTree(-256, -256, -256, 3u, 512u);
 		m_dynamicOcTree.BuildTree(-256, -256, -256, 3u, 512u);
-		m_staticOcTree.PlaceObjects(octreeValues);
+		m_dynamicOcTree.CreateBuffer(L"Ray_Octree");
+		m_staticOcTree.PlaceObjects(m_staticOctreeValues);
 
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
 	}
-	
+
 	static double mergeTime = 0;
 	static double copyTime = 0;
 	static int timeCounter = 0;
+
 	Timer t;
-	t.Start();
-	std::vector<STRUCTS::MeshValues> dynamicValues;
+	t.Start(); 
+	
+	m_dynamicOctreeValues.clear();
 	for (int dq = 0; dq < p_dynamicDrawQueue.size(); dq++)
 	{
 		for (int m = 0; m < p_dynamicDrawQueue[dq].DrawableObjectData.size(); m++)
@@ -98,11 +98,11 @@ void ComputePass::Draw()
 			ocv.MeshIndex = aabb.meshIndex;
 			ocv.Min = aabb.min;
 			ocv.Max = aabb.max;
-			dynamicValues.push_back(ocv);
+			m_dynamicOctreeValues.push_back(ocv);
 		}
 	}
 
-	m_dynamicOcTree.PlaceObjects(dynamicValues, true);
+	m_dynamicOcTree.PlaceObjects(m_dynamicOctreeValues, true);
 	m_dynamicOcTree.Merge(m_staticOcTree);
 	mergeTime += t.Stop(Timer::MILLISECONDS);
 
@@ -120,6 +120,7 @@ void ComputePass::Draw()
 		currentOffset += sizeofMeshInd;
 	}
 
+
 	copyTime += t.Stop(Timer::MILLISECONDS);
 
 	if (timeCounter++ == 1000)
@@ -130,6 +131,15 @@ void ComputePass::Draw()
 		lol << "Average time to copy tree: " << copyTime / 1000 << " ms\n";
 		lol.close();
 	}
+
+
+
+
+}
+
+
+void ComputePass::Draw()
+{
 
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
@@ -144,7 +154,7 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x / SCREEN_DIV;
 	data.info.y = windowSize.y / SCREEN_DIV;
-	data.info.z = (UINT)octreeValues.size() + (UINT)dynamicValues.size();
+	data.info.z = (UINT)m_staticOctreeValues.size() + (UINT)m_dynamicOctreeValues.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
@@ -152,7 +162,10 @@ void ComputePass::Draw()
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
+	m_dynamicOcTree.WriteToBuffer(p_commandList[frameIndex]);
+
 	_SetLightData();
+
 	m_lightUav.BindComputeSrv(LIGHT_TABLE, p_commandList[frameIndex]);
 	m_lightsBuffer.BindComputeShader(LIGHT_BUFFER, p_commandList[frameIndex]);
 
@@ -165,8 +178,8 @@ void ComputePass::Draw()
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
 	UINT dataOffset = 0;
-	m_meshData.SetData(octreeValues.data(), dataOffset = (UINT)octreeValues.size() * sizeof(STRUCTS::MeshValues));
-	m_meshData.SetData(dynamicValues.data(), (UINT)dynamicValues.size() * sizeof(STRUCTS::MeshValues), dataOffset);
+	m_meshData.SetData(m_staticOctreeValues.data(), dataOffset = (UINT)m_staticOctreeValues.size() * sizeof(STRUCTS::MeshValues));
+	m_meshData.SetData(m_dynamicOctreeValues.data(), (UINT)m_dynamicOctreeValues.size() * sizeof(STRUCTS::MeshValues), dataOffset);
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 
@@ -199,6 +212,9 @@ void ComputePass::Release()
 	m_lightUav.Release();
 	m_lightsBuffer.Release();
 	m_ocTreeBuffer.Release();
+
+	m_dynamicOcTree.Release();
+	m_staticOcTree.Release();
 }
 
 void ComputePass::Clear()

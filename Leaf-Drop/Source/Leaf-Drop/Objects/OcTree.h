@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <sal.h>
+#include "../Wrappers/CPUBuffer.h"
 
 #define INCREMENT_LEVEL 8
 
@@ -117,6 +118,7 @@ public:
 	void BuildTree(INT startX = 0, INT startY = 0, INT startZ = 0, UINT treeLevel = 3, UINT worldSize = 1024);
 	void BuildTree(const DirectX::XMINT3 & startPos = DirectX::XMINT3(0,0,0), UINT treeLevel = 3, UINT worldSize = 1024);
 
+	void CreateBuffer(const std::wstring & name);
 
 	/* If the function "Merge" will be called to another tree, set the bool value to true  */
 	void PlaceObjects(const std::vector<STRUCTS::MeshValues> & MeshValues, bool willRecieveAMerge = false);
@@ -127,8 +129,12 @@ public:
 	const UINT & GetTotalTreeByteSize() const;
 	const std::vector<AABB> & GetTree() const;
 
+	void WriteToBuffer(ID3D12GraphicsCommandList * commandList);
+
+	void Release();
 
 	std::string ToString() const;
+
 
 private:
 	std::vector<AABB>	m_ocTree;
@@ -150,6 +156,7 @@ private:
 	void _clearLeafs();
 	void _traverseAndPlace(const STRUCTS::MeshValues & meshVal, UINT meshIndex, UINT ocIndex);
 
+	CPUBuffer m_buffer;
 
 };
 

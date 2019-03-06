@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\CPUBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\OcTree.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\PrePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\Fence.h" />
@@ -357,6 +358,7 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\TextureAtlas.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\CPUBuffer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\OcTree.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\PrePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\Fence.cpp" />
