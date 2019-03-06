@@ -32,6 +32,9 @@ public:
 
 	void Draw();
 
+	void SetTextureOffset(const UINT & offset = 0);
+	const UINT & GetTextureOffset() const;
+
 private:
 	StaticMesh * m_mesh = nullptr;
 	CoreRender * m_coreRenderer = nullptr;
@@ -40,5 +43,7 @@ private:
 	Texture	* m_normal = nullptr;
 	DirectX::XMFLOAT4A m_color = {1.0f, 1.0f, 1.0f, 1.0f};
 	bool m_isStatic = false;
+
+	UINT m_textureOffset = 0;
 };
 

@@ -9,10 +9,7 @@ SamplerState defaultSampler : register(s0);
 
 Texture2DArray textureAtlas : register(t0, space1);
 
-cbuffer TextureIndex : register(b1)
-{
-	uint4 index;
-}
+StructuredBuffer<uint4> TextureIndex : register(t1);
 
 RWStructuredBuffer<RAY_STRUCT> RayStencil : register(u0);
 
@@ -27,6 +24,8 @@ struct VS_OUTPUT
 	float2 uv : TEXCOORD;
     float2 ndc : NDCCOORD;
 	float4 color : COLOR;
+    uint4 instanceData : INSTANCE;
+
 };
 
 struct PS_OUTPUT
@@ -41,11 +40,11 @@ PS_OUTPUT main(VS_OUTPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
-	output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x)) * input.color;
+    output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x)) * input.color;
     
-	output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 1)).xyz - 1.0f), input.TBN)), 0);
+    output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x + 1)).xyz - 1.0f), input.TBN)), 0);
 
-	output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, index.x + 2));
+    output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x + 2));
 	
     bool CastRay = output.metallic.r > 0.90;
 

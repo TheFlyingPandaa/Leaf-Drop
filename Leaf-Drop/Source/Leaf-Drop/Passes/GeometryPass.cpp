@@ -55,7 +55,7 @@ HRESULT GeometryPass::Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_textureIndex.Init(1024 * 64, L"Geometry Index", ConstantBuffer::CBV_TYPE::CONSTANT_BUFFER, sizeof(UINT4))))
+	if (FAILED(hr = m_textureIndex.Init(1024 * 64, L"Geometry Index", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(UINT4))))
 	{
 		
 		return hr;
@@ -137,8 +137,11 @@ void GeometryPass::Update()
 
 	int counter = 0;
 	UINT textureCounter = 0;
+	UINT textureIndexOffset = 0;
 	m_ptrAtlas->Begin(commandList);
 	UINT4 textureOffset{ 0,0,0,0 };
+
+
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
 		for (size_t k = 0; k < p_staticDrawQueue[i].DrawableObjectData.size(); k++)
@@ -149,9 +152,12 @@ void GeometryPass::Update()
 		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
 		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
 		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
+
 		textureOffset.x = (UINT)i * 3;
 		textureOffset.y = 3;
-		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * (UINT)i);
+
+		p_staticDrawQueue[i].TextureOffset = textureOffset.x;
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
 	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
 	{
@@ -160,12 +166,15 @@ void GeometryPass::Update()
 			auto world = p_dynamicDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
-		//m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
-		//m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
-		//m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
-		textureOffset.x = 0;
+		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
+
+		textureOffset.x = (UINT)i * 3 + (p_staticDrawQueue.size() * 3);
 		textureOffset.y = 3;
-		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * (UINT)i);
+
+		p_dynamicDrawQueue[i].TextureOffset = textureOffset.x;
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
 	m_ptrAtlas->End(commandList);
 
@@ -193,9 +202,10 @@ void GeometryPass::Draw()
 	m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
 	UINT offset = 0;
+	UINT textureIndexOffset = 0;
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
-		m_textureIndex.Bind(TEXTURE_INDEX, commandList, (UINT)i * sizeof(UINT4));
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, sizeof(UINT4) * textureIndexOffset++);
 		
 		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
 
@@ -209,7 +219,7 @@ void GeometryPass::Draw()
 
 	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
 	{
-		m_textureIndex.Bind(TEXTURE_INDEX, commandList, (UINT)i * sizeof(UINT4));
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, sizeof(UINT4) * textureIndexOffset++);
 
 		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
 
@@ -294,7 +304,10 @@ HRESULT GeometryPass::_InitRootSignature()
 
 	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	
-	rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	//rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[TEXTURE_INDEX].InitAsShaderResourceView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+
+
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 

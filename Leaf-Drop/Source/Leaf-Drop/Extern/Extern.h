@@ -48,7 +48,7 @@ namespace STRUCTS
 		DirectX::XMFLOAT3 Min;
 		DirectX::XMFLOAT3 Max;
 		UINT MeshIndex = 0;
-		UINT lol = 0;
+		UINT TextureIndex = 0;
 	};
 
 }

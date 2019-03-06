@@ -66,7 +66,7 @@ struct MeshData
     float3 Min; // Local space
     float3 Max; //Local space
     uint MeshIndex; //Till Meshes[] 
-    uint PADDING; // shit
+    uint TextureIndex; // shit
 };
 
 cbuffer RAY_BOX : register(b0)
@@ -280,11 +280,13 @@ bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, 
     return false;
 }
 
-bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out float3 biCoord, out float3 intersectionPoint)
+bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out float3 biCoord, out float3 intersectionPoint, inout uint textureIndex)
 {
     intersectionPoint = float3(0, 0, 0);
     biCoord = float3(1, 0, 0);
     tri = (Triangle2)0;
+
+    textureIndex = 0;
 
     float3 tempIntersectionPoint;
 
@@ -344,6 +346,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                         triangleT = tempTriangleT;
                                         triangleHit = true;
                                         worldMatrix = md.World;
+                                        textureIndex = md.TextureIndex;
 
                                     }
                                 }
@@ -374,6 +377,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
 [numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
 {
+    
     float4 finalColor = float4(0, 0, 0, 1);
 	
     uint rayStencilIndex = threadID.x + threadID.y * Info.x;
@@ -388,6 +392,8 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
     ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
+
+    uint textureIndex;
     float3 intersectionPoint;
     Triangle2 tri;
     float3 uvw;
@@ -400,7 +406,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
-        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
+        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint, textureIndex))
         {
 
 
@@ -411,9 +417,9 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
             float2 uv = tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z;
      
-            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), finalMip);
-            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0 + 1), finalMip);
-            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0 + 2), finalMip);
+            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex), finalMip);
+            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 1), finalMip);
+            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 2), finalMip);
             strenght -= 1.0f - metall.r;
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;

@@ -50,6 +50,8 @@ protected:
 		Texture * MetallicTexture;
 		StaticMesh * MeshPtr;
 
+		UINT TextureOffset;
+
 		InstanceGroup(Drawable * drawable);
 		bool operator==(Drawable * drawable);
 	};

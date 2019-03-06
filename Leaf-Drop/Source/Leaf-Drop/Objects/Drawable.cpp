@@ -81,3 +81,13 @@ void Drawable::Draw()
 {
 	IRender::Submit(this);
 }
+
+void Drawable::SetTextureOffset(const UINT& offset)
+{
+	m_textureOffset = offset;
+}
+
+const UINT& Drawable::GetTextureOffset() const
+{
+	return m_textureOffset;
+}

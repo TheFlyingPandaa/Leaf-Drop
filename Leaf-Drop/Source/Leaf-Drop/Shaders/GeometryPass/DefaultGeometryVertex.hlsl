@@ -33,6 +33,7 @@ struct VS_OUTPUT
 	float2 uv : TEXCOORD;
     float2 ndc : NDCCOORD;	
 	float4 color : COLOR;
+    uint4 instanceData : INSTANCE;
 };
 
 VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
@@ -47,6 +48,8 @@ VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 	output.uv =				input.uv.xy;
     output.ndc =            output.position.xy / output.position.w;
 	output.color =			ObjectBuffer[instanceID].Color;
+    output.instanceData.x = instanceID;
+
 
 	float3 tangent = normalize(mul(input.tangent, ObjectBuffer[instanceID].WorldMatrix).xyz);
 	tangent = normalize(tangent - dot(tangent, output.normal.xyz) * output.normal.xyz).xyz;

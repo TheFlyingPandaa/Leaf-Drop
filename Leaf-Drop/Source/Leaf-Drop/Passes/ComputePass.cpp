@@ -63,6 +63,7 @@ void ComputePass::Update()
 				ocv.MeshIndex = aabb.meshIndex;
 				ocv.Min = aabb.min;
 				ocv.Max = aabb.max;
+				ocv.TextureIndex = p_staticDrawQueue[dq].TextureOffset;
 				m_staticOctreeValues.push_back(ocv);
 			}
 		}
@@ -98,6 +99,7 @@ void ComputePass::Update()
 			ocv.MeshIndex = aabb.meshIndex;
 			ocv.Min = aabb.min;
 			ocv.Max = aabb.max;
+			ocv.TextureIndex = p_dynamicDrawQueue[dq].TextureOffset;
 			m_dynamicOctreeValues.push_back(ocv);
 		}
 	}
