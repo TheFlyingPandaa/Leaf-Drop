@@ -231,7 +231,7 @@ bool RayIntersectAABB(in float3 min, in float3 max, in float3 ray, in float3 ray
 
 bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord, out float3 intersectionPoint)
 {
-    const float EPSILON = 0.000001f;
+    const float EPSILON = 0.00001f;
     t = 9999.0f;
     biCoord.x = -1.0f;
     biCoord.y = -1.0f;
@@ -243,6 +243,9 @@ bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, 
     float4 e2 = tri.v[2].pos - tri.v[0].pos;
 
     float3 normal = cross(e1.xyz, e2.xyz);
+
+    if (dot(normal, ray) >= 0.0f)
+        return false;
 
     float3 h = cross(ray, e2.xyz);
     float a = dot(e1.xyz, h);
