@@ -14,12 +14,8 @@ RayTracing:
 CopyQueue:
 	Done:
 		* Updatera Octree
-		
+		* CopyQueue för Octree	
 	Todo:
-		* CopyQueue för bindless meshes
-		* CopyQueue för Octree
-		
-		
 Engine
 	Done:
 	
