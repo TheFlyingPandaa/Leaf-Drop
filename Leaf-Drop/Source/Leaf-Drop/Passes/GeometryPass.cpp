@@ -193,7 +193,6 @@ void GeometryPass::Draw()
 	m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
 	UINT offset = 0;
-
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
 		m_textureIndex.Bind(TEXTURE_INDEX, commandList, (UINT)i * sizeof(UINT4));
@@ -201,6 +200,7 @@ void GeometryPass::Draw()
 		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
 
 		offset += p_staticDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+			   
 
 		StaticMesh * m = p_staticDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
@@ -214,6 +214,7 @@ void GeometryPass::Draw()
 		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
 
 		offset += p_dynamicDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
 
 		StaticMesh * m = p_dynamicDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());

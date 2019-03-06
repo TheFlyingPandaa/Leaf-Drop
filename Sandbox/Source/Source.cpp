@@ -56,9 +56,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 100;
-		const UINT NUMBER_OF_LIGHTS = 100;
-		const UINT MAX_DISTANCE = 300;
-		const UINT MAX_LIGHT_DISTANCE = 100;
+		const UINT NUMBER_OF_LIGHTS = 50;
+		const UINT MAX_DISTANCE = 50;
+		const UINT MAX_LIGHT_DISTANCE = 50;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
@@ -76,7 +76,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			float y = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 			float z = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 
-			float scl = static_cast<float>(rand() % 50 );
+			float scl = static_cast<float>(rand() % 4 );
 			pointLight[i].SetPosition(x, y, z);
 			pointLight[i].SetIntensity(scl);
 
@@ -85,18 +85,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		std::vector<Drawable> d(NUMBER_OF_DRAWABLES);
 		
 		Drawable dynamicDrawable;
-		dynamicDrawable.SetTexture(&t2[0]);
-		dynamicDrawable.SetNormal(&t2[1]);
-		dynamicDrawable.SetMetallic(&t2[2]);
+		dynamicDrawable.SetTexture(&t[0]);
+		dynamicDrawable.SetNormal(&t[1]);
+		dynamicDrawable.SetMetallic(&t[2]);
 		//dynamicDrawable.SetAsStatic();
 		dynamicDrawable.SetMesh(m);
 		dynamicDrawable.SetScale(10, 10, 10);
 
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
-			d[i].SetTexture(&t2[0]);
-			d[i].SetNormal(&t2[1]);
-			d[i].SetMetallic(&t2[2]);
+			d[i].SetTexture(&t[0]);
+			d[i].SetNormal(&t[1]);
+			d[i].SetMetallic(&t[2]);
 			d[i].SetAsStatic();
 			d[i].SetMesh(m);
 		
@@ -108,23 +108,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 			d[i].SetPosition(x, y, z);
 			d[i].SetScale(scl, scl, scl);
-			d[i].SetScale(10,10,10);
+			d[i].SetScale(1,1,1);
 		}
 
-		d[0].SetPosition(0, 0, 0);
-		//d[0].SetScale(512.0f, 512.0f, 512.0f);
+		d[0].SetPosition(0, 0, 50);
+		d[0].SetScale(100, 100, 1);
 
-		d[NUMBER_OF_DRAWABLES - 1].SetPosition(10, 0, 0);
-		d[NUMBER_OF_DRAWABLES - 1].SetScale(10, 10, 10);
+		d[1].SetPosition(0, 0, -50);
+		d[1].SetScale(100, 100, 1);
 
-		d[1].SetPosition(-10, 0, 0);
-		d[1].SetScale(2, 2, 2);
+		d[2].SetPosition(0,-50,0);
+		d[2].SetScale(100,1,100);
 
-		d[2].SetPosition(0,-6,0);
-		d[2].SetScale(1,1,1);
+		d[3].SetPosition(0, 50, 0);
+		d[3].SetScale(100, 1, 100);
 
-		d[3].SetPosition(0, 0, 1000);
-		d[3].SetScale(50, 50, 50);
+		d[4].SetPosition(50, 0, 0);
+		d[4].SetScale(1, 100, 100);
+
+		d[5].SetPosition(-50, 0, 0);
+		d[5].SetScale(1, 100, 100);
 
 
 		float rot = 0;
@@ -148,8 +151,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		{
 			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
-			static const float MOVE_SPEED = 50.0f;
-			static const float SPRINT_SPEED = 20.0f;
+			static const float MOVE_SPEED = 5.0f;
+			static const float SPRINT_SPEED = 50.0f;
 			static const float MOUSE_SENSITIVITY = 0.05f;
 
 			const double dt = timer.Stop();
@@ -204,7 +207,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				wnd->Close();
 
 
-			light.Queue();
+			//light.Queue();
 		
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
@@ -217,7 +220,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			static float mover = 0.0f;
 			static const float SPEED = 1.0f;
 
-			dynamicDrawable.SetPosition(0, 50.0f + sin(mover) * 10.0f, 0.0f);
+			dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
 			dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_2PI, 0.0f);
 
 			mover += SPEED * dt;

@@ -398,12 +398,11 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float distToCamera = length(fragmentWorld - ViewerPosition.xyz);
 
-    for (uint rayBounce = 0; rayBounce < 1 && strenght > 0.0f; rayBounce++)
+    for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
-            //outputTexture[pixelLocation] = float4(uvw, 1.0f);
-            //return;
+
 
             distToCamera += length(fragmentWorld - intersectionPoint);
             float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));

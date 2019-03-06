@@ -58,7 +58,7 @@ float4 main(PS_INPUT input) : SV_TARGET
         for (int y = -sampleRadius; y <= sampleRadius; ++y)
         {
             smTex = input.uv + (float2(x, y) * texelSize);
-            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, 2 * metallic.r);
+            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius,   metallic.r);
             divider += 1.0f;
         }
     }
