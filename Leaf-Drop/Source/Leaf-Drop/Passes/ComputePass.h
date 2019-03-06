@@ -62,6 +62,7 @@ private:
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
 	Fence m_fence;
+	Fence m_fence2;
 
 	struct LIGHT_VALUES
 	{

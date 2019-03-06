@@ -73,7 +73,7 @@ void OcTree::BuildTree(const DirectX::XMINT3 & startPos, UINT treeLevel, UINT wo
 
 void OcTree::CreateBuffer(const std::wstring & name)
 {
-	m_buffer.Init(name, 65536);
+	m_buffer.Init(name, 4096 * 1024);
 }
 
 void OcTree::PlaceObjects(const std::vector<STRUCTS::MeshValues>& MeshValues, bool willRecieveAMerge)
@@ -156,7 +156,7 @@ const std::vector<AABB>& OcTree::GetTree() const
 	return m_ocTree;
 }
 
-void OcTree::WriteToBuffer(ID3D12GraphicsCommandList * commandList)
+void OcTree::WriteToBuffer(ID3D12GraphicsCommandList * commandList, ID3D12Resource * destResource)
 {
 	int size = m_ocTree.size();
 
@@ -172,7 +172,7 @@ void OcTree::WriteToBuffer(ID3D12GraphicsCommandList * commandList)
 		m_buffer.SetData(commandList, m_ocTree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset);
 		currentOffset += sizeofMeshInd;
 	}
-	m_buffer.EndCopy(commandList);
+	m_buffer.EndCopy(commandList, destResource);
 }
 
 void OcTree::Release()

@@ -33,6 +33,10 @@ public:
 	ID3D12DescriptorHeap * GetRTVDescriptorHeap() const;
 	ID3D12DescriptorHeap * GetGPUDescriptorHeap() const;
 	ID3D12CommandQueue * GetCopyQueue() const;
+
+	HRESULT BeginCopy();
+	HRESULT EndCopy();
+	ID3D12GraphicsCommandList * GetCopyCommandList() const;
 	
 	const UINT & GetRTVDescriptorHeapSize() const;
 
@@ -66,7 +70,11 @@ private:
 	ID3D12DescriptorHeap *		m_rtvDescriptorHeap = nullptr;
 
 	ID3D12DescriptorHeap *		m_gpuDescriptorHeap[FRAME_BUFFER_COUNT] = { nullptr };
+	
 	ID3D12CommandQueue	*		m_copyQueue = nullptr;
+	ID3D12CommandAllocator *	m_copyCommandAllocator[FRAME_BUFFER_COUNT] = { nullptr };
+	ID3D12GraphicsCommandList * m_copyCommandList[FRAME_BUFFER_COUNT] = { nullptr };
+
 
 	ID3D12DescriptorHeap *		m_cpuDescriptorHeap = nullptr;
 	SIZE_T						m_currentResourceIndex = 0;

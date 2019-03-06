@@ -129,7 +129,7 @@ public:
 	const UINT & GetTotalTreeByteSize() const;
 	const std::vector<AABB> & GetTree() const;
 
-	void WriteToBuffer(ID3D12GraphicsCommandList * commandList);
+	void WriteToBuffer(ID3D12GraphicsCommandList * commandList, ID3D12Resource * destResource);
 
 	void Release();
 

@@ -179,13 +179,15 @@ void CoreRender::Release()
 	SAFE_RELEASE(m_cpuDescriptorHeap);
 	SAFE_RELEASE(m_copyQueue);
 	
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	FOR_FRAME
 	{
 		SAFE_RELEASE(m_gpuDescriptorHeap[i]);
 		SAFE_RELEASE(m_commandAllocator[i]);
 		SAFE_RELEASE(m_renderTargets[i]);
 		SAFE_RELEASE(m_fence[i]);
 		SAFE_RELEASE(m_commandList[i]);
+		SAFE_RELEASE(m_copyCommandAllocator[i]);
+		SAFE_RELEASE(m_copyCommandList[i]);		
 	}
 #ifdef _DEBUG
 	if (m_device)
@@ -238,6 +240,41 @@ ID3D12DescriptorHeap * CoreRender::GetGPUDescriptorHeap() const
 ID3D12CommandQueue * CoreRender::GetCopyQueue() const
 {
 	return m_copyQueue;
+}
+
+HRESULT CoreRender::BeginCopy()
+{
+	HRESULT hr = 0; 
+	if (FAILED(hr = m_copyCommandAllocator[m_frameIndex]->Reset()))
+	{
+		return hr;
+	}
+	if (FAILED(hr = m_copyCommandList[m_frameIndex]->Reset(m_copyCommandAllocator[m_frameIndex], nullptr)))
+	{
+		return hr;
+	}
+	return hr;
+}
+
+HRESULT CoreRender::EndCopy()
+{
+	HRESULT hr = 0;
+
+	if (FAILED(hr = m_copyCommandList[m_frameIndex]->Close()))
+		return hr;
+	ID3D12CommandList* ppCommandLists[] = { m_copyCommandList[m_frameIndex] };
+	m_copyQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	//if (FAILED(hr = m_commandQueue->Signal(m_fence[m_frameIndex], m_fenceValue[m_frameIndex])))
+	//{
+	//	return hr;
+	//}
+	//TODO:: possible fence bobby please fix
+	return hr;
+}
+
+ID3D12GraphicsCommandList * CoreRender::GetCopyCommandList() const
+{
+	return m_copyCommandList[m_frameIndex];
 }
 
 const UINT & CoreRender::GetRTVDescriptorHeapSize() const
@@ -692,13 +729,36 @@ HRESULT CoreRender::_CreateCPUDescriptorHeap()
 
 HRESULT CoreRender::_CreateCopyQueue()
 {
+	HRESULT hr = 0;
+
 	D3D12_COMMAND_QUEUE_DESC desc {};
 	desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 	desc.NodeMask = 0;
 	desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
 	desc.Type = D3D12_COMMAND_LIST_TYPE_COPY;
 
-	return m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_copyQueue));
+	if (FAILED(hr = m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_copyQueue))))
+		return hr;
+
+	FOR_FRAME
+	{
+		if (FAILED(hr = m_device->CreateCommandAllocator(
+			D3D12_COMMAND_LIST_TYPE_COPY, 
+			IID_PPV_ARGS(&m_copyCommandAllocator[i]))))
+			return hr;
+		
+		if (FAILED(hr = m_device->CreateCommandList(
+			0, 
+			D3D12_COMMAND_LIST_TYPE_COPY, 
+			m_copyCommandAllocator[i], 
+			nullptr, 
+			IID_PPV_ARGS(&m_copyCommandList[i]))))
+			return hr;
+
+		m_copyCommandList[i]->Close();
+	}
+
+	return hr;
 }
 
 void CoreRender::_Clear()

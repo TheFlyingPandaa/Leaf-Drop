@@ -1,6 +1,8 @@
 #pragma once
 #include "Template/LeafObject.h"
 
+class CPUBuffer;
+
 class ConstantBuffer : public LeafObject
 {
 public:
@@ -24,6 +26,9 @@ public:
 	void Release() override;
 
 	const D3D12_CPU_DESCRIPTOR_HANDLE GetHandle () const;
+
+	ID3D12Resource * GetResource() const;
+
 private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
 	//void * m_data = nullptr;

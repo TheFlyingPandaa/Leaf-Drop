@@ -1,5 +1,6 @@
 #include "CorePCH.h"
 #include "ConstantBuffer.h"
+#include "CPUBuffer.h"
 
 ConstantBuffer::ConstantBuffer()
 {
@@ -175,3 +176,10 @@ const D3D12_CPU_DESCRIPTOR_HANDLE ConstantBuffer::GetHandle() const
 {
 	return {m_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset[m_coreRender->GetFrameIndex()] };
 }
+
+ID3D12Resource * ConstantBuffer::GetResource() const
+{
+	return m_resource[m_coreRender->GetFrameIndex()];
+}
+
+

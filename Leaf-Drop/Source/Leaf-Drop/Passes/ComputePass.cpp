@@ -158,11 +158,24 @@ void ComputePass::Draw()
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
+	p_coreRender->BeginCopy();
+
+	m_dynamicOcTree.WriteToBuffer(p_coreRender->GetCopyCommandList(), m_ocTreeBuffer.GetResource());
+	// copy constantBuffer
+	p_coreRender->EndCopy();
+
+	//Sleep(500);
+	m_fence2.WaitForFinnishExecution();
+
+
 	OpenCommandList(m_pipelineState);
+	//commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(targetResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
+	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_ocTreeBuffer.GetResource(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
-	m_dynamicOcTree.WriteToBuffer(p_commandList[frameIndex]);
+
 
 	_SetLightData();
 
@@ -191,6 +204,8 @@ void ComputePass::Draw()
 
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 
+	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_ocTreeBuffer.GetResource(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
+
 	_ExecuteCommandList();
 	
 	m_fence.WaitForFinnishExecution();
@@ -205,6 +220,8 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
 	m_fence.Release();
+	m_fence2.Release();
+
 	p_ReleaseCommandList();
 	m_squareIndex.Release();
 	m_meshData.Release();
@@ -250,6 +267,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 	if (FAILED(hr = m_fence.CreateFence(m_commandQueue)))
+	{
+		return hr;
+	}
+
+	if (FAILED(hr = m_fence2.CreateFence(p_coreRender->GetCopyQueue())))
 	{
 		return hr;
 	}
