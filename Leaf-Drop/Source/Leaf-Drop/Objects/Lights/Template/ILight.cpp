@@ -6,7 +6,6 @@
 
 ILight::ILight(const LightType& lightType)
 {
-
 	p_coreRender = CoreRender::GetInstance();
 	p_window = Window::GetInstance();
 
@@ -27,8 +26,7 @@ void ILight::Queue()
 {
 	if (m_intensity > 0)
 	{
-		p_coreRender->GetDeferredPass()->SubmitLight(this);
-		p_coreRender->GetComputePass()->SubmitLight(this);
+		IRender::SubmitLight(this);
 	}
 }
 

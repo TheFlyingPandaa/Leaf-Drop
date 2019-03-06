@@ -1,19 +1,28 @@
 #include "../LightCalculations.hlsli"
 
+#define MAX_MIP 13
+#define MIN_MIP 0
+#define MIN_MIP_DIST 25
+#define MAX_MIP_DIST 500
+
 struct Vertex
 {
 	float4 pos;
 	float4 normal;
     float4 tangent;
     float4 bitangent;
-	float2 uv;
+	float4 uv;
 };
 
 struct Triangle
 {
 	Vertex v0, v1, v2;
     uint textureIndexStart;
-    
+};
+
+struct Triangle2
+{
+    Vertex v[3];
 };
 
 struct RAY_STRUCT
@@ -41,11 +50,24 @@ struct TreeNode
 	uint nrOfChildren;
     uint ChildrenByteAddress[8];
 
-	uint nrOfTris;
+	uint nrOfObjects;
 };
 
-StructuredBuffer<Triangle> TriangleBuffer : register(t0);
-StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
+struct AddressStack
+{
+    uint address;
+    uint targetChildren;
+};
+
+struct MeshData
+{
+    float4x4 World;
+    float4x4 InverseWorld;
+    float3 Min; // Local space
+    float3 Max; //Local space
+    uint MeshIndex; //Till Meshes[] 
+    uint PADDING; // shit
+};
 
 cbuffer RAY_BOX : register(b0)
 {
@@ -53,50 +75,57 @@ cbuffer RAY_BOX : register(b0)
     uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 
-StructuredBuffer<LIGHT> Lights : register(t0, space2);
 cbuffer LightSize : register(b0, space2)
 {
     uint4 LightValues;
 };
 
+StructuredBuffer<LIGHT> Lights : register(t0, space2);
+
+StructuredBuffer<MeshData> MeshDataBuffer : register(t0);
+StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
+
+StructuredBuffer<Triangle2> Meshes[] : register(t0, space3);
 
 RWTexture2D<float4> outputTexture : register(u0);
-
 ByteAddressBuffer OcTreeBuffer : register(t0, space1);
-
 
 SamplerState defaultTextureAtlasSampler : register(s0);
 Texture2DArray TextureAtlas : register(t2);
 
-TreeNode GetNode(in uint address, out uint tringlesAddress)
+TreeNode GetNode(in uint address, out uint meshIndexAdress)
 {
     TreeNode node = (TreeNode)0;
-    address += 4;
-    node.byteStart = OcTreeBuffer.Load(address);
-    address += 4;
     
-    float3 position = asfloat(OcTreeBuffer.Load3(address));
-    address += 12;
-    float3 axis = asfloat(OcTreeBuffer.Load3(address));
-    address += 12 + 4;
+    address += 4; // byteSize
+
+    node.byteStart = OcTreeBuffer.Load(address);
+    address += 4; // byteStart
+    
+    node.min = asfloat(OcTreeBuffer.Load3(address));
+    address += 12; // min
+
+    node.max = asfloat(OcTreeBuffer.Load3(address));
+    address += 12; // max
+
+    address += 4; // Level
 
     node.nrOfChildren = OcTreeBuffer.Load(address);
-    
-    address += 4 + 4 * 8;
+    address += 4; // nrOfChildren
+
+    address += 4 * 8; // childrenIndices
 
     [unroll]
     for (uint j = 0; j < 8; j++)
     {
         node.ChildrenByteAddress[j] = OcTreeBuffer.Load(address);
-        address += 4;
+        address += 4; // childrenByteAdress[i]
     }
-    node.nrOfTris = OcTreeBuffer.Load(address);
-    address += 4;
 
-    tringlesAddress = address;
+    node.nrOfObjects = OcTreeBuffer.Load(address);
+    address += 4; // numberOfObjects
 
-    node.min = position - axis;
-    node.max = position + axis;
+    meshIndexAdress = address;
 
     return node;
 }
@@ -108,10 +137,27 @@ void swap(inout float a, inout float b)
     b = tmp;
 }
 
-Triangle GetTriangle(in uint address, in uint index)
+Triangle2 WorldSpaceTriangle(in Triangle2 tri, in float4x4 worldMatrix)
 {
-    uint triIndex = OcTreeBuffer.Load(address + index * 4);
-    return TriangleBuffer[triIndex];
+    Triangle2 outTri = (Triangle2)0;
+
+    [unroll]
+    for (uint i = 0; i < 3; i++)
+    {
+        outTri.v[i].pos = mul(tri.v[i].pos, worldMatrix);
+        outTri.v[i].normal = mul(tri.v[i].normal, worldMatrix);
+        outTri.v[i].tangent = mul(tri.v[i].tangent, worldMatrix);
+        outTri.v[i].bitangent = mul(tri.v[i].bitangent, worldMatrix);
+        outTri.v[i].uv = tri.v[i].uv;
+    }
+
+    return outTri;
+}
+
+MeshData GetMeshData(in uint address, in uint index)
+{
+    uint meshDataIndex = OcTreeBuffer.Load(address + index * 4);
+    return MeshDataBuffer[meshDataIndex];
 }
 
 bool RayAABBFinalImprovement(in float3 bmin, in float3 bmax, in float3 ray, in float3 rayOrigin, inout float tmin)
@@ -183,9 +229,9 @@ bool RayIntersectAABB(in float3 min, in float3 max, in float3 ray, in float3 ray
     return hit;
 }
 
-bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord, out float3 intersectionPoint)
+bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, out float t, out float3 biCoord, out float3 intersectionPoint)
 {
-    const float EPSILON = 0.000001f;
+    const float EPSILON = 0.00001f;
     t = 9999.0f;
     biCoord.x = -1.0f;
     biCoord.y = -1.0f;
@@ -193,10 +239,13 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
 
     intersectionPoint = float3(0, 0, 0);
 
-    float4 e1 = tri.v1.pos - tri.v0.pos;
-    float4 e2 = tri.v2.pos - tri.v0.pos;
+    float4 e1 = tri.v[1].pos - tri.v[0].pos;
+    float4 e2 = tri.v[2].pos - tri.v[0].pos;
 
     float3 normal = cross(e1.xyz, e2.xyz);
+
+    if (dot(normal, ray) >= 0.0f)
+        return false;
 
     float3 h = cross(ray, e2.xyz);
     float a = dot(e1.xyz, h);
@@ -205,7 +254,7 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
         return false;
 
     float f = 1.0f / a;
-    float3 s = rayOrigin - tri.v0.pos.xyz;
+    float3 s = rayOrigin - tri.v[0].pos.xyz;
     float u = f * (dot(s, h));
 
     if (u < 0.0f || u > 1.0f)
@@ -219,7 +268,7 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
 
     float tTemp = f * dot(e2.xyz, q);
 
-    if (tTemp > 0.02f)
+    if (tTemp > EPSILON)
     {
         t = tTemp;
         biCoord.y = u;
@@ -231,38 +280,21 @@ bool RayIntersectTriangle(in Triangle tri, in float3 ray, in float3 rayOrigin, o
     return false;
 }
 
-struct AddressStack
-{
-    uint address;
-    uint targetChildren;
-};
-
-struct LeafStack
-{
-    float t;
-    uint triangleAddress;
-    uint nrOfTriangles;
-};
-
-
-void SwapLeafStackElement(inout LeafStack e1, inout LeafStack e2)
-{
-    LeafStack tmp = e1;
-    e1 = e2;
-    e2 = tmp;
-}
-
-bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out float3 biCoord, out float3 intersectionPoint)
+bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out float3 biCoord, out float3 intersectionPoint)
 {
     intersectionPoint = float3(0, 0, 0);
-    biCoord = float3(0, 0, 0);
-    tri = (Triangle)0;
+    biCoord = float3(1, 0, 0);
+    tri = (Triangle2)0;
+
+    float3 tempIntersectionPoint;
 
     AddressStack    nodeStack[8];
     uint            nodeStackSize = 0;
-    uint            triangleAddress = 0;
+    uint            meshIndexAdress = 0;
 
-    TreeNode        node = GetNode(0, triangleAddress);
+    float4x4 worldMatrix;
+
+    TreeNode node = GetNode(0, meshIndexAdress);
 
     bool triangleHit = false;
     float aabbT = 9999.0f;
@@ -279,23 +311,42 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
         while (nodeStackSize > 0)
         {
             uint currentNode = nodeStackSize - 1;
-            node = GetNode(nodeStack[currentNode].address, triangleAddress);
+            node = GetNode(nodeStack[currentNode].address, meshIndexAdress);
             if (nodeStack[currentNode].targetChildren < node.nrOfChildren)
             {
-                TreeNode child = GetNode(node.ChildrenByteAddress[nodeStack[currentNode].targetChildren++], triangleAddress);
+                TreeNode child = GetNode(node.ChildrenByteAddress[nodeStack[currentNode].targetChildren++], meshIndexAdress);
                 if (RayIntersectAABB(child.min, child.max, ray, origin, aabbT))
                 {
-                    if (child.nrOfTris > 0)
+
+                    if (child.nrOfObjects > 0)
                     {
-                        for (uint triIterator = 0; triIterator < child.nrOfTris; triIterator++)
+                        for (uint objectIterator = 0; objectIterator < child.nrOfObjects; objectIterator++)
                         {
-                            Triangle currentTri = GetTriangle(triangleAddress, triIterator);
-                            if (RayIntersectTriangle(currentTri, ray, origin, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
+                            MeshData md = GetMeshData(meshIndexAdress, objectIterator);
+                            float3 rayLocal = normalize(mul(float4(ray, 0.0f), md.InverseWorld)).xyz;
+                            float3 originLocal = mul(float4(origin, 1.0f), md.InverseWorld).xyz;
+                            if (RayIntersectAABB(md.Min, md.Max, rayLocal, originLocal, aabbT))
                             {
-                                tri = currentTri;
-                                biCoord = tempBi;
-                                triangleT = tempTriangleT;
-                                triangleHit = true;
+                                uint nrOfTriangles;
+                                uint strides;
+                                Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
+
+                                for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
+                                {
+                                    uint status = 0;
+                                    Triangle2 boi = Meshes[md.MeshIndex][triangleIndex];
+                              
+                                    if (RayIntersectTriangle(boi, rayLocal, originLocal, tempTriangleT, tempBi, tempIntersectionPoint) && tempTriangleT < triangleT)
+                                    {
+                                        intersectionPoint = tempIntersectionPoint;
+                                        tri = boi;
+                                        biCoord = tempBi;
+                                        triangleT = tempTriangleT;
+                                        triangleHit = true;
+                                        worldMatrix = md.World;
+
+                                    }
+                                }
                             }
                         }
                     }
@@ -314,13 +365,11 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle tri, out floa
         }
     }
 
+    intersectionPoint = mul(float4(intersectionPoint, 1.0f), worldMatrix).xyz;
+
+    //return true;
     return triangleHit;
 }
-
-#define MAX_MIP 13
-#define MIN_MIP 0
-#define MIN_MIP_DIST 25
-#define MAX_MIP_DIST 500
 
 [numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
@@ -340,7 +389,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
     ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
     float3 intersectionPoint;
-    Triangle tri;
+    Triangle2 tri;
     float3 uvw;
 
     float4 specular;
@@ -349,20 +398,23 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float distToCamera = length(fragmentWorld - ViewerPosition.xyz);
 
-    for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
+    for (uint rayBounce = 0; rayBounce < 1 && strenght > 0.0f; rayBounce++)
     {
         if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint))
         {
+            //outputTexture[pixelLocation] = float4(uvw, 1.0f);
+            //return;
+
             distToCamera += length(fragmentWorld - intersectionPoint);
             float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));
 
             float finalMip = mip * (MAX_MIP - MIN_MIP);
 
-            float2 uv = tri.v0.uv * uvw.x + tri.v1.uv * uvw.y + tri.v2.uv * uvw.z;
+            float2 uv = tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z;
      
-            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart), finalMip);
-            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 1), finalMip);
-            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, tri.textureIndexStart + 2), finalMip);
+            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0), finalMip);
+            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0 + 1), finalMip);
+            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, 0 + 2), finalMip);
             strenght -= 1.0f - metall.r;
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
@@ -376,5 +428,6 @@ void main (uint3 threadID : SV_DispatchThreadID)
             ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
         }
     }
+    
     outputTexture[pixelLocation] = saturate(finalColor);
 }

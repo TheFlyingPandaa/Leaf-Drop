@@ -40,17 +40,30 @@ void PrePass::Update()
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = p_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	const SIZE_T resourceSize = p_coreRender->GetResourceDescriptorHeapSize();
+	   
 	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
-		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
+		for (size_t k = 0; k < p_staticDrawQueue[i].DrawableObjectData.size(); k++)
 		{
-			auto world = p_drawQueue[i].DrawableObjectData[k];
+			auto world = p_staticDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 	}
+	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
+	{
+		for (size_t k = 0; k < p_dynamicDrawQueue[i].DrawableObjectData.size(); k++)
+		{
+			auto world = p_dynamicDrawQueue[i].DrawableObjectData[k];
+			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
+		}
+	}
+
+
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
 	Camera * cam = Camera::GetActiveCamera();
@@ -84,12 +97,30 @@ void PrePass::Draw()
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	UINT offset = 0;
+
+	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
-		StaticMesh * m = p_drawQueue[i].MeshPtr;
+		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
+
+		offset += p_staticDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
+		StaticMesh * m = p_staticDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].DrawableObjectData.size(), 0, 0);
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_staticDrawQueue[i].DrawableObjectData.size(), 0, 0);
 	}
+
+	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
+	{
+		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
+
+		offset += p_dynamicDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
+		StaticMesh * m = p_dynamicDrawQueue[i].MeshPtr;
+		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_dynamicDrawQueue[i].DrawableObjectData.size(), 0, 0);
+	}
+
 
 	m_depthBuffer.SwapToSRV(commandList);
 
@@ -219,7 +250,11 @@ HRESULT PrePass::_InitPipelineState()
 	HRESULT hr = 0;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 64, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
 	m_inputLayoutDesc.NumElements = sizeof(inputLayout) / sizeof(D3D12_INPUT_ELEMENT_DESC);

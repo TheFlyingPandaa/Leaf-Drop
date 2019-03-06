@@ -67,9 +67,17 @@ const DirectX::XMFLOAT4A & Drawable::GetColor() const
 	return m_color;
 }
 
+void Drawable::SetAsStatic()
+{
+	m_isStatic = true;
+}
+
+bool Drawable::isStatic() const
+{
+	return m_isStatic;
+}
+
 void Drawable::Draw()
 {
-	m_coreRenderer->GetGeometryPass()->Submit(this);
-	m_coreRenderer->GetComputePass()->Submit(this);
-	m_coreRenderer->GetPrePass()->Submit(this);
+	IRender::Submit(this);
 }

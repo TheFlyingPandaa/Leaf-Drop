@@ -12,15 +12,15 @@ struct AABB
 	AABB() {};
 	AABB(const AABB & other)
 	{
-		position = other.position;
-		axis = other.axis;
+		Min = other.Min;
+		Max = other.Max;
 		level = other.level;
 		nrOfChildren = other.nrOfChildren;
 		byteSize = other.byteSize;
 		byteStart = other.byteStart;
 
-		triangleIndices = other.triangleIndices;
-		nrOfTriangles = other.nrOfTriangles;
+		meshDataIndices = other.meshDataIndices;
+		nrOfObjects = other.nrOfObjects;
 
 		for (UINT i = 0; i < nrOfChildren; i++)
 		{
@@ -34,15 +34,15 @@ struct AABB
 		if (this != &other)
 		{
 			
-			position = other.position;
-			axis = other.axis;
+			Min = other.Min;
+			Max = other.Max;
 			level = other.level;
 			nrOfChildren = other.nrOfChildren;
 			byteSize = other.byteSize;
 			byteStart = other.byteStart;
 
-			triangleIndices = other.triangleIndices;
-			nrOfTriangles = other.nrOfTriangles;
+			meshDataIndices = other.meshDataIndices;
+			nrOfObjects = other.nrOfObjects;
 
 			for (UINT i = 0; i < nrOfChildren; i++)
 			{
@@ -53,11 +53,11 @@ struct AABB
 		return *this;
 	}
 
-	std::string ToString()
+	std::string ToString() const
 	{
 		std::string str = "";
-		str += "Position: " + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z) + "\n";
-		str += "Axis: " + std::to_string(axis.x) + ", " + std::to_string(axis.y) + ", " + std::to_string(axis.z) + "\n";
+		str += "Min: " + std::to_string(Min.x) + ", " + std::to_string(Min.y) + ", " + std::to_string(Min.z) + "\n";
+		str += "Max: " + std::to_string(Max.x) + ", " + std::to_string(Max.y) + ", " + std::to_string(Max.z) + "\n";
 		str += "Level: " + std::to_string(level) + "\n";
 		str += "nrOfChildren: " + std::to_string(nrOfChildren) + "\n";
 		str += "ChildrenIndices: ";
@@ -68,10 +68,10 @@ struct AABB
 		for (UINT i = 0; i < nrOfChildren; i++)
 			str += std::to_string(childrenByteAddress[i]) + ", ";
 		str += "\n";
-		str += "nrOfTriangles: " + std::to_string(nrOfTriangles) + "\n";
-		str += "triangleIndices: ";
-		for (UINT i = 0; i < triangleIndices.size(); i++)
-			str += std::to_string(triangleIndices[i]) + ", ";
+		str += "nrOfObjects: " + std::to_string(nrOfObjects) + "\n";
+		str += "ObjectIndices: ";
+		for (UINT i = 0; i < meshDataIndices.size(); i++)
+			str += std::to_string(meshDataIndices[i]) + ", ";
 		str += "\n";
 		str += "ByteSize: " + std::to_string(byteSize) + "\n";
 		str += "ByteStart: " + std::to_string(byteStart) + "\n";
@@ -83,11 +83,11 @@ struct AABB
 	void CalcSize()
 	{
 		byteSize = sizeof(*this);
-		byteSize -= sizeof(triangleIndices) + sizeof(VECTOR_TYPE);
+		byteSize -= sizeof(meshDataIndices) + sizeof(VECTOR_TYPE);
 
-		if (!triangleIndices.empty())
+		if (!meshDataIndices.empty())
 		{
-			byteSize += (UINT)triangleIndices.size() * sizeof(VECTOR_TYPE);
+			byteSize += (UINT)meshDataIndices.size() * sizeof(VECTOR_TYPE);
 		}
 		
 	}
@@ -95,16 +95,17 @@ struct AABB
 	UINT				byteSize = 0;
 	UINT				byteStart = 0;
 
-	DirectX::XMFLOAT3	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
+	DirectX::XMFLOAT3	Min = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3	Max = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
 	
 	UINT				level = 0;
 	UINT				nrOfChildren = 0;
 	UINT				childrenIndices[8] = { 0 };
 	UINT				childrenByteAddress[8] = {0};
 
-	UINT				nrOfTriangles = 0;
-	std::vector<VECTOR_TYPE>	triangleIndices;
+	UINT				nrOfObjects = 0;
+
+	std::vector<VECTOR_TYPE>	meshDataIndices;
 };
 
 class OcTree
@@ -113,19 +114,42 @@ public:
 	OcTree();
 	~OcTree();
 
-	void BuildTree(std::vector<STRUCTS::Triangle> & triangles, UINT treeLevel = 3, UINT worldSize = 1024);
+	void BuildTree(INT startX = 0, INT startY = 0, INT startZ = 0, UINT treeLevel = 3, UINT worldSize = 1024);
+	void BuildTree(const DirectX::XMINT3 & startPos = DirectX::XMINT3(0,0,0), UINT treeLevel = 3, UINT worldSize = 1024);
+
+
+	/* If the function "Merge" will be called to another tree, set the bool value to true  */
+	void PlaceObjects(const std::vector<STRUCTS::MeshValues> & MeshValues, bool willRecieveAMerge = false);
+
+	/* Very important that the trees has the same leve, worldSize and startPosition */
+	void Merge(const OcTree & other);
+
 	const UINT & GetTotalTreeByteSize() const;
 	const std::vector<AABB> & GetTree() const;
 
+
+	std::string ToString() const;
+
 private:
 	std::vector<AABB>	m_ocTree;
-	std::vector<size_t>	m_leafIndex;
+	std::vector<UINT>	m_leafIndices;
+	UINT				m_leafCounter = 0;
+
+	UINT				m_numberOfObjectsInLeafs = 0;
+
+	UINT				m_maxLevel = 0;
 
 	UINT				m_totalTreeByteSize = 0;
-	void _BuildTree(const DirectX::XMFLOAT3 & startPos, const UINT & level, const UINT & maxLevel, const UINT & worldSize, const size_t & parentIndex);
 
-	bool _inside(const AABB & aabb, const STRUCTS::Triangle & tri);
+	bool _inside(const AABB & aabb, const STRUCTS::MeshValues & colVal);
 	bool _pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point);
+
+	void _CreateAABB(const DirectX::XMFLOAT3 & position, const DirectX::XMFLOAT3 & size, UINT level, bool isLeaf, UINT index);
+	UINT _GetAABBIndexByWorldPos(const DirectX::XMFLOAT3 & worldPos, UINT Level);
+
+	void _clearLeafs();
+	void _traverseAndPlace(const STRUCTS::MeshValues & meshVal, UINT meshIndex, UINT ocIndex);
+
 
 };
 

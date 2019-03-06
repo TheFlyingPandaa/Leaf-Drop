@@ -24,7 +24,7 @@ namespace STRUCTS
 		DirectX::XMFLOAT4 Normal;
 		DirectX::XMFLOAT4 Tangent;
 		DirectX::XMFLOAT4 biTangent;
-		DirectX::XMFLOAT2 UV;
+		DirectX::XMFLOAT4 UV;
 	};
 	struct Vertex
 	{
@@ -32,7 +32,7 @@ namespace STRUCTS
 		DirectX::XMFLOAT4 normal;
 		DirectX::XMFLOAT4 tangent;
 		DirectX::XMFLOAT4 bitangent;
-		DirectX::XMFLOAT2 uv;
+		DirectX::XMFLOAT4 uv;
 	};
 
 	struct Triangle
@@ -40,4 +40,15 @@ namespace STRUCTS
 		Vertex v1, v2, v3;
 		UINT textureIndexStart;
 	};
+
+	struct MeshValues
+	{
+		DirectX::XMFLOAT4X4A World; //might need fence bobby please fix
+		DirectX::XMFLOAT4X4A WorldInverse;
+		DirectX::XMFLOAT3 Min;
+		DirectX::XMFLOAT3 Max;
+		UINT MeshIndex = 0;
+		UINT lol = 0;
+	};
+
 }

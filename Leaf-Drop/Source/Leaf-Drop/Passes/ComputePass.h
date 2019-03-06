@@ -55,7 +55,7 @@ private:
 	UINT8 m_computeIndex = 0;
 	UAV * m_rayStencil = nullptr;
 
-	ConstantBuffer m_meshTriangles;
+	ConstantBuffer m_meshData;
 	ConstantBuffer m_ocTreeBuffer;
 
 	UINT m_geometryRenderTargetsSize = 0;
@@ -76,9 +76,13 @@ private:
 
 	};
 
-	OcTree m_ocTree;
+	OcTree m_staticOcTree;
+	OcTree m_dynamicOcTree;
+
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
+
+	ConstantBuffer m_inverseWorldMatrix;
 
 	UAV m_lightUav;
 	ConstantBuffer m_lightsBuffer;

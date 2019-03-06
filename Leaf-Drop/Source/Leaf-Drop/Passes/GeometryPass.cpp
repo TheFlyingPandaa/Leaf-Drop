@@ -139,17 +139,31 @@ void GeometryPass::Update()
 	UINT textureCounter = 0;
 	m_ptrAtlas->Begin(commandList);
 	UINT4 textureOffset{ 0,0,0,0 };
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
-		for (size_t k = 0; k < p_drawQueue[i].DrawableObjectData.size(); k++)
+		for (size_t k = 0; k < p_staticDrawQueue[i].DrawableObjectData.size(); k++)
 		{
-			auto world = p_drawQueue[i].DrawableObjectData[k];
+			auto world = p_staticDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
-		m_ptrAtlas->CopySubresource(p_drawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
-		m_ptrAtlas->CopySubresource(p_drawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
-		m_ptrAtlas->CopySubresource(p_drawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
+		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 		textureOffset.x = (UINT)i * 3;
+		textureOffset.y = 3;
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * (UINT)i);
+	}
+	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
+	{
+		for (size_t k = 0; k < p_dynamicDrawQueue[i].DrawableObjectData.size(); k++)
+		{
+			auto world = p_dynamicDrawQueue[i].DrawableObjectData[k];
+			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
+		}
+		//m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
+		//m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
+		//m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
+		textureOffset.x = 0;
 		textureOffset.y = 3;
 		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * (UINT)i);
 	}
@@ -178,14 +192,36 @@ void GeometryPass::Draw()
 
 	m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
-	for (size_t i = 0; i < p_drawQueue.size(); i++)
+	UINT offset = 0;
+
+	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
+	{
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, (UINT)i * sizeof(UINT4));
+		
+		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
+
+		offset += p_staticDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
+		StaticMesh * m = p_staticDrawQueue[i].MeshPtr;
+		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_staticDrawQueue[i].DrawableObjectData.size(), 0, 0);
+	}
+
+	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
 	{
 		m_textureIndex.Bind(TEXTURE_INDEX, commandList, (UINT)i * sizeof(UINT4));
 
-		StaticMesh * m = p_drawQueue[i].MeshPtr;
+		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
+
+		offset += p_dynamicDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
+
+		StaticMesh * m = p_dynamicDrawQueue[i].MeshPtr;
 		commandList->IASetVertexBuffers(0, 1, &m->GetVBV());
-		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_drawQueue[i].DrawableObjectData.size(), 0, 0);
+
+		commandList->DrawInstanced(m->GetNumberOfVertices(), (UINT)p_dynamicDrawQueue[i].DrawableObjectData.size(), 0, 0);
 	}
+
+
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
 		m_renderTarget[i]->SwitchToSRV(commandList);
@@ -340,7 +376,7 @@ HRESULT GeometryPass::_InitPipelineState()
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 64, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 64, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
 	m_inputLayoutDesc.NumElements = sizeof(inputLayout) / sizeof(D3D12_INPUT_ELEMENT_DESC);

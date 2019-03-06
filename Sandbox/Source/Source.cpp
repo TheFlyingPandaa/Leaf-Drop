@@ -55,9 +55,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 500;
+		const UINT NUMBER_OF_DRAWABLES = 100;
 		const UINT NUMBER_OF_LIGHTS = 100;
-		const UINT MAX_DISTANCE = 10;
+		const UINT MAX_DISTANCE = 300;
 		const UINT MAX_LIGHT_DISTANCE = 100;
 
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
@@ -84,17 +84,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		std::vector<Drawable> d(NUMBER_OF_DRAWABLES);
 		
+		Drawable dynamicDrawable;
+		dynamicDrawable.SetTexture(&t2[0]);
+		dynamicDrawable.SetNormal(&t2[1]);
+		dynamicDrawable.SetMetallic(&t2[2]);
+		//dynamicDrawable.SetAsStatic();
+		dynamicDrawable.SetMesh(m);
+		dynamicDrawable.SetScale(10, 10, 10);
+
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
 			d[i].SetTexture(&t2[0]);
 			d[i].SetNormal(&t2[1]);
 			d[i].SetMetallic(&t2[2]);
-
+			d[i].SetAsStatic();
 			d[i].SetMesh(m);
 		
-			float x = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float y = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
-			float z = (FLOAT)(rand() % 98 + 2) * (rand() % 2 ? 1 : -1);
+			float x = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
+			float y = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
+			float z = (FLOAT)(rand() % MAX_DISTANCE) * (rand() % 2 ? 1 : -1);
 		
 			float scl = (FLOAT)(rand() % 3 + 1);
 		
@@ -103,13 +111,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			d[i].SetScale(10,10,10);
 		}
 
-		d[0].SetPosition(10, 0, 0);
+		d[0].SetPosition(0, 0, 0);
+		//d[0].SetScale(512.0f, 512.0f, 512.0f);
+
+		d[NUMBER_OF_DRAWABLES - 1].SetPosition(10, 0, 0);
+		d[NUMBER_OF_DRAWABLES - 1].SetScale(10, 10, 10);
+
 		d[1].SetPosition(-10, 0, 0);
-		d[0].SetScale(10, 10, 10);
 		d[1].SetScale(2, 2, 2);
 
 		d[2].SetPosition(0,-6,0);
-		d[2].SetScale(100,1,100);
+		d[2].SetScale(1,1,1);
+
+		d[3].SetPosition(0, 0, 1000);
+		d[3].SetScale(50, 50, 50);
+
 
 		float rot = 0;
 		timer.Start();
@@ -182,8 +198,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				moveDir.z *= (FLOAT)dt;
 
 				cam.Translate(moveDir, false);
-
-
 			}
 
 			if (wnd->IsKeyPressed(Input::ESCAPE))
@@ -192,27 +206,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			light.Queue();
 		
-			rot += 1.0f * (FLOAT)dt;
-
-			/*std::sort(d.begin(), d.end(), [](const Drawable & a, const Drawable & b) {
-				DirectX::XMFLOAT4 position = Camera::GetActiveCamera()->GetPosition();
-				DirectX::XMVECTOR camPos = DirectX::XMLoadFloat4(&position);
-
-
-				DirectX::XMFLOAT4 aPos = a.GetPosition();
-				DirectX::XMFLOAT4 bPos = b.GetPosition();
-
-				float aL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&aPos), camPos)));
-				float bL = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&bPos), camPos)));
-
-				return aL < bL;
-			});*/
-
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
 				d[i].Update();
 				d[i].Draw();
 			}
+
+			rot += 1.0f * (FLOAT)dt;
+
+			static float mover = 0.0f;
+			static const float SPEED = 1.0f;
+
+			dynamicDrawable.SetPosition(0, 50.0f + sin(mover) * 10.0f, 0.0f);
+			dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_2PI, 0.0f);
+
+			mover += SPEED * dt;
+
+			dynamicDrawable.Update();
+			dynamicDrawable.Draw();
+
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{
 				pointLight[i].Queue();

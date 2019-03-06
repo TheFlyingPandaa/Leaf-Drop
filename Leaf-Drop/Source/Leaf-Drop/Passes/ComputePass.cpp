@@ -15,22 +15,9 @@
 #define LIGHT_TABLE			5
 #define LIGHT_BUFFER		6
 #define OCTREE				7
+#define MESH_ARRAY			8
 
-struct Vertex
-{
-	DirectX::XMFLOAT4 pos;
-	DirectX::XMFLOAT4 normal;
-	DirectX::XMFLOAT4 tangent;
-	DirectX::XMFLOAT4 bitangent;
-	DirectX::XMFLOAT2 uv;
-};
-
-struct Triangle
-{
-	Vertex v1, v2, v3;
-	UINT textureIndexStart = 0;
-	
-};
+#define MESH_ARRAY_SPACE	3
 
 ComputePass::ComputePass()
 {
@@ -56,85 +43,96 @@ void ComputePass::Update()
 {
 }
 
+#include "../Utillity/Timer.h"
+
 void ComputePass::Draw()
 {
 	static bool first = true;
-	static std::vector<STRUCTS::Triangle> triangles;
+	static std::vector<STRUCTS::MeshValues> octreeValues;
 
 	if (first)
 	{
 		first = false;
-		for (int dq = 0; dq < p_drawQueue.size(); dq++)
+		for (int dq = 0; dq < p_staticDrawQueue.size(); dq++)
 		{
-			for (int m = 0; m < p_drawQueue[dq].DrawableObjectData.size(); m++)
+			for (int m = 0; m < p_staticDrawQueue[dq].DrawableObjectData.size(); m++)
 			{
-				StaticMesh * mesh = p_drawQueue[dq].MeshPtr;
-				STRUCTS::Triangle t;
-				for (int v = 0; v < mesh->GetRawVertices()->size(); v+=3)
-				{
-					DirectX::XMFLOAT4X4 world = p_drawQueue[dq].DrawableObjectData[m].WorldMatrix;
-					
-					DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&world));
-
-					t.v1.pos = mesh->GetRawVertices()->at(v).Position;
-					t.v1.normal = mesh->GetRawVertices()->at(v).Normal;
-					t.v1.tangent = mesh->GetRawVertices()->at(v).Tangent;
-					t.v1.bitangent = mesh->GetRawVertices()->at(v).biTangent;
-					t.v1.uv = mesh->GetRawVertices()->at(v).UV;
-
-
-					DirectX::XMStoreFloat4(&t.v1.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v1.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v1.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v1.normal), worldMatrix)));
-
-					t.v2.pos = mesh->GetRawVertices()->at(v + 1).Position;
-					t.v2.normal = mesh->GetRawVertices()->at(v + 1).Normal;
-					t.v2.tangent = mesh->GetRawVertices()->at(v + 1).Tangent;
-					t.v2.bitangent = mesh->GetRawVertices()->at(v + 1).biTangent;
-					t.v2.uv = mesh->GetRawVertices()->at(v + 1).UV;
-
-
-					DirectX::XMStoreFloat4(&t.v2.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v2.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v2.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v2.normal), worldMatrix)));
-
-					t.v3.pos = mesh->GetRawVertices()->at(v + 2).Position;
-					t.v3.normal = mesh->GetRawVertices()->at(v + 2).Normal;
-					t.v3.tangent = mesh->GetRawVertices()->at(v + 2).Tangent;
-					t.v3.bitangent = mesh->GetRawVertices()->at(v + 2).biTangent;
-					t.v3.uv = mesh->GetRawVertices()->at(v + 2).UV;
-
-
-					DirectX::XMStoreFloat4(&t.v3.pos, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat4(&t.v3.pos), worldMatrix));
-					DirectX::XMStoreFloat4(&t.v3.normal, DirectX::XMVector3Normalize(DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&t.v3.normal), worldMatrix)));
-
-					t.textureIndexStart = 0;
-
-					triangles.push_back(t);
-				}
+				DirectX::XMFLOAT4X4A WorldInverse = p_staticDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
+				DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
+				auto aabb = p_staticDrawQueue[dq].MeshPtr->GetAABB();
+				STRUCTS::MeshValues ocv;
+				ocv.World = p_staticDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
+				ocv.WorldInverse = WorldInverse;
+				ocv.MeshIndex = aabb.meshIndex;
+				ocv.Min = aabb.min;
+				ocv.Max = aabb.max;
+				octreeValues.push_back(ocv);
 			}
 		}
-		m_ocTree.BuildTree(triangles, 3u, 256u);
+
+		//m_ocTree.BuildTree(octreeValues, 3u, 512);
+		m_staticOcTree.BuildTree(-256, -256, -256, 3u, 512u);
+		m_dynamicOcTree.BuildTree(-256, -256, -256, 3u, 512u);
+		m_staticOcTree.PlaceObjects(octreeValues);
+
 		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
 		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
-
-		auto tree = m_ocTree.GetTree();
-		size_t size = tree.size();
-		UINT currentOffset = 0;
-		
-		for (size_t i = 0; i < size; i++)
+	}
+	
+	static double mergeTime = 0;
+	static double copyTime = 0;
+	static int timeCounter = 0;
+	Timer t;
+	t.Start();
+	std::vector<STRUCTS::MeshValues> dynamicValues;
+	for (int dq = 0; dq < p_dynamicDrawQueue.size(); dq++)
+	{
+		for (int m = 0; m < p_dynamicDrawQueue[dq].DrawableObjectData.size(); m++)
 		{
-			UINT sizeofTriInd = (UINT)tree[i].triangleIndices.size() * sizeof(UINT);
-			m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofTriInd, currentOffset, true);
-			currentOffset += tree[i].byteSize - sizeofTriInd;
-			m_ocTreeBuffer.SetData(tree[i].triangleIndices.data(), sizeofTriInd, currentOffset, true);
-			currentOffset += sizeofTriInd;
+			DirectX::XMFLOAT4X4A WorldInverse = p_dynamicDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
+			DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
+			auto aabb = p_dynamicDrawQueue[dq].MeshPtr->GetAABB();
+			STRUCTS::MeshValues ocv;
+			ocv.World = p_dynamicDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
+			ocv.WorldInverse = WorldInverse;
+			ocv.MeshIndex = aabb.meshIndex;
+			ocv.Min = aabb.min;
+			ocv.Max = aabb.max;
+			dynamicValues.push_back(ocv);
 		}
 	}
 
-	p_drawQueue.clear();
-	
+	m_dynamicOcTree.PlaceObjects(dynamicValues, true);
+	m_dynamicOcTree.Merge(m_staticOcTree);
+	mergeTime += t.Stop(Timer::MILLISECONDS);
+
+	auto tree = m_dynamicOcTree.GetTree();
+	size_t size = tree.size();
+
+	UINT currentOffset = 0;
+
+	for (size_t i = 0; i < size; i++)
+	{
+		UINT sizeofMeshInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
+		m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofMeshInd, currentOffset, true);
+		currentOffset += tree[i].byteSize - sizeofMeshInd;
+		m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset, true);
+		currentOffset += sizeofMeshInd;
+	}
+
+	copyTime += t.Stop(Timer::MILLISECONDS);
+
+	if (timeCounter++ == 1000)
+	{
+		std::ofstream lol;
+		lol.open("MergeTime.txt");
+		lol << "Average time to merge tree: " << mergeTime / 1000 << " ms\n";
+		lol << "Average time to copy tree: " << copyTime / 1000 << " ms\n";
+		lol.close();
+	}
+
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
-
 
 	POINT windowSize = p_window->GetWindowSize();
 
@@ -146,7 +144,7 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x / SCREEN_DIV;
 	data.info.y = windowSize.y / SCREEN_DIV;
-	data.info.z = (UINT)triangles.size();
+	data.info.z = (UINT)octreeValues.size() + (UINT)dynamicValues.size();
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
@@ -166,10 +164,15 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	m_meshTriangles.SetData(triangles.data(), (UINT)triangles.size() * sizeof(STRUCTS::Triangle));
-	m_meshTriangles.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
+	UINT dataOffset = 0;
+	m_meshData.SetData(octreeValues.data(), dataOffset = (UINT)octreeValues.size() * sizeof(STRUCTS::MeshValues));
+	m_meshData.SetData(dynamicValues.data(), (UINT)dynamicValues.size() * sizeof(STRUCTS::MeshValues), dataOffset);
+	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
+
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
+
+	StaticMesh::BindCompute(MESH_ARRAY, p_commandList[frameIndex]);
 
 	p_commandList[frameIndex]->Dispatch(data.info.x, data.info.y, 1);
 
@@ -191,7 +194,7 @@ void ComputePass::Release()
 	m_fence.Release();
 	p_ReleaseCommandList();
 	m_squareIndex.Release();
-	m_meshTriangles.Release();
+	m_meshData.Release();
 	m_rayTexture.Release();
 	m_lightUav.Release();
 	m_lightsBuffer.Release();
@@ -247,10 +250,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshTriangles.Init(sizeof(STRUCTS::Triangle) * MAX_OBJECTS * 12, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::Triangle))))
+	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::MeshValues) * MAX_OBJECTS, L"MeshDataStructuredBuffer", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::MeshValues))))
 	{
 		return hr;
 	}
+
 	if (FAILED(hr = m_ocTreeBuffer.Init(4096 * 1024, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
 	{
 		return hr;
@@ -321,18 +325,22 @@ HRESULT ComputePass::_InitRootSignature()
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
+	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, MESH_ARRAY_SPACE, D3D12_DESCRIPTOR_RANGE_FLAG_NONE);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[8];
+	
+
+	CD3DX12_ROOT_PARAMETER1 rootParameters[9];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
 	rootParameters[TRIANGLES].InitAsShaderResourceView(0);
 	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
 	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
-
 	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 2);
 	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 2);
-
+	rootParameters[MESH_ARRAY].InitAsDescriptorTable(1, &descRange2);
+	//rootParameters[MESH_ARRAY].InitAsShaderResourceView(0, 3);
+	
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 	rootSignatureDesc.Init_1_1(

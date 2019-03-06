@@ -31,14 +31,17 @@ public:
 	ID3D12GraphicsCommandList *const* GetCommandList() const;
 	IDXGISwapChain3 * GetSwapChain() const;
 	ID3D12DescriptorHeap * GetRTVDescriptorHeap() const;
+	ID3D12DescriptorHeap * GetGPUDescriptorHeap() const;
+	ID3D12CommandQueue * GetCopyQueue() const;
+	
 	const UINT & GetRTVDescriptorHeapSize() const;
 
 	const UINT & GetFrameIndex() const;
 
-	ID3D12DescriptorHeap *	GetResourceDescriptorHeap() const;
+	ID3D12DescriptorHeap *	GetCPUDescriptorHeap() const;
 	const SIZE_T &			GetCurrentResourceIndex() const;
 	const SIZE_T &			GetResourceDescriptorHeapSize() const;
-	void					IterateResourceIndex();
+	void					IterateResourceIndex(const UINT & arraySize = 1);
 
 	PrePass		 * GetPrePass() const;
 	GeometryPass * GetGeometryPass() const;
@@ -52,7 +55,8 @@ public:
 
 	void ClearGPU();
 
-	void SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const;
+	void SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const;	
+	const SIZE_T & CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HANDLE & handle, const UINT & numDescriptors);
 
 private:
 
@@ -61,7 +65,10 @@ private:
 	ID3D12CommandQueue *		m_commandQueue = nullptr;
 	ID3D12DescriptorHeap *		m_rtvDescriptorHeap = nullptr;
 
-	ID3D12DescriptorHeap *		m_resourceDescriptorHeap = nullptr;
+	ID3D12DescriptorHeap *		m_gpuDescriptorHeap[FRAME_BUFFER_COUNT] = { nullptr };
+	ID3D12CommandQueue	*		m_copyQueue = nullptr;
+
+	ID3D12DescriptorHeap *		m_cpuDescriptorHeap = nullptr;
 	SIZE_T						m_currentResourceIndex = 0;
 	SIZE_T						m_resourceDescriptorHeapSize = 0;
 
@@ -77,6 +84,8 @@ private:
 	HANDLE m_fenceEvent = nullptr;
 
 	Window * m_windowPtr = nullptr;
+
+	SIZE_T m_gpuOffset[FRAME_BUFFER_COUNT] = {0};
 
 	PrePass * m_prePass = nullptr;
 	GeometryPass * m_geometryPass = nullptr;
@@ -96,6 +105,8 @@ private:
 	HRESULT _CreateCommandList();
 	HRESULT _CreateFenceAndFenceEvent();
 	HRESULT _CreateResourceDescriptorHeap();
+	HRESULT _CreateCPUDescriptorHeap();
+	HRESULT _CreateCopyQueue();
 
 	void _Clear();
 
