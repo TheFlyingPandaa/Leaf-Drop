@@ -363,7 +363,6 @@ const SIZE_T & CoreRender::CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HA
 		{ m_gpuDescriptorHeap[m_frameIndex]->GetCPUDescriptorHandleForHeapStart().ptr + m_gpuOffset[m_frameIndex] },
 		handle,
 		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
 	return m_gpuOffset[m_frameIndex];
 }
 

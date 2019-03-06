@@ -63,7 +63,7 @@ float4 main(PS_INPUT input) : SV_TARGET
         }
     }
     rays /= divider;
-    //return rays;
+    return rays;
     float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
 	uint numStructs;

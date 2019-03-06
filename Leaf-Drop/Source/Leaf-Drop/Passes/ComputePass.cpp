@@ -15,8 +15,7 @@
 #define LIGHT_TABLE			5
 #define LIGHT_BUFFER		6
 #define OCTREE				7
-#define INVERSE_WORLD_MAT	8
-#define MESH_ARRAY			9
+#define MESH_ARRAY			8
 
 #define MESH_ARRAY_SPACE	3
 
@@ -62,6 +61,7 @@ void ComputePass::Draw()
 				DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
 				auto aabb = p_staticDrawQueue[dq].MeshPtr->GetAABB();
 				STRUCTS::MeshValues ocv;
+				ocv.World = p_staticDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
 				ocv.WorldInverse = WorldInverse;
 				ocv.MeshIndex = aabb.meshIndex;
 				ocv.Min = aabb.min;
@@ -93,6 +93,7 @@ void ComputePass::Draw()
 			DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
 			auto aabb = p_dynamicDrawQueue[dq].MeshPtr->GetAABB();
 			STRUCTS::MeshValues ocv;
+			ocv.World = p_dynamicDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
 			ocv.WorldInverse = WorldInverse;
 			ocv.MeshIndex = aabb.meshIndex;
 			ocv.Min = aabb.min;
@@ -170,8 +171,6 @@ void ComputePass::Draw()
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 
 	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
-
-	m_inverseWorldMatrix.BindComputeShader(INVERSE_WORLD_MAT, p_commandList[frameIndex]);
 
 	StaticMesh::BindCompute(MESH_ARRAY, p_commandList[frameIndex]);
 
@@ -251,14 +250,11 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::MeshValues) * MAX_OBJECTS, L"TriMeshData", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::MeshValues))))
+	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::MeshValues) * MAX_OBJECTS, L"MeshDataStructuredBuffer", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::MeshValues))))
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_inverseWorldMatrix.Init(MAX_OBJECTS * sizeof(InstanceGroup::ObjectDataStruct), L"Compute Matrix", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(InstanceGroup::ObjectDataStruct))))
-	{
-		return hr;
-	}
+
 	if (FAILED(hr = m_ocTreeBuffer.Init(4096 * 1024, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
 	{
 		return hr;
@@ -329,9 +325,11 @@ HRESULT ComputePass::_InitRootSignature()
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
-	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 1, MESH_ARRAY_SPACE);
+	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, MESH_ARRAY_SPACE, D3D12_DESCRIPTOR_RANGE_FLAG_NONE);
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[10];
+	
+
+	CD3DX12_ROOT_PARAMETER1 rootParameters[9];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
@@ -340,9 +338,9 @@ HRESULT ComputePass::_InitRootSignature()
 	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
 	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 2);
 	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 2);
-	rootParameters[INVERSE_WORLD_MAT].InitAsShaderResourceView(0, MESH_ARRAY_SPACE);
 	rootParameters[MESH_ARRAY].InitAsDescriptorTable(1, &descRange2);
-
+	//rootParameters[MESH_ARRAY].InitAsShaderResourceView(0, 3);
+	
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 	rootSignatureDesc.Init_1_1(

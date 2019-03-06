@@ -28,7 +28,7 @@ private:
 	ID3D12Resource * m_resource[FRAME_BUFFER_COUNT] = { nullptr };
 	//void * m_data = nullptr;
 	UINT m_size = NULL;
-	SIZE_T m_descriptorHeapOffset = 0;
+	SIZE_T m_descriptorHeapOffset[FRAME_BUFFER_COUNT] = { 0 };
 	CBV_TYPE m_type;
 
 	UINT8 * m_resource_GPU_Location[FRAME_BUFFER_COUNT] = { nullptr };

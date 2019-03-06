@@ -11,7 +11,7 @@ struct Vertex
 	float4 normal;
     float4 tangent;
     float4 bitangent;
-	float2 uv;
+	float4 uv;
 };
 
 struct Triangle
@@ -61,6 +61,7 @@ struct AddressStack
 
 struct MeshData
 {
+    float4x4 World;
     float4x4 InverseWorld;
     float3 Min; // Local space
     float3 Max; //Local space
@@ -84,8 +85,7 @@ StructuredBuffer<LIGHT> Lights : register(t0, space2);
 StructuredBuffer<MeshData> MeshDataBuffer : register(t0);
 StructuredBuffer<RAY_STRUCT> RayStencil : register(t1);
 
-StructuredBuffer<MeshData> MeshDataBuffer2 : register(t0, space3);
-StructuredBuffer<Triangle2> Meshes[] : register(t1, space3);
+StructuredBuffer<Triangle2> Meshes[] : register(t0, space3);
 
 RWTexture2D<float4> outputTexture : register(u0);
 ByteAddressBuffer OcTreeBuffer : register(t0, space1);
@@ -135,6 +135,23 @@ void swap(inout float a, inout float b)
     float tmp = a;
     a = b;
     b = tmp;
+}
+
+Triangle2 WorldSpaceTriangle(in Triangle2 tri, in float4x4 worldMatrix)
+{
+    Triangle2 outTri = (Triangle2)0;
+
+    [unroll]
+    for (uint i = 0; i < 3; i++)
+    {
+        outTri.v[i].pos = mul(tri.v[i].pos, worldMatrix);
+        outTri.v[i].normal = mul(tri.v[i].normal, worldMatrix);
+        outTri.v[i].tangent = mul(tri.v[i].tangent, worldMatrix);
+        outTri.v[i].bitangent = mul(tri.v[i].bitangent, worldMatrix);
+        outTri.v[i].uv = tri.v[i].uv;
+    }
+
+    return outTri;
 }
 
 MeshData GetMeshData(in uint address, in uint index)
@@ -309,8 +326,12 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
 
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
-                                    Triangle2 boi = Meshes[md.MeshIndex][triangleIndex];
+                                    uint status = 0;
+                                    Triangle2 boi = Meshes[md.MeshIndex].Load(triangleIndex);
+
+                                    //bool lol = CheckAccessFullyMapped(status);
                                     
+                                    //biCoord = float3(0, 1, 0);
                                     if (RayIntersectTriangle(boi, rayLocal, originLocal, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
                                     {
                                         tri = boi;
@@ -336,7 +357,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
             }
         }
     }
-    
+    //return true;
     return triangleHit;
 }
 

@@ -19,7 +19,7 @@ struct VS_INPUT
 	float4 normal : NORMAL;
 	float4 tangent : TANGENT;
 	float4 biTangent : BITANGENT;
-	float2 uv : TEXCOORD;
+	float4 uv : TEXCOORD;
 };
 
 struct VS_OUTPUT
@@ -44,7 +44,7 @@ VS_OUTPUT main(VS_INPUT input, uint instanceID : SV_InstanceID)
 	output.normal =			normalize(mul(input.normal, ObjectBuffer[instanceID].WorldMatrix));
 	output.tangent =		input.tangent;
 	output.biTangent =		input.biTangent;
-	output.uv =				input.uv;
+	output.uv =				input.uv.xy;
     output.ndc =            output.position.xy / output.position.w;
 	output.color =			ObjectBuffer[instanceID].Color;
 

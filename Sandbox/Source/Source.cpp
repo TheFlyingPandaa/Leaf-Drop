@@ -112,7 +112,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		}
 
 		d[0].SetPosition(0, 0, 0);
-		d[0].SetScale(512.0f, 512.0f, 512.0f);
+		//d[0].SetScale(512.0f, 512.0f, 512.0f);
 
 		d[NUMBER_OF_DRAWABLES - 1].SetPosition(10, 0, 0);
 		d[NUMBER_OF_DRAWABLES - 1].SetScale(10, 10, 10);
@@ -121,7 +121,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		d[1].SetScale(2, 2, 2);
 
 		d[2].SetPosition(0,-6,0);
-		d[2].SetScale(100,1,100);
+		d[2].SetScale(1,1,1);
 
 		d[3].SetPosition(0, 0, 1000);
 		d[3].SetScale(50, 50, 50);
@@ -223,7 +223,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			mover += SPEED * dt;
 
 			dynamicDrawable.Update();
-			dynamicDrawable.Draw();
+			//dynamicDrawable.Draw();
 
 			for (UINT i = 0; i < NUMBER_OF_LIGHTS; i++)
 			{

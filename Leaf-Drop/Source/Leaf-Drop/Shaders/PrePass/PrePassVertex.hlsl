@@ -14,7 +14,11 @@ StructuredBuffer<ObjectData> ObjectBuffer: register(t0);
 
 struct VS_INPUT
 {
-	float4 position : POSITION;
+    float4 position : POSITION;
+    float4 normal : NORMAL;
+    float4 tangent : TANGENT;
+    float4 biTangent : BITANGENT;
+    float4 uv : TEXCOORD;
 };
 
 struct VS_OUTPUT

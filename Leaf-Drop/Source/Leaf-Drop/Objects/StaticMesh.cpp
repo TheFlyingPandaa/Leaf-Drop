@@ -71,7 +71,8 @@ bool StaticMesh::LoadMesh(const std::string & path)
 
 	if (FirstTime)
 	{
-		s_bindlessMeshes.Init(sizeof(STRUCTS::StaticVertex) * 3 * 12000, L"Bindless Mesh ", ConstantBuffer::BINDLESS_BUFFER, sizeof(STRUCTS::StaticVertex) * 3);
+		s_bindlessMeshes.Init(sizeof(STRUCTS::StaticVertex) * 3 * 65536, L"Bindless Mesh ", ConstantBuffer::BINDLESS_BUFFER, sizeof(STRUCTS::StaticVertex) * 3);
+		//s_bindlessMeshes.Init(sizeof(STRUCTS::StaticVertex) * 3 * 65536, L"Bindless Mesh ", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::StaticVertex) * 3);
 		FirstTime = false;
 	}
 
@@ -100,7 +101,9 @@ bool StaticMesh::LoadMesh(const std::string & path)
 			vertex.Normal = Convert_Assimp_To_DirectX(scene->mMeshes[i]->mNormals[j], 0);
 			vertex.Tangent = Convert_Assimp_To_DirectX(scene->mMeshes[i]->mTangents[j], 0);
 			vertex.biTangent = Convert_Assimp_To_DirectX(scene->mMeshes[i]->mBitangents[j], 0);
-			vertex.UV = Convert_Assimp_To_DirectX2(scene->mMeshes[i]->mTextureCoords[0][j]);
+			DirectX::XMFLOAT2 uv = Convert_Assimp_To_DirectX2(scene->mMeshes[i]->mTextureCoords[0][j]);
+			vertex.UV = DirectX::XMFLOAT4(uv.x, uv.y, 0.0f, 0.0f);
+
 			m_mesh.push_back(vertex);
 		}
 	}
@@ -179,8 +182,7 @@ bool StaticMesh::LoadMesh(const std::string & path)
 			}
 		}
 	}
-
-
+		
 	return false;
 }
 
