@@ -327,11 +327,9 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
                                     uint status = 0;
-                                    Triangle2 boi = Meshes[md.MeshIndex].Load(triangleIndex);
+                                    Triangle2 boi = Meshes[md.MeshIndex][triangleIndex];
 
-                                    //bool lol = CheckAccessFullyMapped(status);
-                                    
-                                    //biCoord = float3(0, 1, 0);
+                              
                                     if (RayIntersectTriangle(boi, rayLocal, originLocal, tempTriangleT, tempBi, intersectionPoint) && tempTriangleT < triangleT)
                                     {
                                         tri = boi;
