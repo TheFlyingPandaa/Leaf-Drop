@@ -251,6 +251,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 			dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
 			dynamicDrawable.SetRotation(0, mover, 0.0f);
+			dynamicDrawable.SetScale((cos(mover) * 5.0f) + 10.0f, (sin(mover) * 5.0f) + 10.0f, (cos(mover) * 5.0f) + 10.0f);
 
 			mover += SPEED * dt;
 
