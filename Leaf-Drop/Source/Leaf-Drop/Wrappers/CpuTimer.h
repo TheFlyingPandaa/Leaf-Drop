@@ -1,12 +1,12 @@
 #pragma once
 #include <fstream>
-
-class GpuTimer 
+#include "../Utillity/Timer.h"
+class CpuTimer 
 {
 public:
-	GpuTimer() = default;
-	~GpuTimer();
-	void Start(ID3D12CommandQueue * commandQueue = nullptr);
+	CpuTimer() = default;
+	~CpuTimer();
+	void Start();
 	 
 	void PrintTimer();
 	void OpenLog(const std::string & path);
@@ -16,10 +16,7 @@ public:
 	double GetTime();
 	void Stop();
 private:
-	ID3D12CommandQueue * m_commandQueue;
-
-	UINT64 m_GPUTimer = 0;
-	UINT64 m_CPUTimer = 0;
+	Timer timer;
 
 	UINT m_iterationCounter = 0;
 

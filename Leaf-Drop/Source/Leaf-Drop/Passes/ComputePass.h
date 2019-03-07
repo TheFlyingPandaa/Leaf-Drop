@@ -91,5 +91,5 @@ private:
 	std::vector<STRUCTS::MeshValues> m_staticOctreeValues;
 	std::vector<STRUCTS::MeshValues> m_dynamicOctreeValues;
 
-
+	GpuTimer timer;
 };

@@ -10,11 +10,13 @@
 
 PrePass::PrePass()
 {
+	timer.OpenLog("PrePass.txt");
 }
 
 
 PrePass::~PrePass()
 {
+	timer.CloseLog();
 }
 
 HRESULT PrePass::Init()
@@ -31,6 +33,7 @@ HRESULT PrePass::Init()
 
 void PrePass::Update()
 {
+	timer.Start();
 	if (FAILED(OpenCommandList(m_pipelineState)))
 	{
 		return;
@@ -130,7 +133,7 @@ void PrePass::Draw()
 	// Possible fence?? boobie fix
 
 	p_coreRender->GetGeometryPass()->SetDepthPreBuffer(&m_depthBuffer);
-
+	timer.LogTime();
 }
 
 void PrePass::Release()
