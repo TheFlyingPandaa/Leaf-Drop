@@ -26,22 +26,20 @@ namespace STRUCTS
 		DirectX::XMFLOAT4 biTangent;
 		DirectX::XMFLOAT4 UV;
 	};
-	struct Vertex
+	
+	struct LIGHT_VALUES
 	{
-		DirectX::XMFLOAT4 pos;
-		DirectX::XMFLOAT4 normal;
-		DirectX::XMFLOAT4 tangent;
-		DirectX::XMFLOAT4 bitangent;
-		DirectX::XMFLOAT4 uv;
+		DirectX::XMUINT4 Type;
+		DirectX::XMFLOAT4 Position;
+		DirectX::XMFLOAT4 Color;
+		union
+		{
+			DirectX::XMFLOAT4 Direction;
+			DirectX::XMFLOAT4 Point;
+		};
 	};
 
-	struct Triangle
-	{
-		Vertex v1, v2, v3;
-		UINT textureIndexStart;
-	};
-
-	struct MeshValues
+	struct ObjectValues
 	{
 		DirectX::XMFLOAT4X4A World; //might need fence bobby please fix
 		DirectX::XMFLOAT4X4A WorldInverse;

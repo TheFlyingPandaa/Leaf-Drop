@@ -76,7 +76,7 @@ void OcTree::CreateBuffer(const std::wstring & name)
 	m_buffer.Init(name, 4096 * 1024);
 }
 
-void OcTree::PlaceObjects(const std::vector<STRUCTS::MeshValues>& MeshValues, bool willRecieveAMerge)
+void OcTree::PlaceObjects(const std::vector<STRUCTS::ObjectValues>& MeshValues, bool willRecieveAMerge)
 {
 	_clearLeafs();
 
@@ -199,7 +199,7 @@ std::string OcTree::ToString() const
 	return str;
 }
 
-bool OcTree::_inside(const AABB & aabb, const STRUCTS::MeshValues & colVal)
+bool OcTree::_inside(const AABB & aabb, const STRUCTS::ObjectValues & colVal)
 {
 	using namespace DirectX;
 
@@ -287,7 +287,7 @@ void OcTree::_clearLeafs()
 	}
 }
 
-void OcTree::_traverseAndPlace(const STRUCTS::MeshValues & meshVal, UINT meshIndex, UINT ocIndex)
+void OcTree::_traverseAndPlace(const STRUCTS::ObjectValues & meshVal, UINT meshIndex, UINT ocIndex)
 {
 	if (_inside(m_ocTree[ocIndex], meshVal))
 	{

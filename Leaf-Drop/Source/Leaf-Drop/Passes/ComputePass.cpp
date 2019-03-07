@@ -48,105 +48,16 @@ HRESULT ComputePass::Init()
 
 void ComputePass::Update()
 {
-	static bool first = true;
-
 	timer.Start();
-
-	if (first)
-	{
-		first = false;
-		for (int dq = 0; dq < p_staticDrawQueue.size(); dq++)
-		{
-			for (int m = 0; m < p_staticDrawQueue[dq].DrawableObjectData.size(); m++)
-			{
-				DirectX::XMFLOAT4X4A WorldInverse = p_staticDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
-				DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
-				auto aabb = p_staticDrawQueue[dq].MeshPtr->GetAABB();
-				STRUCTS::MeshValues ocv;
-				ocv.World = p_staticDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
-				ocv.WorldInverse = WorldInverse;
-				ocv.MeshIndex = aabb.meshIndex;
-				ocv.Min = aabb.min;
-				ocv.Max = aabb.max;
-				ocv.TextureIndex = p_staticDrawQueue[dq].TextureOffset;
-				m_staticOctreeValues.push_back(ocv);
-			}
-		}
-
-		m_staticOcTree.BuildTree(-512, -512, -512, 3u, 1024u);
-		m_dynamicOcTree.BuildTree(-512, -512, -512, 3u, 1024u);
-		m_dynamicOcTree.CreateBuffer(L"Ray_Octree");
-		m_staticOcTree.PlaceObjects(m_staticOctreeValues);
-
-		// http://dcgi.fel.cvut.cz/home/havran/ARTICLES/sccg2011.pdf
-		// http://gpupro.blogspot.com/2013/01/bit-trail-traversal-for-stackless-lbvh-on-directcompute.html
-	}
-
-	static double mergeTime = 0;
-	static double copyTime = 0;
-	static int timeCounter = 0;
-
-	Timer t;
-	t.Start(); 
-	
-	m_dynamicOctreeValues.clear();
-	for (int dq = 0; dq < p_dynamicDrawQueue.size(); dq++)
-	{
-		for (int m = 0; m < p_dynamicDrawQueue[dq].DrawableObjectData.size(); m++)
-		{
-			DirectX::XMFLOAT4X4A WorldInverse = p_dynamicDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
-			DirectX::XMStoreFloat4x4A(&WorldInverse, DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4A(&WorldInverse)))));
-			auto aabb = p_dynamicDrawQueue[dq].MeshPtr->GetAABB();
-			STRUCTS::MeshValues ocv;
-			ocv.World = p_dynamicDrawQueue[dq].DrawableObjectData[m].WorldMatrix;
-			ocv.WorldInverse = WorldInverse;
-			ocv.MeshIndex = aabb.meshIndex;
-			ocv.Min = aabb.min;
-			ocv.Max = aabb.max;
-			ocv.TextureIndex = p_dynamicDrawQueue[dq].TextureOffset;
-			m_dynamicOctreeValues.push_back(ocv);
-		}
-	}
-
-	m_dynamicOcTree.PlaceObjects(m_dynamicOctreeValues, true);
-	m_dynamicOcTree.Merge(m_staticOcTree);
-	mergeTime += t.Stop(Timer::MILLISECONDS);
-
-	auto tree = m_dynamicOcTree.GetTree();
-	size_t size = tree.size();
-
-	UINT currentOffset = 0;
-
-	for (size_t i = 0; i < size; i++)
-	{
-		UINT sizeofMeshInd = (UINT)tree[i].meshDataIndices.size() * sizeof(UINT);
-		m_ocTreeBuffer.SetData(&tree[i], tree[i].byteSize - sizeofMeshInd, currentOffset, true);
-		currentOffset += tree[i].byteSize - sizeofMeshInd;
-		m_ocTreeBuffer.SetData(tree[i].meshDataIndices.data(), sizeofMeshInd, currentOffset, true);
-		currentOffset += sizeofMeshInd;
-	}
-
-
-	copyTime += t.Stop(Timer::MILLISECONDS);
-
-	if (timeCounter++ == 1000)
-	{
-		std::ofstream lol;
-		lol.open("MergeTime.txt");
-		lol << "Average time to merge tree: " << mergeTime / 1000 << " ms\n";
-		lol << "Average time to copy tree: " << copyTime / 1000 << " ms\n";
-		lol.close();
-	}
-
-
-
 
 }
 
 
 void ComputePass::Draw()
 {
-
+	UpdatePass * up = p_coreRender->GetUpdatePass();
+	UpdatePass::RayData rayData = up->GetRayData();
+	
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
 
@@ -197,8 +108,8 @@ void ComputePass::Draw()
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
 	UINT dataOffset = 0;
-	m_meshData.SetData(m_staticOctreeValues.data(), dataOffset = (UINT)m_staticOctreeValues.size() * sizeof(STRUCTS::MeshValues));
-	m_meshData.SetData(m_dynamicOctreeValues.data(), (UINT)m_dynamicOctreeValues.size() * sizeof(STRUCTS::MeshValues), dataOffset);
+	m_meshData.SetData(m_staticOctreeValues.data(), dataOffset = (UINT)m_staticOctreeValues.size() * sizeof(STRUCTS::ObjectValues));
+	m_meshData.SetData(m_dynamicOctreeValues.data(), (UINT)m_dynamicOctreeValues.size() * sizeof(STRUCTS::ObjectValues), dataOffset);
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 
@@ -294,7 +205,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::MeshValues) * MAX_OBJECTS, L"MeshDataStructuredBuffer", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::MeshValues))))
+	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::ObjectValues) * MAX_OBJECTS, L"MeshDataStructuredBuffer", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::ObjectValues))))
 	{
 		return hr;
 	}
@@ -304,7 +215,7 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 	const UINT bufferSize = 1024 * 64;
-	const UINT elementSize = sizeof(LIGHT_VALUES);
+	const UINT elementSize = sizeof(STRUCTS::LIGHT_VALUES);
 	if (FAILED(hr = m_lightUav.Init(L"Ray Lights", bufferSize, bufferSize / elementSize, elementSize)))
 	{
 		return hr;
@@ -464,7 +375,7 @@ HRESULT ComputePass::_ExecuteCommandList()
 
 void ComputePass::_SetLightData()
 {
-	LIGHT_VALUES values;
+	STRUCTS::LIGHT_VALUES values;
 
 	PointLight * pl;
 	DirectionalLight * dl;
@@ -496,6 +407,6 @@ void ComputePass::_SetLightData()
 		{
 			values.Direction = DirectX::XMFLOAT4(dl->GetDirection().x, dl->GetDirection().y, dl->GetDirection().z, dl->GetIntensity());
 		}
-		m_lightUav.CopyData(&values, sizeof(LIGHT_VALUES), i * sizeof(LIGHT_VALUES));
+		m_lightUav.CopyData(&values, sizeof(STRUCTS::LIGHT_VALUES), i * sizeof(STRUCTS::LIGHT_VALUES));
 	}
 }

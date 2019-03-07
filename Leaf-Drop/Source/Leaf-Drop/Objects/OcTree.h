@@ -121,7 +121,7 @@ public:
 	void CreateBuffer(const std::wstring & name);
 
 	/* If the function "Merge" will be called to another tree, set the bool value to true  */
-	void PlaceObjects(const std::vector<STRUCTS::MeshValues> & MeshValues, bool willRecieveAMerge = false);
+	void PlaceObjects(const std::vector<STRUCTS::ObjectValues> & MeshValues, bool willRecieveAMerge = false);
 
 	/* Very important that the trees has the same leve, worldSize and startPosition */
 	void Merge(const OcTree & other);
@@ -147,14 +147,14 @@ private:
 
 	UINT				m_totalTreeByteSize = 0;
 
-	bool _inside(const AABB & aabb, const STRUCTS::MeshValues & colVal);
+	bool _inside(const AABB & aabb, const STRUCTS::ObjectValues & colVal);
 	bool _pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point);
 
 	void _CreateAABB(const DirectX::XMFLOAT3 & position, const DirectX::XMFLOAT3 & size, UINT level, bool isLeaf, UINT index);
 	UINT _GetAABBIndexByWorldPos(const DirectX::XMFLOAT3 & worldPos, UINT Level);
 
 	void _clearLeafs();
-	void _traverseAndPlace(const STRUCTS::MeshValues & meshVal, UINT meshIndex, UINT ocIndex);
+	void _traverseAndPlace(const STRUCTS::ObjectValues & meshVal, UINT meshIndex, UINT ocIndex);
 
 	CPUBuffer m_buffer;
 

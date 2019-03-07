@@ -26,6 +26,7 @@ inline void* __cdecl operator new[](size_t size, size_t alignment, size_t alignm
 }
 
 #define MAX_OBJECTS 16384
+#define MAX_LIGHTS 16384
 
 #include <Windows.h>
 
@@ -62,3 +63,5 @@ inline void* __cdecl operator new[](size_t size, size_t alignment, size_t alignm
 #define AlignAs256(n){ n + 255 & ~255 }
 
 #define FOR_FRAME for(UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+
+#define TO_BYTE(n){ n * 1024 * 1024}

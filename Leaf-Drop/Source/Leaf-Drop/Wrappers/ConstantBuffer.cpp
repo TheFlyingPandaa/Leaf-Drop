@@ -115,7 +115,7 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 	return hr;
 }
 
-void ConstantBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset)
+void ConstantBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset) const
 {
 	const UINT currentFrame = m_coreRender->GetFrameIndex();
 
@@ -131,7 +131,7 @@ void ConstantBuffer::Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * c
 	
 }
 
-void ConstantBuffer::BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset)
+void ConstantBuffer::BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset) const
 {
 	const UINT currentFrame = m_coreRender->GetFrameIndex();
 

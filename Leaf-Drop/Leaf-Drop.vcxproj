@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Passes\RayDefinePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\CPUBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\OcTree.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\PrePass.h" />
@@ -357,8 +358,10 @@
     <ClInclude Include="Source\Leaf-Drop\Objects\Texture.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\UAV.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\TextureAtlas.h" />
+    <ClInclude Include="Source\Leaf-Drop\Passes\UpdatePass.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Passes\RayDefinePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\CPUBuffer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\OcTree.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\PrePass.cpp" />
@@ -633,6 +636,7 @@
     <ClCompile Include="Source\Leaf-Drop\Objects\Texture.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\UAV.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\TextureAtlas.cpp" />
+    <ClCompile Include="Source\Leaf-Drop\Passes\UpdatePass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ExternalLibs\AssImp\include\assimp\color4.inl" />

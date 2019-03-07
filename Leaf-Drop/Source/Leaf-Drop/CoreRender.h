@@ -6,11 +6,12 @@
 
 #include "Extern/Extern.h"
 
-#include "../Leaf-Drop/Passes/GeometryPass.h"
-#include "../Leaf-Drop/Passes/DeferredPass.h"
-#include "../Leaf-Drop/Passes/ComputePass.h"
-#include "../Leaf-Drop/Passes/PrePass.h"
-#include "../Leaf-Drop/Wrappers/CpuTimer.h"
+#include "Passes/GeometryPass.h"
+#include "Passes/DeferredPass.h"
+#include "Passes/ComputePass.h"
+#include "Passes/PrePass.h"
+#include "Passes/UpdatePass.h"
+#include "Wrappers/CpuTimer.h"
 
 class Window;
 
@@ -49,6 +50,7 @@ public:
 	void					IterateResourceIndex(const UINT & arraySize = 1);
 
 	PrePass		 * GetPrePass() const;
+	UpdatePass	 * GetUpdatePass() const;
 	GeometryPass * GetGeometryPass() const;
 	DeferredPass * GetDeferredPass() const;
 	ComputePass	 * GetComputePass() const;
@@ -97,6 +99,7 @@ private:
 	SIZE_T m_gpuOffset[FRAME_BUFFER_COUNT] = {0};
 
 	PrePass * m_prePass = nullptr;
+	UpdatePass * m_updatePass = nullptr;
 	GeometryPass * m_geometryPass = nullptr;
 	DeferredPass * m_deferredPass = nullptr;
 	ComputePass * m_computePass = nullptr;

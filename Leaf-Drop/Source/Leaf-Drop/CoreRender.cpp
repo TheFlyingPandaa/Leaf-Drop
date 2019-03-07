@@ -42,6 +42,7 @@ CoreRender::~CoreRender()
 	delete m_deferredPass;
 	delete m_computePass;
 	delete m_prePass;
+	delete m_updatePass;
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -133,6 +134,13 @@ HRESULT CoreRender::Init()
 	{
 		return DEBUG::CreateError(hr);
 	}
+
+	m_updatePass = new UpdatePass();
+	if (FAILED(hr = m_updatePass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}
+
 	m_geometryPass = new GeometryPass();
 	if (FAILED(hr = m_geometryPass->Init()))
 	{
@@ -163,10 +171,12 @@ void CoreRender::Release()
 {
 
 	m_prePass->KillThread();
+	m_updatePass->KillThread();
 	m_geometryPass->KillThread();
 	m_computePass->KillThread();
 
 	m_prePass->Release();
+	m_updatePass->Release();
 	m_geometryPass->Release();
 	m_deferredPass->Release();
 	m_computePass->Release();
@@ -312,6 +322,11 @@ PrePass * CoreRender::GetPrePass() const
 	return m_prePass;
 }
 
+UpdatePass * CoreRender::GetUpdatePass() const
+{
+	return m_updatePass;
+}
+
 GeometryPass * CoreRender::GetGeometryPass() const
 {
 	return m_geometryPass;
@@ -455,6 +470,13 @@ HRESULT CoreRender::_UpdatePipeline()
 	}
 	m_prePass->UpdateThread();
 	m_prePass->ThreadJoin();
+
+	m_updatePass->Update();
+
+	/*
+	m_updatePass->UpdateThread();
+	m_updatePass->ThreadJoin();
+	*/
 
 	m_geometryPass->UpdateThread();
 	m_geometryPass->ThreadJoin();

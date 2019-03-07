@@ -64,32 +64,17 @@ private:
 	Fence m_fence;
 	Fence m_fence2;
 
-	struct LIGHT_VALUES
-	{
-		DirectX::XMUINT4 Type;
-		DirectX::XMFLOAT4 Position;
-		DirectX::XMFLOAT4 Color;
-		union
-		{
-			DirectX::XMFLOAT4 Direction;
-			DirectX::XMFLOAT4 Point;
-		};
-
-	};
-
 	OcTree m_staticOcTree;
 	OcTree m_dynamicOcTree;
 
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
 
-	ConstantBuffer m_inverseWorldMatrix;
-
 	UAV m_lightUav;
 	ConstantBuffer m_lightsBuffer;
 
-	std::vector<STRUCTS::MeshValues> m_staticOctreeValues;
-	std::vector<STRUCTS::MeshValues> m_dynamicOctreeValues;
+	std::vector<STRUCTS::ObjectValues> m_staticOctreeValues;
+	std::vector<STRUCTS::ObjectValues> m_dynamicOctreeValues;
 
 	GpuTimer timer;
 };

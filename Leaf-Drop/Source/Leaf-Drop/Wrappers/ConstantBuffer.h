@@ -18,8 +18,8 @@ public:
 	~ConstantBuffer();
 
 	HRESULT Init(UINT initialSize, const std::wstring & name, const CBV_TYPE & type = CONSTANT_BUFFER, UINT sizeOfElement = 0);
-	void Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
-	void BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0);
+	void Bind(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0) const;
+	void BindComputeShader(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList, UINT offset = 0) const;
 	
 	void SetData(void * data, UINT size, UINT offset = 0, const BOOL & forceAllBuffers = false);
 

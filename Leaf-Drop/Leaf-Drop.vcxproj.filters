@@ -777,6 +777,12 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\CpuTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Passes\UpdatePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Passes\RayDefinePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -984,6 +990,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\CpuTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Passes\UpdatePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Passes\RayDefinePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
