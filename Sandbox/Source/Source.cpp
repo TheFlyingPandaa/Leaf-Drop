@@ -74,7 +74,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		bunny->LoadMesh("..\\Assets\\Models\\BobTheBunny.fbx");
 		
 		const UINT NUMBER_OF_DRAWABLES = 9;
-		const UINT NUMBER_OF_LIGHTS = 500;
+		const UINT NUMBER_OF_LIGHTS = 200;
 		const UINT MAX_DISTANCE = 50;
 		const UINT MAX_LIGHT_DISTANCE = 50;
 

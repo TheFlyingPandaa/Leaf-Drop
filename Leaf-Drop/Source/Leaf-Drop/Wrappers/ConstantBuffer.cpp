@@ -62,7 +62,8 @@ HRESULT ConstantBuffer::Init(UINT initialSize, const std::wstring & name, const 
 
 			D3D12_BUFFER_UAV uav{};
 			uav.NumElements = type == BINDLESS_BUFFER ? initialSize / sizeOfElement : 1;
-			
+			uav.NumElements = initialSize / sizeOfElement;
+
 			uav.FirstElement = 0;
 			uav.StructureByteStride = sizeOfElement;
 			uav.Flags = D3D12_BUFFER_UAV_FLAG_NONE;

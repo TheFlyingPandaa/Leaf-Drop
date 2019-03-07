@@ -16,9 +16,8 @@
 #define TRIANGLES			3
 #define TEXTURE_ATLAS		4
 #define LIGHT_TABLE			5
-#define LIGHT_BUFFER		6
-#define OCTREE				7
-#define MESH_ARRAY			8
+#define OCTREE				6
+#define MESH_ARRAY			7
 
 #define MESH_ARRAY_SPACE	3
 #define TEXTURE_SPACE		4
@@ -56,8 +55,9 @@ void ComputePass::Update()
 void ComputePass::Draw()
 {
 	UpdatePass * up = p_coreRender->GetUpdatePass();
+
 	UpdatePass::RayData rayData = up->GetRayData();
-	
+
 	DirectX::XMFLOAT4 camPos = Camera::GetActiveCamera()->GetPosition();
 	DirectX::XMFLOAT4 camDir = Camera::GetActiveCamera()->GetDirectionVector();
 
@@ -71,34 +71,19 @@ void ComputePass::Draw()
 
 	data.info.x = windowSize.x / SCREEN_DIV;
 	data.info.y = windowSize.y / SCREEN_DIV;
-	data.info.z = (UINT)m_staticOctreeValues.size() + (UINT)m_dynamicOctreeValues.size();
+	data.info.z = rayData.NumberOfObjectsInTree;
 	
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 
-	p_coreRender->BeginCopy();
-
-	m_dynamicOcTree.WriteToBuffer(p_coreRender->GetCopyCommandList(), m_ocTreeBuffer.GetResource());
-	// copy constantBuffer
-	p_coreRender->EndCopy();
-
-	//Sleep(500);
-	m_fence2.WaitForFinnishExecution();
-
 
 	OpenCommandList(m_pipelineState);
-	//commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(targetResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
-	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_ocTreeBuffer.GetResource(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(rayData.OctreeBuffer->GetResource(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
 
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
 	p_commandList[frameIndex]->SetComputeRootSignature(m_rootSignature);
 
-
-
-	_SetLightData();
-
-	m_lightUav.BindComputeSrv(LIGHT_TABLE, p_commandList[frameIndex]);
-	m_lightsBuffer.BindComputeShader(LIGHT_BUFFER, p_commandList[frameIndex]);
-
+	rayData.LightBuffer->BindComputeShader(LIGHT_TABLE, p_commandList[frameIndex]);
+	
 	m_rayTexture.Clear(p_commandList[frameIndex]);
 
 	m_squareIndex.SetData(&data, sizeof(data));
@@ -107,11 +92,8 @@ void ComputePass::Draw()
 
 	m_rayStencil->BindComputeSrv(RAY_INDICES, p_commandList[frameIndex]);
 
-	UINT dataOffset = 0;
-	m_meshData.SetData(m_staticOctreeValues.data(), dataOffset = (UINT)m_staticOctreeValues.size() * sizeof(STRUCTS::ObjectValues));
-	m_meshData.SetData(m_dynamicOctreeValues.data(), (UINT)m_dynamicOctreeValues.size() * sizeof(STRUCTS::ObjectValues), dataOffset);
-	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
-	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
+	rayData.ObjectData->BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
+	rayData.OctreeBuffer->BindComputeShader(OCTREE, p_commandList[frameIndex]);
 
 	TextureAtlas::GetInstance()->BindlessComputeSetGraphicsRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
@@ -121,7 +103,7 @@ void ComputePass::Draw()
 
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 
-	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_ocTreeBuffer.GetResource(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
+	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(rayData.OctreeBuffer->GetResource(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
 
 	_ExecuteCommandList();
 	
@@ -137,18 +119,10 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
 	m_fence.Release();
-	m_fence2.Release();
-
+	
 	p_ReleaseCommandList();
 	m_squareIndex.Release();
-	m_meshData.Release();
 	m_rayTexture.Release();
-	m_lightUav.Release();
-	m_lightsBuffer.Release();
-	m_ocTreeBuffer.Release();
-
-	m_dynamicOcTree.Release();
-	m_staticOcTree.Release();
 }
 
 void ComputePass::Clear()
@@ -188,11 +162,6 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
-	if (FAILED(hr = m_fence2.CreateFence(p_coreRender->GetCopyQueue())))
-	{
-		return hr;
-	}
-
 	if (FAILED(hr = m_squareIndex.Init(sizeof(RAY_BOX), L"RaySqueare", ConstantBuffer::CONSTANT_BUFFER, sizeof(RAY_BOX))))
 	{
 		return hr;
@@ -204,29 +173,6 @@ HRESULT ComputePass::_Init()
 	{
 		return hr;
 	}
-
-	if (FAILED(hr = m_meshData.Init(sizeof(STRUCTS::ObjectValues) * MAX_OBJECTS, L"MeshDataStructuredBuffer", ConstantBuffer::STRUCTURED_BUFFER, sizeof(STRUCTS::ObjectValues))))
-	{
-		return hr;
-	}
-
-	if (FAILED(hr = m_ocTreeBuffer.Init(4096 * 1024, L"OcTrEeBuFfEr", ConstantBuffer::STRUCTURED_BUFFER, 1)))
-	{
-		return hr;
-	}
-	const UINT bufferSize = 1024 * 64;
-	const UINT elementSize = sizeof(STRUCTS::LIGHT_VALUES);
-	if (FAILED(hr = m_lightUav.Init(L"Ray Lights", bufferSize, bufferSize / elementSize, elementSize)))
-	{
-		return hr;
-	}
-
-	if (FAILED(hr = m_lightsBuffer.Init(256, L"Ray Light", ConstantBuffer::CBV_TYPE::CONSTANT_BUFFER)))
-	{
-		return hr;
-	}
-
-	m_lightUav.ConstantMap();
 
 	if (FAILED(hr = OpenCommandList()))
 	{
@@ -262,15 +208,6 @@ HRESULT ComputePass::_InitShaders()
 	}
 	m_computeShader.pShaderBytecode = blob->GetBufferPointer();
 	m_computeShader.BytecodeLength = blob->GetBufferSize();
-
-
-	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\ComputePass\\ClearComputeShader.hlsl", blob, "cs_5_1")))
-	{
-		return hr;
-	}
-	m_clearComputeShader.pShaderBytecode = blob->GetBufferPointer();
-	m_clearComputeShader.BytecodeLength = blob->GetBufferSize();
-
 	return hr;
 }
 
@@ -284,7 +221,7 @@ HRESULT ComputePass::_InitRootSignature()
 	
 	
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[9];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[8];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
@@ -292,7 +229,6 @@ HRESULT ComputePass::_InitRootSignature()
 	rootParameters[TEXTURE_ATLAS].InitAsDescriptorTable(1, &descRange1);
 	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
 	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 2);
-	rootParameters[LIGHT_BUFFER].InitAsConstantBufferView(0, 2);
 	rootParameters[MESH_ARRAY].InitAsDescriptorTable(1, &descRange2);
 	//rootParameters[MESH_ARRAY].InitAsShaderResourceView(0, 3);
 	
@@ -371,42 +307,4 @@ HRESULT ComputePass::_ExecuteCommandList()
 		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	}
 	return hr;
-}
-
-void ComputePass::_SetLightData()
-{
-	STRUCTS::LIGHT_VALUES values;
-
-	PointLight * pl;
-	DirectionalLight * dl;
-
-	struct
-	{
-		UINT a, b, c, d;
-	} uint4;
-
-	uint4.a = static_cast<UINT>(p_lightQueue.size());
-	m_lightsBuffer.SetData(&uint4, sizeof(UINT) * 4);
-
-
-	for (UINT i = 0; i < p_lightQueue.size(); i++)
-	{
-		values.Position = p_lightQueue[i]->GetPosition();
-		values.Color = p_lightQueue[i]->GetColor();
-
-		values.Type.x = p_lightQueue[i]->GetType();
-		values.Type.y = p_lightQueue[i]->GetType();
-		values.Type.z = p_lightQueue[i]->GetType();
-		values.Type.w = p_lightQueue[i]->GetType();
-
-		if (pl = dynamic_cast<PointLight*>(p_lightQueue[i]))
-		{
-			values.Point = DirectX::XMFLOAT4(pl->GetIntensity(), pl->GetDropOff(), pl->GetPow(), pl->GetRadius());
-		}
-		if (dl = dynamic_cast<DirectionalLight*>(p_lightQueue[i]))
-		{
-			values.Direction = DirectX::XMFLOAT4(dl->GetDirection().x, dl->GetDirection().y, dl->GetDirection().z, dl->GetIntensity());
-		}
-		m_lightUav.CopyData(&values, sizeof(STRUCTS::LIGHT_VALUES), i * sizeof(STRUCTS::LIGHT_VALUES));
-	}
 }

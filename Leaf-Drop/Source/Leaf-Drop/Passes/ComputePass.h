@@ -32,8 +32,6 @@ private:
 
 	HRESULT _ExecuteCommandList();
 
-	void _SetLightData();
-
 private:
 	struct RAY_BOX
 	{
@@ -43,38 +41,22 @@ private:
 
 
 	D3D12_SHADER_BYTECODE m_computeShader{};
-	D3D12_SHADER_BYTECODE m_clearComputeShader{};
-
+	
 	ID3D12PipelineState * m_pipelineState = nullptr;
 	
 	ID3D12RootSignature * m_rootSignature = nullptr;
-	//ID3D12RootSignature * m_clearRootSignature = nullptr;
 
 	ID3D12CommandQueue *  m_commandQueue = nullptr;
 
-	UINT8 m_computeIndex = 0;
 	UAV * m_rayStencil = nullptr;
-
-	ConstantBuffer m_meshData;
-	ConstantBuffer m_ocTreeBuffer;
 
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
 	Fence m_fence;
-	Fence m_fence2;
-
-	OcTree m_staticOcTree;
-	OcTree m_dynamicOcTree;
-
+	
 	ConstantBuffer m_squareIndex;
 	ShaderResource m_rayTexture;
-
-	UAV m_lightUav;
-	ConstantBuffer m_lightsBuffer;
-
-	std::vector<STRUCTS::ObjectValues> m_staticOctreeValues;
-	std::vector<STRUCTS::ObjectValues> m_dynamicOctreeValues;
 
 	GpuTimer timer;
 };

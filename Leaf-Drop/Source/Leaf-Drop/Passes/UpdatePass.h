@@ -42,11 +42,14 @@ private:
 
 	RayData m_rayData = { &m_octreeBuffer, &m_objectData, &m_lightBuffer };
 
+	UINT m_offset = 0;
+
 	Fence m_fence;
 
 private:
 	void _PlaceStaticTree();
 	void _PlaceDynamicTree();
 	void _SetLightData();
+	void _SetObjectData();
 };
 

@@ -14,12 +14,6 @@ struct Vertex
 	float4 uv;
 };
 
-struct Triangle
-{
-	Vertex v0, v1, v2;
-    uint textureIndexStart;
-};
-
 struct Triangle2
 {
     Vertex v[3];
@@ -73,11 +67,6 @@ cbuffer RAY_BOX : register(b0)
     float4 ViewerPosition; // World space
     uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
-
-cbuffer LightSize : register(b0, space2)
-{
-    uint4 LightValues;
-};
 
 StructuredBuffer<LIGHT> Lights : register(t0, space2);
 
@@ -321,7 +310,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                 TreeNode child = GetNode(node.ChildrenByteAddress[nodeStack[currentNode].targetChildren++], meshIndexAdress);
                 if (RayIntersectAABB(child.min, child.max, ray, origin, aabbT))
                 {
-
                     if (child.nrOfObjects > 0)
                     {
                         for (uint objectIterator = 0; objectIterator < child.nrOfObjects; objectIterator++)
@@ -334,12 +322,9 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
                                 uint nrOfTriangles;
                                 uint strides;
                                 Meshes[md.MeshIndex].GetDimensions(nrOfTriangles, strides);
-
                                 for (uint triangleIndex = 0; triangleIndex < nrOfTriangles; triangleIndex++)
                                 {
-                                    uint status = 0;
-                                    Triangle2 boi = Meshes[md.MeshIndex][triangleIndex];
-                              
+                                    Triangle2 boi = Meshes[md.MeshIndex][triangleIndex];                              
                                     if (RayIntersectTriangle(boi, rayLocal, originLocal, tempTriangleT, tempBi, tempIntersectionPoint) && tempTriangleT < triangleT)
                                     {
                                         intersectionPoint = tempIntersectionPoint;
@@ -377,8 +362,6 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
         normal = normalize(mul(float4(normal, 0.0f), worldMatrix).xyz);
     }
 
-
-    //return true;
     return triangleHit;
 }
 
@@ -398,7 +381,6 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
     ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
-
     uint textureIndex;
     float3 intersectionPoint;
     Triangle2 tri;
@@ -410,6 +392,9 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     float distToCamera = length(fragmentWorld - ViewerPosition.xyz);
 
+    uint nrOfLights, dummy;
+    Lights.GetDimensions(nrOfLights, dummy);
+    
     for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
         float3 triNormal;
@@ -437,8 +422,8 @@ void main (uint3 threadID : SV_DispatchThreadID)
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
             float3 tmpColor = float3(0, 0, 0);
-
-            for (uint i = 0; i < LightValues.x; i++)
+                       
+            for (uint i = 0; i < 100; i++)
             {
                 tmpColor += LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal.xyz, 0), metall, specular).xyz;
             }

@@ -471,12 +471,11 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_prePass->UpdateThread();
 	m_prePass->ThreadJoin();
 
-	m_updatePass->Update();
-
-	/*
+	//m_updatePass->Update();
+		
 	m_updatePass->UpdateThread();
 	m_updatePass->ThreadJoin();
-	*/
+	
 
 	m_geometryPass->UpdateThread();
 	m_geometryPass->ThreadJoin();
@@ -769,6 +768,8 @@ HRESULT CoreRender::_CreateCopyQueue()
 			IID_PPV_ARGS(&m_copyCommandAllocator[i]))))
 			return hr;
 		
+		SET_NAME(m_copyCommandAllocator[i], L"Copy");
+
 		if (FAILED(hr = m_device->CreateCommandList(
 			0, 
 			D3D12_COMMAND_LIST_TYPE_COPY, 
@@ -776,6 +777,7 @@ HRESULT CoreRender::_CreateCopyQueue()
 			nullptr, 
 			IID_PPV_ARGS(&m_copyCommandList[i]))))
 			return hr;
+		SET_NAME(m_copyCommandList[i], L"Copy");
 
 		m_copyCommandList[i]->Close();
 	}

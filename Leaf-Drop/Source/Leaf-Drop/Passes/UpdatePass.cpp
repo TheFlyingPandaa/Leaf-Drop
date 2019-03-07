@@ -39,7 +39,7 @@ HRESULT UpdatePass::Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCommandQueue())))
+	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCopyQueue())))
 	{
 		return hr;
 	}
@@ -64,7 +64,7 @@ void UpdatePass::Update()
 	p_coreRender->EndCopy();
 
 	_SetLightData();
-
+	_SetObjectData();
 	m_fence.WaitForFinnishExecution();
 }
 
@@ -113,6 +113,9 @@ void UpdatePass::_PlaceStaticTree()
 	}
 
 	m_staticOctree.PlaceObjects(m_staticOctreeObjects);
+
+	m_offset = m_staticOctreeObjects.size() * sizeof(STRUCTS::ObjectValues);
+	m_objectData.SetData(m_staticOctreeObjects.data(), m_staticOctreeObjects.size() * sizeof(STRUCTS::ObjectValues), true);
 }
 
 void UpdatePass::_PlaceDynamicTree()
@@ -168,4 +171,9 @@ void UpdatePass::_SetLightData()
 		}
 		m_lightBuffer.SetData(&values, sizeof(STRUCTS::LIGHT_VALUES), i * sizeof(STRUCTS::LIGHT_VALUES));
 	}
+}
+
+void UpdatePass::_SetObjectData()
+{
+	m_objectData.SetData(m_dynamicOctreeObjects.data(), m_dynamicOctreeObjects.size() * sizeof(STRUCTS::ObjectValues), m_offset);
 }
