@@ -1,2 +1,2 @@
-Average time to merge tree: 0.0533344 ms
-Average time to copy tree: 0.0419155 ms
+Average time to merge tree: 0.0596446 ms
+Average time to copy tree: 0.0442948 ms

@@ -46,7 +46,7 @@ PS_OUTPUT main(VS_OUTPUT input)
 
     output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x + 2));
 	
-    bool CastRay = output.metallic.r > 0.90;
+    bool CastRay = output.metallic.r > 0.90f;
 
     uint2 rayStencilIndex = uint2(input.position.xy / RAY_DIV);
 

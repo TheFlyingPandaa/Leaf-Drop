@@ -29,7 +29,6 @@ struct RAY_STRUCT
 {
     float3 startPos;
     float3 normal;
-    //uint2 pixelCoord;
     bool dispatch;
 };
 
@@ -280,15 +279,18 @@ bool RayIntersectTriangle(in Triangle2 tri, in float3 ray, in float3 rayOrigin, 
     return false;
 }
 
-bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out float3 biCoord, out float3 intersectionPoint, inout uint textureIndex)
+bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out float3 biCoord, out float3 intersectionPoint, out float3 normal, inout uint textureIndex)
 {
     intersectionPoint = float3(0, 0, 0);
+    normal = float3(0, 0, 0);
+    
     biCoord = float3(1, 0, 0);
     tri = (Triangle2)0;
 
     textureIndex = 0;
 
     float3 tempIntersectionPoint;
+    
 
     AddressStack    nodeStack[8];
     uint            nodeStackSize = 0;
@@ -368,7 +370,13 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
         }
     }
 
-    intersectionPoint = mul(float4(intersectionPoint, 1.0f), worldMatrix).xyz;
+    if (triangleHit)
+    {
+        intersectionPoint = mul(float4(intersectionPoint, 1.0f), worldMatrix).xyz;
+        normal = tri.v[0].normal * biCoord.x + tri.v[1].normal * biCoord.y + tri.v[2].normal * biCoord.z;
+        normal = normalize(mul(float4(normal, 0.0f), worldMatrix).xyz);
+    }
+
 
     //return true;
     return triangleHit;
@@ -377,14 +385,12 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
 [numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
 {
-    
-    float4 finalColor = float4(0, 0, 0, 1);
-	
     uint rayStencilIndex = threadID.x + threadID.y * Info.x;
-    
     uint2 pixelLocation =   uint2(threadID.xy);
     
     if (!RayStencil[rayStencilIndex].dispatch) return; // Can this be improved?
+    
+    float4 finalColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
     float3 fragmentWorld =  RayStencil[rayStencilIndex].startPos;
     float3 fragmentNormal = RayStencil[rayStencilIndex].normal;
@@ -406,10 +412,10 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
     for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
     {
-        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint, textureIndex))
+        float3 triNormal;
+
+        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint, triNormal, textureIndex))
         {
-
-
             distToCamera += length(fragmentWorld - intersectionPoint);
             float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));
 
@@ -418,17 +424,30 @@ void main (uint3 threadID : SV_DispatchThreadID)
             float2 uv = tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z;
      
             float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex), finalMip);
-            float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 1), finalMip);
+            
+            //float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 1), finalMip);
+
+            // We need TBN matrix
+            float4 normal = float4(triNormal, 0.0f);
+            
             float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 2), finalMip);
-            strenght -= 1.0f - metall.r;
+
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
+            float3 tmpColor = float3(0, 0, 0);
+
             for (uint i = 0; i < LightValues.x; i++)
             {
-                finalColor += LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal.xyz, 0), metall, specular) * strenght;
+                tmpColor += LightCalculations(Lights[i], ViewerPosition, float4(intersectionPoint, 1), albedo, float4(normal.xyz, 0), metall, specular).xyz;
             }
-            finalColor += ambient;
+
+            tmpColor = saturate(tmpColor + ambient.rgb);
+            
+            finalColor = lerp(finalColor, float4(tmpColor, 1.0f), strenght);
+
+            strenght -= (1.0f - metall.r);
+
             fragmentWorld = intersectionPoint;
             ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
         }

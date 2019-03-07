@@ -76,7 +76,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			float y = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 			float z = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 
-			float scl = static_cast<float>(rand() % 4 );
+			float scl = static_cast<float>(rand() % 13 );
 			pointLight[i].SetPosition(x, y, z);
 			pointLight[i].SetIntensity(scl);
 
@@ -221,7 +221,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			static const float SPEED = 1.0f;
 
 			dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
-			dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_2PI, 0.0f);
+			dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_PI, 0.0f);
 
 			mover += SPEED * dt;
 
