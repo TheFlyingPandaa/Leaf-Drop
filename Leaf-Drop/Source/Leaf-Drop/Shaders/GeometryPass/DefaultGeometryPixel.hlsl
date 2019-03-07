@@ -7,7 +7,8 @@ struct RAY_STRUCT
 
 SamplerState defaultSampler : register(s0);
 
-Texture2DArray textureAtlas : register(t0, space1);
+//Texture2DArray textureAtlas : register(t0, space1);
+Texture2D textureAtlas[] : register(t0, space1);
 
 StructuredBuffer<uint4> TextureIndex : register(t1);
 
@@ -40,11 +41,11 @@ PS_OUTPUT main(VS_OUTPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT)0;
 	output.position = input.worldPosition;
-    output.albedo = textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x)) * input.color;
+    output.albedo = textureAtlas[TextureIndex[0].x].Sample(defaultSampler, input.uv) * input.color;
     
-    output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x + 1)).xyz - 1.0f), input.TBN)), 0);
+    output.normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas[TextureIndex[0].x + 1].Sample(defaultSampler, input.uv).xyz - 1.0f), input.TBN)), 0);
 
-    output.metallic = textureAtlas.Sample(defaultSampler, float3(input.uv, TextureIndex[0].x + 2));
+    output.metallic = textureAtlas[TextureIndex[0].x + 2].Sample(defaultSampler, input.uv);
 	
     bool CastRay = output.metallic.r > 0.90f;
 

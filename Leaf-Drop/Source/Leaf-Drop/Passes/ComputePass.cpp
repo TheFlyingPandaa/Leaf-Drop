@@ -21,6 +21,7 @@
 #define MESH_ARRAY			8
 
 #define MESH_ARRAY_SPACE	3
+#define TEXTURE_SPACE		4
 
 ComputePass::ComputePass()
 {
@@ -68,7 +69,6 @@ void ComputePass::Update()
 			}
 		}
 
-		//m_ocTree.BuildTree(octreeValues, 3u, 512);
 		m_staticOcTree.BuildTree(-256, -256, -256, 3u, 512u);
 		m_dynamicOcTree.BuildTree(-256, -256, -256, 3u, 512u);
 		m_dynamicOcTree.CreateBuffer(L"Ray_Octree");
@@ -198,7 +198,7 @@ void ComputePass::Draw()
 	m_meshData.BindComputeShader(TRIANGLES, p_commandList[frameIndex]);
 	m_ocTreeBuffer.BindComputeShader(OCTREE, p_commandList[frameIndex]);
 
-	TextureAtlas::GetInstance()->SetMagnusRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
+	TextureAtlas::GetInstance()->BindlessComputeSetGraphicsRootDescriptorTable(TEXTURE_ATLAS, p_commandList[frameIndex]);
 
 	StaticMesh::BindCompute(MESH_ARRAY, p_commandList[frameIndex]);
 
@@ -364,8 +364,8 @@ HRESULT ComputePass::_InitRootSignature()
 	HRESULT hr = 0;
 
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
-	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0);
-	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, MESH_ARRAY_SPACE, D3D12_DESCRIPTOR_RANGE_FLAG_NONE);
+	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 0, TEXTURE_SPACE);
+	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 0, MESH_ARRAY_SPACE, D3D12_DESCRIPTOR_RANGE_FLAG_NONE);
 	
 	
 

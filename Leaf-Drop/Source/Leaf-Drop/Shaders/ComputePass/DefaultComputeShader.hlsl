@@ -65,7 +65,7 @@ struct MeshData
     float3 Min; // Local space
     float3 Max; //Local space
     uint MeshIndex; //Till Meshes[] 
-    uint TextureIndex; // shit
+    uint TextureIndex; //Texture index possible fence needed bobby please fix
 };
 
 cbuffer RAY_BOX : register(b0)
@@ -90,7 +90,7 @@ RWTexture2D<float4> outputTexture : register(u0);
 ByteAddressBuffer OcTreeBuffer : register(t0, space1);
 
 SamplerState defaultTextureAtlasSampler : register(s0);
-Texture2DArray TextureAtlas : register(t2);
+Texture2D TextureAtlas[] : register(t0, space4);
 
 TreeNode GetNode(in uint address, out uint meshIndexAdress)
 {
@@ -423,14 +423,14 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
             float2 uv = tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z;
      
-            float4 albedo = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex), finalMip);
+            float4 albedo = TextureAtlas[textureIndex].SampleLevel(defaultTextureAtlasSampler, uv, finalMip);
             
             //float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 1), finalMip);
 
             // We need TBN matrix
             float4 normal = float4(triNormal, 0.0f);
             
-            float4 metall = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 2), finalMip);
+            float4 metall = TextureAtlas[textureIndex + 2].SampleLevel(defaultTextureAtlasSampler, uv, finalMip);
 
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
