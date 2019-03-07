@@ -115,7 +115,7 @@ void UpdatePass::_PlaceStaticTree()
 	m_staticOctree.PlaceObjects(m_staticOctreeObjects);
 
 	m_offset = m_staticOctreeObjects.size() * sizeof(STRUCTS::ObjectValues);
-	m_objectData.SetData(m_staticOctreeObjects.data(), m_staticOctreeObjects.size() * sizeof(STRUCTS::ObjectValues), true);
+	m_objectData.SetData(m_staticOctreeObjects.data(), m_staticOctreeObjects.size() * sizeof(STRUCTS::ObjectValues), 0,true);
 }
 
 void UpdatePass::_PlaceDynamicTree()
@@ -175,5 +175,5 @@ void UpdatePass::_SetLightData()
 
 void UpdatePass::_SetObjectData()
 {
-	m_objectData.SetData(m_dynamicOctreeObjects.data(), m_dynamicOctreeObjects.size() * sizeof(STRUCTS::ObjectValues), m_offset);
+	m_objectData.SetData(m_dynamicOctreeObjects.data(), m_dynamicOctreeObjects.size() * sizeof(STRUCTS::ObjectValues), m_offset, true);
 }
