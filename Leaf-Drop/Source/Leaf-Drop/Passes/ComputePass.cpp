@@ -25,10 +25,12 @@
 
 ComputePass::ComputePass()
 {
+	timer.OpenLog("Compute.txt");
 }
 
 ComputePass::~ComputePass()
 {
+	timer.CloseLog();
 }
 
 HRESULT ComputePass::Init()
@@ -47,6 +49,8 @@ HRESULT ComputePass::Init()
 void ComputePass::Update()
 {
 	static bool first = true;
+
+	timer.Start();
 
 	if (first)
 	{
@@ -213,7 +217,7 @@ void ComputePass::Draw()
 	m_fence.WaitForFinnishExecution();
 
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
-
+	timer.LogTime();
 }
 
 void ComputePass::Release()

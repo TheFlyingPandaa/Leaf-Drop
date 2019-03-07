@@ -33,17 +33,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	Timer timer;
 	
+
+
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
 		Camera cam;
-		
+			
 		cam.CreateProjectionMatrix(0.01f, 1000.0f);
 		cam.SetPosition(0, 0, 0);
 		cam.SetAsActiveCamera();
 
+		cam.SetPosition(47.1801, 49.2891, 50.2064);
+		cam.SetDirection(-0.426194, -0.607596, -0.670213);
+		cam.Update();
+
 		StaticMesh * m = new StaticMesh();
 		StaticMesh * m2 = new StaticMesh();
 		StaticMesh * bunny = new StaticMesh();
+
+		
+
 
 		Texture * t = new Texture[3];
 		t[0].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_diffuseOriginal.bmp");
@@ -169,15 +178,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		mousePosLastFrame.x /= 2;
 		mousePosLastFrame.y /= 2;
 
-		wnd->ResetMouse();
+		//wnd->ResetMouse();
 
 
 
 		DirectionalLight light;
 		light.SetDirection(1, -1, 0);
 		light.SetIntensity(0.5f);
+		//CpuTimer cpuTimer;
+		//cpuTimer.OpenLog("FrameTime.txt");
 		while (core->Running())
 		{
+			//cpuTimer.Start();
+
 			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
 			static const float MOVE_SPEED = 5.0f;
@@ -191,46 +204,48 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			if (Camera::GetActiveCamera() == &cam)
-			{
-				if (wnd->IsKeyPressed(Input::W))
-					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-				if (wnd->IsKeyPressed(Input::A))
-					moveDir.x -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-				if (wnd->IsKeyPressed(Input::S))
-					moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-				if (wnd->IsKeyPressed(Input::D))
-					moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//if (Camera::GetActiveCamera() == &cam)
+			//{
+			//	if (wnd->IsKeyPressed(Input::W))
+			//		moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//	if (wnd->IsKeyPressed(Input::A))
+			//		moveDir.x -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//	if (wnd->IsKeyPressed(Input::S))
+			//		moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//	if (wnd->IsKeyPressed(Input::D))
+			//		moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//
+			//	if (wnd->IsKeyPressed(Input::SPACE))
+			//		moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//	if (wnd->IsKeyPressed(Input::C))
+			//		moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			//
+			//	float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
+			//	float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
+			//
+			//	rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
+			//	rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
+			//	static bool moveCamera = true;
+			//
+			//	if (moveCamera)
+			//	{
+			//		cam.Rotate(rotDir);
+			//
+			//		wnd->ResetMouse();
+			//	}
+			//	if (wnd->IsKeyPressed(Input::Z))
+			//		moveCamera = true;
+			//	if (wnd->IsKeyPressed(Input::X))
+			//		moveCamera = false;
+			//
+			//	moveDir.x *= (FLOAT)dt;
+			//	moveDir.y *= (FLOAT)dt;
+			//	moveDir.z *= (FLOAT)dt;
+			//
+			//	//cam.Translate(moveDir, false);
+			//}
 
-				if (wnd->IsKeyPressed(Input::SPACE))
-					moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-				if (wnd->IsKeyPressed(Input::C))
-					moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-
-				float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
-				float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
-
-				rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
-				rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
-				static bool moveCamera = true;
-
-				if (moveCamera)
-				{
-					cam.Rotate(rotDir);
-
-					wnd->ResetMouse();
-				}
-				if (wnd->IsKeyPressed(Input::Z))
-					moveCamera = true;
-				if (wnd->IsKeyPressed(Input::X))
-					moveCamera = false;
-
-				moveDir.x *= (FLOAT)dt;
-				moveDir.y *= (FLOAT)dt;
-				moveDir.z *= (FLOAT)dt;
-
-				cam.Translate(moveDir, false);
-			}
+			//std::cout << "Pos: " << cam.GetPosition().x << " " << cam.GetPosition().y << " " << cam.GetPosition().z << " " << "Dir: " << cam.GetDirectionVector().x << " " << cam.GetDirectionVector().y << " " << cam.GetDirectionVector().z << std::endl;
 
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
@@ -271,7 +286,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				DEBUG::CreateError("LOL");
 				break;
 			}
-
+			//cpuTimer.LogTime();
 			
 		}
 		core->ClearGPU();
@@ -291,6 +306,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		delete[] t2;
 		delete[] bunnyTexture;
 		delete[] pointLight;
+		//cpuTimer.CloseLog();
 	}
 	core->Release();
 	delete core;
@@ -301,7 +317,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 void printFrameTime(double dt)
 {
 	static int			counter = 0;
-	static const int	MAX_DATA = 10;
+	static const int	MAX_DATA = 64;
 	static double		allTime = 0.0;
 
 	allTime += dt * 1000.0;
@@ -314,6 +330,8 @@ void printFrameTime(double dt)
 		allTime /= MAX_DATA;
 
 		Window::GetInstance()->SetWindowTitle("Frame Time: " + std::to_string(allTime) + " ms");
+
+		
 
 		allTime = 0.0;
 	}

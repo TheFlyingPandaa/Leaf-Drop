@@ -10,6 +10,7 @@
 #include "../Leaf-Drop/Passes/DeferredPass.h"
 #include "../Leaf-Drop/Passes/ComputePass.h"
 #include "../Leaf-Drop/Passes/PrePass.h"
+#include "../Leaf-Drop/Wrappers/CpuTimer.h"
 
 class Window;
 

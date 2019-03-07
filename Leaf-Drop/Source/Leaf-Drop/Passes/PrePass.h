@@ -34,6 +34,8 @@ private:
 
 	DepthBuffer m_depthBuffer;
 
+	GpuTimer timer;
+
 private:
 	HRESULT _Init();
 	HRESULT _InitRootSignature();

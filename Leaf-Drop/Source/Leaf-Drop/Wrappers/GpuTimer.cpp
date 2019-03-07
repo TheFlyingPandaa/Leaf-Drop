@@ -58,7 +58,7 @@ void GpuTimer::LogTime(const UINT & iterrationInterval)
 		if (!m_outSteam.is_open())
 			throw "Call OpenLog()";
 
-		UpdateThread(m_avrage);
+		UpdateThread(m_avrage * 1000.0);
 
 		m_iterationCounter = 0;
 	}
@@ -112,7 +112,7 @@ void GpuTimer::ThreadOutput()
 	{
 		if (m_threadGotWork)
 		{
-			m_outSteam << m_avrage << std::endl;
+			m_outSteam << m_printAvrage << std::endl;
 			m_threadGotWork = false;
 		}
 	}

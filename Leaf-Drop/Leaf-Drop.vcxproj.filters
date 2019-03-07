@@ -774,6 +774,9 @@
     <ClInclude Include="Source\Leaf-Drop\Wrappers\CPUBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Wrappers\CpuTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -978,6 +981,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Wrappers\CPUBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Wrappers\CpuTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -157,7 +157,7 @@ const DirectX::XMFLOAT4 Camera::GetUpVector() const
 
 const DirectX::XMFLOAT4 Camera::GetDirectionVector() const
 {
-	return m_up;
+	return m_direction;
 }
 
 const DirectX::XMFLOAT4X4A & Camera::GetViewMatrix() const
