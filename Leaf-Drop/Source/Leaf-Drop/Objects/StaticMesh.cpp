@@ -235,9 +235,9 @@ void StaticMesh::_calcMinMax()
 		if (y < min.y) min.y = y;
 		if (z < min.z) min.z = z;
 
-		if (x > min.x) max.x = x;
-		if (y > min.y) max.y = y;
-		if (z > min.z) max.z = z;
+		if (x > max.x) max.x = x;
+		if (y > max.y) max.y = y;
+		if (z > max.z) max.z = z;
 	}
 
 	m_aabb.min = min;

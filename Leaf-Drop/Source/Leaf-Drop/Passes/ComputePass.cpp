@@ -69,8 +69,8 @@ void ComputePass::Update()
 			}
 		}
 
-		m_staticOcTree.BuildTree(-256, -256, -256, 3u, 512u);
-		m_dynamicOcTree.BuildTree(-256, -256, -256, 3u, 512u);
+		m_staticOcTree.BuildTree(-512, -512, -512, 3u, 1024u);
+		m_dynamicOcTree.BuildTree(-512, -512, -512, 3u, 1024u);
 		m_dynamicOcTree.CreateBuffer(L"Ray_Octree");
 		m_staticOcTree.PlaceObjects(m_staticOctreeValues);
 

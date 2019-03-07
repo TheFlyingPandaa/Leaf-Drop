@@ -414,7 +414,8 @@ void main (uint3 threadID : SV_DispatchThreadID)
     {
         float3 triNormal;
 
-        if (TraceTriangle(ray, fragmentWorld, tri, uvw, intersectionPoint, triNormal, textureIndex))
+        //if (TraceTriangle(ray, ViewerPosition.xyz, tri, uvw, intersectionPoint, triNormal, textureIndex))
+        if (TraceTriangle(ray, fragmentWorld + ray * 0.01f, tri, uvw, intersectionPoint, triNormal, textureIndex))
         {
             distToCamera += length(fragmentWorld - intersectionPoint);
             float mip = saturate((MIN_MIP_DIST - distToCamera) / (MIN_MIP_DIST - MAX_MIP_DIST));
@@ -445,8 +446,11 @@ void main (uint3 threadID : SV_DispatchThreadID)
             tmpColor = saturate(tmpColor + ambient.rgb);
             
             finalColor = lerp(finalColor, float4(tmpColor, 1.0f), strenght);
+            if (metall.r > 0.9f)
+                strenght -= (1.0f - metall.r);
+            else
+                strenght = 0;
 
-            strenght -= (1.0f - metall.r);
 
             fragmentWorld = intersectionPoint;
             ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));

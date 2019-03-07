@@ -43,6 +43,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		StaticMesh * m = new StaticMesh();
 		StaticMesh * m2 = new StaticMesh();
+		StaticMesh * bunny = new StaticMesh();
+
 		Texture * t = new Texture[3];
 		t[0].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_diffuseOriginal.bmp");
 		t[1].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_normal.bmp");
@@ -53,11 +55,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		t2[1].LoadTexture(L"..\\Assets\\Textures\\Magnus_Brick\\Brick_normal.bmp");
 		t2[2].LoadTexture(L"..\\Assets\\Textures\\Magnus_Brick\\Brick_metallic.bmp");
 
+		Texture * bunnyTexture = new Texture[3];
+		bunnyTexture[0].LoadTexture(L"..\\Assets\\Textures\\BobTheBunny\\BobTheBunny_diffuseOriginal.bmp");
+		bunnyTexture[1].LoadTexture(L"..\\Assets\\Textures\\BobTheBunny\\BobTheBunny_normal.bmp");
+		bunnyTexture[2].LoadTexture(L"..\\Assets\\Textures\\BobTheBunny\\BobTheBunny_metallic.bmp");
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		m2->LoadMesh("..\\Assets\\Models\\Sphere.fbx");
+		bunny->LoadMesh("..\\Assets\\Models\\BobTheBunny.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 6;
+		const UINT NUMBER_OF_DRAWABLES = 9;
 		const UINT NUMBER_OF_LIGHTS = 500;
 		const UINT MAX_DISTANCE = 50;
 		const UINT MAX_LIGHT_DISTANCE = 50;
@@ -131,6 +138,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		d[5].SetPosition(-50, 0, 0);
 		d[5].SetScale(1, 100, 100);
 
+		d[6].SetPosition(-25, -52.5f, -25);
+		d[6].SetScale(100, 100, 100);
+		d[6].SetMesh(bunny);
+		d[6].SetTexture(&bunnyTexture[0]);
+		d[6].SetNormal(&bunnyTexture[1]);
+		d[6].SetMetallic(&bunnyTexture[2]);
+		
+		d[7].SetPosition(-05, -40.5f, -25);
+		d[7].SetScale(10, 10, 10);
+		d[7].SetMesh(m);
+		d[7].SetTexture(&t[0]);
+		d[7].SetNormal(&t[1]);
+		d[7].SetMetallic(&t[2]);
+
+		d[8].SetPosition(25, -40.5f, -25);
+		d[8].SetScale(10, 10, 10);
+		d[8].SetMesh(m2);
+		d[8].SetTexture(&bunnyTexture[0]);
+		d[8].SetNormal(&bunnyTexture[1]);
+		d[8].SetMetallic(&bunnyTexture[2]);
 
 		float rot = 0;
 		timer.Start();
@@ -222,10 +249,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			static float mover = 0.0f;
 			static const float SPEED = 1.0f;
 
-			//dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
-			//dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_PI, 0.0f);
+			dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
+			dynamicDrawable.SetRotation(0, mover, 0.0f);
 
 			mover += SPEED * dt;
+
+			if (mover >= DirectX::XM_2PI)
+				mover = 0;
 
 			dynamicDrawable.Update();
 			dynamicDrawable.Draw();
@@ -248,13 +278,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		delete m;
 		m2->Release();
 		delete m2;
+		bunny->Release();
+		delete bunny;
 		for (UINT i = 0; i < 3; i++)
 		{
-			t->Release();
-			t2->Release();
+			t[i].Release();
+			t2[i].Release();
+			bunnyTexture[i].Release();
 		}
 		delete[] t;
 		delete[] t2;
+		delete[] bunnyTexture;
 		delete[] pointLight;
 	}
 	core->Release();
