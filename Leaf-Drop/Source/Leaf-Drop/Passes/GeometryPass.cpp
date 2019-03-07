@@ -139,9 +139,7 @@ void GeometryPass::Update()
 	int counter = 0;
 	UINT textureCounter = 0;
 	UINT textureIndexOffset = 0;
-	m_ptrAtlas->Begin(commandList);
 	UINT4 textureOffset{ 0,0,0,0 };
-
 
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
@@ -150,9 +148,6 @@ void GeometryPass::Update()
 			auto world = p_staticDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
-		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
-		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
-		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 
 		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].DiffuseTexture);
 		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].NormalTexture);
@@ -171,9 +166,6 @@ void GeometryPass::Update()
 			auto world = p_dynamicDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
-		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].DiffuseTexture->GetResource(), textureCounter, commandList);
-		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
-		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 
 		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].DiffuseTexture);
 		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].NormalTexture);
@@ -185,9 +177,6 @@ void GeometryPass::Update()
 		p_dynamicDrawQueue[i].TextureOffset = textureOffset.x;
 		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
-	m_ptrAtlas->End(commandList);
-
-
 
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
@@ -210,7 +199,6 @@ void GeometryPass::Draw()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 
-	//m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 	m_ptrAtlas->BindlessGraphicsSetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
 

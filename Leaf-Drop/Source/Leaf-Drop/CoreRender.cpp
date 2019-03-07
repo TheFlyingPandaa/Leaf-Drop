@@ -151,10 +151,10 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
-	if (FAILED(hr = TextureAtlas::GetInstance()->Init(L"Singelton", 4096, 4096, 8, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
-	{
-		return hr;
-	}
+	//if (FAILED(hr = TextureAtlas::GetInstance()->Init(L"Singelton", 4096, 4096, 8, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
+	//{
+	//	return hr;
+	//}
 
 	return hr;
 }
