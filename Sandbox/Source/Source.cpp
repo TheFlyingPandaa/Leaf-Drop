@@ -42,21 +42,23 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		cam.SetAsActiveCamera();
 
 		StaticMesh * m = new StaticMesh();
+		StaticMesh * m2 = new StaticMesh();
 		Texture * t = new Texture[3];
-		t[0].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_diffuse.bmp");
-		t[1].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_normal.bmp");
-		t[2].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_metallic.bmp");
+		t[0].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_diffuseOriginal.bmp");
+		t[1].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_normal.bmp");
+		t[2].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_metallic.bmp");
 
 		Texture * t2 = new Texture[3];
-		t2[0].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_diffuseOriginal.bmp");
-		t2[1].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_normal.bmp");
-		t2[2].LoadTexture(L"..\\Assets\\Textures\\Brick\\Brick_metallic.bmp");
+		t2[0].LoadTexture(L"..\\Assets\\Textures\\Magnus_Brick\\Brick_diffuseOriginal.bmp");
+		t2[1].LoadTexture(L"..\\Assets\\Textures\\Magnus_Brick\\Brick_normal.bmp");
+		t2[2].LoadTexture(L"..\\Assets\\Textures\\Magnus_Brick\\Brick_metallic.bmp");
 
 
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
+		m2->LoadMesh("..\\Assets\\Models\\Sphere.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 100;
-		const UINT NUMBER_OF_LIGHTS = 50;
+		const UINT NUMBER_OF_DRAWABLES = 6;
+		const UINT NUMBER_OF_LIGHTS = 500;
 		const UINT MAX_DISTANCE = 50;
 		const UINT MAX_LIGHT_DISTANCE = 50;
 
@@ -220,8 +222,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			static float mover = 0.0f;
 			static const float SPEED = 1.0f;
 
-			dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
-			dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_PI, 0.0f);
+			//dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
+			//dynamicDrawable.SetRotation(0, cos(mover) * DirectX::XM_PI, 0.0f);
 
 			mover += SPEED * dt;
 
@@ -244,6 +246,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		core->ClearGPU();
 		m->Release();
 		delete m;
+		m2->Release();
+		delete m2;
 		for (UINT i = 0; i < 3; i++)
 		{
 			t->Release();
