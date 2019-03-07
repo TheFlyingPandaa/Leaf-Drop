@@ -1,5 +1,6 @@
 #include "CorePCH.h"
 #include "TextureAtlas.h"
+#include "../Objects/Texture.h"
 
 
 TextureAtlas::TextureAtlas()
@@ -158,6 +159,31 @@ void TextureAtlas::CopySubresource(ID3D12Resource* const* resource, const UINT& 
 
 		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(resource[i], D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 	}
+}
+
+void TextureAtlas::CopyBindless(Texture* texture)
+{
+	if (m_nrOfTextures == 0)
+		m_bindlessStartHandle = { m_coreRender->GetGPUDescriptorHeap()->GetGPUDescriptorHandleForHeapStart().ptr + m_coreRender->CopyToGPUDescriptorHeap(texture->GetCpuHandle(), texture->GetResource()->GetDesc().DepthOrArraySize) };
+	else
+		m_coreRender->CopyToGPUDescriptorHeap(texture->GetCpuHandle(), texture->GetResource()->GetDesc().DepthOrArraySize);
+}
+
+void TextureAtlas::BindlessGraphicsSetGraphicsRootDescriptorTable(const UINT& rootParameterIndex,
+	ID3D12GraphicsCommandList* commandList) const
+{
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, m_bindlessStartHandle);
+}
+
+void TextureAtlas::BindlessComputeSetGraphicsRootDescriptorTable(const UINT& rootParameterIndex,
+	ID3D12GraphicsCommandList* commandList) const
+{
+	commandList->SetComputeRootDescriptorTable(rootParameterIndex, m_bindlessStartHandle);
+}
+
+void TextureAtlas::Reset()
+{
+	m_nrOfTextures = 0;
 }
 
 

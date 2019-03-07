@@ -98,6 +98,7 @@ HRESULT GeometryPass::Init()
 
 void GeometryPass::Update()
 {
+	m_ptrAtlas->Reset();
 	if (FAILED(OpenCommandList()))
 	{
 		return;
@@ -153,6 +154,10 @@ void GeometryPass::Update()
 		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
 		m_ptrAtlas->CopySubresource(p_staticDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 
+		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].DiffuseTexture);
+		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].NormalTexture);
+		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].MetallicTexture);
+
 		textureOffset.x = (UINT)i * 3;
 		textureOffset.y = 3;
 
@@ -170,6 +175,10 @@ void GeometryPass::Update()
 		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].NormalTexture->GetResource(), textureCounter, commandList);
 		m_ptrAtlas->CopySubresource(p_dynamicDrawQueue[i].MetallicTexture->GetResource(), textureCounter, commandList);
 
+		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].DiffuseTexture);
+		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].NormalTexture);
+		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].MetallicTexture);
+
 		textureOffset.x = (UINT)i * 3 + (p_staticDrawQueue.size() * 3);
 		textureOffset.y = 3;
 
@@ -177,6 +186,8 @@ void GeometryPass::Update()
 		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
 	m_ptrAtlas->End(commandList);
+
+
 
 	m_worldMatrices.Bind(WORLD_MATRICES, commandList);
 
@@ -199,7 +210,9 @@ void GeometryPass::Draw()
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 
-	m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
+	//m_ptrAtlas->SetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
+	m_ptrAtlas->BindlessGraphicsSetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
+
 
 	UINT offset = 0;
 	UINT textureIndexOffset = 0;
@@ -294,7 +307,7 @@ HRESULT GeometryPass::_InitRootSignature()
 
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 	
-	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 0, 1);
 	rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
 	
 

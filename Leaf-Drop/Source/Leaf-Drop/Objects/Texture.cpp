@@ -58,12 +58,12 @@ HRESULT Texture::LoadTexture(const std::wstring & path)
 
 	m_descriptorHeapOffset = coreRender->GetCurrentResourceIndex() * coreRender->GetResourceDescriptorHeapSize();
 
-	D3D12_CPU_DESCRIPTOR_HANDLE handle = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
+	m_cpuHandle = { coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr + m_descriptorHeapOffset };
 
 	device->CreateShaderResourceView(
 		m_texture,
 		&srvDesc,
-		handle);
+		m_cpuHandle);
 
 	coreRender->IterateResourceIndex(1);
 
@@ -71,7 +71,7 @@ HRESULT Texture::LoadTexture(const std::wstring & path)
 	return hr;
 }
 
-void Texture::Map(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList)
+void Texture::Map(UINT rootParameterIndex, ID3D12GraphicsCommandList * commandList) const
 {
 	
 	ID3D12DescriptorHeap * heaps[] = { CoreRender::GetInstance()->GetCPUDescriptorHeap() };
@@ -88,4 +88,9 @@ void Texture::Release()
 ID3D12Resource* Texture::GetResource() const
 {
 	return this->m_texture;
+}
+
+const D3D12_CPU_DESCRIPTOR_HANDLE & Texture::GetCpuHandle() const
+{
+	return m_cpuHandle;
 }

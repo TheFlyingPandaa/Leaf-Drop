@@ -16,6 +16,12 @@ public:
 	void CopySubresource(ID3D12Resource * resource, UINT & dstIndex, ID3D12GraphicsCommandList * commandList) const;
 	void CopySubresource(ID3D12Resource *const* resource, const UINT & resourceSize, const UINT & dstIndex, ID3D12GraphicsCommandList * commandList) const;
 
+	void CopyBindless(Texture * texture);
+	void BindlessGraphicsSetGraphicsRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList) const;
+	void BindlessComputeSetGraphicsRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList) const;
+	void Reset();
+
+
 	void SetGraphicsRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList) const;
 	void SetMagnusRootDescriptorTable(const UINT & rootParameterIndex, ID3D12GraphicsCommandList * commandList) const;
 
@@ -31,5 +37,8 @@ private:
 	UINT m_descriptorHeapOffset = 0;
 
 	CoreRender * m_coreRender = nullptr;
+
+	UINT m_nrOfTextures = 0;
+	D3D12_GPU_DESCRIPTOR_HANDLE m_bindlessStartHandle;
 };
 

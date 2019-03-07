@@ -85,18 +85,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		std::vector<Drawable> d(NUMBER_OF_DRAWABLES);
 		
 		Drawable dynamicDrawable;
-		dynamicDrawable.SetTexture(&t[0]);
-		dynamicDrawable.SetNormal(&t[1]);
-		dynamicDrawable.SetMetallic(&t[2]);
+		dynamicDrawable.SetTexture(&t2[0]);
+		dynamicDrawable.SetNormal(&t2[1]);
+		dynamicDrawable.SetMetallic(&t2[2]);
 		//dynamicDrawable.SetAsStatic();
 		dynamicDrawable.SetMesh(m);
 		dynamicDrawable.SetScale(10, 10, 10);
 
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
-			d[i].SetTexture(&t2[0]);
-			d[i].SetNormal(&t2[1]);
-			d[i].SetMetallic(&t2[2]);
+			d[i].SetTexture(&t[0]);
+			d[i].SetNormal(&t[1]);
+			d[i].SetMetallic(&t[2]);
 			d[i].SetAsStatic();
 			d[i].SetMesh(m);
 		
