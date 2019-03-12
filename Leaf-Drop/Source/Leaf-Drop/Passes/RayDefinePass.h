@@ -68,6 +68,8 @@ private:
 
 	Fence m_fence;
 
+	GpuTimer timer;
+
 private:
 	HRESULT _Init();
 	HRESULT _CreateScreenQuad(CoreRender * coreRender, const UINT & frameIndex, ID3D12GraphicsCommandList * commandList);

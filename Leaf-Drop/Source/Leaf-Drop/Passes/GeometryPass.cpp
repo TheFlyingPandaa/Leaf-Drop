@@ -241,10 +241,10 @@ void GeometryPass::Draw()
 
 	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayStencil->GetResource()[frameIndex]));
 
-	m_timer.LogTime();
 	ExecuteCommandList();
-	
 	m_fence.WaitForFinnishExecution();
+	m_timer.LogTime();
+	
 
 	m_rayStencil->prevFrame = frameIndex;
 	

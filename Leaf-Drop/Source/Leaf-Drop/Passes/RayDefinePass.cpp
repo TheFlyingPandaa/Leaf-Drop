@@ -9,13 +9,13 @@
 
 RayDefinePass::RayDefinePass() : IRender()
 {
-	
+	timer.OpenLog("raydefine.txt");
 }
 
 
 RayDefinePass::~RayDefinePass()
 {
-
+	timer.CloseLog();
 }
 
 HRESULT RayDefinePass::Init()
@@ -25,6 +25,7 @@ HRESULT RayDefinePass::Init()
 
 void RayDefinePass::Update()
 {
+	timer.Start();
 	OpenCommandList(m_pipelineState);
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
@@ -53,9 +54,10 @@ void RayDefinePass::Draw()
 	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
 
 	ExecuteCommandList();
+	m_fence.WaitForFinnishExecution();
+	timer.LogTime();
 
 	p_coreRender->GetComputePass()->SetRayData(&m_rayStencil);
-	m_fence.WaitForFinnishExecution();
 }
 
 void RayDefinePass::Release()

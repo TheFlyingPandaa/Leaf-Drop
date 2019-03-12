@@ -192,6 +192,7 @@ void PrePass::Draw()
 	}
 
 	ExecuteCommandList();
+	timer.LogTime();
 
 	// Possible fence?? boobie fix
 
@@ -199,7 +200,6 @@ void PrePass::Draw()
 
 	RenderTarget * arr[] = { &m_renderTarget[0], &m_renderTarget[1], &m_renderTarget[2] };
 	p_coreRender->GetRayDefinePass()->SetGeometryRenderTargets(arr, 3);
-	timer.LogTime();
 }
 
 void PrePass::Release()

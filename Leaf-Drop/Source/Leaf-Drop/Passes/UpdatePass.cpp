@@ -14,10 +14,12 @@
 
 UpdatePass::UpdatePass() : IRender()
 {
+	timer.OpenLog("UpdatePass.txt");
 }
 
 UpdatePass::~UpdatePass()
 {
+	timer.CloseLog();
 }
 
 HRESULT UpdatePass::Init()
@@ -49,6 +51,7 @@ HRESULT UpdatePass::Init()
 
 void UpdatePass::Update()
 {
+	timer.Start();
 	static bool _FirstRun = true;
 
 	if (_FirstRun)
@@ -66,6 +69,7 @@ void UpdatePass::Update()
 	_SetLightData();
 	_SetObjectData();
 	m_fence.WaitForFinnishExecution();
+	timer.LogTime();
 }
 
 void UpdatePass::Draw()

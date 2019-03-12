@@ -46,6 +46,8 @@ private:
 
 	Fence m_fence;
 
+	GpuTimer timer;
+
 private:
 	void _PlaceStaticTree();
 	void _PlaceDynamicTree();

@@ -27,6 +27,7 @@ void GpuTimer::PrintTimer()
 void GpuTimer::OpenLog(const std::string & path)
 {
 #ifndef _DEBUG
+#ifndef _NO_LOG
 	m_outSteam.open(path);
 
 	m_threadRuning = true;
@@ -34,11 +35,13 @@ void GpuTimer::OpenLog(const std::string & path)
 
 	m_outputThread = std::thread(&GpuTimer::ThreadOutput, this);
 #endif
+#endif
 }
 
 void GpuTimer::CloseLog()
 {
 #ifndef _DEBUG
+#ifndef _NO_LOG
 	m_threadRuning = false;
 	
 
@@ -46,12 +49,13 @@ void GpuTimer::CloseLog()
 	if (m_outputThread.get_id() != std::thread::id())
 		m_outputThread.join();
 #endif
+#endif
 }
 
 void GpuTimer::LogTime(const UINT & iterrationInterval)
 {
 #ifndef _DEBUG
-
+#ifndef _NO_LOG
 	m_iterationCounter++;
 
 	m_avrage += GetTime();
@@ -68,6 +72,7 @@ void GpuTimer::LogTime(const UINT & iterrationInterval)
 
 		m_iterationCounter = 0;
 	}
+#endif
 #endif
 }
 
