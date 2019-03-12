@@ -24,7 +24,7 @@ struct PS_INPUT
 
 void main(PS_INPUT input)
 {
-    float metallic = Metallic.SampleCmpLevelZero(compSampler, input.uv, REFLECTION_VAL).r;
+    float metallic = Metallic.Sample(defaultSampler, input.uv).r;
     float3 pos = WorldPosition.Sample(defaultSampler, input.uv).xyz;
     float3 normal = Normal.Sample(defaultSampler, input.uv).xyz;
 
@@ -34,7 +34,7 @@ void main(PS_INPUT input)
     RAY_STRUCT rs;
     rs.startPos = pos;
     rs.normal = normal;
-    rs.dispatch = metallic;
+    rs.dispatch = metallic >= REFLECTION_VAL;
 
     RayStencil[accessIndex] = rs;
 }

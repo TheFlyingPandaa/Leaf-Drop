@@ -248,10 +248,10 @@ void GeometryPass::Draw()
 
 	m_rayStencil->prevFrame = frameIndex;
 	
-	p_coreRender->GetComputePass()->SetRayData(m_rayStencil);
+	//p_coreRender->GetComputePass()->SetRayData(m_rayStencil);
 
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
-	p_coreRender->GetComputePass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
+	//p_coreRender->GetComputePass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
 }
 
 void GeometryPass::Release()

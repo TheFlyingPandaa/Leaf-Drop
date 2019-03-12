@@ -32,7 +32,9 @@ void RayDefinePass::Update()
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 		
 	commandList->SetGraphicsRootSignature(m_rootSignature);
-	//commandList->RSSetViewports(1, &m_viewport);
+	m_rayStencil.Bind(RAY_STENCIL, commandList);
+
+	commandList->RSSetViewports(1, &m_viewport);
 	//commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -46,11 +48,14 @@ void RayDefinePass::Draw()
 {
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
-
+	
 	commandList->IASetVertexBuffers(0, 1, &m_screenQuad.vertexBufferView);
 	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
 
 	ExecuteCommandList();
+
+	p_coreRender->GetComputePass()->SetRayData(&m_rayStencil);
+	m_fence.WaitForFinnishExecution();
 }
 
 void RayDefinePass::Release()
