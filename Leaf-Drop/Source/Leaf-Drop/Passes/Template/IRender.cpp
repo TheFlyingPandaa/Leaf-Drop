@@ -95,10 +95,10 @@ void IRender::p_ReleaseCommandList()
 
 void IRender::_UpdateThread()
 {
-	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL))
-	{
-		PRINT("FAILED TO SET PRIORITY LEVEL OF THREAD \n");
-	}
+	//if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL))
+	//{
+		//PRINT("FAILED TO SET PRIORITY LEVEL OF THREAD \n");
+	//}
 	while (m_threadRunning)
 	{
 		if (!m_threadDone)

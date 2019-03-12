@@ -1442,5 +1442,6 @@
     <FxCompile Include="Source\Leaf-Drop\Shaders\GeometryPass\DefaultGeometryPixel.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\PrePass\PrePassVertex.hlsl" />
     <FxCompile Include="Source\Leaf-Drop\Shaders\RayDefinePass\DefaultRayDefine.hlsl" />
+    <FxCompile Include="Source\Leaf-Drop\Shaders\PrePass\DefaultPrePassPixel.hlsl" />
   </ItemGroup>
 </Project>

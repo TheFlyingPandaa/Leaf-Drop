@@ -63,7 +63,6 @@ private:
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
-	GpuTimer timer;
 
 	UAV m_rayStencil;
 

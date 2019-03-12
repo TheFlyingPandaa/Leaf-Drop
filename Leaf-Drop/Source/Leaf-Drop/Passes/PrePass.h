@@ -5,7 +5,7 @@
 class PrePass : public IRender
 {
 private:
-	static const UINT RENDER_TARGETS = 1;
+	static const UINT RENDER_TARGETS = 3;
 public:
 	PrePass();
 	~PrePass();
@@ -26,13 +26,16 @@ private:
 	D3D12_INPUT_LAYOUT_DESC  m_inputLayoutDesc;
 
 	D3D12_SHADER_BYTECODE m_vertexShader{};
+	D3D12_SHADER_BYTECODE m_pixelShader{};
 
-	RenderTarget m_renderTarget;
+	RenderTarget m_renderTarget[RENDER_TARGETS];
 
 	D3D12_VIEWPORT m_viewport{};
 	D3D12_RECT m_scissorRect{};
 
 	DepthBuffer m_depthBuffer;
+
+	ConstantBuffer m_textureIndex;
 
 	GpuTimer timer;
 

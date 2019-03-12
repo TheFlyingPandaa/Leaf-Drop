@@ -161,11 +161,16 @@ HRESULT CoreRender::Init()
 	}
 
 	m_rayDefinePass = new RayDefinePass();
-	/*if (FAILED(hr = m_rayDefinePass->Init()))
+	if (FAILED(hr = m_rayDefinePass->Init()))
 	{
 		return DEBUG::CreateError(hr);
-	}*/
+	}
 	
+#ifdef _DEBUG
+
+	//DebugBreak();
+	//return E_FAIL;
+#endif
 
 	return hr;
 }
@@ -479,19 +484,34 @@ HRESULT CoreRender::_UpdatePipeline()
 
 		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
+
+	
 	m_prePass->UpdateThread();
-	m_prePass->ThreadJoin();
-	
-	
-
 	m_updatePass->UpdateThread();
-	m_updatePass->ThreadJoin();
+	
+	m_prePass->ThreadJoin();
+	m_rayDefinePass->UpdateThread();
 
+	m_rayDefinePass->ThreadJoin();
+	m_updatePass->ThreadJoin();
+		   
 	m_geometryPass->UpdateThread();
 	m_geometryPass->ThreadJoin();
-
+	
 	m_computePass->UpdateThread();
 	m_computePass->ThreadJoin();
+
+	//m_prePass->Update();
+	//m_prePass->Draw();
+	//
+	//m_updatePass->Update();
+	//m_updatePass->Draw();
+	//
+	//m_geometryPass->Update();
+	//m_geometryPass->Draw();
+	//
+	//m_computePass->Update();
+	//m_computePass->Draw();
 
 	m_deferredPass->Update();
 	m_deferredPass->Draw();

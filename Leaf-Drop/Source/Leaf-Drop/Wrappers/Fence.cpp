@@ -44,8 +44,13 @@ HRESULT Fence::WaitForFinnishExecution()
 	{
 		if (m_fence[frameIndex]->GetCompletedValue() < m_fenceValue[frameIndex])
 		{
-			m_fence[frameIndex]->SetEventOnCompletion(m_fenceValue[frameIndex], m_fenceEvent);
-			WaitForSingleObject(m_fenceEvent, INFINITE); 
+			if (SUCCEEDED(m_fence[frameIndex]->SetEventOnCompletion(m_fenceValue[frameIndex], m_fenceEvent)))
+			{
+				//if (SUCCEEDED(hr = m_ptrCommandQueue->Wait(m_fence[frameIndex], m_fenceValue[frameIndex])))
+				//{
+				//}
+				WaitForSingleObject(m_fenceEvent, INFINITE); 
+			}
 		}
 		m_fenceValue[frameIndex]++;
 	}

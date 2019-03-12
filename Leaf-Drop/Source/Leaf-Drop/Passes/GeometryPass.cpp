@@ -149,9 +149,9 @@ void GeometryPass::Update()
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 
-		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].DiffuseTexture);
-		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].NormalTexture);
-		m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].MetallicTexture);
+		//m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].DiffuseTexture);
+		//m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].NormalTexture);
+		//m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].MetallicTexture);
 
 		textureOffset.x = (UINT)i * 3;
 		textureOffset.y = 3;
@@ -167,9 +167,9 @@ void GeometryPass::Update()
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 
-		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].DiffuseTexture);
-		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].NormalTexture);
-		m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].MetallicTexture);
+		//m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].DiffuseTexture);
+		//m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].NormalTexture);
+		//m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].MetallicTexture);
 
 		textureOffset.x = (UINT)i * 3 + (p_staticDrawQueue.size() * 3);
 		textureOffset.y = 3;

@@ -7,7 +7,7 @@
 
 RayDefinePass::RayDefinePass() : IRender()
 {
-
+	
 }
 
 

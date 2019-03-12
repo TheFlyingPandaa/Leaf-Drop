@@ -7,12 +7,18 @@
 
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
+#define TEXTURE_TABLE	2
+#define TEXTURE_INDEX	3
+
+struct UINT4
+{
+	UINT x, y, z, w;
+};
 
 PrePass::PrePass()
 {
 	timer.OpenLog("PrePass.txt");
 }
-
 
 PrePass::~PrePass()
 {
@@ -28,6 +34,11 @@ HRESULT PrePass::Init()
 		return hr;
 	}
 
+	if (FAILED(hr = m_textureIndex.Init(1024 * 64, L"Prepass Index", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(UINT4))))
+	{
+		return hr;
+	}
+
 	return hr;
 }
 
@@ -39,9 +50,11 @@ void PrePass::Update()
 		return;
 	}
 
+
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 	commandList->SetGraphicsRootSignature(m_rootSignature);
+	p_coreRender->SetResourceDescriptorHeap(commandList);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = p_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	const SIZE_T resourceSize = p_coreRender->GetResourceDescriptorHeapSize();
@@ -49,6 +62,13 @@ void PrePass::Update()
 	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
+	UINT textureCounter = 0;
+	UINT textureIndexOffset = 0;
+	UINT4 textureOffset{ 0,0,0,0 };
+
+	TextureAtlas * ptrAtlas = TextureAtlas::GetInstance();
+
+
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
 		for (size_t k = 0; k < p_staticDrawQueue[i].DrawableObjectData.size(); k++)
@@ -56,7 +76,20 @@ void PrePass::Update()
 			auto world = p_staticDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
+
+		ptrAtlas->CopyBindless(p_staticDrawQueue[i].DiffuseTexture);
+		ptrAtlas->CopyBindless(p_staticDrawQueue[i].NormalTexture);
+		ptrAtlas->CopyBindless(p_staticDrawQueue[i].MetallicTexture);
+
+		textureOffset.x = (UINT)i * 3;
+		textureOffset.y = 3;
+
+		p_staticDrawQueue[i].TextureOffset = textureOffset.x;
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
+
+
+
 	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
 	{
 		for (size_t k = 0; k < p_dynamicDrawQueue[i].DrawableObjectData.size(); k++)
@@ -64,6 +97,16 @@ void PrePass::Update()
 			auto world = p_dynamicDrawQueue[i].DrawableObjectData[k];
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
+
+		ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].DiffuseTexture);
+		ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].NormalTexture);
+		ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].MetallicTexture);
+
+		textureOffset.x = (UINT)i * 3 + (p_staticDrawQueue.size() * 3);
+		textureOffset.y = 3;
+
+		p_dynamicDrawQueue[i].TextureOffset = textureOffset.x;
+		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
 
 
@@ -81,17 +124,26 @@ void PrePass::Update()
 
 void PrePass::Draw()
 {
+
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 
-	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandles;
-	const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
-	{ m_renderTarget.GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
-	frameIndex *
-	m_renderTarget.GetRenderTargetDescriptorHeapSize() };
-	renderTargetHandles = rtvHandle;
+	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandles[RENDER_TARGETS];
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
+		{ m_renderTarget[i].GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
+		frameIndex *
+		m_renderTarget[i].GetRenderTargetDescriptorHeapSize() };
 
-	commandList->OMSetRenderTargets(RENDER_TARGETS, &renderTargetHandles, FALSE, &m_depthBuffer.GetHandle());
+		commandList->ClearRenderTargetView(rtvHandle, CLEAR_COLOR, 0, nullptr);
+
+		renderTargetHandles[i] = rtvHandle;
+	}
+
+
+
+	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_depthBuffer.GetHandle());
 
 	m_depthBuffer.Clear(commandList);
 
@@ -100,10 +152,13 @@ void PrePass::Draw()
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	UINT offset = 0;
+	TextureAtlas::GetInstance()->BindlessGraphicsSetGraphicsRootDescriptorTable(TEXTURE_TABLE, commandList);
 
+	UINT offset = 0;
+	UINT textureIndexOffset = 0;
 	for (size_t i = 0; i < p_staticDrawQueue.size(); i++)
 	{
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, sizeof(UINT4) * textureIndexOffset++);
 		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
 
 		offset += p_staticDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
@@ -115,6 +170,7 @@ void PrePass::Draw()
 
 	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
 	{
+		m_textureIndex.Bind(TEXTURE_INDEX, commandList, sizeof(UINT4) * textureIndexOffset++);
 		m_worldMatrices.Bind(WORLD_MATRICES, commandList, offset);
 
 		offset += p_dynamicDrawQueue[i].DrawableObjectData.size() * sizeof(InstanceGroup::ObjectDataStruct);
@@ -140,11 +196,14 @@ void PrePass::Release()
 {
 	m_camBuffer.Release();
 	m_worldMatrices.Release();
-	m_renderTarget.Release();
 	m_depthBuffer.Release();
+	m_textureIndex.Release();
 	p_ReleaseCommandList();
 
-	
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		m_renderTarget[i].Release();
+	}
 
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
@@ -178,9 +237,12 @@ HRESULT PrePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_renderTarget.Init(L"PrePass")))
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
-		return hr;
+		if (FAILED(hr = m_renderTarget[i].Init(L"PrePass")))
+		{
+			return hr;
+		}
 	}
 	if (FAILED(hr = m_depthBuffer.Init(L"PrePass",0,0,1,TRUE)))
 	{
@@ -194,24 +256,29 @@ HRESULT PrePass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[2];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 0, 1);
+	rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[TEXTURE_INDEX].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
+	CD3DX12_STATIC_SAMPLER_DESC staticSampler = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),
 		rootParameters,
-		NULL,
-		nullptr,
+		1,
+		&staticSampler,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
 		//D3D12_ROOT_SIGNATURE_FLAG_DENY_VERTEX_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
 		D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
-		D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
-		D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS
+		D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS 
+		//D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS
 	);
 
 	ID3DBlob * signature = nullptr;
@@ -245,6 +312,13 @@ HRESULT PrePass::_InitShader()
 	m_vertexShader.pShaderBytecode = blob->GetBufferPointer();
 	m_vertexShader.BytecodeLength = blob->GetBufferSize();
 
+	if (FAILED(hr = ShaderCreator::CreateShader(L"..\\Leaf-Drop\\Source\\Leaf-Drop\\Shaders\\PrePass\\DefaultPrePassPixel.hlsl", blob, "ps_5_1")))
+	{
+		return hr;
+	}
+	m_pixelShader.pShaderBytecode = blob->GetBufferPointer();
+	m_pixelShader.BytecodeLength = blob->GetBufferSize();
+
 	return hr;
 }
 
@@ -267,9 +341,13 @@ HRESULT PrePass::_InitPipelineState()
 	graphicsPipelineStateDesc.InputLayout = m_inputLayoutDesc;
 	graphicsPipelineStateDesc.pRootSignature = m_rootSignature;
 	graphicsPipelineStateDesc.VS = m_vertexShader;
+	graphicsPipelineStateDesc.PS = m_pixelShader;
 	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	graphicsPipelineStateDesc.NumRenderTargets = 1;
-	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	graphicsPipelineStateDesc.NumRenderTargets = RENDER_TARGETS;
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		graphicsPipelineStateDesc.RTVFormats[i] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	}
 	graphicsPipelineStateDesc.SampleMask = 0xffffffff;
 	graphicsPipelineStateDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	graphicsPipelineStateDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
