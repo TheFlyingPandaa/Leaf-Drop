@@ -59,6 +59,8 @@ void PrePass::Update()
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = p_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	const SIZE_T resourceSize = p_coreRender->GetResourceDescriptorHeapSize();
 	   
+	
+
 	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
@@ -131,6 +133,7 @@ void PrePass::Draw()
 	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandles[RENDER_TARGETS];
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
+		m_renderTarget[i].SwitchToRTV(commandList);
 		const D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle =
 		{ m_renderTarget[i].GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart().ptr +
 		frameIndex *
@@ -147,7 +150,7 @@ void PrePass::Draw()
 
 	m_depthBuffer.Clear(commandList);
 
-	
+
 	commandList->RSSetViewports(1, &m_viewport);
 	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -183,12 +186,19 @@ void PrePass::Draw()
 
 	m_depthBuffer.SwapToSRV(commandList);
 
+	for (UINT i = 0; i < RENDER_TARGETS; i++)
+	{
+		m_renderTarget[i].SwitchToSRV(commandList);
+	}
 
 	ExecuteCommandList();
 
 	// Possible fence?? boobie fix
 
 	p_coreRender->GetGeometryPass()->SetDepthPreBuffer(&m_depthBuffer);
+
+	RenderTarget * arr[] = { &m_renderTarget[0], &m_renderTarget[1], &m_renderTarget[2] };
+	p_coreRender->GetRayDefinePass()->SetGeometryRenderTargets(arr, 3);
 	timer.LogTime();
 }
 
@@ -239,7 +249,7 @@ HRESULT PrePass::_Init()
 	}
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
-		if (FAILED(hr = m_renderTarget[i].Init(L"PrePass")))
+		if (FAILED(hr = m_renderTarget[i].Init(L"PrePass",0,0,1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
 		{
 			return hr;
 		}

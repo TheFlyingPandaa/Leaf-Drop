@@ -3,7 +3,9 @@
 #include "../Wrappers/ShaderCreator.h"
 
 #define RAY_STENCIL				0
-#define GEOMETRY_INPUT_TEXTURES 1
+#define POSITION				1
+#define NORMAL					2
+#define METALLIC				3
 
 RayDefinePass::RayDefinePass() : IRender()
 {
@@ -23,10 +25,32 @@ HRESULT RayDefinePass::Init()
 
 void RayDefinePass::Update()
 {
+	OpenCommandList(m_pipelineState);
+
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
+	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
+	p_coreRender->SetResourceDescriptorHeap(commandList);
+		
+	commandList->SetGraphicsRootSignature(m_rootSignature);
+	//commandList->RSSetViewports(1, &m_viewport);
+	//commandList->RSSetScissorRects(1, &m_scissorRect);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	for (UINT i = 0; i < m_geometryRenderTargetsSize; i++)
+	{
+		m_geometryRenderTargets[i]->SetGraphicsRootDescriptorTable(i + 1, commandList);
+	}
 }
 
 void RayDefinePass::Draw()
 {
+	const UINT frameIndex = p_coreRender->GetFrameIndex();
+	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
+
+	commandList->IASetVertexBuffers(0, 1, &m_screenQuad.vertexBufferView);
+	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
+
+	ExecuteCommandList();
 }
 
 void RayDefinePass::Release()
@@ -52,6 +76,9 @@ void RayDefinePass::SetGeometryRenderTargets(RenderTarget * const * geometryRend
 HRESULT RayDefinePass::_Init()
 {
 	HRESULT hr = 0;
+
+	if (FAILED(hr = p_CreateCommandList(L"DefRay")))
+		return hr;
 
 	const UINT FRAME_INDEX = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[FRAME_INDEX];
@@ -191,11 +218,16 @@ HRESULT RayDefinePass::_InitRootSignature()
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 
-	CD3DX12_DESCRIPTOR_RANGE1 range = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 3, 0, 0);
+	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 1);
+	D3D12_DESCRIPTOR_RANGE1 descRange1 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1, 1);
+	D3D12_DESCRIPTOR_RANGE1 descRange2 = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 1);
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[2];
+
+	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
-	rootParameters[GEOMETRY_INPUT_TEXTURES].InitAsDescriptorTable(1, &range, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[POSITION].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[NORMAL].InitAsDescriptorTable(1, &descRange1, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[METALLIC].InitAsDescriptorTable(1, &descRange2, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	rootSignatureDesc.Init_1_1(
 		_countof(rootParameters),

@@ -3,9 +3,9 @@
 SamplerState defaultSampler : register(s0);
 SamplerComparisonState compSampler : register(s1);
 
-Texture2D WorldPosition : register(t0);
-Texture2D Normal : register(t1);
-Texture2D Metallic : register(t2);
+Texture2D WorldPosition : register(t0, space1);
+Texture2D Normal        : register(t1, space1);
+Texture2D Metallic      : register(t2, space1);
 
 struct RAY_STRUCT
 {
