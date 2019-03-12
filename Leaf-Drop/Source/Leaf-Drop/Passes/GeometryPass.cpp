@@ -11,9 +11,8 @@
 
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
-#define RAY_STENCIL		2
-#define TEXTURE_TABLE	3
-#define TEXTURE_INDEX	4
+#define TEXTURE_TABLE	2
+#define TEXTURE_INDEX	3
 
 
 struct UINT4
@@ -73,24 +72,6 @@ HRESULT GeometryPass::Init()
 			return hr;
 		}
 	}
-
-	Window * wnd = Window::GetInstance();
-	POINT p = wnd->GetWindowSize();
-	UINT elements = ((p.x / SCREEN_DIV) * (p.y / SCREEN_DIV));
-
-	struct RAY_STRUCT
-	{
-		DirectX::XMFLOAT3	startPos;
-		DirectX::XMFLOAT3	normal;
-		bool				dispatch;
-	};
-
-	m_rayStencil = new UAV();
-	if (FAILED(hr = m_rayStencil->Init(L"RayStencil", elements * sizeof(RAY_STRUCT), elements, sizeof(RAY_STRUCT))))
-	{
-		return hr;
-	}
-	
 	m_ptrAtlas = TextureAtlas::GetInstance();
 
 	return hr;
@@ -149,14 +130,9 @@ void GeometryPass::Update()
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 
-		//m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].DiffuseTexture);
-		//m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].NormalTexture);
-		//m_ptrAtlas->CopyBindless(p_staticDrawQueue[i].MetallicTexture);
-
 		textureOffset.x = (UINT)i * 3;
 		textureOffset.y = 3;
 
-		p_staticDrawQueue[i].TextureOffset = textureOffset.x;
 		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
 	for (size_t i = 0; i < p_dynamicDrawQueue.size(); i++)
@@ -167,14 +143,9 @@ void GeometryPass::Update()
 			m_worldMatrices.SetData(&world, sizeof(world), sizeof(world) * (counter++));
 		}
 
-		//m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].DiffuseTexture);
-		//m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].NormalTexture);
-		//m_ptrAtlas->CopyBindless(p_dynamicDrawQueue[i].MetallicTexture);
-
+		
 		textureOffset.x = (UINT)i * 3 + (p_staticDrawQueue.size() * 3);
 		textureOffset.y = 3;
-
-		p_dynamicDrawQueue[i].TextureOffset = textureOffset.x;
 		m_textureIndex.SetData(&textureOffset, sizeof(UINT4), sizeof(UINT4) * textureIndexOffset++);
 	}
 
@@ -188,10 +159,6 @@ void GeometryPass::Update()
 	m_camBuffer.SetData(&viewProj, sizeof(DirectX::XMFLOAT4X4A));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
 
-
-	m_rayStencil->Clear(commandList);
-
-	m_rayStencil->Bind(RAY_STENCIL, commandList);
 }
 
 void GeometryPass::Draw()
@@ -239,14 +206,12 @@ void GeometryPass::Draw()
 		m_renderTarget[i]->SwitchToSRV(commandList);
 	}
 
-	commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayStencil->GetResource()[frameIndex]));
 
 	ExecuteCommandList();
 	m_fence.WaitForFinnishExecution();
 	m_timer.LogTime();
 	
 
-	m_rayStencil->prevFrame = frameIndex;
 	
 	//p_coreRender->GetComputePass()->SetRayData(m_rayStencil);
 
@@ -257,8 +222,6 @@ void GeometryPass::Draw()
 void GeometryPass::Release()
 {
 	p_ReleaseCommandList();
-	m_rayStencil->Release();
-	SAFE_DELETE(m_rayStencil);
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
 		m_renderTarget[i]->Release();
@@ -291,7 +254,7 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[5];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
 
 	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 	
@@ -303,7 +266,6 @@ HRESULT GeometryPass::_InitRootSignature()
 
 	rootParameters[WORLD_MATRICES].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
 
-	rootParameters[RAY_STENCIL].InitAsUnorderedAccessView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	
 	//rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[TEXTURE_INDEX].InitAsShaderResourceView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);

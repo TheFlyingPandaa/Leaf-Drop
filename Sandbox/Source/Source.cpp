@@ -82,19 +82,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
 		{	
 
-			float r = static_cast<float>(rand() % 100) / 100.0f;
-			float g = static_cast<float>(rand() % 100) / 100.0f;
-			float b = static_cast<float>(rand() % 100)  / 100.0f;
+			float r = static_cast<float>(rand() % 10 + 90) / 100.0f;
+			float g = static_cast<float>(rand() % 10 + 90) / 100.0f;
+			float b = static_cast<float>(rand() % 10 + 90)  / 100.0f;
 
 			pointLight[i].SetColor(r, g, b, 1);
-			pointLight[i].SetDropOff(1.1f);
-			pointLight[i].SetPow(1.5f);
+			pointLight[i].SetColor(1, 1, 1, 1);
+			pointLight[i].SetDropOff(1.0f);
+			pointLight[i].SetPow(2.0f);
 
 			float x = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 			float y = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 			float z = static_cast<float>(rand() % MAX_LIGHT_DISTANCE + 2) * (rand() % 2 ? 1 : -1);
 
-			float scl = static_cast<float>(rand() % 13 );
+			float scl = static_cast<float>(rand() % 40 + 10 );
 			pointLight[i].SetPosition(x, y, z);
 			pointLight[i].SetIntensity(scl);
 
@@ -106,7 +107,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		dynamicDrawable.SetTexture(&t[0]);
 		dynamicDrawable.SetNormal(&t[1]);
 		dynamicDrawable.SetMetallic(&t[2]);
+
 		//dynamicDrawable.SetAsStatic();
+
 		dynamicDrawable.SetMesh(m);
 		dynamicDrawable.SetScale(10, 10, 10);
 
@@ -204,46 +207,46 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			//if (Camera::GetActiveCamera() == &cam)
-			//{
-			//	if (wnd->IsKeyPressed(Input::W))
-			//		moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			//	if (wnd->IsKeyPressed(Input::A))
-			//		moveDir.x -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			//	if (wnd->IsKeyPressed(Input::S))
-			//		moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			//	if (wnd->IsKeyPressed(Input::D))
-			//		moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			//
-			//	if (wnd->IsKeyPressed(Input::SPACE))
-			//		moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			//	if (wnd->IsKeyPressed(Input::C))
-			//		moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
-			//
-			//	float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
-			//	float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
-			//
-			//	rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
-			//	rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
-			//	static bool moveCamera = true;
-			//
-			//	if (moveCamera)
-			//	{
-			//		cam.Rotate(rotDir);
-			//
-			//		wnd->ResetMouse();
-			//	}
-			//	if (wnd->IsKeyPressed(Input::Z))
-			//		moveCamera = true;
-			//	if (wnd->IsKeyPressed(Input::X))
-			//		moveCamera = false;
-			//
-			//	moveDir.x *= (FLOAT)dt;
-			//	moveDir.y *= (FLOAT)dt;
-			//	moveDir.z *= (FLOAT)dt;
-			//
-			//	//cam.Translate(moveDir, false);
-			//}
+			if (Camera::GetActiveCamera() == &cam)
+			{
+				if (wnd->IsKeyPressed(Input::W))
+					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::A))
+					moveDir.x -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::S))
+					moveDir.z -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::D))
+					moveDir.x += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			
+				if (wnd->IsKeyPressed(Input::SPACE))
+					moveDir.y += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+				if (wnd->IsKeyPressed(Input::C))
+					moveDir.y -= (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
+			
+				float deltaMouseX = mouseThisFrame.x - mousePosLastFrame.x;
+				float deltaMouseY = mouseThisFrame.y - mousePosLastFrame.y;
+			
+				rotDir.y = DirectX::XMConvertToRadians(deltaMouseX) * MOUSE_SENSITIVITY;
+				rotDir.x = DirectX::XMConvertToRadians(deltaMouseY) * MOUSE_SENSITIVITY;
+				static bool moveCamera = true;
+			
+				if (moveCamera)
+				{
+					cam.Rotate(rotDir);
+			
+					wnd->ResetMouse();
+				}
+				if (wnd->IsKeyPressed(Input::Z))
+					moveCamera = true;
+				if (wnd->IsKeyPressed(Input::X))
+					moveCamera = false;
+			
+				moveDir.x *= (FLOAT)dt;
+				moveDir.y *= (FLOAT)dt;
+				moveDir.z *= (FLOAT)dt;
+			
+				cam.Translate(moveDir, false);
+			}
 
 			//std::cout << "Pos: " << cam.GetPosition().x << " " << cam.GetPosition().y << " " << cam.GetPosition().z << " " << "Dir: " << cam.GetDirectionVector().x << " " << cam.GetDirectionVector().y << " " << cam.GetDirectionVector().z << std::endl;
 
@@ -264,9 +267,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			static float mover = 0.0f;
 			static const float SPEED = 1.0f;
 
-			dynamicDrawable.SetPosition(0, sin(mover) * 10.0f, 0.0f);
+			dynamicDrawable.SetPosition(0, sin(mover) * 15.0f, 0.0f);
 			dynamicDrawable.SetRotation(0, mover, 0.0f);
-			dynamicDrawable.SetScale((cos(mover) * 5.0f) + 10.0f, (sin(mover) * 5.0f) + 10.0f, (cos(mover) * 5.0f) + 10.0f);
+			dynamicDrawable.SetScale((cos(mover) * 5.0f) + 15.0f, (sin(mover) * 5.0f) + 15.0f, (cos(mover) * 5.0f) + 15.0f);
 
 			mover += SPEED * dt;
 

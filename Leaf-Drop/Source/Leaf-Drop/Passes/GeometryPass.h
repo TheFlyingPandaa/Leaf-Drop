@@ -48,8 +48,6 @@ private:
 	ConstantBuffer m_worldMatrices;
 	ConstantBuffer m_textureIndex;
 
-	UAV * m_rayStencil;
-
 	GpuTimer m_timer;
 
 	TextureAtlas * m_ptrAtlas;

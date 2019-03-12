@@ -34,7 +34,7 @@ void IRender::UpdateThread()
 #pragma optimize( "", off )
 void IRender::ThreadJoin()
 {
-	while (!m_threadDone);
+	while (!m_threadDone && m_thread.get_id() != std::thread::id());
 }
 #pragma optimize( "", on )
 

@@ -52,18 +52,18 @@ float4 main(PS_INPUT input) : SV_TARGET
     float2 smTex;
     
     float4 rays = float4(0, 0, 0, 1);
-    float divider = 2.0f;
+    float divider = 0.0f;
     for (int x = -sampleRadius; x <= sampleRadius; ++x)
     {
         for (int y = -sampleRadius; y <= sampleRadius; ++y)
         {
             smTex = input.uv + (float2(x, y) * texelSize);
-            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius,   metallic.r);
+            rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, 4.0f * metallic.r);
             //rays += RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, .5f);
             divider += 1.0f;
         }
     }
-    rays /= divider;
+    rays /= max(divider, 1.0f);
     
     float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
@@ -94,6 +94,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	//return float4(rays.a, 0.0f, 0.0f, 1.0f);
 
     //return saturate(lerp(finalColor, rays, metallic.r) + ambient);
-    return saturate(lerp(finalColor, rays, metallic.r) + ambient);
+    float val = metallic.r >= 0.9f ? metallic.r : 0;
+    return saturate(lerp(finalColor, rays, val) + ambient);
 	//return saturate(float4(rays.rgb, 1.0f));
 }

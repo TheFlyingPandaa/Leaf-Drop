@@ -285,7 +285,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
     uint            nodeStackSize = 0;
     uint            meshIndexAdress = 0;
 
-    float4x4 worldMatrix;
+    float4x4 worldMatrix = 0;
 
     TreeNode node = GetNode(0, meshIndexAdress);
 
@@ -358,7 +358,7 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
     if (triangleHit)
     {
         intersectionPoint = mul(float4(intersectionPoint, 1.0f), worldMatrix).xyz;
-        normal = tri.v[0].normal * biCoord.x + tri.v[1].normal * biCoord.y + tri.v[2].normal * biCoord.z;
+        normal = (tri.v[0].normal * biCoord.x + tri.v[1].normal * biCoord.y + tri.v[2].normal * biCoord.z).xyz;
         normal = normalize(mul(float4(normal, 0.0f), worldMatrix).xyz);
     }
 
@@ -407,7 +407,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
             float finalMip = mip * (MAX_MIP - MIN_MIP);
 
-            float2 uv = tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z;
+            float2 uv = (tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z).xy;
      
             float4 albedo = TextureAtlas[textureIndex].SampleLevel(defaultTextureAtlasSampler, uv, finalMip);
             

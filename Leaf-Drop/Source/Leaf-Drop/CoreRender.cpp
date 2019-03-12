@@ -485,7 +485,43 @@ HRESULT CoreRender::_UpdatePipeline()
 		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
 
+	struct UINT4
+	{
+		UINT x, y, z, w;
+	};
 	
+	int counter = 0;
+	UINT textureCounter = 0;
+	UINT textureIndexOffset = 0;
+	UINT4 textureOffset{ 0,0,0,0 };
+	TextureAtlas * ptrAtlas = TextureAtlas::GetInstance();
+
+	for (size_t i = 0; i < IRender::p_staticDrawQueue.size(); i++)
+	{
+		ptrAtlas->CopyBindless(IRender::p_staticDrawQueue[i].DiffuseTexture);
+		ptrAtlas->CopyBindless(IRender::p_staticDrawQueue[i].NormalTexture);
+		ptrAtlas->CopyBindless(IRender::p_staticDrawQueue[i].MetallicTexture);
+
+		textureOffset.x = (UINT)i * 3;
+		textureOffset.y = 3;
+
+		IRender::p_staticDrawQueue[i].TextureOffset = textureOffset.x;
+	}
+
+
+
+	for (size_t i = 0; i < IRender::p_dynamicDrawQueue.size(); i++)
+	{
+		ptrAtlas->CopyBindless(IRender::p_dynamicDrawQueue[i].DiffuseTexture);
+		ptrAtlas->CopyBindless(IRender::p_dynamicDrawQueue[i].NormalTexture);
+		ptrAtlas->CopyBindless(IRender::p_dynamicDrawQueue[i].MetallicTexture);
+
+		textureOffset.x = (UINT)i * 3 + (IRender::p_staticDrawQueue.size() * 3);
+		textureOffset.y = 3;
+
+		IRender::p_dynamicDrawQueue[i].TextureOffset = textureOffset.x;
+	}
+
 	m_prePass->UpdateThread();
 	m_updatePass->UpdateThread();
 	

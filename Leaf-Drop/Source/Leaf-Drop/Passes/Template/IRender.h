@@ -28,8 +28,6 @@ public:
 
 	HRESULT OpenCommandList(ID3D12PipelineState * pipelineSate = nullptr);
 	HRESULT ExecuteCommandList();
-protected:
-	IRender();
 
 	struct InstanceGroup
 	{
@@ -55,9 +53,12 @@ protected:
 		InstanceGroup(Drawable * drawable);
 		bool operator==(Drawable * drawable);
 	};
-
 	static std::vector<InstanceGroup> p_staticDrawQueue;
 	static std::vector<InstanceGroup> p_dynamicDrawQueue;
+protected:
+	IRender();
+
+
 	static std::vector<ILight*> p_lightQueue;
 
 	CoreRender * p_coreRender = nullptr;
