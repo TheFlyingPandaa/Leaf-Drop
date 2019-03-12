@@ -50,7 +50,6 @@ PS_OUTPUT main(VS_OUTPUT input)
     bool CastRay = output.metallic.r > 0.90f;
 
     uint2 rayStencilIndex = uint2(input.position.xy / RAY_DIV);
-
     uint accessIndex = rayStencilIndex.x + rayStencilIndex.y * RAY_WIDTH;
 
     RayStencil[accessIndex].startPos =  input.worldPosition.xyz;

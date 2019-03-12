@@ -11,6 +11,7 @@
 #include "Passes/ComputePass.h"
 #include "Passes/PrePass.h"
 #include "Passes/UpdatePass.h"
+#include "Passes/RayDefinePass.h"
 #include "Wrappers/CpuTimer.h"
 
 class Window;
@@ -54,6 +55,7 @@ public:
 	GeometryPass * GetGeometryPass() const;
 	DeferredPass * GetDeferredPass() const;
 	ComputePass	 * GetComputePass() const;
+	RayDefinePass * GetRayDefinePass() const;
 
 	HRESULT OpenCommandList();
 	HRESULT ExecuteCommandList();
@@ -103,6 +105,7 @@ private:
 	GeometryPass * m_geometryPass = nullptr;
 	DeferredPass * m_deferredPass = nullptr;
 	ComputePass * m_computePass = nullptr;
+	RayDefinePass * m_rayDefinePass = nullptr;
 
 	HRESULT _Flush();
 	HRESULT _UpdatePipeline();

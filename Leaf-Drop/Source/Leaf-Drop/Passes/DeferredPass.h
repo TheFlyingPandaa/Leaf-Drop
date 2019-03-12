@@ -24,8 +24,8 @@ private:
 		{
 			Vertex(float x, float y, float z, float u, float v)
 			{
-				pos = {x, y, z, 1.0f};
-				uv = {u, v};
+				pos = { x, y, z, 1.0f };
+				uv = { u, v };
 			}
 			DirectX::XMFLOAT4 pos;
 			DirectX::XMFLOAT2 uv;
@@ -35,7 +35,7 @@ private:
 
 		ID3D12Resource *	vertexBuffer = nullptr;
 		ID3D12Resource *	 vertexUploadBuffer = nullptr;
-		
+
 		D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
 
 		std::vector<Vertex> mesh;

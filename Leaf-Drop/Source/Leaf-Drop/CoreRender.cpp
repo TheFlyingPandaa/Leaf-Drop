@@ -43,6 +43,7 @@ CoreRender::~CoreRender()
 	delete m_computePass;
 	delete m_prePass;
 	delete m_updatePass;
+	delete m_rayDefinePass;
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -159,10 +160,12 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
-	//if (FAILED(hr = TextureAtlas::GetInstance()->Init(L"Singelton", 4096, 4096, 8, 12, DXGI_FORMAT_B8G8R8X8_UNORM)))
-	//{
-	//	return hr;
-	//}
+	m_rayDefinePass = new RayDefinePass();
+	/*if (FAILED(hr = m_rayDefinePass->Init()))
+	{
+		return DEBUG::CreateError(hr);
+	}*/
+	
 
 	return hr;
 }
@@ -174,12 +177,15 @@ void CoreRender::Release()
 	m_updatePass->KillThread();
 	m_geometryPass->KillThread();
 	m_computePass->KillThread();
+	m_rayDefinePass->KillThread();
+
 
 	m_prePass->Release();
 	m_updatePass->Release();
 	m_geometryPass->Release();
 	m_deferredPass->Release();
 	m_computePass->Release();
+	m_rayDefinePass->Release();
 
 	TextureAtlas::GetInstance()->Release();
 
@@ -342,6 +348,11 @@ ComputePass * CoreRender::GetComputePass() const
 	return m_computePass;
 }
 
+RayDefinePass * CoreRender::GetRayDefinePass() const
+{
+	return m_rayDefinePass;
+}
+
 HRESULT CoreRender::OpenCommandList()
 {
 	HRESULT hr = 0;
@@ -470,12 +481,11 @@ HRESULT CoreRender::_UpdatePipeline()
 	}
 	m_prePass->UpdateThread();
 	m_prePass->ThreadJoin();
+	
+	
 
-	//m_updatePass->Update();
-		
 	m_updatePass->UpdateThread();
 	m_updatePass->ThreadJoin();
-	
 
 	m_geometryPass->UpdateThread();
 	m_geometryPass->ThreadJoin();
