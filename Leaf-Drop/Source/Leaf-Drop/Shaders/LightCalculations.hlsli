@@ -28,7 +28,7 @@ float4 LightCalculations(in LIGHT light,
 
 		halfWayDir = normalize(posToLight + worldToCamera);
 
-		specular += pow(max(dot(normal, halfWayDir), 0.0f), 128.0f) * length(metallic.rgb) * attenuation * light.Color;
+		specular += pow(max(dot(normal, halfWayDir), 0.0f), 128.0f) * metallic.r * attenuation * light.Color;
 
 		if (distanceToLight < light.LightValues.w)
 		{

@@ -48,15 +48,7 @@
       <x>0</x>
       <y>0</y>
     </SampleUV>
-    <HueWeight>0.909090936</HueWeight>
-    <SatWeight>0.477272719</SatWeight>
-    <MaskHigh>0.625</MaskHigh>
-    <BlurSize>100</BlurSize>
-    <BlurSizeText>100</BlurSizeText>
-    <FinalContrast>0.403846145</FinalContrast>
-    <FinalContrastText>0.4038</FinalContrastText>
-    <FinalBias>0.5</FinalBias>
-    <FinalBiasText>0.5</FinalBiasText>
+    <LumWeight>0</LumWeight>
   </MS>
   <metallicMapPath>Mirror_metallic.bmp</metallicMapPath>
   <SS>
@@ -102,7 +94,6 @@
   </AOS>
   <aoMapPath>null</aoMapPath>
   <MatS>
-    <Smoothness>2</Smoothness>
-    <SmoothnessText>2</SmoothnessText>
+    <LightIntensity>0</LightIntensity>
   </MatS>
 </ProjectObject>

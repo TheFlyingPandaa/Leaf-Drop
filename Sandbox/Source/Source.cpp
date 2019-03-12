@@ -39,20 +39,22 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	{
 		Camera cam;
 			
-		cam.CreateProjectionMatrix(0.01f, 1000.0f);
+		cam.CreateProjectionMatrix(0.01f, 500.0f);
 		cam.SetPosition(0, 0, 0);
 		cam.SetAsActiveCamera();
 
-		cam.SetPosition(47.1801, 49.2891, 50.2064);
-		cam.SetDirection(-0.426194, -0.607596, -0.670213);
+		/*cam.SetPosition(0, -43.2657, 0);
+		cam.SetDirection(-0.685973, -0.00897975, -0.727571);*/
+
+		cam.SetPosition(-39.6452, -36.4232, 22.2482);
+		cam.SetDirection(0.995644, -0.0104395, -0.0926499);
+
 		cam.Update();
 
 		StaticMesh * m = new StaticMesh();
 		StaticMesh * m2 = new StaticMesh();
 		StaticMesh * bunny = new StaticMesh();
-
-		
-
+		StaticMesh * sphere2 = new StaticMesh();
 
 		Texture * t = new Texture[3];
 		t[0].LoadTexture(L"..\\Assets\\Textures\\Magnus_Mirror\\Mirror_diffuseOriginal.bmp");
@@ -69,11 +71,33 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		bunnyTexture[1].LoadTexture(L"..\\Assets\\Textures\\BobTheBunny\\BobTheBunny_normal.bmp");
 		bunnyTexture[2].LoadTexture(L"..\\Assets\\Textures\\BobTheBunny\\BobTheBunny_metallic.bmp");
 
+		Texture * Mirror2 = new Texture[3];
+		Mirror2[0].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_diffuseOriginal.bmp");
+		Mirror2[1].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_normal.bmp");
+		Mirror2[2].LoadTexture(L"..\\Assets\\Textures\\Mirror\\Mirror_metallic.bmp");
+
+		Texture * Roof = new Texture[3];
+		Roof[0].LoadTexture(L"..\\Assets\\Textures\\Roof\\Roof_diffuseOriginal.bmp");
+		Roof[1].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_normal.bmp");
+		Roof[2].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_metallic.bmp");
+
+		Texture * Wall = new Texture[3];
+		Wall[0].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_diffuseOriginal.bmp");
+		Wall[1].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_normal.bmp");
+		Wall[2].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_metallic.bmp");
+
+		Texture * Wall2 = new Texture[3];
+		Wall2[0].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall2_diffuseOriginal.bmp");
+		Wall2[1].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_normal.bmp");
+		Wall2[2].LoadTexture(L"..\\Assets\\Textures\\Wall\\Wall_metallic.bmp");
+
 		m->LoadMesh("..\\Assets\\Models\\Cube.fbx");
 		m2->LoadMesh("..\\Assets\\Models\\Sphere.fbx");
 		bunny->LoadMesh("..\\Assets\\Models\\BobTheBunny.fbx");
+		sphere2->LoadMesh("..\\Assets\\Models\\NormalSphere.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 9;
+		const UINT NUMBER_OF_DRAWABLES = 7;
+		const UINT NUMBER_OF_DYNAMIC_DRAWABLES = 4;
 		const UINT NUMBER_OF_LIGHTS = 200;
 		const UINT MAX_DISTANCE = 50;
 		const UINT MAX_LIGHT_DISTANCE = 50;
@@ -81,7 +105,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		PointLight * pointLight = new PointLight[NUMBER_OF_LIGHTS];
 		for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
 		{	
-
 			float r = static_cast<float>(rand() % 10 + 90) / 100.0f;
 			float g = static_cast<float>(rand() % 10 + 90) / 100.0f;
 			float b = static_cast<float>(rand() % 10 + 90)  / 100.0f;
@@ -98,26 +121,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			float scl = static_cast<float>(rand() % 40 + 10 );
 			pointLight[i].SetPosition(x, y, z);
 			pointLight[i].SetIntensity(scl);
-
 		}
 		
 		std::vector<Drawable> d(NUMBER_OF_DRAWABLES);
+		std::vector<Drawable> dynamicD(NUMBER_OF_DYNAMIC_DRAWABLES);
 		
 		Drawable dynamicDrawable;
 		dynamicDrawable.SetTexture(&t[0]);
 		dynamicDrawable.SetNormal(&t[1]);
 		dynamicDrawable.SetMetallic(&t[2]);
-
-		//dynamicDrawable.SetAsStatic();
-
 		dynamicDrawable.SetMesh(m);
 		dynamicDrawable.SetScale(10, 10, 10);
+		dynamicDrawable.SetRotation(0, DirectX::XMConvertToRadians(45), 0);
+
 
 		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 		{
-			d[i].SetTexture(&t2[0]);
-			d[i].SetNormal(&t2[1]);
-			d[i].SetMetallic(&t2[2]);
+			d[i].SetTexture(&t[0]);
+			d[i].SetNormal(&t[0]);
+			d[i].SetMetallic(&t[0]);
 			d[i].SetAsStatic();
 			d[i].SetMesh(m);
 		
@@ -134,42 +156,78 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		d[0].SetPosition(0, 0, 50);
 		d[0].SetScale(100, 100, 1);
+		d[0].SetTexture(&Wall[0]);
+		d[0].SetNormal(&Wall[1]);
+		d[0].SetMetallic(&Wall[2]);
+
 
 		d[1].SetPosition(0, 0, -50);
 		d[1].SetScale(100, 100, 1);
+		d[1].SetTexture(&Wall[0]);
+		d[1].SetNormal(&Wall[1]);
+		d[1].SetMetallic(&Wall[2]);
 
 		d[2].SetPosition(0,-50,0);
 		d[2].SetScale(100,1,100);
+		d[2].SetTexture(&Roof[0]);
+		d[2].SetNormal(&Roof[1]);
+		d[2].SetMetallic(&Roof[2]);
 
 		d[3].SetPosition(0, 50, 0);
 		d[3].SetScale(100, 1, 100);
+		d[3].SetTexture(&Roof[0]);
+		d[3].SetNormal(&Roof[1]);
+		d[3].SetMetallic(&Roof[2]);
 
 		d[4].SetPosition(50, 0, 0);
 		d[4].SetScale(1, 100, 100);
+		d[4].SetTexture(&Wall2[0]);
+		d[4].SetNormal(&Wall2[1]);
+		d[4].SetMetallic(&Wall2[2]);
 
 		d[5].SetPosition(-50, 0, 0);
 		d[5].SetScale(1, 100, 100);
+		d[5].SetTexture(&Wall2[0]);
+		d[5].SetNormal(&Wall2[1]);
+		d[5].SetMetallic(&Wall2[2]);
 
-		d[6].SetPosition(-25, -52.5f, -25);
-		d[6].SetScale(100, 100, 100);
-		d[6].SetMesh(bunny);
-		d[6].SetTexture(&bunnyTexture[0]);
-		d[6].SetNormal(&bunnyTexture[1]);
-		d[6].SetMetallic(&bunnyTexture[2]);
+		d[6].SetPosition(46, -40.0, -1.55212);
+		d[6].SetScale(1, 20, 20);
+		d[6].SetRotation(0, 0, DirectX::XMConvertToRadians(-20));
+		d[6].SetTexture(&t[0]);
+		d[6].SetNormal(&t[1]);
+		d[6].SetMetallic(&t[2]);
+
+		dynamicD[0].SetPosition(-42, -52.5f, 42);
+		dynamicD[0].SetScale(100, 100, 100);
+		dynamicD[0].SetRotation(0, DirectX::XMConvertToRadians(180), 0);
+		dynamicD[0].SetMesh(bunny);
+		dynamicD[0].SetTexture(&bunnyTexture[0]);
+		dynamicD[0].SetNormal(&bunnyTexture[1]);
+		dynamicD[0].SetMetallic(&bunnyTexture[2]);
 		
-		d[7].SetPosition(-05, -40.5f, -25);
-		d[7].SetScale(10, 10, 10);
-		d[7].SetMesh(m);
-		d[7].SetTexture(&t[0]);
-		d[7].SetNormal(&t[1]);
-		d[7].SetMetallic(&t[2]);
+		dynamicD[1].SetPosition(30, -30, 30);
+		dynamicD[1].SetRotation(0, DirectX::XMConvertToRadians(45), 0);
+		dynamicD[1].SetScale(35, 40, 1);
+		dynamicD[1].SetMesh(m);
+		dynamicD[1].SetTexture(&t[0]);
+		dynamicD[1].SetNormal(&t[1]);
+		dynamicD[1].SetMetallic(&t[2]);
 
-		d[8].SetPosition(25, -40.5f, -25);
-		d[8].SetScale(10, 10, 10);
-		d[8].SetMesh(m2);
-		d[8].SetTexture(&bunnyTexture[0]);
-		d[8].SetNormal(&bunnyTexture[1]);
-		d[8].SetMetallic(&bunnyTexture[2]);
+		dynamicD[2].SetPosition(40, -40.5f, -40);
+		dynamicD[2].SetScale(10, 10, 10);
+		dynamicD[2].SetMesh(m2);
+		dynamicD[2].SetTexture(&bunnyTexture[0]);
+		dynamicD[2].SetNormal(&bunnyTexture[1]);
+		dynamicD[2].SetMetallic(&bunnyTexture[2]);
+
+		dynamicD[3].SetPosition(-45.9758, 20, -31.1561);
+		dynamicD[3].SetScale(10, 10, 10);
+		dynamicD[3].SetMesh(m);
+		dynamicD[3].SetTexture(&t2[0]);
+		dynamicD[3].SetNormal(&t2[1]);
+		dynamicD[3].SetMetallic(&t2[2]);
+
 
 		float rot = 0;
 		timer.Start();
@@ -181,19 +239,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		mousePosLastFrame.x /= 2;
 		mousePosLastFrame.y /= 2;
 
-		//wnd->ResetMouse();
-
-
+		wnd->ResetMouse();
 
 		DirectionalLight light;
 		light.SetDirection(1, -1, 0);
 		light.SetIntensity(0.5f);
-		//CpuTimer cpuTimer;
-		//cpuTimer.OpenLog("FrameTime.txt");
+		
 		while (core->Running())
 		{
-			//cpuTimer.Start();
-
 			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
 			static const float MOVE_SPEED = 5.0f;
@@ -207,7 +260,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			if (Camera::GetActiveCamera() == &cam)
+			if (Camera::GetActiveCamera() == &cam && false)
 			{
 				if (wnd->IsKeyPressed(Input::W))
 					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
@@ -246,35 +299,46 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				moveDir.z *= (FLOAT)dt;
 			
 				cam.Translate(moveDir, false);
+				cam.Update();
 			}
 
-			//std::cout << "Pos: " << cam.GetPosition().x << " " << cam.GetPosition().y << " " << cam.GetPosition().z << " " << "Dir: " << cam.GetDirectionVector().x << " " << cam.GetDirectionVector().y << " " << cam.GetDirectionVector().z << std::endl;
+			//std::cout << "Pos: " << cam.GetPosition().x << ", " << cam.GetPosition().y << ", " << cam.GetPosition().z << ", " << "Dir: " << cam.GetDirectionVector().x << ", " << cam.GetDirectionVector().y << ", " << cam.GetDirectionVector().z << std::endl;
 
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
-
-
-			//light.Queue();
-		
+					   		
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
 				d[i].Update();
 				d[i].Draw();
 			}
 
+			for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
+			{
+				dynamicD[i].Update();
+				dynamicD[i].Draw();
+			}
+
 			rot += 1.0f * (FLOAT)dt;
 
 			static float mover = 0.0f;
-			static const float SPEED = 1.0f;
+			static const float SPEED = 0.5f;
 
-			dynamicDrawable.SetPosition(0, sin(mover) * 15.0f, 0.0f);
-			dynamicDrawable.SetRotation(0, mover, 0.0f);
-			dynamicDrawable.SetScale((cos(mover) * 5.0f) + 15.0f, (sin(mover) * 5.0f) + 15.0f, (cos(mover) * 5.0f) + 15.0f);
+			dynamicDrawable.SetPosition(-42, -40, -42);
+			dynamicDrawable.SetScale(15, 15, 15);
+
+			static float translate = 4.0f;
+
+			dynamicD[1].SetRotation(0, mover, 0.0f);
+			dynamicD[3].Translate(translate * dt * 1.5f, -translate * dt, translate * dt);
 
 			mover += SPEED * dt;
-
+			
 			if (mover >= DirectX::XM_2PI)
+			{
 				mover = 0;
+				translate *= -1.0f;
+			}
 
 			dynamicDrawable.Update();
 			dynamicDrawable.Draw();
@@ -289,7 +353,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				DEBUG::CreateError("LOL");
 				break;
 			}
-			//cpuTimer.LogTime();
+			
 			
 		}
 		core->ClearGPU();
@@ -299,17 +363,29 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		delete m2;
 		bunny->Release();
 		delete bunny;
+
+		sphere2->Release();
+		delete sphere2;
+
 		for (UINT i = 0; i < 3; i++)
 		{
 			t[i].Release();
 			t2[i].Release();
 			bunnyTexture[i].Release();
+			Wall[i].Release();
+			Wall2[i].Release();
+			Roof[i].Release();
+			Mirror2[i].Release();
 		}
 		delete[] t;
 		delete[] t2;
 		delete[] bunnyTexture;
 		delete[] pointLight;
-		//cpuTimer.CloseLog();
+		delete[] Wall;
+		delete[] Wall2;
+		delete[] Roof;
+		delete[] Mirror2;
+		
 	}
 	core->Release();
 	delete core;

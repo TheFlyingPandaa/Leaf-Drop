@@ -64,7 +64,7 @@ float4 main(PS_INPUT input) : SV_TARGET
         }
     }
     rays /= max(divider, 1.0f);
-    
+    //rays = RayTracing.Sample(defaultSampler, input.uv);
     float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
 
 	uint numStructs;
@@ -95,6 +95,6 @@ float4 main(PS_INPUT input) : SV_TARGET
 
     //return saturate(lerp(finalColor, rays, metallic.r) + ambient);
     float val = metallic.r >= 0.9f ? metallic.r : 0;
-    return saturate(lerp(finalColor, rays, val) + ambient);
+    return saturate(lerp(finalColor, rays, val) + ambient + specular);
 	//return saturate(float4(rays.rgb, 1.0f));
 }

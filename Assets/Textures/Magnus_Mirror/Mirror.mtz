@@ -80,8 +80,9 @@
       <x>0</x>
       <y>0</y>
     </SampleUV>
-    <SatWeight>0.6136364</SatWeight>
-    <MaskLow>0.227272734</MaskLow>
+    <SatWeight>1</SatWeight>
+    <LumWeight>0</LumWeight>
+    <MaskLow>0.352272749</MaskLow>
     <OverlayBlurSize>10</OverlayBlurSize>
     <OverlayBlurSizeText>10</OverlayBlurSizeText>
     <BlurOverlay>0.5192308</BlurOverlay>

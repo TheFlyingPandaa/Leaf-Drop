@@ -86,7 +86,6 @@ private:
 	UAV m_lightUav;
 	ConstantBuffer m_lightsBuffer;
 	
-	GpuTimer timer;
 
 	RenderTarget m_rayTexture;
 	ShaderResource * m_pRaySRV = nullptr;

@@ -33,7 +33,7 @@ namespace DEBUG
 
 CoreRender::CoreRender()
 {
-
+	m_deferredTimer.OpenLog("Deferred.txt");
 }
 
 CoreRender::~CoreRender()
@@ -44,6 +44,9 @@ CoreRender::~CoreRender()
 	delete m_prePass;
 	delete m_updatePass;
 	delete m_rayDefinePass;
+
+	m_deferredTimer.CloseLog();
+
 }
 
 CoreRender * CoreRender::GetInstance()
@@ -538,8 +541,10 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_computePass->ThreadJoin();
 
 
+	m_deferredTimer.Start();
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
+
 
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
@@ -557,6 +562,8 @@ HRESULT CoreRender::_UpdatePipeline()
 	}
 
 	m_commandList[m_frameIndex]->Close();
+
+	m_deferredTimer.LogTime();
 	return hr;
 
 }

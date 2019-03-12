@@ -15,7 +15,7 @@ Core::~Core()
 HRESULT Core::Init(HINSTANCE hInstance)
 {
 	m_window = Window::GetInstance();
-	if (!m_window->Create(hInstance, 10, 1280, 720))
+	if (!m_window->Create(hInstance, 10, 1280, 720, 0, "Leaf-Drop", "Leaf-Drop"))
 	{
 		return E_ABORT;
 	}

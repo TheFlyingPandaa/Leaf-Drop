@@ -69,6 +69,8 @@ public:
 
 private:
 
+	GpuTimer m_deferredTimer;
+
 	ID3D12Device *				m_device = nullptr;
 	IDXGISwapChain3 *			m_swapChain = nullptr;
 	ID3D12CommandQueue *		m_commandQueue = nullptr;

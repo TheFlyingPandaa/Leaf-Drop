@@ -195,10 +195,8 @@ void Window::_create(HINSTANCE hInstance, INT ShowWnd)
 		MONITORINFO mi = { sizeof(mi) };
 		GetMonitorInfo(hmon, &mi);
 
-		m_width = mi.rcMonitor.right - mi.rcMonitor.left;
-		m_height = mi.rcMonitor.bottom - mi.rcMonitor.top;
-		r.right = m_width;
-		r.bottom = m_height;
+		r.right = m_width = mi.rcMonitor.right - mi.rcMonitor.left;
+		r.bottom = m_height = mi.rcMonitor.bottom - mi.rcMonitor.top;
 	}
 	else
 	{

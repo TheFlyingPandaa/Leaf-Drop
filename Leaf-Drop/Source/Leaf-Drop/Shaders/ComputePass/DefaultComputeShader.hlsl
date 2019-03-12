@@ -1,5 +1,7 @@
 #include "../LightCalculations.hlsli"
 
+#define RAY_BOUNCE 2
+
 #define MAX_MIP 13
 #define MIN_MIP 0
 #define MIN_MIP_DIST 25
@@ -400,7 +402,7 @@ void main (uint3 threadID : SV_DispatchThreadID)
     uint nrOfLights, dummy;
     Lights.GetDimensions(nrOfLights, dummy);
     
-    for (uint rayBounce = 0; rayBounce < 2 && strenght > 0.0f; rayBounce++)
+    for (uint rayBounce = 0; rayBounce < RAY_BOUNCE && strenght > 0.0f; rayBounce++)
     {
         float3 triNormal;
 
@@ -414,14 +416,14 @@ void main (uint3 threadID : SV_DispatchThreadID)
 
             float2 uv = (tri.v[0].uv * uvw.x + tri.v[1].uv * uvw.y + tri.v[2].uv * uvw.z).xy;
      
-            float4 albedo = TextureAtlas[textureIndex].SampleLevel(defaultTextureAtlasSampler, uv, finalMip);
+            float4 albedo = TextureAtlas[textureIndex].SampleLevel(defaultTextureAtlasSampler, uv, 0);
             
             //float4 normal = TextureAtlas.SampleLevel(defaultTextureAtlasSampler, float3(uv, textureIndex + 1), finalMip);
 
             // We need TBN matrix
             float4 normal = float4(triNormal, 0.0f);
             
-            float4 metall = TextureAtlas[textureIndex + 2].SampleLevel(defaultTextureAtlasSampler, uv, finalMip);
+            float4 metall = TextureAtlas[textureIndex + 2].SampleLevel(defaultTextureAtlasSampler, uv, 0);
 
         
             float4 ambient = float4(0.15f, 0.15f, 0.15f, 1.0f) * albedo;
@@ -436,10 +438,10 @@ void main (uint3 threadID : SV_DispatchThreadID)
             tmpColor = saturate(tmpColor + ambient.rgb);
             
             finalColor = lerp(finalColor, float4(tmpColor, 1.0f), strenght);
-            if (metall.r > 0.9f)
-                strenght -= (1.0f - metall.r);
-            else
+            if (metall.r < 0.9f)
                 strenght = 0;
+            else
+                strenght -= (1.0f - (metall.r));
 
 
             fragmentWorld = intersectionPoint;
@@ -447,5 +449,5 @@ void main (uint3 threadID : SV_DispatchThreadID)
         }
     }
     
-    outputTexture[pixelLocation] = saturate(finalColor);
+    outputTexture[pixelLocation] = saturate(finalColor + specular);
 }
