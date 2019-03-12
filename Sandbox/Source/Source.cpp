@@ -33,8 +33,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	Timer timer;
 	
-
-
 	if (SUCCEEDED(core->Init(hInstance)))
 	{
 		Camera cam;
@@ -96,7 +94,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		bunny->LoadMesh("..\\Assets\\Models\\BobTheBunny.fbx");
 		sphere2->LoadMesh("..\\Assets\\Models\\NormalSphere.fbx");
 		
-		const UINT NUMBER_OF_DRAWABLES = 7;
+		const UINT NUMBER_OF_DRAWABLES = 8;
 		const UINT NUMBER_OF_DYNAMIC_DRAWABLES = 4;
 		const UINT NUMBER_OF_LIGHTS = 200;
 		const UINT MAX_DISTANCE = 50;
@@ -198,6 +196,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		d[6].SetNormal(&t[1]);
 		d[6].SetMetallic(&t[2]);
 
+		d[7].SetPosition(-39.8751, 43.5017, -38.6769);
+		d[7].SetScale(1, 20, 20);
+		d[7].SetRotation(0, DirectX::XMConvertToRadians(-45), DirectX::XMConvertToRadians(-45));
+		d[7].SetTexture(&t[0]);
+		d[7].SetNormal(&t[1]);
+		d[7].SetMetallic(&t[2]);
+
 		dynamicD[0].SetPosition(-42, -52.5f, 42);
 		dynamicD[0].SetScale(100, 100, 100);
 		dynamicD[0].SetRotation(0, DirectX::XMConvertToRadians(180), 0);
@@ -260,7 +265,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			if (Camera::GetActiveCamera() == &cam && false)
+			if (Camera::GetActiveCamera() == &cam)
 			{
 				if (wnd->IsKeyPressed(Input::W))
 					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
@@ -302,7 +307,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				cam.Update();
 			}
 
-			//std::cout << "Pos: " << cam.GetPosition().x << ", " << cam.GetPosition().y << ", " << cam.GetPosition().z << ", " << "Dir: " << cam.GetDirectionVector().x << ", " << cam.GetDirectionVector().y << ", " << cam.GetDirectionVector().z << std::endl;
+			std::cout << "Pos: " << cam.GetPosition().x << ", " << cam.GetPosition().y << ", " << cam.GetPosition().z << ", " << "Dir: " << cam.GetDirectionVector().x << ", " << cam.GetDirectionVector().y << ", " << cam.GetDirectionVector().z << std::endl;
 
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
