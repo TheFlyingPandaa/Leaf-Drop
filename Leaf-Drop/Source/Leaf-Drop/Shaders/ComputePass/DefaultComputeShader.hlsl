@@ -68,6 +68,10 @@ cbuffer RAY_BOX : register(b0)
     uint4 Info; // X and Y are windowSize. Z is number of triangles
 }
 
+
+
+StructuredBuffer<float4> OffsetBuffer : register(t0, space5);
+
 StructuredBuffer<LIGHT> Lights : register(t0, space2);
 
 StructuredBuffer<MeshData> MeshDataBuffer : register(t0);
@@ -367,9 +371,10 @@ bool TraceTriangle(in float3 ray, in float3 origin, inout Triangle2 tri, out flo
 
 [numthreads(1, 1, 1)]
 void main (uint3 threadID : SV_DispatchThreadID)
-{
-    uint rayStencilIndex = threadID.x + threadID.y * Info.x;
-    uint2 pixelLocation =   uint2(threadID.xy);
+{    
+    uint2 windowOffset = OffsetBuffer[0].xy * Info.xy;
+    uint rayStencilIndex = (windowOffset.x + threadID.x) + (windowOffset.y + threadID.y) * Info.x;
+    uint2 pixelLocation =   uint2(threadID.xy) + windowOffset;
     
     if (!RayStencil[rayStencilIndex].dispatch) return; // Can this be improved?
     

@@ -18,6 +18,7 @@
 #define LIGHT_TABLE			5
 #define OCTREE				6
 #define MESH_ARRAY			7
+#define OFFSET_BUFFER		8
 
 #define MESH_ARRAY_SPACE	3
 #define TEXTURE_SPACE		4
@@ -49,6 +50,24 @@ void ComputePass::Update()
 {
 	timer.Start();
 
+	struct UINT4
+	{
+		float x, y, z, w;
+
+	} offset;
+		
+
+	int counter = 0;
+	for (int y = 0; y < DISPATCH_MUL; y++)
+	{
+		for (int x = 0; x < DISPATCH_MUL; x++)
+		{
+			offset.x = (float)x / (DISPATCH_MUL);
+			offset.y = (float)y / (DISPATCH_MUL);
+
+			m_offsetBuffer.SetData(&offset, sizeof(UINT4), counter++ * sizeof(UINT4));
+		}
+	}
 }
 
 
@@ -99,7 +118,15 @@ void ComputePass::Draw()
 
 	StaticMesh::BindCompute(MESH_ARRAY, p_commandList[frameIndex]);
 
-	p_commandList[frameIndex]->Dispatch(data.info.x, data.info.y, 1);
+	int counter = 0;
+	for (int y = 0; y < DISPATCH_MUL; y++)
+	{
+		for (int x = 0; x < DISPATCH_MUL; x++)
+		{
+			m_offsetBuffer.BindComputeShader(OFFSET_BUFFER, p_commandList[frameIndex], counter++ * sizeof(UINT) * 4);
+			p_commandList[frameIndex]->Dispatch(data.info.x / DISPATCH_MUL, data.info.y / DISPATCH_MUL, 1);
+		}
+	}
 
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 
@@ -123,6 +150,7 @@ void ComputePass::Release()
 	p_ReleaseCommandList();
 	m_squareIndex.Release();
 	m_rayTexture.Release();
+	m_offsetBuffer.Release();
 }
 
 void ComputePass::Clear()
@@ -174,6 +202,9 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 
+	if (FAILED(hr = m_offsetBuffer.Init(1024 * 64, L"Ray offset", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, sizeof(UINT) * 4)))
+		return hr;
+
 	if (FAILED(hr = OpenCommandList()))
 	{
 		return hr;
@@ -221,7 +252,7 @@ HRESULT ComputePass::_InitRootSignature()
 	
 	
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[8];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[9];
 	rootParameters[RAY_SQUARE_INDEX].InitAsConstantBufferView(0);
 	rootParameters[RAY_TEXTURE].InitAsDescriptorTable(1,&descRange);
 	rootParameters[RAY_INDICES].InitAsShaderResourceView(1);
@@ -230,6 +261,8 @@ HRESULT ComputePass::_InitRootSignature()
 	rootParameters[OCTREE].InitAsShaderResourceView(0, 1);
 	rootParameters[LIGHT_TABLE].InitAsShaderResourceView(0, 2);
 	rootParameters[MESH_ARRAY].InitAsDescriptorTable(1, &descRange2);
+	//rootParameters[OFFSET_BUFFER].InitAsConstantBufferView(1);
+	rootParameters[OFFSET_BUFFER].InitAsShaderResourceView(0, 5);
 	//rootParameters[MESH_ARRAY].InitAsShaderResourceView(0, 3);
 	
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;

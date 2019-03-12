@@ -36,7 +36,7 @@ void RayDefinePass::Update()
 	m_rayStencil.Bind(RAY_STENCIL, commandList);
 
 	commandList->RSSetViewports(1, &m_viewport);
-	//commandList->RSSetScissorRects(1, &m_scissorRect);
+	commandList->RSSetScissorRects(1, &m_scissorRect);
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	for (UINT i = 0; i < m_geometryRenderTargetsSize; i++)
@@ -67,6 +67,7 @@ void RayDefinePass::Release()
 	m_fence.Release();
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
+	p_ReleaseCommandList();
 }
 
 const UAV * RayDefinePass::GetRayStencil() const

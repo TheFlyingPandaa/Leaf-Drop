@@ -56,6 +56,7 @@ private:
 	Fence m_fence;
 	
 	ConstantBuffer m_squareIndex;
+	ConstantBuffer m_offsetBuffer;
 	ShaderResource m_rayTexture;
 
 	GpuTimer timer;
