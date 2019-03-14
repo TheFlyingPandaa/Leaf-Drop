@@ -17,12 +17,12 @@ struct UINT4
 
 PrePass::PrePass()
 {
-	timer.OpenLog("PrePass.txt");
+
 }
 
 PrePass::~PrePass()
 {
-	timer.CloseLog();
+
 }
 
 HRESULT PrePass::Init()
@@ -38,22 +38,21 @@ HRESULT PrePass::Init()
 	{
 		return hr;
 	}
-
+	sTimer[PRE_PASS].SetCommandQueue(p_coreRender->GetCommandQueue());
 	return hr;
 }
 
 void PrePass::Update()
 {
 	//p_coreRender->GetFence(DEFERRED)->Wait(p_coreRender->GetCommandQueue());
-	timer.Start();
 	if (FAILED(OpenCommandList(m_pipelineState)))
 	{
 		return;
 	}
-
-
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
+	sTimer[PRE_PASS].Start(p_commandList[frameIndex], sCounter[PRE_PASS]);
+
 	commandList->SetGraphicsRootSignature(m_rootSignature);
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 
@@ -181,6 +180,8 @@ void PrePass::Draw()
 		m_renderTarget[i].SwitchToSRV(commandList);
 	}
 
+	sTimer[PRE_PASS].Stop(p_commandList[frameIndex], sCounter[PRE_PASS]);
+	sTimer[PRE_PASS].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[PRE_PASS]++);
 	ExecuteCommandList();
 
 

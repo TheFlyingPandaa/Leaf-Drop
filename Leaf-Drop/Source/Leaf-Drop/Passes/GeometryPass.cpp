@@ -24,12 +24,10 @@ struct UINT4
 
 GeometryPass::GeometryPass() : IRender()
 {
-	m_timer.OpenLog("GeometryPass.txt");
 }
 
 GeometryPass::~GeometryPass()
 {
-	m_timer.CloseLog();
 }
 
 HRESULT GeometryPass::Init()
@@ -74,22 +72,27 @@ HRESULT GeometryPass::Init()
 	}
 	m_ptrAtlas = TextureAtlas::GetInstance();
 
+	sTimer[GEOMETRY].SetCommandQueue(p_coreRender->GetCommandQueue());
+
 	return hr;
 }
 
 void GeometryPass::Update()
 {
 	//p_coreRender->GetFence(PRE_PASS)->Wait(p_coreRender->GetCommandQueue());
+
+
 	m_ptrAtlas->Reset();
 	if (FAILED(OpenCommandList()))
 	{
 		return;
 	}
-	m_timer.Start();
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
 	
+	sTimer[GEOMETRY].Start(p_commandList[frameIndex], sCounter[GEOMETRY]);
+
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandles[RENDER_TARGETS];
@@ -206,6 +209,9 @@ void GeometryPass::Draw()
 		m_renderTarget[i]->SwitchToSRV(commandList);
 	}
 
+
+	sTimer[GEOMETRY].Stop(p_commandList[frameIndex], sCounter[GEOMETRY]);
+	sTimer[GEOMETRY].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[GEOMETRY]++);
 
 	ExecuteCommandList();
 	

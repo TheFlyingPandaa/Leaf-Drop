@@ -9,13 +9,12 @@
 
 RayDefinePass::RayDefinePass() : IRender()
 {
-	timer.OpenLog("raydefine.txt");
 }
 
 
 RayDefinePass::~RayDefinePass()
 {
-	timer.CloseLog();
+
 }
 
 HRESULT RayDefinePass::Init()
@@ -27,9 +26,10 @@ void RayDefinePass::Update()
 {
 	//p_coreRender->GetFence(PRE_PASS)->Wait(p_coreRender->GetCommandQueue());
 	OpenCommandList(m_pipelineState);
-
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
+	sTimer[DEFINE].Start(p_commandList[frameIndex], sCounter[DEFINE]);
+
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 		
 	commandList->SetGraphicsRootSignature(m_rootSignature);
@@ -53,6 +53,9 @@ void RayDefinePass::Draw()
 	commandList->IASetVertexBuffers(0, 1, &m_screenQuad.vertexBufferView);
 	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
 
+
+	sTimer[DEFINE].Stop(p_commandList[frameIndex], sCounter[DEFINE]);
+	sTimer[DEFINE].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[DEFINE]++);
 	ExecuteCommandList();
 	
 	p_coreRender->GetComputePass()->SetRayData(&m_rayStencil);
@@ -121,6 +124,9 @@ HRESULT RayDefinePass::_Init()
 		return hr;
 	}
 	
+
+	sTimer[DEFINE].SetCommandQueue(p_coreRender->GetCommandQueue());
+
 	return hr;
 }
 

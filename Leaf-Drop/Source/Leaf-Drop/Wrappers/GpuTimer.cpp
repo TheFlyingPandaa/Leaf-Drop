@@ -3,130 +3,126 @@
 
 #include <iostream>
 
+GpuTimer::GpuTimer()
+{
+	m_frames = std::vector<TimeStamp>(NUM_FRAMES);
+}
+
 GpuTimer::~GpuTimer()
 {
-	CloseLog();
+	m_threadRunning = false;
+	m_threadDone = true;
+	if (m_thread.get_id() != std::thread::id())
+		m_thread.join();
+}
+
+void GpuTimer::Init()
+{
+	m_fence.CreateFence(L"TimeFence");
 }
 
 void GpuTimer::Start(ID3D12CommandQueue * commandQueue)
 {
-	m_commandQueue = commandQueue ? commandQueue : CoreRender::GetInstance()->GetCommandQueue();
-	
-	Stop();
-
-	if (FAILED(m_commandQueue->GetClockCalibration(&m_GPUTimer, &m_CPUTimer)))
-		throw "FAILED";
-}
-
-void GpuTimer::PrintTimer()
-{
-	double time = GetTime();
-	std::cout << "GPU Time: " << time << "s" << std::endl;
-}
-
-void GpuTimer::OpenLog(const std::string & path)
-{
-#ifndef _DEBUG
-#ifndef _NO_LOG
-	m_outSteam.open(path);
-
-	m_threadRuning = true;
-	m_threadGotWork = false;
-
-	m_outputThread = std::thread(&GpuTimer::ThreadOutput, this);
-#endif
-#endif
-}
-
-void GpuTimer::CloseLog()
-{
-#ifndef _DEBUG
-#ifndef _NO_LOG
-	m_threadRuning = false;
-	
-
-	m_outSteam.close();
-	if (m_outputThread.get_id() != std::thread::id())
-		m_outputThread.join();
-#endif
-#endif
-}
-
-void GpuTimer::LogTime(const UINT & iterrationInterval)
-{
-#ifndef _DEBUG
-#ifndef _NO_LOG
-	m_iterationCounter++;
-
-	m_avrage += GetTime();
-
-	
-	if (m_iterationCounter % iterrationInterval == 0)
+	if (m_fence.Done() && !m_woork)
 	{
-		m_avrage /= iterrationInterval;
-
-		if (!m_outSteam.is_open())
-			throw "Call OpenLog()";
-
-		UpdateThread(m_avrage * 1000.0);
-
-		m_iterationCounter = 0;
+		m_fence.Signal(commandQueue);
+		m_commandQueue = commandQueue;
+		if (!m_commandQueue)
+			return;
+		m_commandQueue->GetClockCalibration(&m_GPUTimer, &m_CPUTimer);
+		m_woork = true;
 	}
-#endif
-#endif
-}
-
-double GpuTimer::GetTime()
-{
-	UINT64 endGPUTime;
-	UINT64 endCPUTime;
-
-	UINT64 frq;
-
-	if (FAILED(m_commandQueue->GetClockCalibration(&endGPUTime, &endCPUTime)))
-		throw "FAILED";
-	if (FAILED(m_commandQueue->GetTimestampFrequency(&frq)))
-		throw "FAILED";
-		
-	return (static_cast<double>(endGPUTime - m_GPUTimer) / static_cast<double>(frq));
 }
 
 void GpuTimer::Stop()
-{
-	m_GPUTimer = 0;
-	m_CPUTimer = 0;	
-}
+{	
+	if (!m_commandQueue)
+		return;
 
-void GpuTimer::UpdateThread(double avrage)
-{
+	if (m_fence.Done())
+	{
+		UINT64 cpu, gpu;
 
-	if (!m_threadGotWork && m_threadRuning && m_outputThread.get_id() != std::thread::id())
-	{
-		m_printAvrage = avrage;
-		m_threadGotWork = true;
-	}
-	else
-	{
-		if (m_outputThread.get_id() == std::thread::id())
+		m_commandQueue->GetTimestampFrequency(&m_freq);
+		m_commandQueue->GetClockCalibration(&gpu, &cpu);
+
+		TimeStamp stamp
 		{
-			m_threadRuning = true;
-			m_outputThread = std::thread(&GpuTimer::ThreadOutput, this);
-		}
-		m_printAvrage = avrage;
+		m_CPUTimer,
+		cpu,
+		m_GPUTimer,
+		gpu,
+		((double)(gpu - m_GPUTimer) / m_freq) * 1000.0
+		};
 
-		m_threadGotWork = true;
+		if (counter < NUM_FRAMES)
+			m_frames[counter++] = stamp;
+		m_woork = false;
 	}
+
+	//if (m_threadDone && m_threadRunning && m_thread.get_id() != std::thread::id())
+	//{
+	//	m_threadDone = false;
+	//}
+	//else
+	//{
+	//	if (m_thread.get_id() == std::thread::id()) //if deded
+	//	{
+	//		m_threadRunning = true;
+	//		m_thread = std::thread(&GpuTimer::_stop, this);
+	//	}
+	//
+	//	m_threadDone = false;
+	//}
 }
 
-void GpuTimer::ThreadOutput()
+
+
+void GpuTimer::LogTime(const std::string Path)
 {
-	while (m_threadRuning)
+	using namespace std;
+
+	ofstream out(Path);
+	if (out.is_open())
 	{
-		if (m_threadGotWork)
+		for (size_t i = 0; i < m_frames.size(); i++)
 		{
-			m_outSteam << m_printAvrage << std::endl;
-			m_threadGotWork = false;
+			out << m_frames.at(i).toString() << "\n";
+		}
+		out.close();
+	}
+}
+
+void GpuTimer::_stop()
+{
+	while (m_threadRunning)
+	{
+		if (!m_threadDone)
+		{
+			if (m_fence.Done())
+			{
+				UINT64 cpu, gpu;
+
+				m_commandQueue->GetTimestampFrequency(&m_freq);
+				m_commandQueue->GetClockCalibration(&gpu, &cpu);
+
+				TimeStamp stamp
+				{
+				m_CPUTimer,
+				cpu,
+				m_GPUTimer,
+				gpu,
+				((double)(gpu - m_GPUTimer) / m_freq) * 1000.0
+				};
+
+				if (counter < NUM_FRAMES)
+					m_frames[counter++] = stamp;
+				m_threadDone = true;
+			}
 		}
 	}
-	m_threadRuning = false;
+	m_threadRunning = false;
 }
+
+
+

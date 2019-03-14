@@ -783,6 +783,9 @@
     <ClInclude Include="Source\Leaf-Drop\Passes\RayDefinePass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Leaf-Drop\Utillity\GpuTimer2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core.cpp">
@@ -996,6 +999,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Leaf-Drop\Passes\RayDefinePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Leaf-Drop\Utillity\GpuTimer2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

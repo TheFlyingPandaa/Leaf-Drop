@@ -149,6 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Leaf-Drop\Utillity\GpuTimer2.h" />
     <ClInclude Include="Source\Leaf-Drop\Passes\RayDefinePass.h" />
     <ClInclude Include="Source\Leaf-Drop\Wrappers\CPUBuffer.h" />
     <ClInclude Include="Source\Leaf-Drop\Objects\OcTree.h" />
@@ -407,6 +408,7 @@
     <ClInclude Include="Source\Leaf-Drop\Passes\UpdatePass.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Leaf-Drop\Utillity\GpuTimer2.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Passes\RayDefinePass.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Wrappers\CPUBuffer.cpp" />
     <ClCompile Include="Source\Leaf-Drop\Objects\OcTree.cpp" />

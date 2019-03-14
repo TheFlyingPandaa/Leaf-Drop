@@ -14,12 +14,11 @@
 
 UpdatePass::UpdatePass() : IRender()
 {
-	timer.OpenLog("UpdatePass.txt");
 }
 
 UpdatePass::~UpdatePass()
 {
-	timer.CloseLog();
+
 }
 
 HRESULT UpdatePass::Init()
@@ -42,14 +41,14 @@ HRESULT UpdatePass::Init()
 		return hr;
 	}
 
+	sTimer[UPDATE].SetCommandQueue(p_coreRender->GetCopyQueue());
+
 	return hr;
 }
 
 void UpdatePass::Update()
 {
 	//p_coreRender->GetFence(DEFERRED)->Wait(p_coreRender->GetCopyQueue());
-	
-	timer.Start();
 	static bool _FirstRun = true;
 
 	if (_FirstRun)
@@ -61,7 +60,10 @@ void UpdatePass::Update()
 	_PlaceDynamicTree();
 
 	p_coreRender->BeginCopy();
+	sTimer[UPDATE].Start(p_coreRender->GetCopyCommandList(), sCounter[UPDATE]);
 	m_octree.WriteToBuffer(p_coreRender->GetCopyCommandList(), m_octreeBuffer.GetResource());
+	sTimer[UPDATE].Stop(p_coreRender->GetCopyCommandList(), sCounter[UPDATE]);
+	sTimer[UPDATE].ResolveQueryToCPU(p_coreRender->GetCopyCommandList(), sCounter[UPDATE]++);
 	p_coreRender->EndCopy();
 
 	_SetLightData();

@@ -33,7 +33,6 @@ namespace DEBUG
 
 CoreRender::CoreRender()
 {
-	m_deferredTimer.OpenLog("Deferred.txt");
 }
 
 CoreRender::~CoreRender()
@@ -45,7 +44,6 @@ CoreRender::~CoreRender()
 	delete m_updatePass;
 	delete m_rayDefinePass;
 
-	m_deferredTimer.CloseLog();
 
 }
 
@@ -157,6 +155,8 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 
+
+
 	m_computePass = new ComputePass();
 	if (FAILED(hr = m_computePass->Init()))
 	{
@@ -169,11 +169,18 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 	
-#ifdef _DEBUG
 
-	//DebugBreak();
-	//return E_FAIL;
-#endif
+	for (UINT i = 0; i < 6; i++)
+	{
+		if (i == UPDATE)
+		{
+			if (FAILED(hr = StefanTimer[i].Init(NUM_FRAMES, D3D12_QUERY_HEAP_TYPE_COPY_QUEUE_TIMESTAMP )))
+				return DEBUG::CreateError(hr);
+		}
+		else
+			if (FAILED(hr = StefanTimer[i].Init(NUM_FRAMES)))
+				return DEBUG::CreateError(hr);
+	}
 
 	return hr;
 }
@@ -197,6 +204,7 @@ void CoreRender::Release()
 
 	TextureAtlas::GetInstance()->Release();
 
+
 	SAFE_RELEASE(m_swapChain);
 	SAFE_RELEASE(m_commandQueue);
 	SAFE_RELEASE(m_rtvDescriptorHeap);
@@ -216,6 +224,7 @@ void CoreRender::Release()
 	for (UINT i = 0; i < 6; i++)
 	{
 		m_passFences[i].Release();
+		StefanTimer[i].Release();
 	}
 
 #ifdef _DEBUG
@@ -454,7 +463,7 @@ HRESULT CoreRender::_Flush()
 	{
 		return hr;
 	}
-
+	
 	ID3D12CommandList* ppCommandLists[] = { m_commandList[m_frameIndex] };
 	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	if (FAILED(hr = m_commandQueue->Signal(m_fence, m_fenceValue)))
@@ -465,6 +474,7 @@ HRESULT CoreRender::_Flush()
 	return hr;
 }
 
+#include <iostream>
 HRESULT CoreRender::_UpdatePipeline()
 {
 	HRESULT hr = 0;
@@ -472,6 +482,53 @@ HRESULT CoreRender::_UpdatePipeline()
 	if (FAILED(hr = _waitForPreviousFrame()))
 	{
 		return hr;
+	}
+
+	static bool hasPrinted = false;
+	bool Print = true;
+
+	for (int i = 0; i < 6; i++)
+	{
+		if (StefanTimerCounter[i] < NUM_FRAMES)
+		{
+			Print = false;
+			break;
+		}
+	}
+
+	if (Print && !hasPrinted)
+	{
+		std::string arr[] = {
+			"_PRE_PASS",
+			"_GEOMETRY",
+			"_DEFERRED",
+			"_UPDATE",
+			"_DEFINE",
+			"_RAY_TRACING"
+		};
+
+		for (int i = 0; i < 6; i++)
+		{		
+			std::ofstream file;
+			file.open(arr[i] + ".txt");
+
+			
+			UINT64 queueFreq = StefanTimer[i].GetFreq();
+			double timestampToMs = (1.0 / queueFreq) * 1000.0;
+			for (int j = 0; j < StefanTimerCounter[i]; j++)
+			{
+				GPU::Timestamp drawTime;
+				drawTime = StefanTimer[i].GetTimestampPair(j);
+
+				UINT64 dt = drawTime.Stop - drawTime.Start;
+				double timeInMs = dt * timestampToMs;
+
+				file << drawTime.Start << "\t" << drawTime.Stop << "\t" << timeInMs << "\n";
+			}
+			file.close();
+		}
+
+		hasPrinted = true;
 	}
 
 	if (FAILED(hr = m_commandAllocator[m_frameIndex]->Reset()))
@@ -551,7 +608,6 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_computePass->ThreadJoin();
 
 
-	m_deferredTimer.Start();
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
 
@@ -573,7 +629,6 @@ HRESULT CoreRender::_UpdatePipeline()
 
 	m_commandList[m_frameIndex]->Close();	
 
-	m_deferredTimer.LogTime();
 	return hr;
 
 }
@@ -593,7 +648,6 @@ HRESULT CoreRender::_waitForPreviousFrame()
 		WaitForSingleObject(m_fenceEvent, INFINITE);
 		
 	}
-
 	m_fenceValue++;
 
 	return hr;

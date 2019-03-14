@@ -13,6 +13,9 @@
 #include "Passes/UpdatePass.h"
 #include "Passes/RayDefinePass.h"
 #include "Wrappers/CpuTimer.h"
+#include "Utillity/GpuTimer2.h"
+
+
 
 class Window;
 
@@ -23,6 +26,8 @@ class Window;
 #define DEFINE		4
 #define RAY_TRACING	5
 
+#define sTimer p_coreRender->StefanTimer
+#define sCounter p_coreRender->StefanTimerCounter
 
 class CoreRender
 {
@@ -44,6 +49,8 @@ public:
 	ID3D12DescriptorHeap * GetRTVDescriptorHeap() const;
 	ID3D12DescriptorHeap * GetGPUDescriptorHeap() const;
 	ID3D12CommandQueue * GetCopyQueue() const;
+
+	
 
 	HRESULT BeginCopy();
 	HRESULT EndCopy();
@@ -76,6 +83,10 @@ public:
 	const SIZE_T & CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HANDLE & handle, const UINT & numDescriptors);
 
 	Fence * GetFence(const UINT & index);
+
+	UINT64 StefanTimerCounter[6]{0};
+	GPU::GpuTimer2 StefanTimer[6]; 
+	//GpuTimer PassTimer[6];
 
 private:
 

@@ -4,7 +4,6 @@
 #include "Leaf-Drop/Objects/Lights/PointLight.h"
 #include <algorithm>
 
-
 #if _DEBUG
 
 //Allocates memory to the console
@@ -307,8 +306,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				cam.Update();
 			}
 
-			std::cout << "Pos: " << cam.GetPosition().x << ", " << cam.GetPosition().y << ", " << cam.GetPosition().z << ", " << "Dir: " << cam.GetDirectionVector().x << ", " << cam.GetDirectionVector().y << ", " << cam.GetDirectionVector().z << std::endl;
-
+			
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
 					   		
@@ -360,8 +358,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				DEBUG::CreateError("LOL");
 				break;
 			}
-			
-			
 		}
 		core->ClearGPU();
 		m->Release();
@@ -417,7 +413,7 @@ void printFrameTime(double dt)
 
 		Window::GetInstance()->SetWindowTitle("Frame Time: " + std::to_string(allTime) + " ms");
 
-		
+		//std::cout << allTime << std::endl;
 
 		allTime = 0.0;
 	}

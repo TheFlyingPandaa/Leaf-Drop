@@ -25,12 +25,12 @@
 
 ComputePass::ComputePass()
 {
-	timer.OpenLog("Compute.txt");
+	
 }
 
 ComputePass::~ComputePass()
 {
-	timer.CloseLog();
+
 }
 
 HRESULT ComputePass::Init()
@@ -41,7 +41,7 @@ HRESULT ComputePass::Init()
 	{
 		return hr;
 	}
-
+	sTimer[RAY_TRACING].SetCommandQueue(m_commandQueue);
 	return hr;
 }
 
@@ -71,7 +71,9 @@ void ComputePass::Update()
 
 void ComputePass::Draw()
 {
+	//timer.Start(m_commandQueue);
 	p_coreRender->GetFence(DEFINE)->Wait(m_commandQueue);
+
 	p_coreRender->GetFence(UPDATE)->Wait(m_commandQueue);
 
 	UpdatePass * up = p_coreRender->GetUpdatePass();
@@ -97,6 +99,8 @@ void ComputePass::Draw()
 
 
 	OpenCommandList(m_pipelineState);
+	sTimer[RAY_TRACING].Start(p_commandList[frameIndex], sCounter[RAY_TRACING]);
+	
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(rayData.OctreeBuffer->GetResource(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
 
 	p_coreRender->SetResourceDescriptorHeap(p_commandList[frameIndex]);
@@ -119,7 +123,8 @@ void ComputePass::Draw()
 
 	StaticMesh::BindCompute(MESH_ARRAY, p_commandList[frameIndex]);
 
-	int counter = 0;
+
+	int counter = 0;	
 	for (int y = 0; y < DISPATCH_MUL; y++)
 	{
 		for (int x = 0; x < DISPATCH_MUL; x++)
@@ -129,10 +134,13 @@ void ComputePass::Draw()
 		}
 	}
 
+
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
 
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(rayData.OctreeBuffer->GetResource(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
 
+	sTimer[RAY_TRACING].Stop(p_commandList[frameIndex], sCounter[RAY_TRACING]);
+	sTimer[RAY_TRACING].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[RAY_TRACING]++);
 	_ExecuteCommandList();
 	
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
@@ -166,6 +174,11 @@ void ComputePass::SetGeometryData(RenderTarget * const * renderTargets, const UI
 void ComputePass::SetRayData(UAV * rayStencil)
 {
 	m_rayStencil = rayStencil;
+}
+
+ID3D12CommandQueue * ComputePass::GetCommandQueue()
+{
+	return m_commandQueue;
 }
 
 HRESULT ComputePass::_Init()

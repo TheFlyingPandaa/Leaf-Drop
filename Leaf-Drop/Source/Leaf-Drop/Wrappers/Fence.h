@@ -6,8 +6,10 @@ public:
 	~Fence();
 	HRESULT CreateFence(const std::wstring & name);
 
+	
 	HRESULT Signal(ID3D12CommandQueue * commandQueue);
 	HRESULT Wait(ID3D12CommandQueue * commandQueue);
+	bool Done();
 
 	void Release();
 private:

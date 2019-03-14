@@ -59,7 +59,7 @@ HRESULT DeferredPass::Init()
 
 	m_lightUav.ConstantMap();
 	
-
+	sTimer[DEFERRED].SetCommandQueue(p_coreRender->GetCommandQueue());
 	return hr;
 }
 
@@ -67,8 +67,14 @@ void DeferredPass::Update()
 {
 	//p_coreRender->GetFence(GEOMETRY)->Wait(p_coreRender->GetCommandQueue());
 	p_coreRender->GetFence(RAY_TRACING)->Wait(p_coreRender->GetCommandQueue());
+
+
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
+
+	sTimer[DEFERRED].Start(commandList, sCounter[DEFERRED]);
+
+
 	p_coreRender->SetResourceDescriptorHeap(commandList);
 
 	
@@ -179,6 +185,10 @@ void DeferredPass::Draw()
 
 	commandList->IASetVertexBuffers(0, 1, &m_screenQuad.vertexBufferView);
 	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
+
+
+	sTimer[DEFERRED].Stop(commandList, sCounter[DEFERRED]);
+	sTimer[DEFERRED].ResolveQueryToCPU(commandList, sCounter[DEFERRED]++);
 }
 
 void DeferredPass::Release()

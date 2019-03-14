@@ -1,40 +1,57 @@
 #pragma once
 #include <fstream>
+#include "../Wrappers/Fence.h"
+
 
 class GpuTimer 
 {
 public:
-	GpuTimer() = default;
+	GpuTimer();
 	~GpuTimer();
-	void Start(ID3D12CommandQueue * commandQueue = nullptr);
-	 
-	void PrintTimer();
-	void OpenLog(const std::string & path);
-	void CloseLog();
-	void LogTime(const UINT & iterrationInterval = 64u);
-
-	double GetTime();
+	void Start(ID3D12CommandQueue * commandQueue);
 	void Stop();
-private:
-	ID3D12CommandQueue * m_commandQueue;
 
+	void Init();
+
+	void LogTime(const std::string Path);
+
+private:
+
+	void _stop();
+
+	ID3D12CommandQueue * m_commandQueue = nullptr;
+	UINT64 m_freq = 0; 
 	UINT64 m_GPUTimer = 0;
 	UINT64 m_CPUTimer = 0;
 
-	UINT m_iterationCounter = 0;
+	bool m_woork = false;
 
-	double m_avrage = 0;
-	double m_printAvrage = 0;
 
-	std::ofstream m_outSteam;
+	struct TimeStamp
+	{
+		UINT64 CPUBegin;
+		UINT64 CPUEnd;
+		UINT64 GPUBegin;
+		UINT64 GPUEnd;
+		double deltaTime;
 
-	bool m_threadGotWork = false;
-	bool m_threadRuning = false;
+		std::string toString()
+		{
+			return std::to_string(CPUBegin) + "\t" +
+				std::to_string(CPUEnd) + "\t" +
+				std::to_string(GPUBegin) + "\t" +
+				std::to_string(GPUEnd) + "\t" +
+				std::to_string(deltaTime);
+		}
+	};
 
-	std::thread m_outputThread;
+	UINT64 counter = 0;
+	std::vector<TimeStamp> m_frames;
+	Fence m_fence;
 
-private:
-	void UpdateThread(double avrage);
-	void ThreadOutput();
+	bool m_threadRunning = false;
+	bool m_threadDone = false;
+	std::thread m_thread;
+
 };
 

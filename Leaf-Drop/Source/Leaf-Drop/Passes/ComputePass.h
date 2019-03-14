@@ -22,6 +22,8 @@ public:
 	void SetGeometryData(RenderTarget *const* renderTargets, const UINT & size);
 	void SetRayData(UAV * rayStencil);
 
+	ID3D12CommandQueue * GetCommandQueue();
+
 private:
 	HRESULT _Init();
 	HRESULT _InitShaders();

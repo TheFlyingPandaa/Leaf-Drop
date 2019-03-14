@@ -79,6 +79,17 @@ HRESULT Fence::Wait(ID3D12CommandQueue * commandQueue)
 	return hr;
 }
 
+bool Fence::Done()
+{
+	if (m_fenceValue == 0)
+		return true;
+
+	if (m_fence->GetCompletedValue() < m_fenceValue)
+		return false;
+
+	return true;
+}
+
 void Fence::Release()
 {
 	SAFE_RELEASE(m_fence);	
