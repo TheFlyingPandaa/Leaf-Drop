@@ -1,6 +1,8 @@
 #include "CorePCH.h"
 #include "GpuTimer2.h"
 
+
+
 namespace GPU
 {
 	GpuTimer2::GpuTimer2()

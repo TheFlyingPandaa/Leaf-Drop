@@ -5,6 +5,7 @@ namespace GPU
 {
 	struct Timestamp
 	{
+		
 		UINT64 Start = 0;
 		UINT64 Stop = 0;
 	};
@@ -17,6 +18,7 @@ namespace GPU
 
 		HRESULT Init(UINT numberOfTimers, D3D12_QUERY_HEAP_TYPE heapType = D3D12_QUERY_HEAP_TYPE_TIMESTAMP);
 		void Release();
+
 		void Start(ID3D12GraphicsCommandList * commandList, UINT timestampIndex);
 		void Stop(ID3D12GraphicsCommandList* commandList, UINT timestampIndex);
 
@@ -44,7 +46,6 @@ namespace GPU
 		ID3D12Resource*		m_queryResourceCPU = nullptr;
 		ID3D12Resource*		m_queryResourceGPU = nullptr;
 		ID3D12CommandQueue*	m_pCommandQueue = nullptr;
-
 
 		bool	m_active = false;
 		UINT64	m_deltaTime = 0;
