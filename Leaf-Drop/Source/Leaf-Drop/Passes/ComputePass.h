@@ -53,8 +53,6 @@ private:
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
-	Fence m_fence;
-	
 	ConstantBuffer m_squareIndex;
 	ConstantBuffer m_offsetBuffer;
 	ShaderResource m_rayTexture;

@@ -206,19 +206,25 @@ bool OcTree::_inside(const AABB & aabb, const STRUCTS::ObjectValues & colVal)
 	XMVECTOR colMin, colMax;
 	XMVECTOR Min, Max;
 
-	XMMATRIX worldInverse = XMMatrixTranspose(XMLoadFloat4x4A(&colVal.WorldInverse));
+	XMMATRIX world = XMMatrixTranspose(XMLoadFloat4x4A(&colVal.World));
 
 	colMin = XMLoadFloat3(&colVal.Min);
 	colMax = XMLoadFloat3(&colVal.Max);
-	Min = XMVector3TransformCoord(XMLoadFloat3(&aabb.Min), worldInverse);
-	Max = XMVector3TransformCoord(XMLoadFloat3(&aabb.Max), worldInverse);
+	Min = XMLoadFloat3(&aabb.Min);
+	Max = XMLoadFloat3(&aabb.Max);
 
-	BoundingBox a1, a2;
+	BoundingBox TreeAABB, ObjectAABB;
+	BoundingOrientedBox ObjectWorldOBB;
 
-	BoundingBox::CreateFromPoints(a1, Min, Max);
-	BoundingBox::CreateFromPoints(a2, colMin, colMax);
+	BoundingBox::CreateFromPoints(TreeAABB, Min, Max);		// WORLD
+	BoundingBox::CreateFromPoints(ObjectAABB, colMin, colMax);	// LOCAL
 
-	return a1.Intersects(a2);
+	BoundingOrientedBox::CreateFromBoundingBox(ObjectWorldOBB, ObjectAABB);
+	ObjectWorldOBB.Transform(ObjectWorldOBB, world);
+
+
+
+	return TreeAABB.Intersects(ObjectWorldOBB);
 }
 
 bool OcTree::_pointInside(const DirectX::XMFLOAT3 & min, const DirectX::XMFLOAT3 & max, const DirectX::XMFLOAT3 & point)

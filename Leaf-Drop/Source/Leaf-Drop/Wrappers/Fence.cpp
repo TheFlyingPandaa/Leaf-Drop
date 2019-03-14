@@ -11,56 +11,75 @@ Fence::~Fence()
 {
 }
 
-HRESULT Fence::CreateFence(ID3D12CommandQueue * commandQueue)
+HRESULT Fence::CreateFence(const std::wstring & name)
 {
 	HRESULT hr = 0;
 
-	m_ptrCommandQueue = commandQueue;
 
 	CoreRender * p_coreRender = CoreRender::GetInstance();
 
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT && SUCCEEDED(hr); i++)
+
+	if (SUCCEEDED(p_coreRender->GetDevice()->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence))))
 	{
-		if (SUCCEEDED(p_coreRender->GetDevice()->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence[i]))))
-		{
-			m_fence[i]->SetName(L"Gemory fence");
-			m_fenceValue[i] = 0;
-		}
+		m_fence->SetName(name.c_str());
+		m_fenceValue = 0;
 	}
+	
 	m_fenceEvent = CreateEvent(0, false, false, L"Geometry fence");
 	return hr;
 }
 
-HRESULT Fence::WaitForFinnishExecution()
-{
-	CoreRender * p_coreRender = CoreRender::GetInstance();
-	const UINT frameIndex = p_coreRender->GetFrameIndex();
+//HRESULT Fence::WaitForFinnishExecution()
+//{
+//	CoreRender * p_coreRender = CoreRender::GetInstance();
+//	const UINT frameIndex = p_coreRender->GetFrameIndex();
+//
+//	HRESULT hr = 0;
+//
+//
+//	// TODO :: wait for queue (->wait());
+//	//if (SUCCEEDED(hr = m_ptrCommandQueue->Signal(m_fence[frameIndex], m_fenceValue[frameIndex])))
+//	//{
+//	//	if (m_fence[frameIndex]->GetCompletedValue() < m_fenceValue[frameIndex])
+//	//	{
+//	//		if (SUCCEEDED(m_fence[frameIndex]->SetEventOnCompletion(m_fenceValue[frameIndex], m_fenceEvent)))
+//	//		{
+//	//			//if (SUCCEEDED(hr = m_ptrCommandQueue->Wait(m_fence[frameIndex], m_fenceValue[frameIndex])))
+//	//			//{
+//	//			//}
+//	//			WaitForSingleObject(m_fenceEvent, INFINITE); 
+//	//		}
+//	//	}
+//	//	m_fenceValue[frameIndex]++;
+//	//}
+//	return hr;
+//}
 
+HRESULT Fence::Signal(ID3D12CommandQueue * commandQueue)
+{
+	m_fenceValue++;
+	HRESULT hr = commandQueue->Signal(m_fence, m_fenceValue);
+	return hr;
+}
+
+HRESULT Fence::Wait(ID3D12CommandQueue * commandQueue)
+{
 	HRESULT hr = 0;
 
-
-	// TODO :: wait for queue (->wait());
-	if (SUCCEEDED(hr = m_ptrCommandQueue->Signal(m_fence[frameIndex], m_fenceValue[frameIndex])))
+	if (m_fence->GetCompletedValue() < m_fenceValue)
 	{
-		if (m_fence[frameIndex]->GetCompletedValue() < m_fenceValue[frameIndex])
+		if (SUCCEEDED(hr = commandQueue->Wait(m_fence, m_fenceValue)))
 		{
-			if (SUCCEEDED(m_fence[frameIndex]->SetEventOnCompletion(m_fenceValue[frameIndex], m_fenceEvent)))
-			{
-				//if (SUCCEEDED(hr = m_ptrCommandQueue->Wait(m_fence[frameIndex], m_fenceValue[frameIndex])))
-				//{
-				//}
-				WaitForSingleObject(m_fenceEvent, INFINITE); 
-			}
+			//if (SUCCEEDED(hr = m_fence->SetEventOnCompletion(m_fenceValue, m_fenceEvent)))
+			//{
+			//}
 		}
-		m_fenceValue[frameIndex]++;
-	}
+	}		
+
 	return hr;
 }
 
 void Fence::Release()
 {
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
-	{
-		SAFE_RELEASE(m_fence[i]);
-	}
+	SAFE_RELEASE(m_fence);	
 }

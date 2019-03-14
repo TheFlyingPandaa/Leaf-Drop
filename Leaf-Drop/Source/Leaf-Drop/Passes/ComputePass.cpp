@@ -48,8 +48,6 @@ HRESULT ComputePass::Init()
 
 void ComputePass::Update()
 {
-	timer.Start();
-
 	struct UINT4
 	{
 		float x, y, z, w;
@@ -73,6 +71,9 @@ void ComputePass::Update()
 
 void ComputePass::Draw()
 {
+	p_coreRender->GetFence(DEFINE)->Wait(m_commandQueue);
+	p_coreRender->GetFence(UPDATE)->Wait(m_commandQueue);
+
 	UpdatePass * up = p_coreRender->GetUpdatePass();
 
 	UpdatePass::RayData rayData = up->GetRayData();
@@ -133,11 +134,10 @@ void ComputePass::Draw()
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(rayData.OctreeBuffer->GetResource(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
 
 	_ExecuteCommandList();
-	m_fence.WaitForFinnishExecution();
-	timer.LogTime();
 	
-
 	p_coreRender->GetDeferredPass()->SetRayData(&m_rayTexture);
+
+	p_coreRender->GetFence(RAY_TRACING)->Signal(m_commandQueue);
 }
 
 void ComputePass::Release()
@@ -145,7 +145,6 @@ void ComputePass::Release()
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_commandQueue);
-	m_fence.Release();
 	
 	p_ReleaseCommandList();
 	m_squareIndex.Release();
@@ -182,10 +181,6 @@ HRESULT ComputePass::_Init()
 		return hr;
 	}
 	if (FAILED(hr = p_CreateCommandList(L"Compute", D3D12_COMMAND_LIST_TYPE_COMPUTE)))
-	{
-		return hr;
-	}
-	if (FAILED(hr = m_fence.CreateFence(m_commandQueue)))
 	{
 		return hr;
 	}

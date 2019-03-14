@@ -79,6 +79,7 @@ HRESULT GeometryPass::Init()
 
 void GeometryPass::Update()
 {
+	//p_coreRender->GetFence(PRE_PASS)->Wait(p_coreRender->GetCommandQueue());
 	m_ptrAtlas->Reset();
 	if (FAILED(OpenCommandList()))
 	{
@@ -107,9 +108,8 @@ void GeometryPass::Update()
 
 	}
 
-	//m_depthBuffer.Clear(commandList);
+	
 	commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, &m_ptrDepthPreBuffer->GetHandle());
-	//commandList->OMSetRenderTargets(RENDER_TARGETS, renderTargetHandles, FALSE, nullptr);
 	
 	commandList->SetPipelineState(m_pipelineState);
 	commandList->SetGraphicsRootSignature(m_rootSignature);
@@ -208,15 +208,10 @@ void GeometryPass::Draw()
 
 
 	ExecuteCommandList();
-	m_fence.WaitForFinnishExecution();
-	m_timer.LogTime();
 	
-
-	
-	//p_coreRender->GetComputePass()->SetRayData(m_rayStencil);
-
 	p_coreRender->GetDeferredPass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
-	//p_coreRender->GetComputePass()->SetGeometryData(m_renderTarget, RENDER_TARGETS);
+
+	p_coreRender->GetFence(GEOMETRY)->Signal(p_coreRender->GetCommandQueue());	
 }
 
 void GeometryPass::Release()
@@ -231,8 +226,6 @@ void GeometryPass::Release()
 	SAFE_RELEASE(m_rootSignature);
 	SAFE_RELEASE(m_pipelineState);
 
-	m_fence.Release();
-	
 	m_depthBuffer.Release();
 
 	m_camBuffer.Release();
@@ -464,11 +457,7 @@ HRESULT GeometryPass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCommandQueue())))
-	{
-		return hr;
-	}
-
+	
 	_CreateViewPort();
 
 	return hr;

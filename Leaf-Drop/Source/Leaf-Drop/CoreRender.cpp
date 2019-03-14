@@ -202,17 +202,22 @@ void CoreRender::Release()
 	SAFE_RELEASE(m_rtvDescriptorHeap);
 	SAFE_RELEASE(m_cpuDescriptorHeap);
 	SAFE_RELEASE(m_copyQueue);
+	SAFE_RELEASE(m_fence);
 	
 	FOR_FRAME
 	{
 		SAFE_RELEASE(m_gpuDescriptorHeap[i]);
 		SAFE_RELEASE(m_commandAllocator[i]);
 		SAFE_RELEASE(m_renderTargets[i]);
-		SAFE_RELEASE(m_fence[i]);
 		SAFE_RELEASE(m_commandList[i]);
 		SAFE_RELEASE(m_copyCommandAllocator[i]);
 		SAFE_RELEASE(m_copyCommandList[i]);		
 	}
+	for (UINT i = 0; i < 6; i++)
+	{
+		m_passFences[i].Release();
+	}
+
 #ifdef _DEBUG
 	if (m_device)
 	{
@@ -380,7 +385,7 @@ HRESULT CoreRender::ExecuteCommandList()
 	HRESULT hr = 0;
 	ID3D12CommandList* ppCommandLists[] = { m_commandList[m_frameIndex] };
 	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-	if (FAILED(hr = m_commandQueue->Signal(m_fence[m_frameIndex], m_fenceValue[m_frameIndex])))
+	if (FAILED(hr = m_commandQueue->Signal(m_fence, m_fenceValue)))
 	{
 		return hr;
 	}
@@ -406,19 +411,18 @@ HRESULT CoreRender::Flush()
 
 void CoreRender::ClearGPU()
 {
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+	
+	if (m_fence->GetCompletedValue() < m_fenceValue)
 	{
-		if (m_fence[i]->GetCompletedValue() < m_fenceValue[i])
+		if (FAILED(m_fence->SetEventOnCompletion(m_fenceValue, m_fenceEvent)))
 		{
-			if (FAILED(m_fence[i]->SetEventOnCompletion(m_fenceValue[i], m_fenceEvent)))
-			{
 
-			}
-			WaitForSingleObject(m_fenceEvent, INFINITE);
 		}
-
-		m_fenceValue[i]++;
+		WaitForSingleObject(m_fenceEvent, INFINITE);
 	}
+
+	m_fenceValue++;
+	
 }
 
 void CoreRender::SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const
@@ -437,6 +441,11 @@ const SIZE_T & CoreRender::CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HA
 	return m_gpuOffset[m_frameIndex];
 }
 
+Fence * CoreRender::GetFence(const UINT & index)
+{
+	return &m_passFences[index];
+}
+
 HRESULT CoreRender::_Flush()
 {
 	HRESULT hr = 0;
@@ -448,10 +457,11 @@ HRESULT CoreRender::_Flush()
 
 	ID3D12CommandList* ppCommandLists[] = { m_commandList[m_frameIndex] };
 	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-	if (FAILED(hr = m_commandQueue->Signal(m_fence[m_frameIndex], m_fenceValue[m_frameIndex])))
+	if (FAILED(hr = m_commandQueue->Signal(m_fence, m_fenceValue)))
 	{
 		return hr;
 	}
+	
 	return hr;
 }
 
@@ -561,7 +571,7 @@ HRESULT CoreRender::_UpdatePipeline()
 		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
 
-	m_commandList[m_frameIndex]->Close();
+	m_commandList[m_frameIndex]->Close();	
 
 	m_deferredTimer.LogTime();
 	return hr;
@@ -571,12 +581,12 @@ HRESULT CoreRender::_UpdatePipeline()
 HRESULT CoreRender::_waitForPreviousFrame()
 {
 	HRESULT hr = 0;
-
+	m_frameIndex = (m_frameIndex + 1) % FRAME_BUFFER_COUNT;
 	m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
 
-	if (m_fence[m_frameIndex]->GetCompletedValue() < m_fenceValue[m_frameIndex])
+	if (m_fence->GetCompletedValue() < m_fenceValue)
 	{
-		if (FAILED(hr = m_fence[m_frameIndex]->SetEventOnCompletion(m_fenceValue[m_frameIndex], m_fenceEvent)))
+		if (FAILED(hr = m_fence->SetEventOnCompletion(m_fenceValue, m_fenceEvent)))
 		{
 			return hr;
 		}
@@ -584,7 +594,7 @@ HRESULT CoreRender::_waitForPreviousFrame()
 		
 	}
 
-	m_fenceValue[m_frameIndex]++;
+	m_fenceValue++;
 
 	return hr;
 }
@@ -751,18 +761,34 @@ HRESULT CoreRender::_CreateFenceAndFenceEvent()
 {
 	HRESULT hr = 0;
 
-	for (UINT i = 0; i < FRAME_BUFFER_COUNT; i++)
+
+	if (FAILED(hr = m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence))))
 	{
-		if (FAILED(hr = m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence[i]))))
-		{
-			break;
-		}
-		m_fenceValue[i] = 0;
+		return hr;
 	}
+	m_fenceValue = 0;
+	
 
 	m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	if (nullptr == m_fenceEvent)
 		return E_FAIL;
+
+	std::wstring arr[] = {
+		L"Fence_PRE_PASS",
+		L"Fence_GEOMETRY",
+		L"Fence_DEFERRED",
+		L"Fence_UPDATE",
+		L"Fence_DEFINE",
+		L"Fence_RAY_TRACING"
+	};
+
+
+
+	for (UINT i = 0; i < 6; i++)
+	{
+		if (FAILED(hr = m_passFences[i].CreateFence(arr[i])))
+			return hr;
+	}
 
 	return hr;
 }
@@ -782,10 +808,7 @@ HRESULT CoreRender::_CreateResourceDescriptorHeap()
 	SET_NAME(m_cpuDescriptorHeap, L"CPU DescriptorHeap");
 
 	m_resourceDescriptorHeapSize = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-
-
-
+	   	 
 	return hr;
 }
 

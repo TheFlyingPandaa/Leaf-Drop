@@ -65,7 +65,8 @@ HRESULT DeferredPass::Init()
 
 void DeferredPass::Update()
 {
-
+	//p_coreRender->GetFence(GEOMETRY)->Wait(p_coreRender->GetCommandQueue());
+	p_coreRender->GetFence(RAY_TRACING)->Wait(p_coreRender->GetCommandQueue());
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_coreRender->GetCommandList()[frameIndex];
 	p_coreRender->SetResourceDescriptorHeap(commandList);
@@ -168,6 +169,7 @@ void DeferredPass::Update()
 
 		m_rayTexture.SetGraphicsRootDescriptorTable(RAY_TRACING, commandList);
 	}
+	//p_coreRender->GetFence(DEFERRED)->Signal(p_coreRender->GetCommandQueue());
 }
 
 void DeferredPass::Draw()

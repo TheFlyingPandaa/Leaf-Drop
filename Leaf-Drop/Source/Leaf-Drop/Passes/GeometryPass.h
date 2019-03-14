@@ -51,9 +51,6 @@ private:
 	GpuTimer m_timer;
 
 	TextureAtlas * m_ptrAtlas;
-
-	Fence m_fence;
-
 private:
 	HRESULT _Init();
 	HRESULT _InitRootSignature();

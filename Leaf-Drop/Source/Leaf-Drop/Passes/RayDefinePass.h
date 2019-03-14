@@ -66,8 +66,6 @@ private:
 
 	UAV m_rayStencil;
 
-	Fence m_fence;
-
 	GpuTimer timer;
 
 private:

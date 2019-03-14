@@ -25,7 +25,7 @@ HRESULT RayDefinePass::Init()
 
 void RayDefinePass::Update()
 {
-	timer.Start();
+	//p_coreRender->GetFence(PRE_PASS)->Wait(p_coreRender->GetCommandQueue());
 	OpenCommandList(m_pipelineState);
 
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
@@ -54,17 +54,17 @@ void RayDefinePass::Draw()
 	commandList->DrawInstanced((UINT)m_screenQuad.mesh.size(), 1, 0, 0);
 
 	ExecuteCommandList();
-	m_fence.WaitForFinnishExecution();
-	timer.LogTime();
-
+	
 	p_coreRender->GetComputePass()->SetRayData(&m_rayStencil);
+
+	p_coreRender->GetFence(DEFINE)->Signal(p_coreRender->GetCommandQueue());
 }
 
 void RayDefinePass::Release()
 {
 	m_screenQuad.Release();
 	m_rayStencil.Release();
-	m_fence.Release();
+	
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
 	p_ReleaseCommandList();
@@ -120,11 +120,7 @@ HRESULT RayDefinePass::_Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCommandQueue())))
-	{
-		return hr;
-	}
-
+	
 	return hr;
 }
 

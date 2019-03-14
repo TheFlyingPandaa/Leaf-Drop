@@ -16,6 +16,14 @@
 
 class Window;
 
+#define PRE_PASS	0
+#define GEOMETRY	1
+#define DEFERRED	2
+#define UPDATE		3
+#define DEFINE		4
+#define RAY_TRACING	5
+
+
 class CoreRender
 {
 private:
@@ -67,6 +75,8 @@ public:
 	void SetResourceDescriptorHeap(ID3D12GraphicsCommandList * commandList) const;	
 	const SIZE_T & CopyToGPUDescriptorHeap(const D3D12_CPU_DESCRIPTOR_HANDLE & handle, const UINT & numDescriptors);
 
+	Fence * GetFence(const UINT & index);
+
 private:
 
 	GpuTimer m_deferredTimer;
@@ -90,10 +100,12 @@ private:
 	ID3D12GraphicsCommandList * m_commandList[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12CommandAllocator *	m_commandAllocator[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12Resource *			m_renderTargets[FRAME_BUFFER_COUNT]{ nullptr };
-	ID3D12Fence *				m_fence[FRAME_BUFFER_COUNT]{ nullptr };
-	UINT64 						m_fenceValue[FRAME_BUFFER_COUNT]{ 0 };
+
+	ID3D12Fence *				m_fence = nullptr;
+	UINT64 						m_fenceValue = 0;
 
 	UINT m_frameIndex = 0;
+	UINT m_presentIndex = 0;
 	UINT m_rtvDescriptorSize = 0;
 
 	HANDLE m_fenceEvent = nullptr;
@@ -108,6 +120,8 @@ private:
 	DeferredPass * m_deferredPass = nullptr;
 	ComputePass * m_computePass = nullptr;
 	RayDefinePass * m_rayDefinePass = nullptr;
+
+	Fence m_passFences[6];
 
 	HRESULT _Flush();
 	HRESULT _UpdatePipeline();

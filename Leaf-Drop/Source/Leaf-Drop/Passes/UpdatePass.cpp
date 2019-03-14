@@ -41,16 +41,14 @@ HRESULT UpdatePass::Init()
 	{
 		return hr;
 	}
-	if (FAILED(hr = m_fence.CreateFence(p_coreRender->GetCopyQueue())))
-	{
-		return hr;
-	}
 
 	return hr;
 }
 
 void UpdatePass::Update()
 {
+	//p_coreRender->GetFence(DEFERRED)->Wait(p_coreRender->GetCopyQueue());
+	
 	timer.Start();
 	static bool _FirstRun = true;
 
@@ -68,8 +66,8 @@ void UpdatePass::Update()
 
 	_SetLightData();
 	_SetObjectData();
-	m_fence.WaitForFinnishExecution();
-	timer.LogTime();
+	
+	p_coreRender->GetFence(UPDATE)->Signal(p_coreRender->GetCopyQueue());
 }
 
 void UpdatePass::Draw()
@@ -83,7 +81,6 @@ void UpdatePass::Release()
 	m_objectData.Release();
 	m_lightBuffer.Release();
 	m_octree.Release();
-	m_fence.Release();
 }
 
 const ConstantBuffer & UpdatePass::GetLightBuffer() const

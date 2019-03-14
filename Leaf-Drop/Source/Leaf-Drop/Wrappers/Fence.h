@@ -4,15 +4,16 @@ class Fence
 public:
 	Fence();
 	~Fence();
-	HRESULT CreateFence(ID3D12CommandQueue * commandQueue);
-	HRESULT WaitForFinnishExecution();
+	HRESULT CreateFence(const std::wstring & name);
+
+	HRESULT Signal(ID3D12CommandQueue * commandQueue);
+	HRESULT Wait(ID3D12CommandQueue * commandQueue);
 
 	void Release();
 private:
-	ID3D12Fence *			m_fence[FRAME_BUFFER_COUNT]{ nullptr };
+	ID3D12Fence *			m_fence = nullptr;
 	HANDLE					m_fenceEvent = nullptr;
-	UINT64 					m_fenceValue[FRAME_BUFFER_COUNT]{ 0 };
-	ID3D12CommandQueue *	m_ptrCommandQueue = nullptr;
+	UINT64 					m_fenceValue = 0;
 
 };
 

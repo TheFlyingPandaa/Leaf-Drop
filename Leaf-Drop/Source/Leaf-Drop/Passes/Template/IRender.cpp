@@ -72,6 +72,7 @@ HRESULT IRender::ExecuteCommandList()
 		ID3D12CommandList* ppCommandLists[] = { p_commandList[frameIndex] };
 		p_coreRender->GetCommandQueue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	}
+
 	return hr;
 }
 

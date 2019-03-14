@@ -44,6 +44,7 @@ HRESULT PrePass::Init()
 
 void PrePass::Update()
 {
+	//p_coreRender->GetFence(DEFERRED)->Wait(p_coreRender->GetCommandQueue());
 	timer.Start();
 	if (FAILED(OpenCommandList(m_pipelineState)))
 	{
@@ -108,6 +109,8 @@ void PrePass::Update()
 
 	m_camBuffer.SetData(&viewProj, sizeof(DirectX::XMFLOAT4X4A));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
+
+	p_coreRender->GetFence(0)->Wait(p_coreRender->GetCommandQueue());
 
 }
 
@@ -179,14 +182,15 @@ void PrePass::Draw()
 	}
 
 	ExecuteCommandList();
-	timer.LogTime();
 
-	// Possible fence?? boobie fix
 
 	p_coreRender->GetGeometryPass()->SetDepthPreBuffer(&m_depthBuffer);
 
 	RenderTarget * arr[] = { &m_renderTarget[0], &m_renderTarget[1], &m_renderTarget[2] };
 	p_coreRender->GetRayDefinePass()->SetGeometryRenderTargets(arr, 3);
+
+	p_coreRender->GetFence(PRE_PASS)->Signal(p_coreRender->GetCommandQueue());
+	
 }
 
 void PrePass::Release()
