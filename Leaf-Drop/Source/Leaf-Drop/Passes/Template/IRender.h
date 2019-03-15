@@ -27,7 +27,7 @@ public:
 	void KillThread();
 
 	HRESULT OpenCommandList(ID3D12PipelineState * pipelineSate = nullptr);
-	HRESULT ExecuteCommandList();
+	HRESULT ExecuteCommandList(ID3D12CommandQueue * commandQueue = nullptr);
 
 	struct InstanceGroup
 	{

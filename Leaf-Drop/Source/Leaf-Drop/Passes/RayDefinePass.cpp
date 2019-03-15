@@ -24,7 +24,7 @@ HRESULT RayDefinePass::Init()
 
 void RayDefinePass::Update()
 {
-	//p_coreRender->GetFence(PRE_PASS)->Wait(p_coreRender->GetCommandQueue());
+	p_coreRender->GetFence(PRE_PASS)->Wait(m_commandQueue);
 	OpenCommandList(m_pipelineState);
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
@@ -56,11 +56,11 @@ void RayDefinePass::Draw()
 
 	sTimer[DEFINE].Stop(p_commandList[frameIndex], sCounter[DEFINE]);
 	sTimer[DEFINE].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[DEFINE]++);
-	ExecuteCommandList();
+	ExecuteCommandList(m_commandQueue);
 	
 	p_coreRender->GetComputePass()->SetRayData(&m_rayStencil);
 
-	p_coreRender->GetFence(DEFINE)->Signal(p_coreRender->GetCommandQueue());
+	p_coreRender->GetFence(DEFINE)->Signal(m_commandQueue);
 }
 
 void RayDefinePass::Release()
@@ -70,6 +70,7 @@ void RayDefinePass::Release()
 	
 	SAFE_RELEASE(m_pipelineState);
 	SAFE_RELEASE(m_rootSignature);
+	SAFE_RELEASE(m_commandQueue);
 	p_ReleaseCommandList();
 }
 
@@ -89,6 +90,10 @@ HRESULT RayDefinePass::_Init()
 	HRESULT hr = 0;
 
 	if (FAILED(hr = p_CreateCommandList(L"DefRay")))
+		return hr;
+
+	D3D12_COMMAND_QUEUE_DESC desc{D3D12_COMMAND_LIST_TYPE_DIRECT, 0, D3D12_COMMAND_QUEUE_FLAG_NONE, 0};
+	if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_commandQueue))))
 		return hr;
 
 	const UINT FRAME_INDEX = p_coreRender->GetFrameIndex();
