@@ -2,6 +2,7 @@
 cbuffer CAMERA : register(b0)
 {
 	float4x4 ViewProj;
+    float4 CameraPosition;
 }
 
 struct ObjectData

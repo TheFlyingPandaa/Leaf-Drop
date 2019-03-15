@@ -57,7 +57,7 @@ inline void* __cdecl operator new[](size_t size, size_t alignment, size_t alignm
 
 #define SET_NAME(p, str) {if ((p)){ (p)->SetName((str));}}
 
-#define SCREEN_DIV 1
+#define SCREEN_DIV 8
 #define DISPATCH_MUL 8
 #define AlignAs256(n){ n + 255 & ~255 }
 

@@ -70,23 +70,7 @@ private:
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
-	struct LIGHT_VALUES
-	{
-		DirectX::XMUINT4 Type;
-		DirectX::XMFLOAT4 Position;
-		DirectX::XMFLOAT4 Color;
-		union
-		{
-			DirectX::XMFLOAT4 Direction;
-			DirectX::XMFLOAT4 Point;
-		};
-			
-	};
-
-	UAV m_lightUav;
-	ConstantBuffer m_lightsBuffer;
-	
-
+	   
 	RenderTarget m_rayTexture;
 	ShaderResource * m_pRaySRV = nullptr;
 
@@ -99,6 +83,5 @@ private:
 	HRESULT _InitPipelineState();
 	void	_CreateViewPort();
 
-	void _SetLightData();
 };
 
