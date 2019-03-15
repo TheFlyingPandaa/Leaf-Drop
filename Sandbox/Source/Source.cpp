@@ -195,9 +195,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		d[6].SetNormal(&t[1]);
 		d[6].SetMetallic(&t[2]);
 
-		d[7].SetPosition(-35.8751, 40.5017, -35.6769);
+		d[7].SetPosition(-45.9758, -40, 31.1561);
 		d[7].SetScale(20, 20, 20);
-		d[7].SetRotation(0, DirectX::XMConvertToRadians(-45), DirectX::XMConvertToRadians(45));
+		d[7].SetRotation(0, 0, 0);
 		d[7].SetTexture(&t[0]);
 		d[7].SetNormal(&t[1]);
 		d[7].SetMetallic(&t[2]);
@@ -338,7 +338,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			dynamicD[3].SetRotation(0, 0, mover);
 
 			mover += SPEED * dt;
-			
+
 			if (mover >= DirectX::XM_2PI)
 			{
 				mover = 0;

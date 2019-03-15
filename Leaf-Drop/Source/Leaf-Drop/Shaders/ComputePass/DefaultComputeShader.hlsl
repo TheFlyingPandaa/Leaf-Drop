@@ -1,6 +1,6 @@
 #include "../LightCalculations.hlsli"
 
-#define RAY_BOUNCE 16
+#define RAY_BOUNCE 128
 
 #define MAX_MIP 13
 #define MIN_MIP 0

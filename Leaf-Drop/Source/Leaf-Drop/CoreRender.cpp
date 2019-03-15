@@ -596,16 +596,17 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_updatePass->UpdateThread();
 	
 	m_prePass->ThreadJoin();
-	m_geometryPass->UpdateThread();
 
 	m_rayDefinePass->UpdateThread();
+	m_geometryPass->UpdateThread();
+
 	m_rayDefinePass->ThreadJoin();
 	m_updatePass->ThreadJoin();
 		   
 	m_computePass->UpdateThread();
 	
-	m_geometryPass->ThreadJoin();
 	m_computePass->ThreadJoin();
+	m_geometryPass->ThreadJoin();
 
 
 	m_deferredPass->Update();
