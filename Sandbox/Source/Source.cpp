@@ -249,6 +249,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		light.SetDirection(1, -1, 0);
 		light.SetIntensity(0.5f);
 		
+		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
+		{
+			d[i].Update();
+			
+		}
+
+		for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
+		{
+			dynamicD[i].Update();
+			
+		}
+
 		while (core->Running())
 		{
 			POINT mp = wnd->GetMousePosition();
@@ -312,14 +324,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 					   		
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
-				d[i].Update();
+			//	d[i].Update();
 				d[i].Draw();
 			}
 
 			for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
 			{
-				
-				dynamicD[i].Update();
+			//	dynamicD[i].Update();
 				dynamicD[i].Draw();
 			}
 

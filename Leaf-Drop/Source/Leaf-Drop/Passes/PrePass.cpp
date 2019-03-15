@@ -239,8 +239,13 @@ HRESULT PrePass::_Init()
 	{
 		return hr;
 	}
+	auto wSize = Window::GetInstance()->GetWindowSize();
+
+	wSize.x /= SCREEN_DIV;
+	wSize.y /= SCREEN_DIV;
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
+
 		if (FAILED(hr = m_renderTarget[i].Init(L"PrePass",0,0,1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
 		{
 			return hr;

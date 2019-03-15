@@ -401,13 +401,13 @@ void RayDefinePass::_CreateViewPort()
 	POINT wndSize = p_window->GetWindowSize();
 	m_viewport.TopLeftX = 0;
 	m_viewport.TopLeftY = 0;
-	m_viewport.Width = (FLOAT)wndSize.x;
-	m_viewport.Height = (FLOAT)wndSize.y;
+	m_viewport.Width = (FLOAT)wndSize.x		/ SCREEN_DIV;
+	m_viewport.Height = (FLOAT)wndSize.y	/ SCREEN_DIV;
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 
 	m_scissorRect.left = 0;
 	m_scissorRect.top = 0;
-	m_scissorRect.right = wndSize.x;
-	m_scissorRect.bottom = wndSize.y;
+	m_scissorRect.right = wndSize.x / SCREEN_DIV;
+	m_scissorRect.bottom = wndSize.y / SCREEN_DIV;
 }
