@@ -75,16 +75,16 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 specular = float4(0,0,0,1);
 	float4 finalColor = float4(0,0,0,1);
 
-	for	(uint i = 0; i < LightValues.x && i < 256; i++)
-	{
-		finalColor += LightCalculations(Lights[i],
-			CameraPosition,
-			worldPos,
-			albedo,
-			normal,
-			metallic,
-			specular);
-	}
+	//for	(uint i = 0; i < LightValues.x && i < 256; i++)
+	//{
+	//	finalColor += LightCalculations(Lights[i],
+	//		CameraPosition,
+	//		worldPos,
+	//		albedo,
+	//		normal,
+	//		metallic,
+	//		specular);
+	//}
 
 	float lengthToFragment = length(worldPos - CameraPosition);
 

@@ -39,7 +39,7 @@ HRESULT DeferredPass::Init()
 		return hr;
 	}
 	const UINT bufferSize = 1024 * 64;
-	const UINT elementSize = sizeof(LIGHT_VALUES);
+	const UINT elementSize = sizeof(STRUCTS::LIGHT_VALUES);
 
 	auto size = p_window->GetWindowSize();
 
@@ -501,7 +501,7 @@ void DeferredPass::_CreateViewPort()
 
 void DeferredPass::_SetLightData()
 {
-	LIGHT_VALUES values;
+	STRUCTS::LIGHT_VALUES values;
 
 	PointLight * pl;
 	DirectionalLight * dl;
@@ -533,7 +533,7 @@ void DeferredPass::_SetLightData()
 		{
 			values.Direction = DirectX::XMFLOAT4(dl->GetDirection().x, dl->GetDirection().y, dl->GetDirection().z, dl->GetIntensity());
 		}
-		m_lightUav.CopyData(&values, sizeof(LIGHT_VALUES), i * sizeof(LIGHT_VALUES));
+		m_lightUav.CopyData(&values, sizeof(STRUCTS::LIGHT_VALUES), i * sizeof(STRUCTS::LIGHT_VALUES));
 	}
 }
 

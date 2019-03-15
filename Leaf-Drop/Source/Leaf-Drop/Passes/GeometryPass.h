@@ -48,6 +48,9 @@ private:
 	ConstantBuffer m_worldMatrices;
 	ConstantBuffer m_textureIndex;
 
+	ConstantBuffer m_lightsArrayBuffer;
+	ConstantBuffer m_lightIndexBuffer;
+
 	GpuTimer m_timer;
 
 	TextureAtlas * m_ptrAtlas;
@@ -58,5 +61,6 @@ private:
 	HRESULT _InitPipelineState();
 	void _CreateViewPort();
 
+	void _CopyLightData();
 };
 

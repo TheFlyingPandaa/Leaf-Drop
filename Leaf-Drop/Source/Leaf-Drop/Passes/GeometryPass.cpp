@@ -8,11 +8,16 @@
 #include "../Objects/Camera.h"
 #include <string>
 
+#include "Source/Leaf-Drop/Objects/Lights/DirectionalLight.h"
+#include "Source/Leaf-Drop/Objects/Lights/PointLight.h"
+
 
 #define CAMERA_BUFFER	0
 #define WORLD_MATRICES	1
 #define TEXTURE_TABLE	2
 #define TEXTURE_INDEX	3
+#define LIGHT_ARRAY		4
+#define LIGHT_INDEX		5
 
 
 struct UINT4
@@ -72,6 +77,13 @@ HRESULT GeometryPass::Init()
 	}
 	m_ptrAtlas = TextureAtlas::GetInstance();
 
+	const UINT bufferSize = 1024 * 64;
+	const UINT elementSize = sizeof(STRUCTS::LIGHT_VALUES);
+
+	if (FAILED(hr = m_lightsArrayBuffer.Init(bufferSize, L"Geometry Light array", ConstantBuffer::CBV_TYPE::STRUCTURED_BUFFER, elementSize)))
+		return hr;
+	if (FAILED(hr = m_lightIndexBuffer.Init(256, L"Geometry Light index", ConstantBuffer::CBV_TYPE::CONSTANT_BUFFER)))
+		return hr;
 	sTimer[GEOMETRY].SetCommandQueue(p_coreRender->GetCommandQueue());
 
 	return hr;
@@ -158,9 +170,16 @@ void GeometryPass::Update()
 	cam->Update();
 
 	DirectX::XMFLOAT4X4A viewProj = cam->GetViewProjectionMatrix();
+	DirectX::XMFLOAT4 position = cam->GetPosition();
+
 
 	m_camBuffer.SetData(&viewProj, sizeof(DirectX::XMFLOAT4X4A));
+	m_camBuffer.SetData(&position, sizeof(DirectX::XMFLOAT4), sizeof(DirectX::XMFLOAT4X4A));
 	m_camBuffer.Bind(CAMERA_BUFFER, commandList);
+
+	_CopyLightData();
+	m_lightsArrayBuffer.Bind(LIGHT_ARRAY, commandList);
+	m_lightIndexBuffer.Bind(LIGHT_INDEX, commandList);
 
 }
 
@@ -233,6 +252,8 @@ void GeometryPass::Release()
 	SAFE_RELEASE(m_pipelineState);
 
 	m_depthBuffer.Release();
+	m_lightsArrayBuffer.Release();
+	m_lightIndexBuffer.Release();
 
 	m_camBuffer.Release();
 	m_worldMatrices.Release();
@@ -253,9 +274,9 @@ HRESULT GeometryPass::_InitRootSignature()
 {
 	HRESULT hr = 0;
 	
-	CD3DX12_ROOT_PARAMETER1 rootParameters[4];
+	CD3DX12_ROOT_PARAMETER1 rootParameters[6];
 
-	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
+	rootParameters[CAMERA_BUFFER].InitAsConstantBufferView(0, 0);
 	
 	D3D12_DESCRIPTOR_RANGE1 descRange = CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, -1, 0, 1);
 	rootParameters[TEXTURE_TABLE].InitAsDescriptorTable(1, &descRange, D3D12_SHADER_VISIBILITY_PIXEL);
@@ -269,8 +290,8 @@ HRESULT GeometryPass::_InitRootSignature()
 	//rootParameters[TEXTURE_INDEX].InitAsConstantBufferView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	rootParameters[TEXTURE_INDEX].InitAsShaderResourceView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 
-
-
+	rootParameters[LIGHT_ARRAY].InitAsShaderResourceView(0, 2, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[LIGHT_INDEX].InitAsConstantBufferView(0, 2, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 
@@ -444,7 +465,43 @@ void GeometryPass::_CreateViewPort()
 	m_scissorRect.right = wndSize.x;
 	m_scissorRect.bottom = wndSize.y;
 }
+void GeometryPass::_CopyLightData()
+{
+	STRUCTS::LIGHT_VALUES values;
 
+	PointLight * pl;
+	DirectionalLight * dl;
+
+	struct
+	{
+		UINT a, b, c, d;
+	} uint4;
+
+	uint4.a = static_cast<UINT>(p_lightQueue.size());
+	m_lightIndexBuffer.SetData(&uint4, sizeof(UINT) * 4);
+
+
+	for (UINT i = 0; i < p_lightQueue.size(); i++)
+	{
+		values.Position = p_lightQueue[i]->GetPosition();
+		values.Color = p_lightQueue[i]->GetColor();
+
+		values.Type.x = p_lightQueue[i]->GetType();
+		values.Type.y = p_lightQueue[i]->GetType();
+		values.Type.z = p_lightQueue[i]->GetType();
+		values.Type.w = p_lightQueue[i]->GetType();
+
+		if (pl = dynamic_cast<PointLight*>(p_lightQueue[i]))
+		{
+			values.Point = DirectX::XMFLOAT4(pl->GetIntensity(), pl->GetDropOff(), pl->GetPow(), pl->GetRadius());
+		}
+		if (dl = dynamic_cast<DirectionalLight*>(p_lightQueue[i]))
+		{
+			values.Direction = DirectX::XMFLOAT4(dl->GetDirection().x, dl->GetDirection().y, dl->GetDirection().z, dl->GetIntensity());
+		}
+		m_lightsArrayBuffer.SetData(&values, sizeof(STRUCTS::LIGHT_VALUES), i * sizeof(STRUCTS::LIGHT_VALUES));
+	}
+}
 
 
 HRESULT GeometryPass::_Init()

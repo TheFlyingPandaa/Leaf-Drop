@@ -48,5 +48,4 @@ namespace STRUCTS
 		UINT MeshIndex = 0;
 		UINT TextureIndex = 0;
 	};
-
 }
