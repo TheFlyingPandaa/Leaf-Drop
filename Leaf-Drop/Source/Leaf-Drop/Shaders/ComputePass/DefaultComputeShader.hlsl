@@ -1,6 +1,6 @@
 #include "../LightCalculations.hlsli"
 
-#define RAY_BOUNCE 128
+#define RAY_BOUNCE 1
 
 #define MAX_MIP 13
 #define MIN_MIP 0
@@ -385,6 +385,8 @@ void main (uint3 threadID : SV_DispatchThreadID)
     float3 fragmentWorld =  RayStencil[rayStencilIndex].startPos;
     float3 fragmentNormal = RayStencil[rayStencilIndex].normal;
 
+    outputTexture[pixelLocation] = float4(fragmentNormal.xyz, 1);
+    return;
     float3 ray = normalize(fragmentWorld - ViewerPosition.xyz);
     ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
     
@@ -448,6 +450,5 @@ void main (uint3 threadID : SV_DispatchThreadID)
             ray = normalize(ray - (2.0f * (fragmentNormal * (dot(ray, fragmentNormal)))));
         }
     }
-    
     outputTexture[pixelLocation] = saturate(finalColor + specular);
 }

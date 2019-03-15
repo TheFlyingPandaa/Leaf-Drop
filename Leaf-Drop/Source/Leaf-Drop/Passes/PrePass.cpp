@@ -58,9 +58,7 @@ void PrePass::Update()
 
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = p_coreRender->GetCPUDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	const SIZE_T resourceSize = p_coreRender->GetResourceDescriptorHeapSize();
-	   
 	
-
 	m_depthBuffer.SwapToDSV(commandList);
 
 	int counter = 0;
@@ -180,8 +178,27 @@ void PrePass::Draw()
 		m_renderTarget[i].SwitchToSRV(commandList);
 	}
 
+
+
+
+
+
+
+
+
+
+
 	sTimer[PRE_PASS].Stop(p_commandList[frameIndex], sCounter[PRE_PASS]);
 	sTimer[PRE_PASS].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[PRE_PASS]++);
+
+
+
+
+
+
+
+
+
 	ExecuteCommandList();
 
 
@@ -241,7 +258,12 @@ HRESULT PrePass::_Init()
 	}
 	for (UINT i = 0; i < RENDER_TARGETS; i++)
 	{
-		if (FAILED(hr = m_renderTarget[i].Init(L"PrePass",0,0,1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
+		auto namn = Window::GetInstance()->GetWindowSize();
+
+		namn.x /= SCREEN_DIV;
+		namn.y /= SCREEN_DIV;
+
+		if (FAILED(hr = m_renderTarget[i].Init(L"PrePass", namn.x, namn.y,1, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE)))
 		{
 			return hr;
 		}
@@ -379,8 +401,8 @@ void PrePass::_CreateViewPort()
 	POINT wndSize = p_window->GetWindowSize();
 	m_viewport.TopLeftX = 0;
 	m_viewport.TopLeftY = 0;
-	m_viewport.Width = (FLOAT)wndSize.x;
-	m_viewport.Height = (FLOAT)wndSize.y;
+	m_viewport.Width = (FLOAT)wndSize.x / SCREEN_DIV;
+	m_viewport.Height = (FLOAT)wndSize.y / SCREEN_DIV;
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 

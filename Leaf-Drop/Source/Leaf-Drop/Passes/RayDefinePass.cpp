@@ -24,7 +24,7 @@ HRESULT RayDefinePass::Init()
 
 void RayDefinePass::Update()
 {
-	p_coreRender->GetFence(PRE_PASS)->Wait(m_commandQueue);
+	//p_coreRender->GetFence(PRE_PASS)->Wait(m_commandQueue);
 	OpenCommandList(m_pipelineState);
 	const UINT frameIndex = p_coreRender->GetFrameIndex();
 	ID3D12GraphicsCommandList * commandList = p_commandList[frameIndex];
@@ -56,11 +56,11 @@ void RayDefinePass::Draw()
 
 	sTimer[DEFINE].Stop(p_commandList[frameIndex], sCounter[DEFINE]);
 	sTimer[DEFINE].ResolveQueryToCPU(p_commandList[frameIndex], sCounter[DEFINE]++);
-	ExecuteCommandList(m_commandQueue);
+	ExecuteCommandList();
 	
 	p_coreRender->GetComputePass()->SetRayData(&m_rayStencil);
 
-	p_coreRender->GetFence(DEFINE)->Signal(m_commandQueue);
+	p_coreRender->GetFence(DEFINE)->Signal(p_coreRender->GetCommandQueue());
 }
 
 void RayDefinePass::Release()
@@ -297,7 +297,7 @@ HRESULT RayDefinePass::_InitShader()
 	m_vertexShader.pShaderBytecode = blob->GetBufferPointer();
 	m_vertexShader.BytecodeLength = blob->GetBufferSize();
 
-	std::string Wid(std::to_string(p_window->GetWindowSize().x / SCREEN_DIV));
+	std::string Wid(std::to_string((p_window->GetWindowSize().x) / SCREEN_DIV));
 	std::string DIV(std::to_string(SCREEN_DIV));
 
 	D3D_SHADER_MACRO def[] = {
@@ -401,8 +401,8 @@ void RayDefinePass::_CreateViewPort()
 	POINT wndSize = p_window->GetWindowSize();
 	m_viewport.TopLeftX = 0;
 	m_viewport.TopLeftY = 0;
-	m_viewport.Width = (FLOAT)wndSize.x;
-	m_viewport.Height = (FLOAT)wndSize.y;
+	m_viewport.Width = (FLOAT)wndSize.x / SCREEN_DIV;
+	m_viewport.Height = (FLOAT)wndSize.y / SCREEN_DIV;
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 

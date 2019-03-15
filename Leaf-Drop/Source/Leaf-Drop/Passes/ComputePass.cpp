@@ -134,9 +134,9 @@ void ComputePass::Draw()
 		}
 	}
 
-
+	
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::UAV(m_rayTexture.GetResource()));
-
+	
 	p_commandList[frameIndex]->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(rayData.OctreeBuffer->GetResource(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COPY_DEST));
 
 	sTimer[RAY_TRACING].Stop(p_commandList[frameIndex], sCounter[RAY_TRACING]);
@@ -187,13 +187,14 @@ HRESULT ComputePass::_Init()
 
 	//Compute command list
 	D3D12_COMMAND_QUEUE_DESC desc{};
-	desc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+	desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+	//D3D12_COMMAND_LIST_TYPE_COMPUTE
 
 	if (FAILED(hr = p_coreRender->GetDevice()->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_commandQueue))))
 	{
 		return hr;
 	}
-	if (FAILED(hr = p_CreateCommandList(L"Compute", D3D12_COMMAND_LIST_TYPE_COMPUTE)))
+	if (FAILED(hr = p_CreateCommandList(L"Compute")))
 	{
 		return hr;
 	}

@@ -231,7 +231,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		dynamicD[3].SetTexture(&t2[0]);
 		dynamicD[3].SetNormal(&t2[1]);
 		dynamicD[3].SetMetallic(&t2[2]);
+		for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
+		{
 
+			dynamicD[i].Update();
+			
+		}
+
+
+		for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
+		{
+			d[i].Update();
+		}
 
 		float rot = 0;
 		timer.Start();
@@ -251,6 +262,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		
 		while (core->Running())
 		{
+			
 			POINT mp = wnd->GetMousePosition();
 			DirectX::XMFLOAT2 mouseThisFrame = { (float)mp.x, (float)mp.y };
 			static const float MOVE_SPEED = 5.0f;
@@ -264,7 +276,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			if (Camera::GetActiveCamera() == &cam && false)
+			if (Camera::GetActiveCamera() == &cam)
 			{
 				if (wnd->IsKeyPressed(Input::W))
 					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
@@ -303,7 +315,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 				moveDir.z *= (FLOAT)dt;
 			
 				cam.Translate(moveDir, false);
-				cam.Update();
+				//cam.Update();
 			}
 
 			
@@ -312,16 +324,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 					   		
 			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
 			{
-				d[i].Update();
+				
 				d[i].Draw();
 			}
 
 			for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
 			{
 				
-				dynamicD[i].Update();
+
+				//dynamicD[i].Update();
 				dynamicD[i].Draw();
 			}
+
 
 			rot += 1.0f * (FLOAT)dt;
 
@@ -407,7 +421,6 @@ void printFrameTime(double dt)
 
 	static UINT64 counter2 = 0;
 
-	Window::GetInstance()->SetWindowTitle("Frame: " + std::to_string(counter2++));
 
 	if (counter >= MAX_DATA)
 	{
@@ -415,6 +428,7 @@ void printFrameTime(double dt)
 
 		allTime /= MAX_DATA;
 
+		Window::GetInstance()->SetWindowTitle("Frame: " + std::to_string(allTime));
 
 		//std::cout << allTime << std::endl;
 

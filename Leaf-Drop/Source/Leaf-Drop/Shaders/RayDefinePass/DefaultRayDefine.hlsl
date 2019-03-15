@@ -24,17 +24,17 @@ struct PS_INPUT
 
 void main(PS_INPUT input)
 {
-    float metallic = Metallic.Sample(defaultSampler, input.uv).r;
+    float4 metallic = Metallic.Sample(defaultSampler, input.uv);
     float3 pos = WorldPosition.Sample(defaultSampler, input.uv).xyz;
     float3 normal = Normal.Sample(defaultSampler, input.uv).xyz;
 
-    uint2 rayStencilIndex = uint2(input.position.xy / RAY_DIV);
-    uint accessIndex = rayStencilIndex.x + rayStencilIndex.y * RAY_WIDTH;
+    //uint2 rayStencilIndex = uint2((uint2)input.position.xy / RAY_DIV);
+    uint accessIndex = (uint) input.position.x + (uint) input.position.y * RAY_WIDTH;
 
     RAY_STRUCT rs;
     rs.startPos = pos;
-    rs.normal = normal;
-    rs.dispatch = metallic >= REFLECTION_VAL;
-
+    rs.normal = metallic.xyz;
+    rs.dispatch = true; //metallic >= REFLECTION_VAL;
+    
     RayStencil[accessIndex] = rs;
 }

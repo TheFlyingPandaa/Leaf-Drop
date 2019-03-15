@@ -23,6 +23,7 @@ namespace GPU
 		void Stop(ID3D12GraphicsCommandList* commandList, UINT timestampIndex);
 
 		void SetCommandQueue(ID3D12CommandQueue * commandQueue);
+		ID3D12CommandQueue* GetCommandQueue() { return m_pCommandQueue; };
 		UINT64 GetFreq();
 
 		void ResolveQueryToCPU(ID3D12GraphicsCommandList* commandList, UINT timestampIndex);

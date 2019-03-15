@@ -23,7 +23,7 @@ PS_OUTPUT main(VS_OUTPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0;
     output.World = input.worldPosition;
-    output.Normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas[TextureIndex[0].x + 1].Sample(defaultSampler, input.uv).xyz - 1.0f), input.TBN)), 0);
-    output.Metallic = textureAtlas[TextureIndex[0].x + 2].Sample(defaultSampler, input.uv);
+    output.Normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas[1].Sample(defaultSampler, input.uv).xyz - 1.0f), input.TBN)), 0);
+    output.Metallic = textureAtlas[1].Sample(defaultSampler, input.uv);
     return output;
 }

@@ -67,12 +67,12 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 #ifdef _DEBUG
+#endif
 	if (FAILED(hr = D3D12GetDebugInterface(IID_PPV_ARGS(&m_debugLayer))))
 	{		
 		return DEBUG::CreateError(hr);
 	}
 	m_debugLayer->EnableDebugLayer();
-#endif
 
 	if (FAILED(hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&m_device))))
 	{
@@ -169,8 +169,7 @@ HRESULT CoreRender::Init()
 		return DEBUG::CreateError(hr);
 	}
 	
-
-	for (UINT i = 0; i < 6; i++)
+	for (UINT i = 0; i < 7; i++)
 	{
 		if (i == UPDATE)
 		{
@@ -181,6 +180,8 @@ HRESULT CoreRender::Init()
 			if (FAILED(hr = StefanTimer[i].Init(NUM_FRAMES)))
 				return DEBUG::CreateError(hr);
 	}
+
+	StefanTimer[FRAME].SetCommandQueue(m_commandQueue);
 
 	return hr;
 }
@@ -228,19 +229,19 @@ void CoreRender::Release()
 	}
 
 #ifdef _DEBUG
-	if (m_device)
-	{
-		if (m_device->Release())
-		{
-			ID3D12DebugDevice * dbgDevice = nullptr;
-			if (SUCCEEDED(m_device->QueryInterface(IID_PPV_ARGS(&dbgDevice))))
-			{
-				dbgDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
-				SAFE_RELEASE(dbgDevice);
-			}
-		}
-		m_device = nullptr;
-	}
+	//if (m_device)
+	//{
+	//	if (m_device->Release())
+	//	{
+	//		ID3D12DebugDevice * dbgDevice = nullptr;
+	//		if (SUCCEEDED(m_device->QueryInterface(IID_PPV_ARGS(&dbgDevice))))
+	//		{
+	//			dbgDevice->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL);
+	//			SAFE_RELEASE(dbgDevice);
+	//		}
+	//	}
+	//	m_device = nullptr;
+	//}
 #endif
 	SAFE_RELEASE(m_device);
 }
@@ -504,17 +505,57 @@ HRESULT CoreRender::_UpdatePipeline()
 			"_DEFERRED",
 			"_UPDATE",
 			"_DEFINE",
-			"_RAY_TRACING"
+			"_RAY_TRACING",
+			"_TOTAL_FRAME"
 		};
 
-		for (int i = 0; i < 6; i++)
+		struct queueVal
+		{
+			UINT64 g, c;
+		};
+
+		queueVal Direct, Copy, Compute;
+		UINT64 aaa, bbb, ccc;
+		m_copyQueue->GetTimestampFrequency(&aaa);
+		m_commandQueue->GetTimestampFrequency(&bbb);
+		m_computePass->GetCommandQueue()->GetTimestampFrequency(&ccc);
+
+		m_copyQueue->GetClockCalibration(&Copy.g, &Copy.c);
+		m_commandQueue->GetClockCalibration(&Direct.g, &Direct.c);
+		m_computePass->GetCommandQueue()->GetClockCalibration(&Compute.g, &Compute.c);
+
+
+		double directMs = Direct.g * (1.0 / bbb) * 1000.0;
+		double copyMs = Copy.g * (1.0 / aaa) * 1000.0;
+		double compueMs = Compute.g * (1.0 / ccc) * 1000.0;
+
+
+		double diffDopy = directMs - copyMs;
+		double diffcompute = directMs - compueMs;
+
+		INT64 a = ((INT64)Direct.g - Copy.g);
+		INT64 b = ((INT64)Direct.g - Compute.g);
+
+		INT64 aa = ((INT64)Direct.c - Copy.c);
+		INT64 bb = ((INT64)Direct.c - Compute.c);
+
+
+		for (int i = 0; i < 7; i++)
 		{		
 			std::ofstream file;
 			file.open(arr[i] + ".txt");
 
-			
 			UINT64 queueFreq = StefanTimer[i].GetFreq();
+			/*auto cq = StefanTimer[i].GetCommandQueue();
+			UINT64 g, c;
+			cq->GetClockCalibration(&g, &c);
+
+			LARGE_INTEGER cpuFq;
+			QueryPerformanceFrequency(&cpuFq);*/
+			
+			//double cToMs = (c / (real64)cpuFq.QuadPart) * 1000.0;
 			double timestampToMs = (1.0 / queueFreq) * 1000.0;
+
 			for (int j = 0; j < StefanTimerCounter[i]; j++)
 			{
 				GPU::Timestamp drawTime;
@@ -523,7 +564,7 @@ HRESULT CoreRender::_UpdatePipeline()
 				UINT64 dt = drawTime.Stop - drawTime.Start;
 				double timeInMs = dt * timestampToMs;
 
-				file << drawTime.Start << "\t" << drawTime.Stop << "\t" << timeInMs << "\n";
+				file << drawTime.Start << "\t" << drawTime.Stop << "\t" << timeInMs << std::endl;// << "\t" << g << "\t" << c << "\n";
 			}
 			file.close();
 		}
@@ -540,6 +581,7 @@ HRESULT CoreRender::_UpdatePipeline()
 		return hr;
 	}
 
+	StefanTimer[FRAME].Start(m_commandList[m_frameIndex], StefanTimerCounter[FRAME]);
 	{
 		D3D12_RESOURCE_TRANSITION_BARRIER transition;
 		transition.pResource = m_renderTargets[m_frameIndex];
@@ -551,6 +593,7 @@ HRESULT CoreRender::_UpdatePipeline()
 		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 		barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 		barrier.Transition = transition;
+
 
 		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
@@ -596,10 +639,10 @@ HRESULT CoreRender::_UpdatePipeline()
 	m_updatePass->UpdateThread();
 	
 	m_prePass->ThreadJoin();
-
+	
 	m_rayDefinePass->UpdateThread();
 	m_geometryPass->UpdateThread();
-
+	
 	m_rayDefinePass->ThreadJoin();
 	m_updatePass->ThreadJoin();
 		   
@@ -607,7 +650,6 @@ HRESULT CoreRender::_UpdatePipeline()
 	
 	m_computePass->ThreadJoin();
 	m_geometryPass->ThreadJoin();
-
 
 	m_deferredPass->Update();
 	m_deferredPass->Draw();
@@ -628,6 +670,8 @@ HRESULT CoreRender::_UpdatePipeline()
 		m_commandList[m_frameIndex]->ResourceBarrier(1, &barrier);
 	}
 
+	StefanTimer[FRAME].Stop(m_commandList[m_frameIndex], StefanTimerCounter[FRAME]);
+	StefanTimer[FRAME].ResolveQueryToCPU(m_commandList[m_frameIndex], StefanTimerCounter[FRAME]++);
 	m_commandList[m_frameIndex]->Close();	
 
 	return hr;

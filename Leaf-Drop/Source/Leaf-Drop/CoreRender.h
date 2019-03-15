@@ -25,6 +25,7 @@ class Window;
 #define UPDATE		3
 #define DEFINE		4
 #define RAY_TRACING	5
+#define FRAME		6
 
 #define sTimer p_coreRender->StefanTimer
 #define sCounter p_coreRender->StefanTimerCounter
@@ -84,10 +85,11 @@ public:
 
 	Fence * GetFence(const UINT & index);
 
-	UINT64 StefanTimerCounter[6]{0};
-	GPU::GpuTimer2 StefanTimer[6]; 
+	UINT64 StefanTimerCounter[7]{0};
+	GPU::GpuTimer2 StefanTimer[7]; 
 	//GpuTimer PassTimer[6];
-
+	ID3D12GraphicsCommandList * m_commandList[FRAME_BUFFER_COUNT]{ nullptr };
+	ID3D12CommandAllocator *	m_commandAllocator[FRAME_BUFFER_COUNT]{ nullptr };
 private:
 
 	GpuTimer m_deferredTimer;
@@ -108,8 +110,6 @@ private:
 	SIZE_T						m_currentResourceIndex = 0;
 	SIZE_T						m_resourceDescriptorHeapSize = 0;
 
-	ID3D12GraphicsCommandList * m_commandList[FRAME_BUFFER_COUNT]{ nullptr };
-	ID3D12CommandAllocator *	m_commandAllocator[FRAME_BUFFER_COUNT]{ nullptr };
 	ID3D12Resource *			m_renderTargets[FRAME_BUFFER_COUNT]{ nullptr };
 
 	ID3D12Fence *				m_fence = nullptr;

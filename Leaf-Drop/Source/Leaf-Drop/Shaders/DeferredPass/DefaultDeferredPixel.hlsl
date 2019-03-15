@@ -23,6 +23,7 @@ struct PS_INPUT
 
 float multiplier(int2 pos, int radius, float centerStregth = 4.0f)
 {
+
     float l = length(float2(pos.x, pos.y));
     return abs(radius - l) * centerStregth;
 }
@@ -32,10 +33,10 @@ float4 main(PS_INPUT input) : SV_TARGET
     float4 specular = Specular.Sample(defaultSampler, input.uv);
 	float4 albedo	= Albedo.Sample(defaultSampler, input.uv);
 	float4 metallic = Metallic.Sample(defaultSampler, input.uv);
-
+    
     float width, height, element;
     RayTracing.GetDimensions(0, width, height, element);
-    
+    return RayTracing.Sample(defaultSampler, input.uv);
 
     float2 texelSize = float2(1.0f / width, 1.0f / height);
     int sampleRadius = 1;

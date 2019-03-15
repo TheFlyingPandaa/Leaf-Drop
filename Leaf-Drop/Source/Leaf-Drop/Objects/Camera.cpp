@@ -42,7 +42,12 @@ void Camera::CreateProjectionMatrix(const float & nearPlane, const float & farPl
 
 void Camera::Update()
 {
-	_calcMatrices();
+	static bool asd = false;
+	if (!asd)
+	{
+		//asd = true;
+		_calcMatrices();
+	}
 }
 
 void Camera::SetPosition(const DirectX::XMFLOAT3 & position)
