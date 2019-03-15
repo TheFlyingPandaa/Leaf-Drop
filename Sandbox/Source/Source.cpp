@@ -264,7 +264,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			DirectX::XMFLOAT3 moveDir(0.0f, 0.0f, 0.0f);
 			DirectX::XMFLOAT3 rotDir(0.0f, 0.0f, 0.0f);
 
-			if (Camera::GetActiveCamera() == &cam)
+			if (Camera::GetActiveCamera() == &cam && false)
 			{
 				if (wnd->IsKeyPressed(Input::W))
 					moveDir.z += (MOVE_SPEED + SPRINT_SPEED * wnd->IsKeyPressed(Input::SHIFT));
@@ -405,13 +405,16 @@ void printFrameTime(double dt)
 	allTime += dt * 1000.0;
 	counter++;
 
+	static UINT64 counter2 = 0;
+
+	Window::GetInstance()->SetWindowTitle("Frame: " + std::to_string(counter2++));
+
 	if (counter >= MAX_DATA)
 	{
 		counter = 0;
 
 		allTime /= MAX_DATA;
 
-		Window::GetInstance()->SetWindowTitle("Frame Time: " + std::to_string(allTime) + " ms");
 
 		//std::cout << allTime << std::endl;
 

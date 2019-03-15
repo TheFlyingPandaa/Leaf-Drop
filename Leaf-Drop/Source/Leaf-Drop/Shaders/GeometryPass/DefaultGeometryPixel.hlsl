@@ -35,7 +35,7 @@ struct VS_OUTPUT
 struct PS_OUTPUT
 {
 	float4 position : SV_TARGET0;
-	float4 normal	: SV_TARGET1;
+	float4 specular	: SV_TARGET1;
 	float4 albedo	: SV_TARGET2;
 	float4 metallic	: SV_TARGET3;
 };
@@ -49,8 +49,6 @@ PS_OUTPUT main(VS_OUTPUT input)
     float4 normal = float4(normalize(input.normal.xyz + mul((2.0f * textureAtlas[TextureIndex[0].x + 1].Sample(defaultSampler, input.uv).xyz - 1.0f), input.TBN)), 0);
     float4 metallic = textureAtlas[TextureIndex[0].x + 2].Sample(defaultSampler, input.uv);
 
-    output.albedo = albedo;
-    output.normal = normal;
     output.metallic = metallic;
 
     float4 specular = float4(0, 0, 0, 1);
@@ -68,6 +66,8 @@ PS_OUTPUT main(VS_OUTPUT input)
     }
 
     output.albedo = finalColor;
+    output.specular = specular;
+
 
 	return output;
 }

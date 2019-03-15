@@ -70,12 +70,7 @@ private:
 	UINT m_geometryRenderTargetsSize = 0;
 	RenderTarget *const* m_geometryRenderTargets = nullptr;
 
-
-
-	UAV m_lightUav;
-	ConstantBuffer m_lightsBuffer;
-	
-
+	   
 	RenderTarget m_rayTexture;
 	ShaderResource * m_pRaySRV = nullptr;
 
@@ -88,6 +83,5 @@ private:
 	HRESULT _InitPipelineState();
 	void	_CreateViewPort();
 
-	void _SetLightData();
 };
 
