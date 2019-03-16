@@ -322,38 +322,37 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			if (wnd->IsKeyPressed(Input::ESCAPE))
 				wnd->Close();
 					   		
-			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
-			{
-			//	d[i].Update();
-				d[i].Draw();
-			}
-
-			for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
-			{
-			//	dynamicD[i].Update();
-				dynamicD[i].Draw();
-			}
-
-			rot += 1.0f * (FLOAT)dt;
 
 			static float mover = 0.0f;
-			static const float SPEED = 0.5f;
+			static const float SPEED = 1.0f / 60.0f;
 
 			dynamicDrawable.SetPosition(-42, -40, -42);
 			dynamicDrawable.SetScale(15, 15, 15);
 
-			static float translate = 4.0f;
+			static float translate = 0.136f;
 
 			dynamicD[1].SetRotation(0, mover, 0.0f);
-			dynamicD[3].Translate(translate * dt * 1.5f, -translate * dt, translate * dt);
+			dynamicD[3].Translate(translate * 1.35f, -translate, translate);
 			dynamicD[3].SetRotation(0, 0, mover);
 
-			mover += SPEED * dt;
+			mover += SPEED;
 
 			if (mover >= DirectX::XM_2PI)
 			{
 				mover = 0;
 				translate *= -1.0f;
+			}
+
+			for (int i = 0; i < NUMBER_OF_DRAWABLES; i++)
+			{
+				d[i].Update();
+				d[i].Draw();
+			}
+
+			for (UINT i = 0; i < NUMBER_OF_DYNAMIC_DRAWABLES; i++)
+			{
+				dynamicD[i].Update();
+				dynamicD[i].Draw();
 			}
 
 			dynamicDrawable.Update();
