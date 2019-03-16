@@ -401,6 +401,8 @@ HRESULT CoreRender::ExecuteCommandList()
 	return hr;
 }
 
+#include "Objects/Texture.h"
+
 HRESULT CoreRender::Flush()
 {
 	HRESULT hr = 0;
@@ -414,6 +416,37 @@ HRESULT CoreRender::Flush()
 	{
 		return DEBUG::CreateError(hr);
 	}
+
+	if (RENDER_TO_JPEG || RENDER_TO_BMP)
+	{
+		static int frameCounter = 0;
+		ID3D12Resource * buffer = nullptr;
+
+		hr = m_swapChain->GetBuffer(m_swapChain->GetCurrentBackBufferIndex(), IID_PPV_ARGS(&buffer));
+		if (SUCCEEDED(hr))
+		{
+			if (RENDER_TO_BMP)
+			{
+				hr = Texture::SaveToBMP(m_commandQueue, buffer, frameCounter++);
+			}
+			else
+			{
+				hr = Texture::SaveToJPEG(m_commandQueue, buffer, frameCounter++);
+			}
+			if (buffer)
+				buffer->Release();
+			if (FAILED(hr))
+				return DEBUG::CreateError(hr);
+
+		}
+		else
+		{
+			return DEBUG::CreateError(hr);
+		}
+
+	}
+	
+
 	_Clear();
 	return hr;
 }

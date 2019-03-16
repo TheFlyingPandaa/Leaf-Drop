@@ -49,7 +49,7 @@ float4 main(PS_INPUT input) : SV_TARGET
         for (int y = -sampleRadius; y <= sampleRadius; ++y)
         {
             smTex = input.uv + (float2(x, y) * texelSize);
-            float4 rayColor = RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, 4.0f * metallic.r);
+            float4 rayColor = RayTracing.Sample(defaultSampler, smTex) * multiplier(int2(x, y), sampleRadius, 2.0f * metallic.r);
             rays += rayColor;
             if (length(rayColor.rgb) > 0)
                 divider += 1.0f;

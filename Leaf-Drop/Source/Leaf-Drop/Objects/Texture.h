@@ -14,6 +14,9 @@ public:
 
 	ID3D12Resource * GetResource() const;
 
+	static HRESULT SaveToBMP(ID3D12CommandQueue * cq, ID3D12Resource * buffer, int index);
+	static HRESULT SaveToJPEG(ID3D12CommandQueue * cq, ID3D12Resource * buffer, int index);
+
 	const D3D12_CPU_DESCRIPTOR_HANDLE & GetCpuHandle() const;
 
 private:

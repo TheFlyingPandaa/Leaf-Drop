@@ -3,6 +3,9 @@
 #include <ResourceUploadBatch.h>
 #include "WICTextureLoader.h"
 
+#include <wincodec.h>
+#include <ScreenGrab.h>
+
 Texture::Texture()
 {
 }
@@ -88,6 +91,30 @@ void Texture::Release()
 ID3D12Resource* Texture::GetResource() const
 {
 	return this->m_texture;
+}
+
+HRESULT Texture::SaveToBMP(ID3D12CommandQueue * cq, ID3D12Resource * buffer, int index)
+{
+	using namespace DirectX;
+	HRESULT hr = 0;
+
+	std::wstring pathName = L"ScreenCapture/BMP/Frame_" + std::to_wstring(index) + L".bmp";
+
+	hr = SaveWICTextureToFile(cq, buffer, GUID_ContainerFormatBmp, pathName.c_str(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_PRESENT);
+
+	return hr;
+}
+
+HRESULT Texture::SaveToJPEG(ID3D12CommandQueue * cq, ID3D12Resource * buffer, int index)
+{
+	using namespace DirectX;
+	HRESULT hr = 0;
+
+	std::wstring pathName = L"ScreenCapture/JPEG/Frame_" + std::to_wstring(index) + L".jpg";
+
+	hr = SaveWICTextureToFile(cq, buffer, GUID_ContainerFormatJpeg, pathName.c_str(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_PRESENT);
+
+	return hr;
 }
 
 const D3D12_CPU_DESCRIPTOR_HANDLE & Texture::GetCpuHandle() const
